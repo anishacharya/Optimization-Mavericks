@@ -12,9 +12,9 @@
 
   "training_config":
     {
-      "num_batches": 100,
-      "batch_size": 1,
-      "epochs": 1,
+      "batch_size": 32,
+      "global_epochs": 1, # Number of communication Rounds
+      "local_epochs": 1,
 
       "optimizer_config":
       {
