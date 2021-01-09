@@ -27,7 +27,7 @@ def run_main():
                "iter_loss": [],
                "test_error": []}
     # Train
-    train_mode = config.get("train_mode", 'batch')
+    train_mode = config.get("train_mode", 'fed')
     if train_mode == 'fed':
         pass
     else:
