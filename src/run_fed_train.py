@@ -14,7 +14,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 def train_and_test_model(model, criterion, optimizer, lrs,
-                         gar, attack_config,
+                         gar,
                          train_data, test_data,
                          train_config, metrics):
     n = train_config.get('num_batches', 1)
@@ -57,4 +57,11 @@ def run_fed_train(config, metrics):
 
     data_manager = process_data(data_config=data_config)
     train_dataset, test_dataset = data_manager.download_data()
+
+    train_and_test_model(model=model, criterion=criterion, optimizer=optimizer, lrs=lrs,
+                         gar=gar,
+                         train_data=train_dataset, test_data=test_dataset,
+                         train_config=training_config, metrics=metrics)
+
+    return metrics
 
