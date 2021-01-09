@@ -1,0 +1,82 @@
+{
+  "train_mode": "batch",
+  "data_config":
+    {
+      "data_set": "mnist",
+      "shape": [28, 28],
+      "num_labels": 10,
+      "num_channels": 1,
+      "download": False,
+    },
+
+
+  "training_config":
+    {
+      "num_batches": 100,
+      "batch_size": 1,
+      "epochs": 1,
+
+      "optimizer_config":
+      {
+        "optimizer": 'Adam',
+        "loss": 'ce',
+        "lr0": 0.001,
+        "momentum": 0.9,
+        "reg": 0.0001,
+        "nesterov": False,
+        "amsgrad": False,
+      },
+
+      "lrs_config":
+      {
+        "lrs": None,
+        "milestones": [10, 25, 40],
+        "step_size": 10,
+        "gamma": 0.1
+      },
+
+      "learner_config":
+      {
+        # specify model architecture; currently supported: log_reg, mlp, lenet
+        "net": "mlp",
+      },
+      # Specify Aggregation params - GAR ;
+      "aggregation_config":
+        {
+          # g_i aggregation algorithms :
+          # ---------------------------------
+          # mean, importance_weighted, importance_sampled, pc_pursuit
+          "gar": "pc_pursuit",
+
+          # Algorithm specific configs
+          # ---------------------------
+          # Selection / Aggregation of Batches
+          "importance_weighted_config": {"attention": 'grad_norm'},
+          "importance_sampled_config": {"attention": 'grad_norm', "k": 0.5},
+          "pc_pursuit_config": {"rank": 0, "var_explained": 0.95},
+
+          # Selection of Dimension
+          # ---------------------------------
+          "dim_sampling_config":
+            {
+              "frac_coordinates": 1,
+              "rule": null,
+              "ef": False
+            }
+        },
+      # specify attack config
+      # ---------------------------------
+      "attack_config":
+        {
+          "frac_adv": 0.3,
+          "attack_mode": "un_coordinated",
+          "attack_model": "additive",
+
+          "noise_dist": 'gaussian',
+          "noise_range": [-1, 0],
+          "attack_n_std": 1,
+          "attack_std": 4,
+          "noise_mean": 0
+        }
+    },
+}
