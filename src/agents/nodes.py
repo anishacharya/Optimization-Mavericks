@@ -23,7 +23,7 @@ class Agent:
         pass
 
 
-class Client(Agent):
+class FedClient(Agent):
     def __init__(self,
                  client_id: int,
                  client_config: Dict,
