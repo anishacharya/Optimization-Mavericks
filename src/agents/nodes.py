@@ -90,6 +90,7 @@ class FedClient(Agent):
 
 
 class FedServer(Agent):
+    """ Implements a Federated Server or Master Node """
     def __init__(self,
                  server_model,
                  server_config: Dict):
@@ -98,8 +99,9 @@ class FedServer(Agent):
         self.config = server_config
 
         # initialize current w
-        self.w_current = flatten_params(learner=self.learner)
-        self.current_e = np.zeros_like(self.w_current)
+        params = flatten_params(learner=self.learner)
+        self.w_current = params
+        self.w_stale = params
 
         self.lr = self.config.get('lr0', 1)
         # dev, test data set
@@ -107,7 +109,7 @@ class FedServer(Agent):
         self.x_test, self.y_test = None, None
 
         self.opt = get_optimizer(params=self.learner.parameters(), optimizer_config=self.config)
-        self.lrs = get_scheduler(optimizer=self.opt, optimizer_config=self.config)
+        self.lrs = get_scheduler(optimizer=self.opt)
 
     def update_step(self, agg_grad):
         # update server model
@@ -117,17 +119,3 @@ class FedServer(Agent):
             self.lrs.step()
         self.w_current = flatten_params(learner=self.learner)
 
-    def infer(self, device="cpu"):
-        self.learner.to(device)
-        self.learner.eval()
-        correct = 0
-        with torch.no_grad():
-            x_test = self.x_test.float().to(device)
-            y_test = self.y_test.to(device)
-            y_hat = self.learner(x_test)
-            # print(y_hat)
-            prediction = y_hat.argmax(dim=1, keepdim=True)
-            # print(prediction)
-            correct += prediction.eq(y_test.view_as(prediction)).sum().item()
-        accuracy = 100. * correct / len(y_test)
-        return accuracy
