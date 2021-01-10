@@ -6,20 +6,17 @@ from src.model_manager import (get_model,
                                get_loss)
 from src.data_manager import process_data
 from src.aggregation_manager import get_gar
+from src.agents import FedServer, FedClient
 
 import torch
-import numpy as np
+from typing import List
+
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
-def train_and_test_model(model, criterion, optimizer, lrs,
-                         gar,
-                         train_data, test_data,
-                         train_config, metrics):
-    n = train_config.get('num_batches', 1)
-    num_epochs = train_config.get('epochs', 100)
-    batch_size = train_config.get('batch_size', 1)
+def train_and_test_model(server: FedServer, clients: List[FedClient], metrics):
+    pass
 
 
 def test(model, test_loader, verbose=False):
@@ -50,18 +47,21 @@ def run_fed_train(config, metrics):
     aggregation_config = training_config["aggregation_config"]
 
     model = get_model(learner_config=learner_config, data_config=data_config)
+    gar = get_gar(aggregation_config=aggregation_config)
+
     optimizer = get_optimizer(params=model.parameters(), optimizer_config=optimizer_config)
     lrs = get_scheduler(optimizer=optimizer, lrs_config=lrs_config)
     criterion = get_loss(loss=optimizer_config.get('loss', 'ce'))
-    gar = get_gar(aggregation_config=aggregation_config)
 
     data_manager = process_data(data_config=data_config)
     train_dataset, test_dataset = data_manager.download_data()
 
-    train_and_test_model(model=model, criterion=criterion, optimizer=optimizer, lrs=lrs,
-                         gar=gar,
-                         train_data=train_dataset, test_data=test_dataset,
-                         train_config=training_config, metrics=metrics)
+    print('# ------------------------------------------------- #')
+    print('#               Initializing Network                #')
+    print('# ------------------------------------------------- #')
+
+
+
 
     return metrics
 

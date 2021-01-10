@@ -1,5 +1,6 @@
 {
   "train_mode": "fed",
+
   "data_config":
     {
       "data_set": "mnist",
@@ -12,13 +13,15 @@
 
   "training_config":
     {
+      "num_clients": 10,
       "batch_size": 32,
       "global_epochs": 1, # Number of communication Rounds
       "local_epochs": 1,
+      "client_fraction": 0.5, # specify fraction of client participation per round
 
       "optimizer_config":
       {
-        "optimizer": 'Adam',
+        "optimizer": 'SGD',
         "loss": 'ce',
         "lr0": 0.001,
         "momentum": 0.9,
@@ -37,15 +40,12 @@
 
       "learner_config":
       {
-        # specify model architecture;
         "net": "mlp",
       },
-      # Specify Aggregation params - GAR ;
+
       "aggregation_config":
         {
-          # g_i aggregation algorithms :
-          # ---------------------------------
-          "gar": "pc_pursuit",
+          "gar": "mean",
         },
     },
 }

@@ -3,6 +3,7 @@ import os
 from numpyencoder import NumpyEncoder
 import json
 import yaml
+from src.run_fed_train import run_fed_train
 
 
 def _parse_args():
@@ -29,9 +30,11 @@ def run_main():
     # Train
     train_mode = config.get("train_mode", 'fed')
     if train_mode == 'fed':
-        pass
+        run_fed_train(config=config, metrics=metrics)
     else:
         raise NotImplementedError
+
+    # Write Results
     directory = args.dir if args.dir else "result_dumps/"
     if not os.path.exists(directory):
         os.makedirs(directory)
