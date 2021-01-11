@@ -11,6 +11,7 @@ from src.model_manager import (flatten_params,
 from src.aggregation_manager import GAR
 import numpy as np
 import torch
+from typing import List
 
 
 class Agent:
@@ -20,7 +21,7 @@ class Agent:
     def train_step(self, num_iter=1, device="cpu"):
         pass
 
-    def update_step(self, agg_grad):
+    def update_step(self, clients):
         pass
 
 
@@ -70,8 +71,8 @@ class FedServer(Agent):
         params = flatten_params(learner=self.learner)
         self.w_current = params
         self.w_old = None
-        self.u_old = None
+        self.u = None
 
-    def update_step(self):
+    def update_step(self, clients: List[FedClient]):
         pass
 

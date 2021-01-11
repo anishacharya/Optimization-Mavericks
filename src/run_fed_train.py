@@ -9,14 +9,16 @@ from src.aggregation_manager import get_gar
 from src.agents import FedServer, FedClient
 
 import torch
-from typing import List
+from typing import List, Dict
 import copy
 
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
-def train_and_test_model(server: FedServer, clients: List[FedClient], metrics):
+def train_and_test_model(server: FedServer, clients: List[FedClient],
+                         training_config: Dict, metrics):
+    n_sampled = training_config.get('client_fraction', 1)
     pass
 
 
@@ -66,6 +68,8 @@ def run_fed_train(config, metrics):
     # *** Set up Client Nodes ****
     # -----------------------------
     clients = []
+    n = training_config.get('num_clients', 10)
+
 
     return metrics
 

@@ -14,10 +14,11 @@
   "training_config":
     {
       "num_clients": 10,
+      "client_fraction": 0.5, # specify fraction of client participation per round
+
       "batch_size": 32,
       "global_epochs": 1, # Number of communication Rounds
       "local_epochs": 1,
-      "client_fraction": 0.5, # specify fraction of client participation per round
 
       "optimizer_config":
       {
