@@ -21,8 +21,13 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 def train_and_test_model(server: FedServer, clients: List[FedClient],
-                         training_config: Dict, metrics):
+                         training_config: Dict, data_config: Dict,
+                         metrics):
     n_sampled = training_config.get('client_fraction', 1)
+
+    # Get Data
+    data_manager = process_data(data_config=data_config)
+    train_dataset, test_dataset = data_manager.download_data()
     pass
 
 
@@ -81,5 +86,8 @@ def run_fed_train(config, metrics):
 
         clients.append(client)
 
+    train_and_test_model(server=server, clients=clients,
+                         data_config=data_config, training_config=training_config,
+                         metrics=metrics)
     return metrics
 
