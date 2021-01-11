@@ -39,6 +39,12 @@
         "gamma": 0.1
       },
 
+      "compression_config":
+      {
+        "compression_operator": "full",
+        "frac_coordinates_to_keep": 0.5,
+      },
+
       "learner_config":
       {
         "net": "mlp",
@@ -48,5 +54,6 @@
         {
           "gar": "mean",
         },
+
     },
 }

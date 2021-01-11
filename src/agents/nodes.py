@@ -2,7 +2,6 @@
 # Copyright (c) Microsoft Corporation.
 # Licensed under the MIT License
 
-from typing import Dict
 from src.model_manager import (flatten_params,
                                dist_grads_to_model,
                                get_loss,
@@ -11,7 +10,8 @@ from src.model_manager import (flatten_params,
 from src.aggregation_manager import GAR
 import numpy as np
 import torch
-from typing import List
+from typing import List, Dict
+from src.compression_manager import C
 
 
 class Agent:
@@ -28,11 +28,14 @@ class Agent:
 class FedClient(Agent):
     def __init__(self,
                  client_id: int,
-                 learner):
+                 learner,
+                 compression: C):
         """ Implements a Federated Client Node """
         Agent.__init__(self)
         self.client_id = client_id
         self.learner = learner
+
+        self.C = compression
 
         self.w_current = None
         self.w_old = None

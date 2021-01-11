@@ -7,6 +7,7 @@ from src.model_manager import (get_model,
 from src.data_manager import process_data
 from src.aggregation_manager import get_gar
 from src.agents import FedServer, FedClient
+from src.compression_manager import get_compression_operator
 
 import torch
 from typing import List, Dict
@@ -48,7 +49,7 @@ def run_fed_train(config, metrics):
     optimizer_config = training_config.get("optimizer_config", {})
     lrs_config = training_config.get('lrs_config')
     aggregation_config = training_config["aggregation_config"]
-
+    compression_config = training_config["compression_config"]
     model = get_model(learner_config=learner_config, data_config=data_config)
     gar = get_gar(aggregation_config=aggregation_config)
 
@@ -70,6 +71,12 @@ def run_fed_train(config, metrics):
     clients = []
     n = training_config.get('num_clients', 10)
 
+    for client_id in range(n):
+        client = FedClient(client_id=client_id,
+                           learner=copy.deepcopy(model),
+                           compression=get_compression_operator(compression_config=compression_config))
+
+        clients.append(client)
 
     return metrics
 

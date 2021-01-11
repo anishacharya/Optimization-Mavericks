@@ -1,9 +1,8 @@
 # Copyright (c) Anish Acharya
-# Copyright (c) Microsoft Corporation.
 # Licensed under the MIT License
 
 import numpy as np
-from typing import Dict, List
+from typing import Dict
 
 
 def get_compression_operator(compression_config: Dict):
