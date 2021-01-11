@@ -23,12 +23,19 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 def train_and_test_model(server: FedServer, clients: List[FedClient],
                          training_config: Dict, data_config: Dict,
                          metrics):
-    n_sampled = training_config.get('client_fraction', 1)
-
+    print('# ------------------------------------------------- #')
+    print('#          Getting and Distributing Data            #')
+    print('# ------------------------------------------------- #')
     # Get Data
     data_manager = process_data(data_config=data_config)
     train_dataset, test_dataset = data_manager.download_data()
-    data_manager.distribute_data(train_dataset=train_dataset)
+    # Distribute Data among clients
+    data_manager.distribute_data(train_dataset=train_dataset, clients=clients)
+
+    print('# ------------------------------------------------- #')
+    print('#                 Training Phase                    #')
+    print('# ------------------------------------------------- #')
+    n_sampled = training_config.get('client_fraction', 1) # partial device participation
 
 
 def test(model, test_loader, verbose=False):
@@ -64,8 +71,6 @@ def run_fed_train(config, metrics):
     optimizer = get_optimizer(params=model.parameters(), optimizer_config=optimizer_config)
     lrs = get_scheduler(optimizer=optimizer, lrs_config=lrs_config)
     criterion = get_loss(loss=optimizer_config.get('loss', 'ce'))
-
-
 
     print('# ------------------------------------------------- #')
     print('#               Initializing Network                #')

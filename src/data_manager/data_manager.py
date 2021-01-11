@@ -55,12 +55,11 @@ class DataManager:
 
         return data_distribution_map
 
-    def distribute_data(self, train_dataset, clients:List[FedClient]):
+    def distribute_data(self, train_dataset, clients: List[FedClient]):
         """ Distributes Data among clients """
+        # Populate Data Distribution Map
         total_train_samples = train_dataset.data.shape[0]
         data_distribution_strategy = self.data_config.get("data_distribution_strategy", 'iid')
-
-        # Populate Data Distribution Map
         if data_distribution_strategy == 'iid':
             data_dist_map = self._iid_dist(clients=clients,
                                            num_train=total_train_samples)
