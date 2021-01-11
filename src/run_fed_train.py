@@ -10,6 +10,7 @@ from src.agents import FedServer, FedClient
 
 import torch
 from typing import List
+import copy
 
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -59,9 +60,12 @@ def run_fed_train(config, metrics):
     print('# ------------------------------------------------- #')
     print('#               Initializing Network                #')
     print('# ------------------------------------------------- #')
-
-
-
+    # **** Set up Server (Master Node) ****
+    # --------------------------------------
+    server = FedServer(server_model=copy.deepcopy(model), gar=gar)
+    # *** Set up Client Nodes ****
+    # -----------------------------
+    clients = []
 
     return metrics
 
