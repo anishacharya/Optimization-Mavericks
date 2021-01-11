@@ -8,6 +8,10 @@
       "num_labels": 10,
       "num_channels": 1,
       "download": False,
+
+      "data_distribution_strategy": 'iid',
+      "batch_size": 32, # Define Batch Size here since Data Loader will assign batches to clients
+      "train_num_workers": 4,
     },
 
 
@@ -16,7 +20,6 @@
       "num_clients": 10,
       "client_fraction": 0.5, # specify fraction of client participation per round
 
-      "batch_size": 32,
       "global_epochs": 1, # Number of communication Rounds
       "local_epochs": 1,
 

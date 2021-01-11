@@ -28,7 +28,7 @@ def train_and_test_model(server: FedServer, clients: List[FedClient],
     # Get Data
     data_manager = process_data(data_config=data_config)
     train_dataset, test_dataset = data_manager.download_data()
-    pass
+    data_manager.distribute_data(train_dataset=train_dataset)
 
 
 def test(model, test_loader, verbose=False):
@@ -65,8 +65,7 @@ def run_fed_train(config, metrics):
     lrs = get_scheduler(optimizer=optimizer, lrs_config=lrs_config)
     criterion = get_loss(loss=optimizer_config.get('loss', 'ce'))
 
-    data_manager = process_data(data_config=data_config)
-    train_dataset, test_dataset = data_manager.download_data()
+
 
     print('# ------------------------------------------------- #')
     print('#               Initializing Network                #')

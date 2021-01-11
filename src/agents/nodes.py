@@ -43,8 +43,7 @@ class FedClient(Agent):
         self.grad_current = None
         self.grad_stale = None
 
-        self.x_train = None
-        self.y_train = None
+        self.local_train_data = None
 
     def train_step(self, num_iter=1, device="cpu"):
         pass
