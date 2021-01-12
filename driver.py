@@ -3,7 +3,7 @@ import os
 from numpyencoder import NumpyEncoder
 import json
 import yaml
-from src.run_fed_train import run_fed_train
+from src import run_fed_train
 
 
 def _parse_args():
