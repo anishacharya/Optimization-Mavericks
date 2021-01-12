@@ -26,7 +26,6 @@ def train_clients(clients: List[FedClient], device_participation: float = 1.0):
     # TODO: Incorporate Attack
 
 
-
 def train_and_test_model(server: FedServer,
                          clients: List[FedClient],
                          training_config: Dict,
@@ -52,6 +51,9 @@ def train_and_test_model(server: FedServer,
         print(' ------------------------------------------ ')
         print('         Communication Round {}             '.format(comm_round))
         print(' -------------------------------------------')
+        server_w_current = server.w_current
+        server_w_old = server.w_old
+
 
 
 def test(model, test_loader, verbose=False):
