@@ -15,13 +15,13 @@ from src.compression_manager import get_compression_operator
 import torch
 from typing import List, Dict
 import copy
-
-
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
-def train_and_test_model(server: FedServer, clients: List[FedClient],
-                         training_config: Dict, data_config: Dict,
+def train_and_test_model(server: FedServer,
+                         clients: List[FedClient],
+                         training_config: Dict,
+                         data_config: Dict,
                          metrics):
     print('# ------------------------------------------------- #')
     print('#          Getting and Distributing Data            #')
