@@ -78,4 +78,10 @@ def get_model(learner_config: Dict, data_config: Dict):
     return model
 
 
+def cycle(iterable):
+    while True:
+        for x in iterable:
+            yield x
+
+
 

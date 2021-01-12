@@ -34,6 +34,7 @@ class FedClient(Agent):
         Agent.__init__(self)
         self.client_id = client_id
         self.learner = learner
+        self.train_iter = None
 
         self.C = compression
 
@@ -49,7 +50,7 @@ class FedClient(Agent):
         self.w_current = w_current
         self.w_old = w_old
 
-    def train_step(self, num_iter=1, device="cpu"):
+    def train_step(self, num_steps=1, device="cpu"):
         pass
 
 

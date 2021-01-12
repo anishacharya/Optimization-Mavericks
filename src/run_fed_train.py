@@ -118,6 +118,7 @@ def run_fed_train(config, metrics):
         clients.append(client)
 
     train_and_test_model(server=server, clients=clients,
-                         data_config=data_config, training_config=training_config,
+                         data_config=data_config,
+                         training_config=training_config,
                          metrics=metrics)
     return metrics

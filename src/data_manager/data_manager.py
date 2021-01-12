@@ -7,6 +7,7 @@ from src.agents import FedClient
 import numpy as np
 from typing import List
 from torch.utils.data import DataLoader, Subset
+from src.model_manager import cycle
 
 
 class DataManager:
@@ -76,5 +77,6 @@ class DataManager:
                                                  batch_size=self.data_config.get("train_batch_size", 256),
                                                  pin_memory=True,
                                                  num_workers=self.data_config.get("train_num_workers", 1))
+            client.train_iter = iter(cycle(client.local_train_data))
 
 
