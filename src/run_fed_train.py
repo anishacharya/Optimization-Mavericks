@@ -15,7 +15,16 @@ from src.compression_manager import get_compression_operator
 import torch
 from typing import List, Dict
 import copy
+import random
+import math
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+
+def train_clients(clients: List[FedClient], device_participation: float = 1.0):
+    num_devices = math.floor(len(clients) * device_participation)
+    sampled_clients = random.sample(population=clients, k=num_devices)
+    # TODO: Incorporate Attack
+
 
 
 def train_and_test_model(server: FedServer,
@@ -36,7 +45,7 @@ def train_and_test_model(server: FedServer,
     print('# ------------------------------------------------- #')
     print('#            Launching Federated Training           #')
     print('# ------------------------------------------------- #')
-    n_sampled = training_config.get('client_fraction', 1)  # partial device participation
+    device_participation = training_config.get('client_fraction', 1.0)  # partial device participation
     global_epochs = training_config.get('global_epochs', 10)
 
     for comm_round in range(1, global_epochs+1):
