@@ -1,9 +1,9 @@
 {
-  "train_mode": "fed",
+  "train_mode": "fed", # fed(Federated), batch(Distributed mini-batch SGD), dec: Decentralized SGD
 
   "data_config":
     {
-      "data_set": "mnist",
+      "data_set": "mnist", # mnist, fashion-mnist, cifar10
       "shape": [28, 28],
       "num_labels": 10,
       "num_channels": 1,
@@ -25,8 +25,8 @@
 
       "optimizer_config":
       {
-        "optimizer": 'SGD',
-        "loss": 'ce',
+        "optimizer": 'SGD', # SGD, Adam
+        "loss": 'ce', # ce (Cross Entropy), mse (Mean Sq Error), bce(binary-CE)
         "lr0": 0.001,
         "momentum": 0.9,
         "reg": 0.0001,
@@ -36,7 +36,7 @@
 
       "lrs_config":
       {
-        "lrs": None,
+        "lrs": None, # step, multi_step, exp, cyclic
         "milestones": [10, 25, 40],
         "step_size": 10,
         "gamma": 0.1
@@ -44,8 +44,8 @@
 
       "compression_config":
       {
-        "compression_operator": "full",
-        "frac_coordinates_to_keep": 0.5,
+        "compression_operator": "full", # full (No Compression), top_k, rand_k
+        "frac_coordinates_to_keep": 0.5, # For top-k, rand-k specify sparsity (k)
       },
 
       "learner_config":
@@ -54,9 +54,9 @@
       },
 
       "aggregation_config":
-        {
-          "gar": "mean",
-        },
+      {
+        "gar": "mean",
+      },
 
     },
 }
