@@ -29,13 +29,20 @@ def train_and_test_model(server: FedServer,
     # Get Data
     data_manager = process_data(data_config=data_config)
     train_dataset, test_dataset = data_manager.download_data()
+
     # Distribute Data among clients
     data_manager.distribute_data(train_dataset=train_dataset, clients=clients)
 
     print('# ------------------------------------------------- #')
-    print('#                 Training Phase                    #')
+    print('#            Launching Federated Training           #')
     print('# ------------------------------------------------- #')
-    n_sampled = training_config.get('client_fraction', 1) # partial device participation
+    n_sampled = training_config.get('client_fraction', 1)  # partial device participation
+    global_epochs = training_config.get('global_epochs', 10)
+
+    for comm_round in range(1, global_epochs+1):
+        print(' ------------------------------------------ ')
+        print('         Communication Round {}             '.format(comm_round))
+        print(' -------------------------------------------')
 
 
 def test(model, test_loader, verbose=False):

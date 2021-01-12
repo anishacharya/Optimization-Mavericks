@@ -1,8 +1,10 @@
 import argparse
-import os
-from numpyencoder import NumpyEncoder
 import json
+import os
 import yaml
+
+from numpyencoder import NumpyEncoder
+
 from src import run_fed_train
 
 

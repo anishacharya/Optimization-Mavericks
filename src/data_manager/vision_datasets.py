@@ -6,8 +6,6 @@ from .data_manager import DataManager
 from torchvision import datasets, transforms
 from typing import Dict
 import os
-
-
 curr_dir = os.path.dirname(__file__)
 root = os.path.join(curr_dir, './data/')
 
