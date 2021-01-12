@@ -18,7 +18,9 @@ class Agent:
     def __init__(self):
         pass
 
-    def train_step(self, num_iter=1, device="cpu"):
+    def train_step(self,
+                   num_steps=1,
+                   device="cpu"):
         pass
 
     def update_step(self, clients):
@@ -33,8 +35,11 @@ class FedClient(Agent):
         """ Implements a Federated Client Node """
         Agent.__init__(self)
         self.client_id = client_id
+
         self.learner = learner
-        self.train_iter = None
+        self.optimizer = None
+        self.criterion = None
+        self.lrs = None
 
         self.C = compression
 
@@ -45,13 +50,28 @@ class FedClient(Agent):
         self.grad_stale = None
 
         self.local_train_data = None
+        self.train_iter = None
 
     def initialize_params(self, w_current, w_old):
         self.w_current = w_current
         self.w_old = w_old
 
     def train_step(self, num_steps=1, device="cpu"):
-        pass
+        for it in range(num_steps):
+            model = self.learner.to(device)
+            model.train()
+            x, y = next(self.train_iter)
+            x, y = x.float(), y
+            x, y = x.to(device), y.to(device)
+            y_hat = model(x)
+            self.optimizer.zero_grad()
+            loss_val = self.criterion(y_hat, y)
+            loss_val.backward()
+            self.optimizer.step()
+            if self.lrs:
+                self.lrs.step()
+
+        # update the estimated gradients
 
 
 class FedServer(Agent):

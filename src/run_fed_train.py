@@ -95,10 +95,6 @@ def run_fed_train(config, metrics):
     model = get_model(learner_config=learner_config, data_config=data_config)
     gar = get_gar(aggregation_config=aggregation_config)
 
-    optimizer = get_optimizer(params=model.parameters(), optimizer_config=optimizer_config)
-    lrs = get_scheduler(optimizer=optimizer, lrs_config=lrs_config)
-    criterion = get_loss(loss=optimizer_config.get('loss', 'ce'))
-
     print('# ------------------------------------------------- #')
     print('#               Initializing Network                #')
     print('# ------------------------------------------------- #')
@@ -114,6 +110,9 @@ def run_fed_train(config, metrics):
         client = FedClient(client_id=client_id,
                            learner=copy.deepcopy(model),
                            compression=get_compression_operator(compression_config=compression_config))
+        client.optimizer = get_optimizer(params=model.parameters(), optimizer_config=optimizer_config)
+        client.lrs = get_scheduler(optimizer=client.optimizer, lrs_config=lrs_config)
+        client.criterion = get_loss(loss=optimizer_config.get('loss', 'ce'))
 
         clients.append(client)
 
