@@ -17,13 +17,24 @@ from typing import List, Dict
 import copy
 import random
 import math
+
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
-def train_clients(clients: List[FedClient], device_participation: float = 1.0):
+def init_and_train_clients(server: FedServer,
+                           clients: List[FedClient],
+                           device_participation: float = 1.0):
+    # Sample Participating Devices
     num_devices = math.floor(len(clients) * device_participation)
     sampled_clients = random.sample(population=clients, k=num_devices)
-    # TODO: Incorporate Attack
+
+    w_current = server.w_current
+    w_old = server.w_old
+
+    for client in sampled_clients:
+        # initialize with global params
+        client.initialize_params(w_current=w_current, w_old=w_old)
+        # train step
 
 
 def train_and_test_model(server: FedServer,
@@ -47,13 +58,11 @@ def train_and_test_model(server: FedServer,
     device_participation = training_config.get('client_fraction', 1.0)  # partial device participation
     global_epochs = training_config.get('global_epochs', 10)
 
-    for comm_round in range(1, global_epochs+1):
+    for comm_round in range(1, global_epochs + 1):
         print(' ------------------------------------------ ')
         print('         Communication Round {}             '.format(comm_round))
         print(' -------------------------------------------')
-        server_w_current = server.w_current
-        server_w_old = server.w_old
-
+        init_and_train_clients(server=server, clients=clients, device_participation=device_participation)
 
 
 def test(model, test_loader, verbose=False):
@@ -112,4 +121,3 @@ def run_fed_train(config, metrics):
                          data_config=data_config, training_config=training_config,
                          metrics=metrics)
     return metrics
-

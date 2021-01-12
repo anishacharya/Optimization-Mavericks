@@ -45,6 +45,10 @@ class FedClient(Agent):
 
         self.local_train_data = None
 
+    def initialize_params(self, w_current, w_old):
+        self.w_current = w_current
+        self.w_old = w_old
+
     def train_step(self, num_iter=1, device="cpu"):
         pass
 
