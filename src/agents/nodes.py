@@ -140,6 +140,7 @@ class FedClient(Agent):
 
 class FedServer(Agent):
     """ Implements a Federated Server or Master Node """
+
     def __init__(self,
                  server_model,
                  server_optimizer,
@@ -152,11 +153,13 @@ class FedServer(Agent):
         self.gar = gar
 
         self.G = None
+        self.G_stale = None
 
         # initialize params
         self.w_current = None
         self.w_old = None
         self.u = None
+        self.beta = 0.5
 
     def update_step(self, clients: List[FedClient]):
         # Now update server model
@@ -165,8 +168,8 @@ class FedServer(Agent):
 
         for ix, client in enumerate(clients):
             g_i = client.grad_current
-            d = len(g_i)
             if not self.G:
+                d = len(g_i)
                 self.G = np.ndarray((n, d), dtype=g_i.dtype)
             self.G[ix, :] = g_i
 
@@ -184,6 +187,24 @@ class FedServer(Agent):
         self.w_current = flatten_params(learner=self.learner)
 
     def update_step_glomo(self, clients: List[FedClient]):
-        pass
+        """ Implements Das et.al. FedGlomo: server update step with (Glo)bal (Mo)mentum"""
+        n = len(clients)
+        for ix, client in enumerate(clients):
+            g_i = client.grad_current
+            g_i_stale = client.grad_stale
+            if not self.G or self.G_stale:
+                d = len(g_i)
+                self.G = np.ndarray((n, d), dtype=g_i.dtype)
+                self.G_stale = np.ndarray((n, d), dtype=g_i.dtype)
+            self.G[ix, :] = g_i
+            self.G_stale[ix, :] = g_i_stale
 
+            # invoke gar and get aggregate
+            agg_g = self.gar.aggregate(G=self.G)
+            agg_g_stale = self.gar.aggregate(G=self.G_stale)
 
+            # compute new u
+            u_new = self.beta * agg_g + \
+                    ((1 - self.beta) * self.u) + \
+                    ((1 - self.beta) * (agg_g - agg_g_stale))
+            self.u = u_new

@@ -84,6 +84,7 @@ def train_and_test_model(server: FedServer,
         server.update_step(clients=sampled_clients)
         # test(model=server.learner, )
 
+
 def test(model, test_loader, verbose=False) -> float:
     model.to(device)
     with torch.no_grad():
