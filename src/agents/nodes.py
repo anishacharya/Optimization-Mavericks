@@ -4,6 +4,7 @@
 
 from src.model_manager import (flatten_params,
                                dist_grads_to_model,
+                               dist_weights_to_model,
                                get_loss,
                                get_optimizer,
                                get_scheduler)
@@ -36,12 +37,18 @@ class FedClient(Agent):
         """ Implements a Federated Client Node """
         Agent.__init__(self)
         self.client_id = client_id
+        self.training_config = None
 
         self.learner = learner
+        self.learner_stale = None
+
         self.optimizer = None
+        self.optimizer_stale = None
+
+        self.lrs = None
+        self.lrs_stale  = None
 
         self.criterion = None
-        self.lrs = None
 
         self.C = compression
 
@@ -59,6 +66,7 @@ class FedClient(Agent):
         self.w_old = w_old
 
     def train_step(self, num_steps=1, device="cpu"):
+        dist_weights_to_model(self.w_current, learner=self.learner)
         for it in range(num_steps):
             model = self.learner.to(device)
             model.train()
@@ -78,7 +86,50 @@ class FedClient(Agent):
         self.grad_current = self.w_current - updated_model_weights
 
     def train_step_glomo(self, num_steps=1, device="cpu"):
-        pass
+        if self.learner_stale is None:
+            self.learner_stale = copy.deepcopy(self.learner)
+        if self.optimizer_stale is None:
+            self.optimizer_stale = get_optimizer(params=self.learner_stale.parameters(),
+                                                 optimizer_config=self.training_config.get("optimizer_config", {}))
+        if self.lrs_stale is None:
+            self.lrs_stale = get_scheduler(optimizer=self.optimizer_stale,
+                                           lrs_config=self.training_config.get('lrs_config', {}))
+
+        dist_weights_to_model(self.w_current, learner=self.learner)
+        dist_weights_to_model(self.w_old, learner=self.learner_stale)
+
+        for it in range(num_steps):
+            model = self.learner.to(device)
+            model_stale = self.learner_stale.to(device)
+            model.train()
+            model_stale.train()
+
+            x, y = next(self.train_iter)
+            x, y = x.float(), y
+            x, y = x.to(device), y.to(device)
+
+            y_hat = model_stale(x)
+            self.optimizer.zero_grad()
+            loss_val = self.criterion(y_hat, y)
+            loss_val.backward()
+            self.optimizer.step()
+            if self.lrs:
+                self.lrs.step()
+
+            y_hat = model_stale(x)
+            self.optimizer_stale.zero_grad()
+            loss_val = self.criterion(y_hat, y)
+            loss_val.backward()
+            self.optimizer_stale.step()
+            if self.lrs_stale:
+                self.lrs_stale.step()
+
+        # update the estimated gradients
+        updated_current_model_weights = flatten_params(learner=self.learner)
+        self.grad_current = self.w_current - updated_current_model_weights
+
+        updated_stale_model_weights = flatten_params(learner=self.learner_stale)
+        self.grad_stale = self.w_old - updated_stale_model_weights
 
 
 class FedServer(Agent):

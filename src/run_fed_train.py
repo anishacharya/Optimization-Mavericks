@@ -29,7 +29,6 @@ def init_and_train_clients(server: FedServer,
     num_devices = math.floor(len(clients) * device_participation)
     sampled_clients = random.sample(population=clients, k=num_devices)
 
-
     w_current = server.w_current
     w_old = server.w_old
 
@@ -119,6 +118,7 @@ def run_fed_train(config, metrics):
         client.optimizer = get_optimizer(params=model.parameters(), optimizer_config=optimizer_config)
         client.lrs = get_scheduler(optimizer=client.optimizer, lrs_config=lrs_config)
         client.criterion = get_loss(loss=optimizer_config.get('loss', 'ce'))
+        client.training_config = training_config
 
         clients.append(client)
 
