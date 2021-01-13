@@ -25,6 +25,7 @@ def init_and_train_clients(server: FedServer,
                            clients: List[FedClient],
                            num_local_steps: int = 1,
                            device_participation: float = 1.0):
+
     # Sample Participating Devices
     num_devices = math.floor(len(clients) * device_participation)
     sampled_clients = random.sample(population=clients, k=num_devices)

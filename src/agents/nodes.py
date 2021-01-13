@@ -88,6 +88,7 @@ class FedClient(Agent):
     def train_step_glomo(self, num_steps=1, device="cpu"):
         if self.learner_stale is None:
             self.learner_stale = copy.deepcopy(self.learner)
+
         if self.optimizer_stale is None:
             self.optimizer_stale = get_optimizer(params=self.learner_stale.parameters(),
                                                  optimizer_config=self.training_config.get("optimizer_config", {}))
@@ -108,7 +109,7 @@ class FedClient(Agent):
             x, y = x.float(), y
             x, y = x.to(device), y.to(device)
 
-            y_hat = model_stale(x)
+            y_hat = model(x)
             self.optimizer.zero_grad()
             loss_val = self.criterion(y_hat, y)
             loss_val.backward()
