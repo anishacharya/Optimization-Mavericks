@@ -9,9 +9,8 @@ from src.model_manager import (flatten_params,
                                get_scheduler)
 from src.aggregation_manager import GAR
 import numpy as np
-import torch
 import copy
-from typing import List, Dict
+from typing import List
 from src.compression_manager import C
 
 
@@ -64,8 +63,9 @@ class FedClient(Agent):
         self.w_current = w_current
         self.w_old = w_old
 
-    def train_step(self, num_steps=1, device="cpu"):
+    def train_step(self, num_steps=1, device="cpu") -> float:
         dist_weights_to_model(self.w_current, learner=self.learner)
+        total_loss = 0
         for it in range(num_steps):
             model = self.learner.to(device)
             model.train()
@@ -75,14 +75,20 @@ class FedClient(Agent):
             y_hat = model(x)
             self.optimizer.zero_grad()
             loss_val = self.criterion(y_hat, y)
+            total_loss += loss_val.item()
+
             loss_val.backward()
             self.optimizer.step()
             if self.lrs:
                 self.lrs.step()
 
+        total_loss /= num_steps
+
         # update the estimated gradients
         updated_model_weights = flatten_params(learner=self.learner)
         self.grad_current = self.w_current - updated_model_weights
+
+        return total_loss
 
     def train_step_glomo(self, num_steps=1, device="cpu"):
         if self.learner_stale is None:
