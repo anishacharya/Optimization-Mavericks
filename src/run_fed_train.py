@@ -81,7 +81,8 @@ def train_and_test_model(server: FedServer,
                                device_participation=device_participation)
 
         # Aggregate client grads and update server model
-        server.update_step(clients=sampled_clients)
+        server.compute_agg_grad(clients=sampled_clients)
+        server.update_step()
         # test(model=server.learner, )
 
 

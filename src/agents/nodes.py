@@ -23,7 +23,7 @@ class Agent:
                    device="cpu"):
         pass
 
-    def update_step(self, clients):
+    def update_step(self):
         pass
 
 
@@ -161,7 +161,19 @@ class FedServer(Agent):
         self.u = None
         self.beta = 0.5
 
-    def update_step(self, clients: List[FedClient]):
+    def update_step(self):
+        # update server model
+        self.optimizer.zero_grad()
+        dist_grads_to_model(grads=np.array(self.u, dtype=np.float32), learner=self.learner)
+        self.optimizer.step()
+        if self.lrs:
+            self.lrs.step()
+
+        # update weights
+        self.w_old = self.w_current
+        self.w_current = flatten_params(learner=self.learner)
+
+    def compute_agg_grad(self, clients: List[FedClient]):
         # Now update server model
         # stack grads - compute G
         n = len(clients)
@@ -174,19 +186,9 @@ class FedServer(Agent):
             self.G[ix, :] = g_i
 
         # invoke gar and get aggregate
-        agg_g = self.gar.aggregate(G=self.G)
+        self.u = self.gar.aggregate(G=self.G)
 
-        # update server model
-        self.optimizer.zero_grad()
-        dist_grads_to_model(grads=np.array(agg_g, dtype=np.float32), learner=self.learner)
-        self.optimizer.step()
-        if self.lrs:
-            self.lrs.step()
-
-        # update weights
-        self.w_current = flatten_params(learner=self.learner)
-
-    def update_step_glomo(self, clients: List[FedClient]):
+    def compute_agg_grad_glomo(self, clients: List[FedClient]):
         """ Implements Das et.al. FedGlomo: server update step with (Glo)bal (Mo)mentum"""
         n = len(clients)
         for ix, client in enumerate(clients):
