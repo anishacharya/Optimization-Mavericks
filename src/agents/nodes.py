@@ -168,7 +168,14 @@ class FedServer(Agent):
         agg_g = self.gar.aggregate(G=self.G)
 
         # update server model
+        self.optimizer.zero_grad()
+        dist_grads_to_model(grads=np.array(agg_g, dtype=np.float32), learner=self.learner)
+        self.optimizer.step()
+        if self.lrs:
+            self.lrs.step()
 
+        # update weights
+        self.w_current = flatten_params(learner=self.learner)
 
     def update_step_glomo(self, clients: List[FedClient]):
         pass
