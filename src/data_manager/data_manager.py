@@ -62,8 +62,8 @@ class DataManager:
         total_train_samples = train_dataset.data.shape[0]
         data_distribution_strategy = self.data_config.get("data_distribution_strategy", 'iid')
         if data_distribution_strategy == 'iid':
-            data_dist_map = self._iid_dist(clients=clients,
-                                           num_train=total_train_samples)
+            self.data_distribution_map = self._iid_dist(clients=clients,
+                                                        num_train=total_train_samples)
         else:
             raise NotImplementedError
 
@@ -78,5 +78,3 @@ class DataManager:
                                                  pin_memory=True,
                                                  num_workers=self.data_config.get("train_num_workers", 1))
             client.train_iter = iter(cycle(client.local_train_data))
-
-

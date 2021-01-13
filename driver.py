@@ -27,7 +27,6 @@ def run_main():
 
     metrics = {"config": config,
                "epoch_loss": [],
-               "iter_loss": [],
                "test_error": []}
     # Train
     train_mode = config.get("train_mode", 'fed')

@@ -21,27 +21,28 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 def init_and_train_clients(server: FedServer,
                            clients: List[FedClient],
+                           metrics,
                            num_local_steps: int = 1,
                            device_participation: float = 1.0):
 
-    # Sample Participating Devices
-    num_devices = math.floor(len(clients) * device_participation)
-    sampled_clients = random.sample(population=clients, k=num_devices)
+
 
     w_current = server.w_current
     w_old = server.w_old
 
-    for client in sampled_clients:
+    epoch_loss = 0
+    for client in clients:
         # initialize with global params
         client.initialize_params(w_current=w_current, w_old=w_old)
         # train step
-        client.train_step(num_steps=num_local_steps, device=device)
+        epoch_loss += client.train_step(num_steps=num_local_steps, device=device)
+
+    epoch_loss /= len(sampled_clients)
+    metrics["epoch_loss"].append(epoch_loss)
 
     # At this point we have all the g_i computed
     # Apply Attack (Here since we can also apply co-ordinated attack)
     # TODO: Incorporate attacks
-
-    # Aggregate client grads and update server model
 
 
 def train_and_test_model(server: FedServer,
@@ -70,12 +71,20 @@ def train_and_test_model(server: FedServer,
         print(' ------------------------------------------ ')
         print('         Communication Round {}             '.format(comm_round))
         print(' -------------------------------------------')
-        init_and_train_clients(server=server, clients=clients,
+        # Sample Participating Devices
+        num_devices = math.floor(len(clients) * device_participation)
+        sampled_clients = random.sample(population=clients, k=num_devices)
+
+        init_and_train_clients(server=server, clients=sampled_clients,
+                               metrics=metrics,
                                num_local_steps=local_epochs,
                                device_participation=device_participation)
 
+        # Aggregate client grads and update server model
+        server.update_step(clients=sampled_clients)
+        test(model=server.learner, )
 
-def test(model, test_loader, verbose=False):
+def test(model, test_loader, verbose=False) -> float:
     model.to(device)
     with torch.no_grad():
         correct = 0
@@ -90,7 +99,7 @@ def test(model, test_loader, verbose=False):
         acc = 100 * correct / total
         if verbose:
             print('Test Accuracy: {} %'.format(acc))
-        return 100 - acc
+        return acc
 
 
 def run_fed_train(config, metrics):
