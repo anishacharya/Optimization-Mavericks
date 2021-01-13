@@ -23,10 +23,12 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 def init_and_train_clients(server: FedServer,
                            clients: List[FedClient],
+                           num_local_steps: int = 1,
                            device_participation: float = 1.0):
     # Sample Participating Devices
     num_devices = math.floor(len(clients) * device_participation)
     sampled_clients = random.sample(population=clients, k=num_devices)
+
 
     w_current = server.w_current
     w_old = server.w_old
@@ -35,6 +37,7 @@ def init_and_train_clients(server: FedServer,
         # initialize with global params
         client.initialize_params(w_current=w_current, w_old=w_old)
         # train step
+        client.train_step(num_steps=num_local_steps, device=device)
 
 
 def train_and_test_model(server: FedServer,
@@ -57,12 +60,15 @@ def train_and_test_model(server: FedServer,
     print('# ------------------------------------------------- #')
     device_participation = training_config.get('client_fraction', 1.0)  # partial device participation
     global_epochs = training_config.get('global_epochs', 10)
+    local_epochs = training_config.get('local_epochs', 1)
 
     for comm_round in range(1, global_epochs + 1):
         print(' ------------------------------------------ ')
         print('         Communication Round {}             '.format(comm_round))
         print(' -------------------------------------------')
-        init_and_train_clients(server=server, clients=clients, device_participation=device_participation)
+        init_and_train_clients(server=server, clients=clients,
+                               num_local_steps=local_epochs,
+                               device_participation=device_participation)
 
 
 def test(model, test_loader, verbose=False):
