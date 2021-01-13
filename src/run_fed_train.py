@@ -82,7 +82,7 @@ def train_and_test_model(server: FedServer,
 
         # Aggregate client grads and update server model
         server.update_step(clients=sampled_clients)
-        test(model=server.learner, )
+        # test(model=server.learner, )
 
 def test(model, test_loader, verbose=False) -> float:
     model.to(device)
