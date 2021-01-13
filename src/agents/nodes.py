@@ -5,7 +5,6 @@
 from src.model_manager import (flatten_params,
                                dist_grads_to_model,
                                dist_weights_to_model,
-                               get_loss,
                                get_optimizer,
                                get_scheduler)
 from src.aggregation_manager import GAR
@@ -46,7 +45,7 @@ class FedClient(Agent):
         self.optimizer_stale = None
 
         self.lrs = None
-        self.lrs_stale  = None
+        self.lrs_stale = None
 
         self.criterion = None
 
@@ -61,7 +60,7 @@ class FedClient(Agent):
         self.local_train_data = None
         self.train_iter = None
 
-    def initialize_params(self, w_current, w_old):
+    def initialize_params(self, w_current, w_old=None):
         self.w_current = w_current
         self.w_old = w_old
 
@@ -139,6 +138,7 @@ class FedServer(Agent):
         Agent.__init__(self)
         self.learner = server_model
         self.gar = gar
+        self.G = None
 
         # initialize params
         self.w_current = None
@@ -146,5 +146,20 @@ class FedServer(Agent):
         self.u = None
 
     def update_step(self, clients: List[FedClient]):
+        # stack grads - compute G
+        n = len(clients)
+        for ix, client in enumerate(clients):
+            g_i = client.grad_current
+            d = len(g_i)
+            if not self.G:
+                self.G = np.ndarray((n, d), dtype=g_i.dtype)
+            self.G[ix, :] = g_i
+
+        # invoke gar and get aggregate
+        agg_g = self.gar.aggregate(G=self.G)
+
+        # Now update server model
+
+    def update_step_glomo(self, clients: List[FedClient]):
         pass
 

@@ -4,8 +4,6 @@
 from src.model_manager import (get_model,
                                get_optimizer,
                                get_scheduler,
-                               dist_grads_to_model,
-                               flatten_grads,
                                get_loss)
 from src.data_manager import process_data
 from src.aggregation_manager import get_gar
@@ -38,6 +36,12 @@ def init_and_train_clients(server: FedServer,
         client.initialize_params(w_current=w_current, w_old=w_old)
         # train step
         client.train_step(num_steps=num_local_steps, device=device)
+
+    # At this point we have all the g_i computed
+    # Apply Attack (Here since we can also apply co-ordinated attack)
+    # TODO: Incorporate attacks
+
+    # Aggregate client grads and update server model
 
 
 def train_and_test_model(server: FedServer,
@@ -106,7 +110,8 @@ def run_fed_train(config, metrics):
     print('# ------------------------------------------------- #')
     # **** Set up Server (Master Node) ****
     # --------------------------------------
-    server = FedServer(server_model=copy.deepcopy(model), gar=gar)
+    server = FedServer(server_model=copy.deepcopy(model),
+                       gar=gar)
     # *** Set up Client Nodes ****
     # -----------------------------
     clients = []
