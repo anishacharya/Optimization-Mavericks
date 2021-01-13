@@ -134,10 +134,17 @@ class FedClient(Agent):
 
 class FedServer(Agent):
     """ Implements a Federated Server or Master Node """
-    def __init__(self, server_model, gar: GAR):
+    def __init__(self,
+                 server_model,
+                 server_optimizer,
+                 server_lrs,
+                 gar: GAR):
         Agent.__init__(self)
         self.learner = server_model
+        self.optimizer = server_optimizer
+        self.lrs = server_lrs
         self.gar = gar
+
         self.G = None
 
         # initialize params
@@ -146,8 +153,10 @@ class FedServer(Agent):
         self.u = None
 
     def update_step(self, clients: List[FedClient]):
+        # Now update server model
         # stack grads - compute G
         n = len(clients)
+
         for ix, client in enumerate(clients):
             g_i = client.grad_current
             d = len(g_i)
@@ -158,7 +167,8 @@ class FedServer(Agent):
         # invoke gar and get aggregate
         agg_g = self.gar.aggregate(G=self.G)
 
-        # Now update server model
+        # update server model
+
 
     def update_step_glomo(self, clients: List[FedClient]):
         pass

@@ -32,6 +32,12 @@
         "reg": 0.0001,
         "nesterov": False,
         "amsgrad": False,
+
+        "server_optimizer_config":
+          {
+            "optimizer": 'SGD',
+            "lr0": 1,
+          }
       },
 
       "lrs_config":

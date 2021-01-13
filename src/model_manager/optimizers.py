@@ -25,14 +25,14 @@ def get_optimizer(params, optimizer_config: Dict = None):
 
     if opt_alg == 'SGD':
         return opt.SGD(params=params,
-                       lr=optimizer_config.get('lr0', 0.001),
+                       lr=optimizer_config.get('lr0', 1),
                        momentum=optimizer_config.get('momentum', 0),
                        weight_decay=optimizer_config.get('reg', 0),
                        nesterov=optimizer_config.get('nesterov', False),
                        dampening=optimizer_config.get('damp', 0))
     elif opt_alg == 'Adam':
         return opt.Adam(params=params,
-                        lr=optimizer_config.get('lr0', 0.001),
+                        lr=optimizer_config.get('lr0', 1),
                         betas=optimizer_config.get('betas', (0.9, 0.999)),
                         eps=optimizer_config.get('eps', 1e-08),
                         weight_decay=optimizer_config.get('reg', 0.05),

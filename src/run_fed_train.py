@@ -110,7 +110,15 @@ def run_fed_train(config, metrics):
     print('# ------------------------------------------------- #')
     # **** Set up Server (Master Node) ****
     # --------------------------------------
-    server = FedServer(server_model=copy.deepcopy(model),
+    # Implementation of Dual Optimization :
+    # CIte: Reddi et.al. Adaptive Federated Optimization
+    server_model = copy.deepcopy(model)
+    server_opt = get_optimizer(params=server_model.parameters(),
+                               optimizer_config=optimizer_config.get("server_optimizer_config", {}))
+    server_lrs = get_scheduler(optimizer=server_opt, lrs_config=lrs_config.get("server_optimizer_config", {}))
+    server = FedServer(server_model=server_model,
+                       server_optimizer=server_opt,
+                       server_lrs=server_lrs,
                        gar=gar)
     # *** Set up Client Nodes ****
     # -----------------------------
@@ -121,7 +129,7 @@ def run_fed_train(config, metrics):
         client = FedClient(client_id=client_id,
                            learner=copy.deepcopy(model),
                            compression=get_compression_operator(compression_config=compression_config))
-        client.optimizer = get_optimizer(params=model.parameters(), optimizer_config=optimizer_config)
+        client.optimizer = get_optimizer(params=client.learner.parameters(), optimizer_config=optimizer_config)
         client.lrs = get_scheduler(optimizer=client.optimizer, lrs_config=lrs_config)
         client.criterion = get_loss(loss=optimizer_config.get('loss', 'ce'))
         client.training_config = training_config
