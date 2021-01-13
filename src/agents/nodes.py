@@ -10,6 +10,7 @@ from src.model_manager import (flatten_params,
 from src.aggregation_manager import GAR
 import numpy as np
 import torch
+import copy
 from typing import List, Dict
 from src.compression_manager import C
 
@@ -38,6 +39,7 @@ class FedClient(Agent):
 
         self.learner = learner
         self.optimizer = None
+
         self.criterion = None
         self.lrs = None
 
@@ -72,6 +74,11 @@ class FedClient(Agent):
                 self.lrs.step()
 
         # update the estimated gradients
+        updated_model_weights = flatten_params(learner=self.learner)
+        self.grad_current = self.w_current - updated_model_weights
+
+    def train_step_glomo(self, num_steps=1, device="cpu"):
+        pass
 
 
 class FedServer(Agent):
