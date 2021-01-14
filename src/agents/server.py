@@ -4,6 +4,7 @@ from src.model_manager import (flatten_params,
 from src.aggregation_manager import GAR
 import numpy as np
 from typing import List
+from .clients import FedClient
 
 
 class FedServer(Agent):

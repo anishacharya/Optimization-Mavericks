@@ -22,11 +22,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 def init_and_train_clients(server: FedServer,
                            clients: List[FedClient],
                            metrics,
-                           num_local_steps: int = 1,
-                           device_participation: float = 1.0):
-
-
-
+                           num_local_steps: int = 1):
     w_current = server.w_current
     w_old = server.w_old
 
@@ -37,7 +33,7 @@ def init_and_train_clients(server: FedServer,
         # train step
         epoch_loss += client.train_step(num_steps=num_local_steps, device=device)
 
-    epoch_loss /= len(sampled_clients)
+    epoch_loss /= len(clients)
     metrics["epoch_loss"].append(epoch_loss)
 
     # At this point we have all the g_i computed
@@ -77,8 +73,7 @@ def train_and_test_model(server: FedServer,
 
         init_and_train_clients(server=server, clients=sampled_clients,
                                metrics=metrics,
-                               num_local_steps=local_epochs,
-                               device_participation=device_participation)
+                               num_local_steps=local_epochs)
 
         # Aggregate client grads and update server model
         server.compute_agg_grad(clients=sampled_clients)

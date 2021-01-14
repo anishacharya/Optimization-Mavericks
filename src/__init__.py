@@ -1,1 +1,1 @@
-from run_fed_train import *
+from .fed_trainer import *
