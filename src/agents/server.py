@@ -25,9 +25,11 @@ class FedServer(Agent):
         self.G_stale = None
 
         # initialize params
-        self.w_current = None
+        self.w_current = flatten_params(self.learner)
         self.w_old = None
+
         self.u = None
+
         self.beta = 0.5
 
     def update_step(self):
@@ -78,4 +80,6 @@ class FedServer(Agent):
             u_new = self.beta * agg_g + \
                     ((1 - self.beta) * self.u) + \
                     ((1 - self.beta) * (agg_g - agg_g_stale))
+            # TODO: C(g_k - g_{k-1})
+            # TODO: self.beta = client_lr^2 * c (hyperparam)
             self.u = u_new
