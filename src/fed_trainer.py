@@ -23,6 +23,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 def init_and_train_clients(server: FedServer,
                            clients: List[FedClient],
                            metrics,
+                           pipeline: str = 'default',
                            num_local_steps: int = 1):
     w_current = server.w_current
     w_old = server.w_old
@@ -32,7 +33,12 @@ def init_and_train_clients(server: FedServer,
         # initialize with global params
         client.initialize_params(w_current=w_current, w_old=w_old)
         # train step
-        epoch_loss += client.train_step(num_steps=num_local_steps, device=device)
+        if pipeline == 'default':
+            epoch_loss += client.train_step(num_steps=num_local_steps, device=device)
+        elif pipeline == 'fed_glomo':
+            epoch_loss += client.train_step_glomo(num_steps=num_local_steps, device=device)
+        else:
+            raise NotImplementedError
 
     epoch_loss /= len(clients)
     metrics["epoch_loss"].append(epoch_loss)
@@ -47,7 +53,8 @@ def train_and_test_model(server: FedServer,
                          clients: List[FedClient],
                          training_config: Dict,
                          data_config: Dict,
-                         metrics):
+                         metrics,
+                         pipeline: str = 'default'):
     print('# ------------------------------------------------- #')
     print('#          Getting and Distributing Data            #')
     print('# ------------------------------------------------- #')
@@ -73,7 +80,7 @@ def train_and_test_model(server: FedServer,
         num_devices = math.floor(len(clients) * device_participation)
         sampled_clients = random.sample(population=clients, k=num_devices)
 
-        init_and_train_clients(server=server, clients=sampled_clients,
+        init_and_train_clients(server=server, clients=sampled_clients, pipeline=pipeline,
                                metrics=metrics,
                                num_local_steps=local_epochs)
 
@@ -81,7 +88,12 @@ def train_and_test_model(server: FedServer,
         take_lrs_step(clients=clients)
 
         # Aggregate client grads and update server model
-        server.compute_agg_grad(clients=sampled_clients)
+        if pipeline == 'default':
+            server.compute_agg_grad(clients=sampled_clients)
+        elif pipeline == 'fed_glomo':
+            server.compute_agg_grad_glomo(clients=sampled_clients)
+        else:
+            raise NotImplementedError
         server.update_step()
         # test(model=server.learner, )
 
@@ -105,6 +117,7 @@ def test(model, test_loader, verbose=False) -> float:
 
 
 def run_fed_train(config, metrics):
+    pipeline = config.get('pipeline', 'default')
     data_config = config["data_config"]
     training_config = config["training_config"]
 
@@ -147,7 +160,7 @@ def run_fed_train(config, metrics):
 
         clients.append(client)
 
-    train_and_test_model(server=server, clients=clients,
+    train_and_test_model(server=server, clients=clients, pipeline=pipeline,
                          data_config=data_config,
                          training_config=training_config,
                          metrics=metrics)
