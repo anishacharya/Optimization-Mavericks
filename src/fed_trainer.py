@@ -35,6 +35,7 @@ def init_and_train_clients(server: FedServer,
 
     epoch_loss /= len(clients)
     metrics["epoch_loss"].append(epoch_loss)
+    print("Epoch Loss : {}".format(epoch_loss))
 
     # At this point we have all the g_i computed
     # Apply Attack (Here since we can also apply co-ordinated attack)

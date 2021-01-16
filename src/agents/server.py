@@ -51,7 +51,7 @@ class FedServer(Agent):
 
         for ix, client in enumerate(clients):
             g_i = client.grad_current
-            if not self.G:
+            if self.G is None:
                 d = len(g_i)
                 self.G = np.ndarray((n, d), dtype=g_i.dtype)
             self.G[ix, :] = g_i
@@ -65,7 +65,7 @@ class FedServer(Agent):
         for ix, client in enumerate(clients):
             g_i = client.grad_current
             g_i_stale = client.grad_stale
-            if not self.G or self.G_stale:
+            if self.G is None or self.G_stale is None:
                 d = len(g_i)
                 self.G = np.ndarray((n, d), dtype=g_i.dtype)
                 self.G_stale = np.ndarray((n, d), dtype=g_i.dtype)

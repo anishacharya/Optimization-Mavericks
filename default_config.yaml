@@ -17,18 +17,18 @@
 
   "training_config":
     {
-      "num_clients": 10, # Number of clients / parallel batches
+      "num_clients": 100, # Number of clients / parallel batches
       "client_fraction": 0.5, # specify fraction of client participation per round
 
-      "global_epochs": 1, # Number of communication Rounds
-      "local_epochs": 1, # Local SGD number of local steps
+      "global_epochs": 5, # Number of communication Rounds
+      "local_epochs": 15, # Local SGD number of local steps
 
       "optimizer_config":
       {
         "optimizer": 'SGD', # SGD, Adam
         "loss": 'ce', # ce (Cross Entropy), mse (Mean Sq Error), bce(binary-CE)
         "lr0": 0.001,
-        "momentum": 0.9,
+        "momentum": 0,
         "reg": 0.0001,
         "nesterov": False,
         "amsgrad": False,
