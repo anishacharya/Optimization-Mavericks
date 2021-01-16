@@ -22,7 +22,7 @@
       "client_fraction": 0.5, # specify fraction of client participation per round
 
       "global_epochs": 100, # Number of communication Rounds
-      "local_epochs": 50, # Local SGD number of local steps
+      "local_epochs": 10, # Local SGD number of local steps
 
       "optimizer_config":
       {
