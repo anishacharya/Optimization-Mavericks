@@ -20,8 +20,8 @@
       "num_clients": 100, # Number of clients / parallel batches
       "client_fraction": 0.5, # specify fraction of client participation per round
 
-      "global_epochs": 5, # Number of communication Rounds
-      "local_epochs": 15, # Local SGD number of local steps
+      "global_epochs": 20, # Number of communication Rounds
+      "local_epochs": 10, # Local SGD number of local steps
 
       "optimizer_config":
       {
