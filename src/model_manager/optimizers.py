@@ -65,3 +65,9 @@ def get_scheduler(optimizer, lrs_config: Dict = None):
                                          step_size_up=lrs_config.get('step_size_up', 100))
     else:
         return None
+
+
+def take_lrs_step(clients):
+    for client in clients:
+        if client.lrs:
+            client.lrs.step()

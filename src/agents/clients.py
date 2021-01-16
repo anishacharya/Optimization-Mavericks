@@ -62,8 +62,6 @@ class FedClient(Agent):
             print('Client local Loss = {}'.format(loss_val.item()))
             loss_val.backward()
             self.optimizer.step()
-            if self.lrs:
-                self.lrs.step()
 
         total_loss /= num_steps
 
@@ -110,8 +108,6 @@ class FedClient(Agent):
             loss_val = self.criterion(y_hat, y)
             loss_val.backward()
             self.optimizer_stale.step()
-            if self.lrs_stale:
-                self.lrs_stale.step()
 
         # update the estimated gradients
         updated_current_model_weights = flatten_params(learner=self.learner)

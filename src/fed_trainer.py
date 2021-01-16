@@ -4,6 +4,7 @@
 from src.model_manager import (get_model,
                                get_optimizer,
                                get_scheduler,
+                               take_lrs_step,
                                get_loss)
 from src.data_manager import process_data
 from src.aggregation_manager import get_gar
@@ -75,6 +76,9 @@ def train_and_test_model(server: FedServer,
         init_and_train_clients(server=server, clients=sampled_clients,
                                metrics=metrics,
                                num_local_steps=local_epochs)
+
+        # Now take a lrs step across all clients (** Not just sampled ones)
+        take_lrs_step(clients=clients)
 
         # Aggregate client grads and update server model
         server.compute_agg_grad(clients=sampled_clients)
