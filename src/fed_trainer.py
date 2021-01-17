@@ -91,6 +91,8 @@ def train_and_test_model(server: FedServer,
         if pipeline == 'default':
             server.compute_agg_grad(clients=sampled_clients)
         elif pipeline == 'glomo':
+            # fix the beta parameter dynamically
+
             server.compute_agg_grad_glomo(clients=sampled_clients)
         else:
             raise NotImplementedError
