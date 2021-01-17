@@ -59,7 +59,7 @@ class FedClient(Agent):
             self.optimizer.zero_grad()
             loss_val = self.criterion(y_hat, y)
             total_loss += loss_val.item()
-            print('Client local Loss = {}'.format(loss_val.item()))
+            # print('Client local Loss = {}'.format(loss_val.item()))
             loss_val.backward()
             self.optimizer.step()
 

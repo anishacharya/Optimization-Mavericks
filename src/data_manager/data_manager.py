@@ -71,7 +71,7 @@ class DataManager:
         ix_labels = ix_labels[:, ix_labels[1, :].argsort()]
         all_indexes = ix_labels[0, :]
 
-        for machine_ix in range(0, num_clients - 1):
+        for machine_ix in range(num_clients):
             rand_set = set(np.random.choice(a=ix_shard, size=num_shards_per_client, replace=False))
             ix_shard = list(set(ix_shard) - rand_set)
             key = clients[machine_ix].client_id
