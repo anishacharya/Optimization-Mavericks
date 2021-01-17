@@ -30,7 +30,7 @@ class FedServer(Agent):
 
         self.u = None
 
-        self.beta = 0.5
+        self.beta = 1
 
     def update_step(self):
         # update server model
@@ -65,17 +65,18 @@ class FedServer(Agent):
 
         for ix, client in enumerate(clients):
             g_i = client.grad_current
-            g_i_stale = client.grad_stale
+            g_i_glomo = client.glomo_grad
+
             if self.G is None or self.G_stale is None:
                 d = len(g_i)
                 self.G = np.ndarray((n, d), dtype=g_i.dtype)
                 self.G_stale = np.ndarray((n, d), dtype=g_i.dtype)
             self.G[ix, :] = g_i
-            self.G_stale[ix, :] = g_i_stale
+            self.G_stale[ix, :] = g_i_glomo
 
             # invoke gar and get aggregate
             agg_g = self.gar.aggregate(G=self.G)
-            agg_g_stale = self.gar.aggregate(G=self.G_stale)
+            agg_g_glomo = self.gar.aggregate(G=self.G_stale)
 
             if self.u is None:
                 self.u = agg_g
@@ -83,7 +84,6 @@ class FedServer(Agent):
                 # compute new u
                 u_new = self.beta * agg_g + \
                     ((1 - self.beta) * self.u) + \
-                    ((1 - self.beta) * (agg_g - agg_g_stale))
-                # TODO: C(g_k - g_{k-1})
-                # TODO: self.beta = client_lr^2 * c (hyperparam)
+                    ((1 - self.beta) * agg_g_glomo)
+
                 self.u = u_new

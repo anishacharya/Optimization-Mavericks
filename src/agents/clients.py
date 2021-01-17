@@ -36,8 +36,8 @@ class FedClient(Agent):
         self.w_current = None
         self.w_old = None
 
-        self.grad_current = None
-        self.grad_stale = None
+        self.grad_current = None  # Needed for all methods
+        self.glomo_grad = None
 
         self.local_train_data = None
         self.train_iter = None
@@ -67,7 +67,8 @@ class FedClient(Agent):
 
         # update the estimated gradients
         updated_model_weights = flatten_params(learner=self.learner)
-        self.grad_current = self.w_current - updated_model_weights
+        grad_current = self.w_current - updated_model_weights
+        self.grad_current = self.C.compress(g=grad_current)
 
         return total_loss
 
@@ -109,10 +110,15 @@ class FedClient(Agent):
 
         # update the estimated gradients
         updated_current_model_weights = flatten_params(learner=self.learner)
-        self.grad_current = self.w_current - updated_current_model_weights
+        grad_current = self.w_current - updated_current_model_weights
+        self.grad_current = self.C.compress(g=grad_current)
 
         updated_stale_model_weights = flatten_params(learner=self.learner_stale)
-        self.grad_stale = self.w_old - updated_stale_model_weights
+        grad_stale = self.w_old - updated_stale_model_weights
+
+        glomo_grad = grad_current - grad_stale
+        self.glomo_grad = self.C.compress(g=glomo_grad)
+
 
 
 
