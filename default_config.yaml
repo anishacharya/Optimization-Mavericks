@@ -10,7 +10,7 @@
       "num_channels": 1,
       "download": False,
 
-      "data_distribution_strategy": 'iid', # Data distribution (Heterogeneous / Non-Heterogeneous)
+      "data_sampling_strategy": 'non_iid', # Data distribution (Heterogeneous / Non-Heterogeneous)
       "batch_size": 32, # Define Batch Size here since Data Loader will assign batches to clients
       "train_num_workers": 1,
     },

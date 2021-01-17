@@ -38,7 +38,7 @@ class DataManager:
         raise NotImplementedError("This method needs to be implemented")
 
     @staticmethod
-    def _iid_dist(clients: List[FedClient], num_train: int) -> Dict:
+    def _iid_sampling(clients: List[FedClient], num_train: int) -> Dict:
         """ Distribute the data iid into all the clients """
         data_distribution_map = {}
         all_indexes = np.arange(num_train)
@@ -56,14 +56,45 @@ class DataManager:
 
         return data_distribution_map
 
+    @staticmethod
+    def _non_iid_equal_sampling(clients: List[FedClient], labels: np.ndarray,
+                                num_train: int, num_shard: int = 100) -> Dict:
+        data_distribution_map = {}
+        all_indexes = np.arange(num_train)
+        num_clients = len(clients)
+
+        num_image_per_shard = int(num_train / num_shard)
+        num_shards_per_client = int(num_shard / num_clients)
+        ix_shard = np.arange(num_shard)
+
+        ix_labels = np.vstack((all_indexes, labels))
+        ix_labels = ix_labels[:, ix_labels[1, :].argsort()]
+        all_indexes = ix_labels[0, :]
+
+        for machine_ix in range(0, num_clients - 1):
+            rand_set = set(np.random.choice(a=ix_shard, size=num_shards_per_client, replace=False))
+            ix_shard = list(set(ix_shard) - rand_set)
+            key = clients[machine_ix].client_id
+            data_distribution_map[key] = []
+            for shard_ix in rand_set:
+                sampled_ix = list(all_indexes[shard_ix*num_image_per_shard: (shard_ix + 1)*num_image_per_shard])
+                data_distribution_map[key].append(sampled_ix)
+
+        return data_distribution_map
+
     def distribute_data(self, train_dataset, clients: List[FedClient]):
         """ Distributes Data among clients """
         # Populate Data Distribution Map
         total_train_samples = train_dataset.data.shape[0]
-        data_distribution_strategy = self.data_config.get("data_distribution_strategy", 'iid')
-        if data_distribution_strategy == 'iid':
-            self.data_distribution_map = self._iid_dist(clients=clients,
-                                                        num_train=total_train_samples)
+        sampler = self.data_config.get("data_sampling_strategy", 'iid')
+        if sampler == 'iid':
+            self.data_distribution_map = self._iid_sampling(clients=clients,
+                                                            num_train=total_train_samples)
+        elif sampler == 'non_iid':
+            labels = train_dataset.train_labels.numpy()
+            self.data_distribution_map = self._non_iid_equal_sampling(clients=clients,
+                                                                      labels=labels,
+                                                                      num_train=total_train_samples)
         else:
             raise NotImplementedError
 
