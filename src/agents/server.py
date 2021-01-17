@@ -62,6 +62,7 @@ class FedServer(Agent):
     def compute_agg_grad_glomo(self, clients: List[FedClient]):
         """ Implements Das et.al. FedGlomo: server update step with (Glo)bal (Mo)mentum"""
         n = len(clients)
+
         for ix, client in enumerate(clients):
             g_i = client.grad_current
             g_i_stale = client.grad_stale
@@ -76,10 +77,13 @@ class FedServer(Agent):
             agg_g = self.gar.aggregate(G=self.G)
             agg_g_stale = self.gar.aggregate(G=self.G_stale)
 
-            # compute new u
-            u_new = self.beta * agg_g + \
+            if self.u is None:
+                self.u = agg_g
+            else:
+                # compute new u
+                u_new = self.beta * agg_g + \
                     ((1 - self.beta) * self.u) + \
                     ((1 - self.beta) * (agg_g - agg_g_stale))
-            # TODO: C(g_k - g_{k-1})
-            # TODO: self.beta = client_lr^2 * c (hyperparam)
-            self.u = u_new
+                # TODO: C(g_k - g_{k-1})
+                # TODO: self.beta = client_lr^2 * c (hyperparam)
+                self.u = u_new

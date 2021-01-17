@@ -100,8 +100,6 @@ class FedClient(Agent):
             loss_val = self.criterion(y_hat, y)
             loss_val.backward()
             self.optimizer.step()
-            if self.lrs:
-                self.lrs.step()
 
             y_hat = model_stale(x)
             self.optimizer_stale.zero_grad()
@@ -115,5 +113,6 @@ class FedClient(Agent):
 
         updated_stale_model_weights = flatten_params(learner=self.learner_stale)
         self.grad_stale = self.w_old - updated_stale_model_weights
+
 
 

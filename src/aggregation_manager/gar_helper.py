@@ -12,5 +12,6 @@ def get_gar(aggregation_config: Dict):
     print('--------------------------------')
     if gar == 'mean':
         return Mean(aggregation_config=aggregation_config)
+
     else:
         raise NotImplementedError

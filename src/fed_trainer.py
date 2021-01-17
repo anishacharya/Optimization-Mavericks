@@ -35,7 +35,7 @@ def init_and_train_clients(server: FedServer,
         # train step
         if pipeline == 'default':
             epoch_loss += client.train_step(num_steps=num_local_steps, device=device)
-        elif pipeline == 'fed_glomo':
+        elif pipeline == 'glomo':
             epoch_loss += client.train_step_glomo(num_steps=num_local_steps, device=device)
         else:
             raise NotImplementedError
@@ -90,7 +90,7 @@ def train_and_test_model(server: FedServer,
         # Aggregate client grads and update server model
         if pipeline == 'default':
             server.compute_agg_grad(clients=sampled_clients)
-        elif pipeline == 'fed_glomo':
+        elif pipeline == 'glomo':
             server.compute_agg_grad_glomo(clients=sampled_clients)
         else:
             raise NotImplementedError
