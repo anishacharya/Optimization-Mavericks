@@ -11,6 +11,8 @@
       "download": False,
 
       "data_sampling_strategy": 'non_iid', # Data distribution (Heterogeneous / Non-Heterogeneous)
+      "num_shards": 100, # Number of shards for non-iid ~~ usually set it to k * num_of_clients 2 is a good value for k
+
       "batch_size": 32, # Define Batch Size here since Data Loader will assign batches to clients
       "train_num_workers": 1,
     },
