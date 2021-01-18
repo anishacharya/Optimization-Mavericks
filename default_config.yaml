@@ -10,7 +10,7 @@
       "num_channels": 1,
       "download": False,
 
-      "batch_size": 64, # Define Batch Size here since Data Loader will assign batches to clients
+      "batch_size": 32, # Define Batch Size here since Data Loader will assign batches to clients
       "train_num_workers": 1,
 
       ## For Federated / Decentralized Training
