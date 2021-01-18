@@ -85,14 +85,14 @@ def train_and_test_model(server: FedServer,
                                num_local_steps=local_epochs)
 
         # Now take a lrs step across all clients (** Not just sampled ones)
-        take_lrs_step(clients=clients)
+        current_lr = take_lrs_step(clients=clients)
 
         # Aggregate client grads and update server model
         if pipeline == 'default':
             server.compute_agg_grad(clients=sampled_clients)
         elif pipeline == 'glomo':
             # fix the beta parameter dynamically
-
+            server.beta = server.c * current_lr ^ 2
             server.compute_agg_grad_glomo(clients=sampled_clients)
         else:
             raise NotImplementedError
@@ -100,7 +100,7 @@ def train_and_test_model(server: FedServer,
         # test(model=server.learner, )
 
 
-def test(model, test_loader, verbose=False) -> float:
+def evaluate_model(model, test_loader, verbose=False) -> [float, float]:
     model.to(device)
     with torch.no_grad():
         correct = 0
@@ -126,8 +126,10 @@ def run_fed_train(config, metrics):
     learner_config = training_config["learner_config"]
     optimizer_config = training_config.get("optimizer_config", {})
     lrs_config = training_config.get('lrs_config')
+
     aggregation_config = training_config["aggregation_config"]
     compression_config = training_config["compression_config"]
+
     model = get_model(learner_config=learner_config, data_config=data_config)
     gar = get_gar(aggregation_config=aggregation_config)
 
@@ -145,7 +147,8 @@ def run_fed_train(config, metrics):
     server = FedServer(server_model=server_model,
                        server_optimizer=server_opt,
                        server_lrs=server_lrs,
-                       gar=gar)
+                       gar=gar,
+                       gar_config=aggregation_config)
     # *** Set up Client Nodes ****
     # -----------------------------
     clients = []

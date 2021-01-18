@@ -14,12 +14,14 @@ class FedServer(Agent):
                  server_model,
                  server_optimizer,
                  server_lrs,
-                 gar: GAR):
+                 gar: GAR,
+                 gar_config):
         Agent.__init__(self)
         self.learner = server_model
         self.optimizer = server_optimizer
         self.lrs = server_lrs
         self.gar = gar
+        self.gar_config = gar_config
 
         self.G = None
         self.G_stale = None
@@ -31,6 +33,7 @@ class FedServer(Agent):
         self.u = None
 
         self.beta = 1
+        self.c = self.gar_config.get('glomo_server_c', 1)
 
     def update_step(self):
         # update server model

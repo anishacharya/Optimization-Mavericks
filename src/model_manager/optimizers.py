@@ -71,3 +71,10 @@ def take_lrs_step(clients):
     for client in clients:
         if client.lrs:
             client.lrs.step()
+
+    current_lr = clients[0].optimizer.param_groups[0]['lr']
+
+    if len(clients) > 1:
+        assert (clients[0].optimizer.param_groups[0]['lr'] == clients[1].optimizer.param_groups[0]['lr'])
+
+    return current_lr
