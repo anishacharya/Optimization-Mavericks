@@ -48,7 +48,7 @@
         "lrs": 'step', # step, multi_step, exp, cyclic
         "milestones": [10, 25, 40],
         "step_size": 5,
-        "gamma": 0.9
+        "gamma": 0.5
       },
 
       "compression_config":
