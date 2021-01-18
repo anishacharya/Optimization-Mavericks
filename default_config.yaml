@@ -22,7 +22,6 @@
     {
       "num_clients": 10, # Number of clients / parallel batches
       "client_fraction": 0.5, # specify fraction of client participation per round
-
       "global_epochs": 5, # Number of communication Rounds
       "local_epochs": 10, # Local SGD number of local steps
 
