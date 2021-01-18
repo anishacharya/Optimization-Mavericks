@@ -35,7 +35,8 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
         #                               replace=False))
         # mal_batches_mask = []
         # attack_model = get_attack(attack_config=attack_config)
-
+        comm_round = 0
+        num_comm_round = len(train_loader)
         for batch_ix, (images, labels) in enumerate(train_loader):
             images = images.to(device)
             labels = labels.to(device)
@@ -65,9 +66,10 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                 # Now Do an optimizer step with x_t+1 = x_t - \eta \tilde(g)
                 optimizer.step()
                 iter_loss /= num_batches
-                print("Epoch [{}/{}], iteration [{}/{}], Learning rate [{}], current batch Loss [{}]"
-                      .format(epoch + 1, num_epochs, batch_ix, total_iter, optimizer.param_groups[0]['lr'], iter_loss))
+                print("Epoch [{}/{}], Communication Round [{}/{}], Learning rate [{}], current batch Loss [{}]"
+                      .format(epoch + 1, num_epochs, comm_round, num_comm_round, optimizer.param_groups[0]['lr'], iter_loss))
                 iter_loss = 0
+                comm_round += 1
 
         # --------
         epoch_loss /= total_iter
