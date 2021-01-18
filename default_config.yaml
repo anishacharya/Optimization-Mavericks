@@ -30,7 +30,7 @@
       {
         "optimizer": 'SGD', # SGD, Adam
         "loss": 'ce', # ce (Cross Entropy), mse (Mean Sq Error), bce(binary-CE)
-        "lr0": 0.1,
+        "lr0": 1,
         "momentum": 0.9,
         "reg": 0.0001,
         "nesterov": False,
