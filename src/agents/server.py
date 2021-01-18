@@ -78,16 +78,16 @@ class FedServer(Agent):
             self.G[ix, :] = g_i
             self.G_stale[ix, :] = g_i_glomo
 
-            # invoke gar and get aggregate
-            agg_g = self.gar.aggregate(G=self.G)
-            agg_g_glomo = self.gar.aggregate(G=self.G_stale)
+        # invoke gar and get aggregate
+        agg_g = self.gar.aggregate(G=self.G)
+        agg_g_glomo = self.gar.aggregate(G=self.G_stale)
 
-            if self.u is None:
-                self.u = agg_g
-            else:
-                # compute new u
-                u_new = self.beta * agg_g + \
+        if self.u is None:
+            self.u = agg_g
+        else:
+            # compute new u
+            u_new = self.beta * agg_g + \
                     ((1 - self.beta) * self.u) + \
                     ((1 - self.beta) * agg_g_glomo)
 
-                self.u = u_new
+            self.u = u_new
