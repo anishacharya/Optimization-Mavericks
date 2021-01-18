@@ -11,6 +11,8 @@ import torch
 from torch.utils.data import DataLoader
 import numpy as np
 
+torch.manual_seed(1)
+
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 

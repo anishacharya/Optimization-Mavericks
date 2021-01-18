@@ -1,4 +1,7 @@
 from torch import nn
+import torch
+
+torch.manual_seed(1)
 
 
 class LogisticRegression(nn.Module):
