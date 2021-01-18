@@ -57,7 +57,6 @@ def get_model(learner_config: Dict, data_config: Dict):
     net = learner_config.get("net", 'lenet')
     print('Loading Model: {}'.format(net))
     print('----------------------------')
-    data_set = data_config["data_set"]
     nc = data_config.get("num_channels", 1)
     shape = data_config.get("shape", [28, 28])
 

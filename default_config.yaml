@@ -4,7 +4,7 @@
 
   "data_config":
     {
-      "data_set": "mnist", # mnist, fashion-mnist, cifar10
+      "data_set": "cifar10", # mnist, fashion-mnist, cifar10
       "shape": [28, 28],
       "num_labels": 10,
       "num_channels": 1,
@@ -30,7 +30,7 @@
       {
         "optimizer": 'SGD', # SGD, Adam
         "loss": 'ce', # ce (Cross Entropy), mse (Mean Sq Error), bce(binary-CE)
-        "lr0": 0.01,
+        "lr0": 0.1,
         "momentum": 0.9,
         "reg": 0.0001,
         "nesterov": False,
@@ -64,7 +64,7 @@
 
       "aggregation_config":
       {
-        "gar": "geo_med",
+        "gar": "mean",
         "glomo_server_c": 1
       },
 
