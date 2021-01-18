@@ -10,19 +10,20 @@
       "num_channels": 1,
       "download": False,
 
-      "data_sampling_strategy": 'iid', # Data distribution (Heterogeneous / Non-Heterogeneous)
-      "num_shards": 100, # Number of shards for non-iid ~~ usually set it to k * num_of_clients 2 is a good value for k
-
       "batch_size": 32, # Define Batch Size here since Data Loader will assign batches to clients
       "train_num_workers": 1,
+
+      ## For Federated / Decentralized Training
+      "data_sampling_strategy": 'iid', # Data distribution (Heterogeneous / Non-Heterogeneous)
+      "num_shards": 100, # Number of shards for non-iid ~~ usually set it to k * num_of_clients 2 is a good value for k
     },
 
 
   "training_config":
     {
       "num_clients": 10, # Number of clients / parallel batches
-      "client_fraction": 0.5, # specify fraction of client participation per round
-      "global_epochs": 5, # Number of communication Rounds
+      "client_fraction": 1, # specify fraction of client participation per round
+      "global_epochs": 25, # Number of communication Rounds
       "local_epochs": 10, # Local SGD number of local steps
 
       "optimizer_config":
@@ -30,7 +31,7 @@
         "optimizer": 'SGD', # SGD, Adam
         "loss": 'ce', # ce (Cross Entropy), mse (Mean Sq Error), bce(binary-CE)
         "lr0": 0.01,
-        "momentum": 0.9,
+        "momentum": 0,
         "reg": 0.0001,
         "nesterov": False,
         "amsgrad": False,
