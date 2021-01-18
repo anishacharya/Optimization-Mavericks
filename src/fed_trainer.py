@@ -97,6 +97,10 @@ def train_and_test_model(server: FedServer,
         else:
             raise NotImplementedError
         server.update_step()
+
+        # Evaluate Train Loss
+
+        # Evaluate Test Loss
         # test(model=server.learner, )
 
 
