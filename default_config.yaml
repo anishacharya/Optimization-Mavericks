@@ -10,7 +10,7 @@
       "num_channels": 1,
       "download": False,
 
-      "data_sampling_strategy": 'non_iid', # Data distribution (Heterogeneous / Non-Heterogeneous)
+      "data_sampling_strategy": 'iid', # Data distribution (Heterogeneous / Non-Heterogeneous)
       "num_shards": 100, # Number of shards for non-iid ~~ usually set it to k * num_of_clients 2 is a good value for k
 
       "batch_size": 32, # Define Batch Size here since Data Loader will assign batches to clients
@@ -20,7 +20,7 @@
 
   "training_config":
     {
-      "num_clients": 50, # Number of clients / parallel batches
+      "num_clients": 10, # Number of clients / parallel batches
       "client_fraction": 0.5, # specify fraction of client participation per round
 
       "global_epochs": 100, # Number of communication Rounds
@@ -30,8 +30,8 @@
       {
         "optimizer": 'SGD', # SGD, Adam
         "loss": 'ce', # ce (Cross Entropy), mse (Mean Sq Error), bce(binary-CE)
-        "lr0": 0.01,
-        "momentum": 0,
+        "lr0": 0.1,
+        "momentum": 0.9,
         "reg": 0.0001,
         "nesterov": False,
         "amsgrad": False,
