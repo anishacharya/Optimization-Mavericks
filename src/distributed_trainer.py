@@ -38,7 +38,8 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
         # mal_batches_mask = []
         # attack_model = get_attack(attack_config=attack_config)
         comm_round = 0
-        num_comm_round = len(train_loader)
+        num_comm_round = int(len(train_loader)/num_batches)
+
         for batch_ix, (images, labels) in enumerate(train_loader):
             images = images.to(device)
             labels = labels.to(device)
