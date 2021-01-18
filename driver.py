@@ -5,7 +5,7 @@ import yaml
 
 from numpyencoder import NumpyEncoder
 
-from src import run_fed_train
+from src import run_fed_train, run_batch_train
 
 
 def _parse_args():
@@ -32,6 +32,8 @@ def run_main():
     train_mode = config.get("train_mode", 'fed')
     if train_mode == 'fed':
         run_fed_train(config=config, metrics=metrics)
+    elif train_mode == 'distributed':
+        run_batch_train(config=config, metrics=metrics)
     else:
         raise NotImplementedError
 

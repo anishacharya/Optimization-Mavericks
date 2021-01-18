@@ -1,6 +1,6 @@
 {
-  "train_mode": "fed", # fed(Federated), batch(Distributed mini-batch SGD), dec: Decentralized SGD
-  "pipeline": 'glomo', # special tokens for algo specific iters
+  "train_mode": "distributed", # fed(Federated), distributed(Distributed mini-batch SGD), decentralized (Decentralized SGD)
+  "pipeline": 'default', #
 
   "data_config":
     {
