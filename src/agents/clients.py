@@ -86,6 +86,7 @@ class FedClient(Agent):
         dist_weights_to_model(self.w_current, learner=self.learner)
         dist_weights_to_model(self.w_old, learner=self.learner_stale)
 
+        total_loss = 0
         for it in range(num_steps):
             model = self.learner.to(device)
             model_stale = self.learner_stale.to(device)
@@ -101,6 +102,8 @@ class FedClient(Agent):
             loss_val = self.criterion(y_hat, y)
             loss_val.backward()
             self.optimizer.step()
+
+            total_loss += loss_val.item()
 
             y_hat = model_stale(x)
             self.optimizer_stale.zero_grad()
@@ -118,6 +121,10 @@ class FedClient(Agent):
 
         glomo_grad = grad_current - grad_stale
         self.glomo_grad = self.C.compress(g=glomo_grad)
+
+        total_loss /= num_steps
+        return total_loss
+
 
 
 

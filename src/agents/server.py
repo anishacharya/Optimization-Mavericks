@@ -5,6 +5,7 @@ from src.aggregation_manager import GAR
 import numpy as np
 from typing import List
 from .clients import FedClient
+import copy
 
 
 class FedServer(Agent):
@@ -28,7 +29,7 @@ class FedServer(Agent):
 
         # initialize params
         self.w_current = flatten_params(self.learner)
-        self.w_old = None
+        self.w_old = copy.deepcopy(self.w_current)
 
         self.u = None
 
