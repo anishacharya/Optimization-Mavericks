@@ -1,6 +1,7 @@
 {
     "config": {
         "train_mode": "fed",
+        "pipeline": "glomo",
         "data_config": {
             "data_set": "mnist",
             "shape": [
@@ -10,9 +11,10 @@
             "num_labels": 10,
             "num_channels": 1,
             "download": false,
-            "data_distribution_strategy": "iid",
+            "data_sampling_strategy": "iid",
+            "num_shards": 100,
             "batch_size": 32,
-            "train_num_workers": 4
+            "train_num_workers": 1
         },
         "training_config": {
             "num_clients": 10,
@@ -22,7 +24,7 @@
             "optimizer_config": {
                 "optimizer": "SGD",
                 "loss": "ce",
-                "lr0": 0.001,
+                "lr0": 0.01,
                 "momentum": 0.9,
                 "reg": 0.0001,
                 "nesterov": false,
@@ -33,14 +35,14 @@
                 }
             },
             "lrs_config": {
-                "lrs": "None",
+                "lrs": "step",
                 "milestones": [
                     10,
                     25,
                     40
                 ],
-                "step_size": 10,
-                "gamma": 0.1
+                "step_size": 1,
+                "gamma": 0.9
             },
             "compression_config": {
                 "compression_operator": "full",
@@ -50,16 +52,17 @@
                 "net": "mlp"
             },
             "aggregation_config": {
-                "gar": "mean"
+                "gar": "mean",
+                "glomo_server_c": 1
             }
         }
     },
     "epoch_loss": [
-        2.302307605743408,
-        2.285674905776978,
-        2.261332368850708,
-        2.2338844966888427,
-        2.201092367172241
+        2.2686943674087527,
+        2.092111220359802,
+        1.8204167103767392,
+        1.450194127559662,
+        1.049602164030075
     ],
     "test_error": []
 }
