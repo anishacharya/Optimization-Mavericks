@@ -1,7 +1,21 @@
 # Copyright (c) Anish Acharya.
 # Licensed under the MIT License
 import numpy as np
+from .base import GAR
 from scipy.spatial.distance import cdist, euclidean
+
+
+class GeometricMedian(GAR):
+    def __init__(self, aggregation_config):
+        GAR.__init__(self, aggregation_config=aggregation_config)
+        self.geo_med_config = aggregation_config.get('geo_med_config', {})
+        self.geo_med_alg = self.geo_med_config.get('geo_med_alg', 'vardi')
+
+    def aggregate(self, G: np.ndarray) -> np.ndarray:
+        if self.geo_med_alg == 'vardi':
+            return vardi(X=G)
+        else:
+            raise NotImplementedError
 
 
 def vardi(X, eps=1e-5) -> np.ndarray:
