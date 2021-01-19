@@ -27,7 +27,7 @@ def vardi(X, eps=1e-5) -> np.ndarray:
     Yehuda Vardi and Cun-Hui Zhang; PNAS'2000"
     """
     # Assume each data point is arranged in a row
-    mu = np.mean(X, 0)
+    mu = [np.mean(X, 0)]
     while True:
         D = cdist(X, mu).astype(mu.dtype)
         non_zeros = (D != 0)[:, 0]
