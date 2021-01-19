@@ -102,11 +102,11 @@ def train_and_test_model(server: FedServer,
         # Evaluate Train Loss
         # -------- Compute Metrics ---------- #
         train_error, train_acc, train_loss = evaluate_classifier(model=server.learner,
-                                                                 data_loader=DataLoader(train_dataset.dataset,
+                                                                 data_loader=DataLoader(train_dataset,
                                                                                         batch_size=256),
                                                                  verbose=True)
         test_error, test_acc, _ = (evaluate_classifier(model=server.learner,
-                                                       data_loader=DataLoader(test_dataset.dataset, batch_size=256),
+                                                       data_loader=DataLoader(test_dataset, batch_size=256),
                                                        verbose=True))
         print('------ Train Loss = {} , Train Acc = {}, Test Acc = {}'.format(train_loss, train_acc, test_acc))
         metrics["test_error"].append(test_error)
