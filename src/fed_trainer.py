@@ -16,6 +16,7 @@ from typing import List, Dict
 import copy
 import random
 import math
+from torch.utils.data import DataLoader
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -25,7 +26,6 @@ def init_and_train_clients(server: FedServer,
                            metrics,
                            pipeline: str = 'default',
                            num_local_steps: int = 1):
-
     w_current = server.w_current
     w_old = server.w_old
 
@@ -100,27 +100,47 @@ def train_and_test_model(server: FedServer,
         server.update_step()
 
         # Evaluate Train Loss
+        # -------- Compute Metrics ---------- #
+        train_error, train_acc, train_loss = evaluate_classifier(model=server.learner,
+                                                                 data_loader=DataLoader(train_dataset.dataset,
+                                                                                        batch_size=256),
+                                                                 verbose=True)
+        test_error, test_acc, _ = (evaluate_classifier(model=server.learner,
+                                                       data_loader=DataLoader(test_dataset.dataset, batch_size=256),
+                                                       verbose=True))
+        print('------ Train Loss = {} , Train Acc = {}, Test Acc = {}'.format(train_loss, train_acc, test_acc))
+        metrics["test_error"].append(test_error)
+        metrics["test_acc"].append(test_acc)
 
-        # Evaluate Test Loss
-        # test(model=server.learner, )
+        metrics["train_error"].append(train_error)
+        metrics["train_loss"].append(train_loss)
+        metrics["train_acc"].append(train_acc)
 
 
-def evaluate_model(model, test_loader, verbose=False) -> [float, float]:
+def evaluate_classifier(model, data_loader, verbose=False, criterion=None):
     model.to(device)
     with torch.no_grad():
         correct = 0
         total = 0
-        for images, labels in test_loader:
+        total_loss = 0
+        batches = 0
+        for images, labels in data_loader:
             images = images.to(device)
             labels = labels.to(device)
             outputs = model(images)
+            if criterion is not None:
+                total_loss += criterion(outputs, labels).item()
+
+            batches += 1
             _, predicted = torch.max(outputs.data, 1)
             total += labels.size(0)
             correct += (predicted == labels).sum().item()
+
         acc = 100 * correct / total
+        total_loss /= batches
         if verbose:
             print('Test Accuracy: {} %'.format(acc))
-        return acc
+        return 100 - acc, acc, total_loss
 
 
 def run_fed_train(config, metrics):

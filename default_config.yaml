@@ -1,6 +1,6 @@
 {
-  "train_mode": "distributed", # fed(Federated), distributed(Distributed mini-batch SGD), decentralized (Decentralized SGD)
-  "pipeline": 'default', #
+  "train_mode": "fed", # fed(Federated), distributed(Distributed mini-batch SGD), decentralized (Decentralized SGD)
+  "pipeline": 'glomo', #
 
   "data_config":
     {
@@ -21,10 +21,10 @@
 
   "training_config":
     {
-      "num_clients": 25, # Number of clients / parallel batches
+      "num_clients": 10, # Number of clients / parallel batches
       "client_fraction": 1, # specify fraction of client participation per round
-      "global_epochs": 25, # Number of communication Rounds
-      "local_epochs": 1, # Local SGD number of local steps
+      "global_epochs": 5, # Number of communication Rounds
+      "local_epochs": 10, # Local SGD number of local steps
 
       "optimizer_config":
       {

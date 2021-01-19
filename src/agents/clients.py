@@ -79,6 +79,15 @@ class FedClient(Agent):
 
         return total_loss
 
+    def compute_grad(self, model, x, y):
+        y_hat = model(x)
+        self.optimizer.zero_grad()
+        loss_val = self.criterion(y_hat, y)
+        loss_val.backward()
+        # self.optimizer.step() # commented out to implement own momentum
+        g = flatten_grads(learner=self.learner)  # extract grad
+        return g
+
     def train_step_glomo(self, num_steps=1, device="cpu"):
         if self.learner_stale is None:
             self.learner_stale = copy.deepcopy(self.learner)
@@ -96,40 +105,31 @@ class FedClient(Agent):
         total_loss = 0
 
         for it in range(num_steps):
-            model = self.learner.to(device)  # w_k
-            model_stale = self.learner_stale.to(device)  # w_k-1
-
-            model.train()
-            model_stale.train()
-
             x, y = next(self.train_iter)
             x, y = x.float(), y
             x, y = x.to(device), y.to(device)
 
-            y_hat = model(x)
-            self.optimizer.zero_grad()
-            loss_val = self.criterion(y_hat, y)
-            loss_val.backward()
-            # self.optimizer.step() # commented out to implement own momentum
-            g = flatten_grads(learner=self.learner)  # extract grad
-
-            total_loss += loss_val.item()
-
-            y_hat = model_stale(x)
-            self.optimizer_stale.zero_grad()
-            loss_val = self.criterion(y_hat, y)
-            loss_val.backward()
-            # self.optimizer_stale.step()
-            g_stale = flatten_grads(learner=self.learner_stale) # extract grad
+            g = self.compute_grad(model=self.learner.to(device).train(), x=x, y=y)
+            g_stale = self.compute_grad(model=self.learner_stale.to(device).train(), x=x, y=y)
 
             # if T = 0 initialize
             if self.v_old is None or self.v_current is None:
                 self.v_old = g_stale
                 self.v_current = g
             else:
-                self.v_current = g + (self.v_current - g)
-                self.v_old = g_stale + (self.v_old )
+                g_local = self.compute_grad(model=self.learner_local.to(device).train(), x=x, y=y)
+                g_stale_local = self.compute_grad(model=self.learner_local_stale.to(device).train(), x=x, y=y)
+
+                self.v_current = g + (self.v_current - g_local)
+                self.v_old = g_stale + (self.v_old - g_stale_local)
+
             # No optimizer step compute w using our update
+            self.learner_local = copy.deepcopy(self.learner)
+            self.learner_local_stale = copy.deepcopy(self.learner_stale)
+
+            lr = self.optimizer.param_groups[0]['lr']
+            self.w_current -= lr * self.v_current
+            self.w_old -= lr * self.v_old
 
         # update the estimated gradients
         updated_current_model_weights = flatten_params(learner=self.learner)
