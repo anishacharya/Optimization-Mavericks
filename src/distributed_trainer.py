@@ -71,7 +71,8 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                 optimizer.step()
                 iter_loss /= num_batches
                 print("Epoch [{}/{}], Communication Round [{}/{}], Learning rate [{}], current batch Loss [{}]"
-                      .format(epoch + 1, num_epochs, comm_round, num_comm_round, optimizer.param_groups[0]['lr'], iter_loss))
+                      .format(epoch + 1, num_epochs, comm_round, num_comm_round,
+                              optimizer.param_groups[0]['lr'], iter_loss))
                 iter_loss = 0
                 comm_round += 1
 

@@ -13,7 +13,6 @@ def get_gar(aggregation_config: Dict):
     print('--------------------------------')
     if gar == 'mean':
         return Mean(aggregation_config=aggregation_config)
-
     elif gar == 'geo_med':
         return GeometricMedian(aggregation_config=aggregation_config)
     else:
