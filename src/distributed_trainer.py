@@ -10,6 +10,7 @@ from src.aggregation_manager import get_gar
 import torch
 from torch.utils.data import DataLoader
 import numpy as np
+import time
 
 torch.manual_seed(1)
 
@@ -149,7 +150,10 @@ def run_batch_train(config, metrics):
     train_loader = DataLoader(dataset=train_dataset, batch_size=batch_size, shuffle=True)
     test_loader = DataLoader(dataset=test_dataset, batch_size=len(train_dataset))
 
+    t0 = time.time()
     train_and_test_model(model=model, criterion=criterion,optimizer=optimizer, lrs=lrs,
                          gar=gar, train_loader=train_loader, test_loader=test_loader, metrics=metrics,
                          train_config=training_config)
+    print("---------- End of Training -----------")
+    metrics["runtime"] = time.time() - t0
     return metrics

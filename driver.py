@@ -32,7 +32,8 @@ def run_main():
                "test_acc": [],
                "train_error": [],
                "train_loss": [],
-               "train_acc": []}
+               "train_acc": [],
+               "runtime": 0}
     # Train
     train_mode = config.get("train_mode", 'fed')
     if train_mode == 'fed':
