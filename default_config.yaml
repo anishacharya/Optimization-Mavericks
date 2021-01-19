@@ -64,7 +64,7 @@
 
       "aggregation_config":
       {
-        "gar": "mean",
+        "gar": "geo_med",
         "glomo_server_c": 1
       },
 
