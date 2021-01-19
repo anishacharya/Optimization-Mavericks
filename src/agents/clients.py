@@ -21,8 +21,11 @@ class FedClient(Agent):
         self.client_id = client_id
         self.training_config = None
 
-        self.learner = learner
-        self.learner_stale = None
+        self.learner = learner  # To store: w_{k, tao}
+        self.learner_stale = None  # To store: w_{k-1, tao}
+
+        self.learner_local = None  # To store: w_{k, tao-1}
+        self.learner_local_stale = None  # To store: w_{k-1, tao-1}
 
         self.optimizer = None
         self.optimizer_stale = None
@@ -93,8 +96,8 @@ class FedClient(Agent):
         total_loss = 0
 
         for it in range(num_steps):
-            model = self.learner.to(device) # w_k_tao
-            model_stale = self.learner_stale.to(device) # w_k-1_tao
+            model = self.learner.to(device)  # w_k
+            model_stale = self.learner_stale.to(device)  # w_k-1
 
             model.train()
             model_stale.train()
@@ -108,7 +111,7 @@ class FedClient(Agent):
             loss_val = self.criterion(y_hat, y)
             loss_val.backward()
             # self.optimizer.step() # commented out to implement own momentum
-            g = flatten_grads(learner=self.learner) # extract grad
+            g = flatten_grads(learner=self.learner)  # extract grad
 
             total_loss += loss_val.item()
 
@@ -125,7 +128,7 @@ class FedClient(Agent):
                 self.v_current = g
             else:
                 self.v_current = g + (self.v_current - g)
-                self.v_old = g_stale + (self.v_old)
+                self.v_old = g_stale + (self.v_old )
             # No optimizer step compute w using our update
 
         # update the estimated gradients

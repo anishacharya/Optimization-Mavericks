@@ -74,34 +74,51 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                 iter_loss = 0
                 comm_round += 1
 
-        # --------
+        # -------- Compute Metrics ---------- #
         epoch_loss /= total_iter
         print('\n --------------------------------------------------- \n')
         print("Epoch [{}/{}], Learning rate [{}], Avg Batch Loss [{}]"
               .format(epoch + 1, num_epochs, optimizer.param_groups[0]['lr'], epoch_loss))
         metrics["epoch_loss"].append(epoch_loss)
 
-        metrics["test_error"].append(evaluate_classifier(model=model, data_loader=test_loader, verbose=True))
+        test_error, test_acc, _ = (evaluate_classifier(model=model, data_loader=test_loader, verbose=True))
+        metrics["test_error"].append(test_error)
+        metrics["test_acc"].append(test_acc)
+
+        # train_error, train_acc, train_loss = evaluate_classifier(model=model, data_loader=train_loader,
+        #                                                          criterion=criterion, verbose=True)
+        # metrics["train_error"].append(train_error)
+        # metrics["train_loss"].append(train_loss)
+        # metrics["train_acc"].append(train_acc)
+
         if lrs is not None:
             lrs.step()
 
 
-def evaluate_classifier(model, data_loader, verbose=False):
+def evaluate_classifier(model, data_loader, verbose=False, criterion=None):
     model.to(device)
     with torch.no_grad():
         correct = 0
         total = 0
+        total_loss = 0
+        batches = 0
         for images, labels in data_loader:
             images = images.to(device)
             labels = labels.to(device)
             outputs = model(images)
+            if criterion is not None:
+                total_loss += criterion(outputs, labels).item()
+                batches += 1
+
             _, predicted = torch.max(outputs.data, 1)
             total += labels.size(0)
             correct += (predicted == labels).sum().item()
+
         acc = 100 * correct / total
+        total_loss /= batches
         if verbose:
             print('Test Accuracy: {} %'.format(acc))
-        return 100 - acc
+        return 100 - acc, acc, total_loss
 
 
 def run_batch_train(config, metrics):
