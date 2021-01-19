@@ -29,7 +29,7 @@ def vardi(X, eps=1e-5) -> np.ndarray:
     # Assume each data point is arranged in a row
     mu = np.mean(X, 0)
     while True:
-        D = cdist(X, [mu]).astype(mu.dtype)
+        D = cdist(X, mu).astype(mu.dtype)
         non_zeros = (D != 0)[:, 0]
         D_inv = 1 / D[non_zeros]
         W = np.divide(D_inv, sum(D_inv))
