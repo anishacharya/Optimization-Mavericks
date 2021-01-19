@@ -110,8 +110,8 @@ def evaluate_classifier(model, data_loader, verbose=False, criterion=None):
             outputs = model(images)
             if criterion is not None:
                 total_loss += criterion(outputs, labels).item()
-                batches += 1
 
+            batches += 1
             _, predicted = torch.max(outputs.data, 1)
             total += labels.size(0)
             correct += (predicted == labels).sum().item()
