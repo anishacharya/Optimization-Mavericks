@@ -1,10 +1,10 @@
 {
-  "train_mode": "fed", # fed(Federated), distributed(Distributed mini-batch SGD), decentralized (Decentralized SGD)
+  "train_mode": "distributed", # fed(Federated), distributed(Distributed mini-batch SGD), decentralized (Decentralized SGD)
   "pipeline": 'default', #
 
   "data_config":
     {
-      "data_set": "mnist", # mnist, fashion-mnist, cifar10
+      "data_set": "fashion_mnist", # mnist, fashion-mnist, cifar10
       "shape": [28, 28],
       "num_labels": 10,
       "num_channels": 1,
@@ -23,8 +23,8 @@
     {
       "num_clients": 10, # Number of clients / parallel batches
       "client_fraction": 1, # specify fraction of client participation per round
-      "global_epochs": 5, # Number of communication Rounds
-      "local_epochs": 10, # Local SGD number of local steps
+      "global_epochs": 20, # Number of communication Rounds
+      "local_epochs": 1, # Local SGD number of local steps
 
       "optimizer_config":
       {
@@ -64,7 +64,7 @@
 
       "aggregation_config":
       {
-        "gar": "mean",
+        "gar": "geo_med",
         "glomo_server_c": 1
       },
 

@@ -24,7 +24,6 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 def init_and_train_clients(server: FedServer,
                            clients: List[FedClient],
-                           metrics,
                            pipeline: str = 'default',
                            num_local_steps: int = 1):
     w_current = server.w_current
@@ -66,11 +65,11 @@ def train_and_test_model(server: FedServer,
     data_manager = process_data(data_config=data_config)
     train_dataset, test_dataset = data_manager.download_data()
 
-    train_loader = DataLoader(dataset=train_dataset, batch_size=len(train_dataset), shuffle=True)
-    test_loader = DataLoader(dataset=test_dataset, batch_size=len(test_dataset))
-
     # Distribute Data among clients
     data_manager.distribute_data(train_dataset=train_dataset, clients=clients)
+
+    train_loader = DataLoader(dataset=train_dataset, batch_size=len(train_dataset))
+    test_loader = DataLoader(dataset=test_dataset, batch_size=len(test_dataset))
 
     print('# ------------------------------------------------- #')
     print('#            Launching Federated Training           #')
@@ -88,7 +87,6 @@ def train_and_test_model(server: FedServer,
         sampled_clients = random.sample(population=clients, k=num_devices)
 
         init_and_train_clients(server=server, clients=sampled_clients, pipeline=pipeline,
-                               metrics=metrics,
                                num_local_steps=local_epochs)
 
         # Now take a lrs step across all clients (** Not just sampled ones)
