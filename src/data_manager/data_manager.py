@@ -8,7 +8,9 @@ import numpy as np
 from typing import List
 from torch.utils.data import DataLoader, Subset
 from src.model_manager import cycle
+import torch
 
+torch.manual_seed(1)
 
 class DataManager:
     """

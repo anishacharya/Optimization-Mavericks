@@ -90,6 +90,7 @@ def evaluate_classifier(model, data_loader, verbose=False, criterion=None, devic
         total = 0
         total_loss = 0
         batches = 0
+
         for images, labels in data_loader:
             images = images.to(device)
             labels = labels.to(device)
