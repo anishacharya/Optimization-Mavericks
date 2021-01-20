@@ -28,10 +28,8 @@ class FedClient(Agent):
         self.learner_local_stale = None  # To store: w_{k-1, tao-1}
 
         self.optimizer = None
-        self.optimizer_stale = None
 
         self.lrs = None
-        self.lrs_stale = None
 
         self.criterion = None
 
@@ -89,13 +87,6 @@ class FedClient(Agent):
     def train_step_glomo(self, num_steps=1, device="cpu"):
         if self.learner_stale is None:
             self.learner_stale = copy.deepcopy(self.learner)
-
-        if self.optimizer_stale is None:
-            self.optimizer_stale = get_optimizer(params=self.learner_stale.parameters(),
-                                                 optimizer_config=self.training_config.get("optimizer_config", {}))
-        if self.lrs_stale is None:
-            self.lrs_stale = get_scheduler(optimizer=self.optimizer_stale,
-                                           lrs_config=self.training_config.get('lrs_config', {}))
 
         w_current_init = copy.deepcopy(self.w_current)
         w_old_init = copy.deepcopy(self.w_old)

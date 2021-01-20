@@ -1,6 +1,6 @@
 {
-  "train_mode": "distributed", # fed(Federated), distributed(Distributed mini-batch SGD), decentralized (Decentralized SGD)
-  "pipeline": 'default', #
+  "train_mode": "fed", # fed(Federated), distributed(Distributed mini-batch SGD), decentralized (Decentralized SGD)
+  "pipeline": 'glomo', #
 
   "data_config":
     {
@@ -30,7 +30,7 @@
       {
         "optimizer": 'Adam', # SGD, Adam
         "loss": 'ce', # ce (Cross Entropy), mse (Mean Sq Error), bce(binary-CE)
-        "lr0": 0.002,
+        "lr0": 0.01,
         "momentum": 0.9,
         "reg": 0.0001,
         "nesterov": False,
@@ -64,7 +64,7 @@
 
       "aggregation_config":
       {
-        "gar": "geo_med",
+        "gar": "mean",
         "glomo_server_c": 1
       },
 
