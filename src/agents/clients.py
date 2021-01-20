@@ -53,7 +53,7 @@ class FedClient(Agent):
         self.w_current = w_current
         self.w_old = w_old
 
-    def train_step(self, num_steps=1, device="cpu"): # -> float:
+    def train_step(self, num_steps=1, device="cpu"):  # -> float:
         dist_weights_to_model(self.w_current, learner=self.learner)
         total_loss = 0
         for it in range(num_steps):

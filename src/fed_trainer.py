@@ -108,7 +108,8 @@ def train_and_test_model(server: FedServer,
                                                                                         batch_size=256),
                                                                  criterion=clients[0].criterion)
         test_error, test_acc, _ = (evaluate_classifier(model=server.learner,
-                                                       data_loader=DataLoader(test_dataset, batch_size=256)))
+                                                       data_loader=DataLoader(test_dataset,
+                                                                              batch_size=256)))
         print('--- Performance on Train Data -----')
         print('train loss = {}\n train acc = {}'.format(train_loss, train_acc))
         metrics["train_error"].append(train_error)
@@ -128,7 +129,7 @@ def evaluate_classifier(model, data_loader, criterion=None):
         total = 0
         total_loss = 0
         batches = 0
-        for images, labels in data_loader:
+        for batch_ix, (images, labels) in enumerate(data_loader):
             images = images.to(device)
             labels = labels.to(device)
             outputs = model(images)
