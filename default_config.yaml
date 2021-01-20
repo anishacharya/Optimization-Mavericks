@@ -21,7 +21,7 @@
 
   "training_config":
     {
-      "num_clients": 5, # Number of clients / parallel batches
+      "num_clients": 50, # Number of clients / parallel batches
       "client_fraction": 1, # specify fraction of client participation per round
       "global_epochs": 20, # Number of communication Rounds
       "local_epochs": 1, # Local SGD number of local steps
@@ -47,8 +47,8 @@
       {
         "lrs": 'step', # step, multi_step, exp, cyclic
         "milestones": [10, 25, 40],
-        "step_size": 1,
-        "gamma": 0.9
+        "step_size": 5,
+        "gamma": 0.1
       },
 
       "compression_config":
