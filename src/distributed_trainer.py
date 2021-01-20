@@ -20,7 +20,6 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 def train_and_test_model(model, criterion, optimizer, lrs, gar,
                          train_loader, test_loader, train_config, metrics):
-
     num_batches = train_config.get('num_clients', 1)
     num_epochs = train_config.get('global_epochs', 10)
 
@@ -28,14 +27,8 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
         model.to(device)
         model.train()
         G = None
-        # # randomly sample byzantine nodes (batches)
-        # all_batches = np.arange(total_iter)
-        # mal_ix = set(np.random.choice(a=all_batches,
-        #                               size=int(len(all_batches) * attack_config.get('frac_adv', 0)),
-        #                               replace=False))
-        # mal_batches_mask = []
-        # attack_model = get_attack(attack_config=attack_config)
 
+        # ------- Training Phase --------- #
         for batch_ix, (images, labels) in enumerate(train_loader):
             images = images.to(device)
             labels = labels.to(device)
@@ -62,28 +55,29 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                 # Now Do an optimizer step with x_t+1 = x_t - \eta \tilde(g)
                 optimizer.step()
 
-        # -------- Compute Metrics ---------- #
-        # epoch_loss /= total_iter
-        # print('\n --------------------------------------------------- \n')
-        # print("Epoch [{}/{}], Learning rate [{}], Avg Batch Loss [{}]"
-        #      .format(epoch + 1, num_epochs, optimizer.param_groups[0]['lr'], epoch_loss))
-        # metrics["epoch_loss"].append(epoch_loss)
+            # -------- Compute Metrics ---------- #
+            # epoch_loss /= total_iter
+            # print('\n --------------------------------------------------- \n')
+            # print("Epoch [{}/{}], Learning rate [{}], Avg Batch Loss [{}]"
+            #      .format(epoch + 1, num_epochs, optimizer.param_groups[0]['lr'], epoch_loss))
+            # metrics["epoch_loss"].append(epoch_loss)
 
-        test_error, test_acc, _ = evaluate_classifier(model=model, data_loader=test_loader, device=device)
-        train_error, train_acc, train_loss = evaluate_classifier(model=model, data_loader=train_loader,
-                                                                 criterion=criterion, device=device)
+            test_error, test_acc, _ = evaluate_classifier(model=model, data_loader=test_loader, device=device)
+            train_error, train_acc, train_loss = evaluate_classifier(model=model, data_loader=train_loader,
+                                                                     criterion=criterion, device=device)
 
-        print('--- Performance on Train Data -----')
-        print('train loss = {}\n train acc = {}'.format(train_loss, train_acc))
-        metrics["train_error"].append(train_error)
-        metrics["train_loss"].append(train_loss)
-        metrics["train_acc"].append(train_acc)
+            print('\n ---------------- ------------------------ \n')
+            print('--- Performance on Train Data -----')
+            print('train loss = {}\n train acc = {}'.format(train_loss, train_acc))
+            metrics["train_error"].append(train_error)
+            metrics["train_loss"].append(train_loss)
+            metrics["train_acc"].append(train_acc)
 
-        print('---- Generalization Performance ---- '.format(test_acc))
-        print('test acc = {}'.format(test_acc))
+            print('---- Generalization Performance ---- '.format(test_acc))
+            print('test acc = {}'.format(test_acc))
 
-        metrics["test_error"].append(test_error)
-        metrics["test_acc"].append(test_acc)
+            metrics["test_error"].append(test_error)
+            metrics["test_acc"].append(test_acc)
 
         if lrs is not None:
             lrs.step()
@@ -118,9 +112,11 @@ def run_batch_train(config, metrics):
     test_loader = DataLoader(dataset=test_dataset, batch_size=len(test_dataset))
 
     t0 = time.time()
-    train_and_test_model(model=model, criterion=criterion,optimizer=optimizer, lrs=lrs,
+    train_and_test_model(model=model, criterion=criterion, optimizer=optimizer, lrs=lrs,
                          gar=gar, train_loader=train_loader, test_loader=test_loader, metrics=metrics,
                          train_config=training_config)
     print("---------- End of Training -----------")
-    metrics["runtime"] = time.time() - t0
+    time_taken = time.time() - t0
+    metrics["runtime"] = time_taken
+    print('Total Time to train = {} sec'.format(time_taken))
     return metrics
