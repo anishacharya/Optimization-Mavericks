@@ -27,6 +27,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
         model.to(device)
         model.train()
         G = None
+        comm_rounds = 0
 
         # ------- Training Phase --------- #
         for batch_ix, (images, labels) in enumerate(train_loader):
@@ -42,10 +43,11 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                 d = len(g_i)
                 G = np.zeros((num_batches, d), dtype=g_i.dtype)
 
-            # Aggregation Step
+            # -------  Aggregation Step ------- #
             agg_ix = (batch_ix + 1) % num_batches
             G[agg_ix - 1, :] = g_i
 
+            # -------  Communication Round ------- #
             if agg_ix == 0:
                 agg_g = gar.aggregate(G=G)
                 optimizer.zero_grad()
@@ -55,29 +57,30 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                 # Now Do an optimizer step with x_t+1 = x_t - \eta \tilde(g)
                 optimizer.step()
 
-            # -------- Compute Metrics ---------- #
-            # epoch_loss /= total_iter
-            # print('\n --------------------------------------------------- \n')
-            # print("Epoch [{}/{}], Learning rate [{}], Avg Batch Loss [{}]"
-            #      .format(epoch + 1, num_epochs, optimizer.param_groups[0]['lr'], epoch_loss))
-            # metrics["epoch_loss"].append(epoch_loss)
+                # -------- Compute Metrics ---------- #
+                # epoch_loss /= total_iter
+                # print('\n --------------------------------------------------- \n')
+                # print("Epoch [{}/{}], Learning rate [{}], Avg Batch Loss [{}]"
+                #      .format(epoch + 1, num_epochs, optimizer.param_groups[0]['lr'], epoch_loss))
+                # metrics["epoch_loss"].append(epoch_loss)
 
-            test_error, test_acc, _ = evaluate_classifier(model=model, data_loader=test_loader, device=device)
-            train_error, train_acc, train_loss = evaluate_classifier(model=model, data_loader=train_loader,
-                                                                     criterion=criterion, device=device)
+                test_error, test_acc, _ = evaluate_classifier(model=model, data_loader=test_loader, device=device)
+                train_error, train_acc, train_loss = evaluate_classifier(model=model, data_loader=train_loader,
+                                                                         criterion=criterion, device=device)
 
-            print('\n ---------------- ------------------------ \n')
-            print('--- Performance on Train Data -----')
-            print('train loss = {}\n train acc = {}'.format(train_loss, train_acc))
-            metrics["train_error"].append(train_error)
-            metrics["train_loss"].append(train_loss)
-            metrics["train_acc"].append(train_acc)
+                print('\n ---------------- Communication Round {} ------------------------'.format(comm_rounds))
+                print('--- Performance on Train Data -----')
+                print('train loss = {}\n train acc = {}'.format(train_loss, train_acc))
+                metrics["train_error"].append(train_error)
+                metrics["train_loss"].append(train_loss)
+                metrics["train_acc"].append(train_acc)
 
-            print('---- Generalization Performance ---- '.format(test_acc))
-            print('test acc = {}'.format(test_acc))
+                print('---- Generalization Performance ---- '.format(test_acc))
+                print('test acc = {}'.format(test_acc))
 
-            metrics["test_error"].append(test_error)
-            metrics["test_acc"].append(test_acc)
+                metrics["test_error"].append(test_error)
+                metrics["test_acc"].append(test_acc)
+                comm_rounds += 1
 
         if lrs is not None:
             lrs.step()

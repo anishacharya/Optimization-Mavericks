@@ -5,7 +5,8 @@ from src.model_manager import (get_model,
                                get_optimizer,
                                get_scheduler,
                                take_lrs_step,
-                               get_loss)
+                               get_loss,
+                               evaluate_classifier)
 from src.data_manager import process_data
 from src.aggregation_manager import get_gar
 from src.agents import FedServer, FedClient
@@ -108,9 +109,11 @@ def train_and_test_model(server: FedServer,
         # -------- Compute Metrics ---------- #
         train_error, train_acc, train_loss = evaluate_classifier(model=server.learner,
                                                                  data_loader=train_loader,
-                                                                 criterion=clients[0].criterion)
+                                                                 criterion=clients[0].criterion,
+                                                                 device=device)
         test_error, test_acc, _ = evaluate_classifier(model=server.learner,
-                                                      data_loader=test_loader)
+                                                      data_loader=test_loader,
+                                                      device=device)
         print('--- Performance on Train Data -----')
         print('train loss = {}\n train acc = {}'.format(train_loss, train_acc))
         metrics["train_error"].append(train_error)
@@ -122,29 +125,6 @@ def train_and_test_model(server: FedServer,
 
         metrics["test_error"].append(test_error)
         metrics["test_acc"].append(test_acc)
-
-
-def evaluate_classifier(model, data_loader, criterion=None):
-    model.to(device)
-    with torch.no_grad():
-        correct = 0
-        total = 0
-        total_loss = 0
-        batches = 0
-        for batch_ix, (images, labels) in enumerate(data_loader):
-            images = images.to(device)
-            labels = labels.to(device)
-            outputs = model(images)
-            if criterion is not None:
-                total_loss += criterion(outputs, labels).item()
-            batches += 1
-            _, predicted = torch.max(outputs.data, 1)
-            total += labels.size(0)
-            correct += (predicted == labels).sum().item()
-
-        acc = 100 * correct / total
-        total_loss /= batches
-        return 100 - acc, acc, total_loss
 
 
 def run_fed_train(config, metrics):
