@@ -1,6 +1,6 @@
 {
   "train_mode": "fed", # fed(Federated), distributed(Distributed mini-batch SGD), decentralized (Decentralized SGD)
-  "pipeline": 'default', #
+  "pipeline": 'glomo', #
 
   "data_config":
     {
