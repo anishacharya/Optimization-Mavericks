@@ -30,8 +30,10 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
         G = None
         comm_rounds = 0
 
-        print('------------ Epoch: {} ----------- \n'.format(epoch))
-        print('learning rate: {}'.format(optimizer.param_groups[0]['lr']))
+        print('\n--------------------------------------------------------\n'
+              ' ----------------------   Epoch: {} ----------------------\n '
+              '----------------------------------------------------------'.format(epoch))
+        print('learning rate: {} \n'.format(optimizer.param_groups[0]['lr']))
         # ------- Training Phase --------- #
         for batch_ix, (images, labels) in enumerate(train_loader):
             images = images.to(device)
