@@ -29,21 +29,23 @@ def init_and_train_clients(server: FedServer,
     w_current = server.w_current
     w_old = server.w_old
 
-    epoch_loss = 0
+    # epoch_loss = 0
     for client in clients:
         # initialize with global params
         client.initialize_params(w_current=w_current, w_old=w_old)
         # train step
         if pipeline == 'default':
-            epoch_loss += client.train_step(num_steps=num_local_steps, device=device)
+            # epoch_loss += client.train_step(num_steps=num_local_steps, device=device)
+            client.train_step(num_steps=num_local_steps, device=device)
         elif pipeline == 'glomo':
-            epoch_loss += client.train_step_glomo(num_steps=num_local_steps, device=device)
+            # epoch_loss += client.train_step_glomo(num_steps=num_local_steps, device=device)
+            client.train_step_glomo(num_steps=num_local_steps, device=device)
         else:
             raise NotImplementedError
 
-    epoch_loss /= len(clients)
-    metrics["epoch_loss"].append(epoch_loss)
-    print("Epoch Loss : {}".format(epoch_loss))
+    # epoch_loss /= len(clients)
+    # metrics["epoch_loss"].append(epoch_loss)
+    # print("Epoch Loss : {}".format(epoch_loss))
 
     # At this point we have all the g_i computed
     # Apply Attack (Here since we can also apply co-ordinated attack)
@@ -108,13 +110,18 @@ def train_and_test_model(server: FedServer,
         test_error, test_acc, _ = (evaluate_classifier(model=server.learner,
                                                        data_loader=DataLoader(test_dataset, batch_size=256),
                                                        verbose=True))
-        print('------ Train Loss = {} , Train Acc = {}, Test Acc = {}'.format(train_loss, train_acc, test_acc))
-        metrics["test_error"].append(test_error)
-        metrics["test_acc"].append(test_acc)
-
+        print('--- Performance on Train Data -----')
+        print('train loss = {}\n train acc = {}'.format(train_loss, train_acc))
         metrics["train_error"].append(train_error)
         metrics["train_loss"].append(train_loss)
         metrics["train_acc"].append(train_acc)
+
+        print('---- Generalization Performance ---- '.format(test_acc))
+        print('test acc = {}'.format(train_loss, train_acc))
+        metrics["test_error"].append(test_error)
+        metrics["test_acc"].append(test_acc)
+
+
 
 
 def evaluate_classifier(model, data_loader, verbose=False, criterion=None):
@@ -130,7 +137,6 @@ def evaluate_classifier(model, data_loader, verbose=False, criterion=None):
             outputs = model(images)
             if criterion is not None:
                 total_loss += criterion(outputs, labels).item()
-
             batches += 1
             _, predicted = torch.max(outputs.data, 1)
             total += labels.size(0)

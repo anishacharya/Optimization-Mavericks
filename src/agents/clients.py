@@ -53,7 +53,7 @@ class FedClient(Agent):
         self.w_current = w_current
         self.w_old = w_old
 
-    def train_step(self, num_steps=1, device="cpu") -> float:
+    def train_step(self, num_steps=1, device="cpu"): # -> float:
         dist_weights_to_model(self.w_current, learner=self.learner)
         total_loss = 0
         for it in range(num_steps):
@@ -65,26 +65,24 @@ class FedClient(Agent):
             y_hat = model(x)
             self.optimizer.zero_grad()
             loss_val = self.criterion(y_hat, y)
-            total_loss += loss_val.item()
-            # print('Client local Loss = {}'.format(loss_val.item()))
+            # total_loss += loss_val.item()
             loss_val.backward()
             self.optimizer.step()
 
-        total_loss /= num_steps
+        # total_loss /= num_steps
 
         # update the estimated gradients
         updated_model_weights = flatten_params(learner=self.learner)
         grad_current = self.w_current - updated_model_weights
         self.grad_current = self.C.compress(g=grad_current)
 
-        return total_loss
+        # return total_loss
 
     def compute_grad(self, model, x, y):
         y_hat = model(x)
         self.optimizer.zero_grad()
         loss_val = self.criterion(y_hat, y)
         loss_val.backward()
-        # self.optimizer.step() # commented out to implement own momentum
         g = flatten_grads(learner=self.learner)  # extract grad
         return g
 
@@ -105,7 +103,7 @@ class FedClient(Agent):
         dist_weights_to_model(self.w_current, learner=self.learner)
         dist_weights_to_model(self.w_old, learner=self.learner_stale)
 
-        total_loss = 0
+        # total_loss = 0
 
         # ------ Local SGD ---------------- ###
         for it in range(num_steps):
@@ -153,8 +151,8 @@ class FedClient(Agent):
         self.grad_current = self.C.compress(g=grad_current)
         self.glomo_grad = self.C.compress(g=glomo_grad)
 
-        total_loss /= num_steps
-        return total_loss
+        # total_loss /= num_steps
+        # return total_loss
 
 
 
