@@ -118,7 +118,8 @@ def train_and_test_model(server: FedServer,
         metrics["train_acc"].append(train_acc)
 
         print('---- Generalization Performance ---- '.format(test_acc))
-        print('test acc = {}'.format(train_loss, train_acc))
+        print('test acc = {}'.format(test_acc))
+
         metrics["test_error"].append(test_error)
         metrics["test_acc"].append(test_acc)
 
