@@ -29,6 +29,8 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
         G = None
         comm_rounds = 0
 
+        print('------------ Epoch: {} ----------- \n'.format(epoch))
+        print('learning rate: {}'.format(optimizer.param_groups[0]['lr']))
         # ------- Training Phase --------- #
         for batch_ix, (images, labels) in enumerate(train_loader):
             images = images.to(device)
@@ -64,22 +66,24 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                 #      .format(epoch + 1, num_epochs, optimizer.param_groups[0]['lr'], epoch_loss))
                 # metrics["epoch_loss"].append(epoch_loss)
 
-                test_error, test_acc, _ = evaluate_classifier(model=model, data_loader=test_loader, device=device)
-                train_error, train_acc, train_loss = evaluate_classifier(model=model, data_loader=train_loader,
-                                                                         criterion=criterion, device=device)
+                if comm_rounds % 5 == 0:
+                    test_error, test_acc, _ = evaluate_classifier(model=model, data_loader=test_loader, device=device)
+                    train_error, train_acc, train_loss = evaluate_classifier(model=model, data_loader=train_loader,
+                                                                             criterion=criterion, device=device)
 
-                print('\n ---------------- Communication Round {} ------------------------'.format(comm_rounds))
-                print('--- Performance on Train Data -----')
-                print('train loss = {}\n train acc = {}'.format(train_loss, train_acc))
-                metrics["train_error"].append(train_error)
-                metrics["train_loss"].append(train_loss)
-                metrics["train_acc"].append(train_acc)
+                    print('\n ---------------- Communication Round {} ------------------------'.format(comm_rounds))
+                    print('--- Performance on Train Data -----')
+                    print('train loss = {}\n train acc = {}'.format(train_loss, train_acc))
+                    metrics["train_error"].append(train_error)
+                    metrics["train_loss"].append(train_loss)
+                    metrics["train_acc"].append(train_acc)
 
-                print('---- Generalization Performance ---- '.format(test_acc))
-                print('test acc = {}'.format(test_acc))
+                    print('---- Generalization Performance ---- '.format(test_acc))
+                    print('test acc = {}'.format(test_acc))
 
-                metrics["test_error"].append(test_error)
-                metrics["test_acc"].append(test_acc)
+                    metrics["test_error"].append(test_error)
+                    metrics["test_acc"].append(test_acc)
+
                 comm_rounds += 1
 
         if lrs is not None:
