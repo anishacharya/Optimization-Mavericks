@@ -149,7 +149,7 @@ def run_batch_train(config, metrics):
     train_dataset, test_dataset = data_manager.download_data()
 
     train_loader = DataLoader(dataset=train_dataset, batch_size=batch_size, shuffle=True)
-    test_loader = DataLoader(dataset=test_dataset, batch_size=len(train_dataset))
+    test_loader = DataLoader(dataset=test_dataset, batch_size=len(test_dataset))
 
     t0 = time.time()
     train_and_test_model(model=model, criterion=criterion,optimizer=optimizer, lrs=lrs,

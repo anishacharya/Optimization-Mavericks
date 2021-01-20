@@ -65,6 +65,9 @@ def train_and_test_model(server: FedServer,
     data_manager = process_data(data_config=data_config)
     train_dataset, test_dataset = data_manager.download_data()
 
+    train_loader = DataLoader(dataset=train_dataset, batch_size=len(train_dataset), shuffle=True)
+    test_loader = DataLoader(dataset=test_dataset, batch_size=len(test_dataset))
+
     # Distribute Data among clients
     data_manager.distribute_data(train_dataset=train_dataset, clients=clients)
 
@@ -104,12 +107,10 @@ def train_and_test_model(server: FedServer,
         # Evaluate Train Loss
         # -------- Compute Metrics ---------- #
         train_error, train_acc, train_loss = evaluate_classifier(model=server.learner,
-                                                                 data_loader=DataLoader(train_dataset,
-                                                                                        batch_size=256),
+                                                                 data_loader=train_loader,
                                                                  criterion=clients[0].criterion)
-        test_error, test_acc, _ = (evaluate_classifier(model=server.learner,
-                                                       data_loader=DataLoader(test_dataset,
-                                                                              batch_size=256)))
+        test_error, test_acc, _ = evaluate_classifier(model=server.learner,
+                                                      data_loader=test_loader)
         print('--- Performance on Train Data -----')
         print('train loss = {}\n train acc = {}'.format(train_loss, train_acc))
         metrics["train_error"].append(train_error)
