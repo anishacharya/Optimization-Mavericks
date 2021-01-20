@@ -3,7 +3,8 @@ from src.model_manager import (get_model,
                                get_scheduler,
                                dist_grads_to_model,
                                flatten_grads,
-                               get_loss)
+                               get_loss,
+                               evaluate_classifier)
 from src.data_manager import process_data
 from src.aggregation_manager import get_gar
 
@@ -27,10 +28,6 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
         model.to(device)
         model.train()
         G = None
-        epoch_loss = 0
-        iter_loss = 0
-        total_iter = len(train_loader)
-
         # # randomly sample byzantine nodes (batches)
         # all_batches = np.arange(total_iter)
         # mal_ix = set(np.random.choice(a=all_batches,
@@ -38,8 +35,6 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
         #                               replace=False))
         # mal_batches_mask = []
         # attack_model = get_attack(attack_config=attack_config)
-        comm_round = 0
-        num_comm_round = int(len(train_loader)/num_batches) - 1
 
         for batch_ix, (images, labels) in enumerate(train_loader):
             images = images.to(device)
@@ -47,9 +42,6 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
             outputs = model(images)
             optimizer.zero_grad()
             loss = criterion(outputs, labels)
-            epoch_loss += loss.item()
-            iter_loss += loss.item()
-
             loss.backward()
             # Note: No Optimizer Step yet.
             g_i = flatten_grads(learner=model)
@@ -69,58 +61,32 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                 model.to(device)
                 # Now Do an optimizer step with x_t+1 = x_t - \eta \tilde(g)
                 optimizer.step()
-                iter_loss /= num_batches
-                print("Epoch [{}/{}], Communication Round [{}/{}], Learning rate [{}], current batch Loss [{}]"
-                      .format(epoch + 1, num_epochs, comm_round, num_comm_round,
-                              optimizer.param_groups[0]['lr'], iter_loss))
-                iter_loss = 0
-                comm_round += 1
 
         # -------- Compute Metrics ---------- #
-        epoch_loss /= total_iter
-        print('\n --------------------------------------------------- \n')
-        print("Epoch [{}/{}], Learning rate [{}], Avg Batch Loss [{}]"
-              .format(epoch + 1, num_epochs, optimizer.param_groups[0]['lr'], epoch_loss))
-        metrics["epoch_loss"].append(epoch_loss)
+        # epoch_loss /= total_iter
+        # print('\n --------------------------------------------------- \n')
+        # print("Epoch [{}/{}], Learning rate [{}], Avg Batch Loss [{}]"
+        #      .format(epoch + 1, num_epochs, optimizer.param_groups[0]['lr'], epoch_loss))
+        # metrics["epoch_loss"].append(epoch_loss)
 
-        test_error, test_acc, _ = (evaluate_classifier(model=model, data_loader=test_loader, verbose=True))
+        test_error, test_acc, _ = evaluate_classifier(model=model, data_loader=test_loader, device=device)
+        train_error, train_acc, train_loss = evaluate_classifier(model=model, data_loader=train_loader,
+                                                                 criterion=criterion, device=device)
+
+        print('--- Performance on Train Data -----')
+        print('train loss = {}\n train acc = {}'.format(train_loss, train_acc))
+        metrics["train_error"].append(train_error)
+        metrics["train_loss"].append(train_loss)
+        metrics["train_acc"].append(train_acc)
+
+        print('---- Generalization Performance ---- '.format(test_acc))
+        print('test acc = {}'.format(test_acc))
+
         metrics["test_error"].append(test_error)
         metrics["test_acc"].append(test_acc)
 
-        # train_error, train_acc, train_loss = evaluate_classifier(model=model, data_loader=train_loader,
-        #                                                          criterion=criterion, verbose=True)
-        # metrics["train_error"].append(train_error)
-        # metrics["train_loss"].append(train_loss)
-        # metrics["train_acc"].append(train_acc)
-
         if lrs is not None:
             lrs.step()
-
-
-def evaluate_classifier(model, data_loader, verbose=False, criterion=None):
-    model.to(device)
-    with torch.no_grad():
-        correct = 0
-        total = 0
-        total_loss = 0
-        batches = 0
-        for images, labels in data_loader:
-            images = images.to(device)
-            labels = labels.to(device)
-            outputs = model(images)
-            if criterion is not None:
-                total_loss += criterion(outputs, labels).item()
-
-            batches += 1
-            _, predicted = torch.max(outputs.data, 1)
-            total += labels.size(0)
-            correct += (predicted == labels).sum().item()
-
-        acc = 100 * correct / total
-        total_loss /= batches
-        if verbose:
-            print('Test Accuracy: {} %'.format(acc))
-        return 100 - acc, acc, total_loss
 
 
 def run_batch_train(config, metrics):

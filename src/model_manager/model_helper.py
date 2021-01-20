@@ -83,4 +83,29 @@ def cycle(iterable):
             yield x
 
 
+def evaluate_classifier(model, data_loader, verbose=False, criterion=None, device="cpu"):
+    model.to(device)
+    with torch.no_grad():
+        correct = 0
+        total = 0
+        total_loss = 0
+        batches = 0
+        for images, labels in data_loader:
+            images = images.to(device)
+            labels = labels.to(device)
+            outputs = model(images)
+            if criterion is not None:
+                total_loss += criterion(outputs, labels).item()
+
+            batches += 1
+            _, predicted = torch.max(outputs.data, 1)
+            total += labels.size(0)
+            correct += (predicted == labels).sum().item()
+
+        acc = 100 * correct / total
+        total_loss /= batches
+        if verbose:
+            print('Test Accuracy: {} %'.format(acc))
+        return 100 - acc, acc, total_loss
+
 
