@@ -59,7 +59,7 @@
 
       "learner_config":
       {
-        "net": "mlp",
+        "net": "lenet",
       },
 
       "aggregation_config":
