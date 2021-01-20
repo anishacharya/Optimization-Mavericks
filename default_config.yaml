@@ -28,7 +28,7 @@
 
       "optimizer_config":
       {
-        "optimizer": 'Adam', # SGD, Adam
+        "optimizer": 'SGD', # SGD, Adam
         "loss": 'ce', # ce (Cross Entropy), mse (Mean Sq Error), bce(binary-CE)
         "lr0": 0.01,
         "momentum": 0,
