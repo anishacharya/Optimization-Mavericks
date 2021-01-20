@@ -106,10 +106,9 @@ def train_and_test_model(server: FedServer,
         train_error, train_acc, train_loss = evaluate_classifier(model=server.learner,
                                                                  data_loader=DataLoader(train_dataset,
                                                                                         batch_size=256),
-                                                                 verbose=True)
+                                                                 criterion=clients[0].criterion)
         test_error, test_acc, _ = (evaluate_classifier(model=server.learner,
-                                                       data_loader=DataLoader(test_dataset, batch_size=256),
-                                                       verbose=True))
+                                                       data_loader=DataLoader(test_dataset, batch_size=256)))
         print('--- Performance on Train Data -----')
         print('train loss = {}\n train acc = {}'.format(train_loss, train_acc))
         metrics["train_error"].append(train_error)
@@ -122,9 +121,7 @@ def train_and_test_model(server: FedServer,
         metrics["test_acc"].append(test_acc)
 
 
-
-
-def evaluate_classifier(model, data_loader, verbose=False, criterion=None):
+def evaluate_classifier(model, data_loader, criterion=None):
     model.to(device)
     with torch.no_grad():
         correct = 0
@@ -144,8 +141,6 @@ def evaluate_classifier(model, data_loader, verbose=False, criterion=None):
 
         acc = 100 * correct / total
         total_loss /= batches
-        if verbose:
-            print('Test Accuracy: {} %'.format(acc))
         return 100 - acc, acc, total_loss
 
 
