@@ -1,0 +1,104 @@
+{
+    "config": {
+        "train_mode": "fed",
+        "pipeline": "default",
+        "data_config": {
+            "data_set": "mnist",
+            "shape": [
+                28,
+                28
+            ],
+            "num_labels": 10,
+            "num_channels": 1,
+            "download": false,
+            "batch_size": 32,
+            "train_num_workers": 1,
+            "data_sampling_strategy": "iid",
+            "num_shards": 100
+        },
+        "training_config": {
+            "num_clients": 10,
+            "client_fraction": 1,
+            "global_epochs": 5,
+            "local_epochs": 10,
+            "optimizer_config": {
+                "optimizer": "SGD",
+                "loss": "ce",
+                "lr0": 0.01,
+                "momentum": 0.9,
+                "reg": 0.0001,
+                "nesterov": false,
+                "amsgrad": false,
+                "server_optimizer_config": {
+                    "optimizer": "SGD",
+                    "lr0": 1
+                }
+            },
+            "lrs_config": {
+                "lrs": "step",
+                "milestones": [
+                    10,
+                    25,
+                    40
+                ],
+                "step_size": 1,
+                "gamma": 0.9
+            },
+            "compression_config": {
+                "compression_operator": "full",
+                "frac_coordinates_to_keep": 0.5
+            },
+            "learner_config": {
+                "net": "mlp"
+            },
+            "aggregation_config": {
+                "gar": "mean",
+                "glomo_server_c": 1
+            }
+        }
+    },
+    "epoch_loss": [
+        2.257145540714264,
+        2.041504024267197,
+        1.6506786918640135,
+        1.1518775910139083,
+        0.8014024817943574
+    ],
+    "test_error": [
+        51.1,
+        30.959999999999994,
+        24.939999999999998,
+        18.680000000000007,
+        16.230000000000004
+    ],
+    "test_loss": [],
+    "test_acc": [
+        48.9,
+        69.04,
+        75.06,
+        81.32,
+        83.77
+    ],
+    "train_error": [
+        52.038333333333334,
+        30.906666666666666,
+        25.751666666666665,
+        19.439999999999998,
+        16.831666666666663
+    ],
+    "train_loss": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+    ],
+    "train_acc": [
+        47.961666666666666,
+        69.09333333333333,
+        74.24833333333333,
+        80.56,
+        83.16833333333334
+    ],
+    "runtime": 0
+}

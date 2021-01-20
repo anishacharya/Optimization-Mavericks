@@ -1,5 +1,5 @@
 {
-  "train_mode": "distributed", # fed(Federated), distributed(Distributed mini-batch SGD), decentralized (Decentralized SGD)
+  "train_mode": "fed", # fed(Federated), distributed(Distributed mini-batch SGD), decentralized (Decentralized SGD)
   "pipeline": 'default', #
 
   "data_config":
@@ -10,7 +10,7 @@
       "num_channels": 1,
       "download": False,
 
-      "batch_size": 50, # Define Batch Size here since Data Loader will assign batches to clients
+      "batch_size": 32, # Define Batch Size here since Data Loader will assign batches to clients
       "train_num_workers": 1,
 
       ## For Federated / Decentralized Training
@@ -21,17 +21,17 @@
 
   "training_config":
     {
-      "num_clients": 25, # Number of clients / parallel batches
+      "num_clients": 10, # Number of clients / parallel batches
       "client_fraction": 1, # specify fraction of client participation per round
-      "global_epochs": 25, # Number of communication Rounds
-      "local_epochs": 1, # Local SGD number of local steps
+      "global_epochs": 5, # Number of communication Rounds
+      "local_epochs": 10, # Local SGD number of local steps
 
       "optimizer_config":
       {
         "optimizer": 'SGD', # SGD, Adam
         "loss": 'ce', # ce (Cross Entropy), mse (Mean Sq Error), bce(binary-CE)
         "lr0": 0.01,
-        "momentum": 0,
+        "momentum": 0.9,
         "reg": 0.0001,
         "nesterov": False,
         "amsgrad": False,
@@ -64,7 +64,7 @@
 
       "aggregation_config":
       {
-        "gar": "geo_med",
+        "gar": "mean",
         "glomo_server_c": 1
       },
 

@@ -99,21 +99,25 @@ class FedClient(Agent):
             self.lrs_stale = get_scheduler(optimizer=self.optimizer_stale,
                                            lrs_config=self.training_config.get('lrs_config', {}))
 
+        w_current_init = copy.deepcopy(self.w_current)
+        w_old_init = copy.deepcopy(self.w_old)
+
         dist_weights_to_model(self.w_current, learner=self.learner)
         dist_weights_to_model(self.w_old, learner=self.learner_stale)
 
         total_loss = 0
 
+        # ------ Local SGD ---------------- ###
         for it in range(num_steps):
             x, y = next(self.train_iter)
             x, y = x.float(), y
             x, y = x.to(device), y.to(device)
 
-            g = self.compute_grad(model=self.learner.to(device).train(), x=x, y=y)
-            g_stale = self.compute_grad(model=self.learner_stale.to(device).train(), x=x, y=y)
+            g = self.compute_grad(model=self.learner.to(device).train(), x=x, y=y)  # g_k,0
+            g_stale = self.compute_grad(model=self.learner_stale.to(device).train(), x=x, y=y)  # g_k-1,0
 
             # if T = 0 initialize
-            if self.v_old is None or self.v_current is None:
+            if it == 0:
                 self.v_old = g_stale
                 self.v_current = g
             else:
@@ -124,19 +128,25 @@ class FedClient(Agent):
                 self.v_old = g_stale + (self.v_old - g_stale_local)
 
             # No optimizer step compute w using our update
-            self.learner_local = copy.deepcopy(self.learner)
-            self.learner_local_stale = copy.deepcopy(self.learner_stale)
+            self.learner_local = copy.deepcopy(self.learner)  # tao-1
+            self.learner_local_stale = copy.deepcopy(self.learner_stale)  # Tao-1
 
             lr = self.optimizer.param_groups[0]['lr']
             self.w_current -= lr * self.v_current
             self.w_old -= lr * self.v_old
 
+            # update the local learners
+            dist_weights_to_model(self.w_current, learner=self.learner)
+            dist_weights_to_model(self.w_old, learner=self.learner_stale)
+
+        # ------ End Of Local Training --------- ##
+        # -- Compute grads to be communicated --
         # update the estimated gradients
         updated_current_model_weights = flatten_params(learner=self.learner)
-        grad_current = self.w_current - updated_current_model_weights
+        grad_current = w_current_init - updated_current_model_weights
 
         updated_stale_model_weights = flatten_params(learner=self.learner_stale)
-        grad_stale = self.w_old - updated_stale_model_weights
+        grad_stale = w_old_init - updated_stale_model_weights
 
         glomo_grad = grad_current - grad_stale
 
