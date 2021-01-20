@@ -12,6 +12,7 @@ import torch
 
 torch.manual_seed(1)
 
+
 class DataManager:
     """
     Base Class for all Data Readers
