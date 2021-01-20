@@ -20,6 +20,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 def train_and_test_model(model, criterion, optimizer, lrs, gar,
                          train_loader, test_loader, train_config, metrics):
+
     num_batches = train_config.get('num_clients', 1)
     num_epochs = train_config.get('global_epochs', 10)
 
@@ -46,11 +47,12 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                 G = np.zeros((num_batches, d), dtype=g_i.dtype)
 
             # -------  Aggregation Step ------- #
+            ix = batch_ix % num_batches
             agg_ix = (batch_ix + 1) % num_batches
-            G[agg_ix - 1, :] = g_i
+            G[ix, :] = g_i
 
             # -------  Communication Round ------- #
-            if agg_ix == 0:
+            if agg_ix == 0 and batch_ix is not 0:
                 agg_g = gar.aggregate(G=G)
                 optimizer.zero_grad()
                 # Update Model Grads with aggregated g :\tilde(g)
@@ -59,19 +61,13 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                 # Now Do an optimizer step with x_t+1 = x_t - \eta \tilde(g)
                 optimizer.step()
 
-                # -------- Compute Metrics ---------- #
-                # epoch_loss /= total_iter
-                # print('\n --------------------------------------------------- \n')
-                # print("Epoch [{}/{}], Learning rate [{}], Avg Batch Loss [{}]"
-                #      .format(epoch + 1, num_epochs, optimizer.param_groups[0]['lr'], epoch_loss))
-                # metrics["epoch_loss"].append(epoch_loss)
-
                 if comm_rounds % 5 == 0:
                     test_error, test_acc, _ = evaluate_classifier(model=model, data_loader=test_loader, device=device)
                     train_error, train_acc, train_loss = evaluate_classifier(model=model, data_loader=train_loader,
                                                                              criterion=criterion, device=device)
 
                     print('\n ---------------- Communication Round {} ------------------------'.format(comm_rounds))
+
                     print('--- Performance on Train Data -----')
                     print('train loss = {}\n train acc = {}'.format(train_loss, train_acc))
                     metrics["train_error"].append(train_error)
