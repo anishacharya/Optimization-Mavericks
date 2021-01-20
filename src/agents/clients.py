@@ -47,6 +47,8 @@ class FedClient(Agent):
         self.local_train_data = None
         self.train_iter = None
 
+        self.glomo_momentum = 0.8
+
     def initialize_params(self, w_current, w_old=None):
         self.w_current = w_current
         self.w_old = w_old
@@ -113,8 +115,8 @@ class FedClient(Agent):
                 g_local = self.compute_grad(model=self.learner_local.to(device).train(), x=x, y=y)
                 g_stale_local = self.compute_grad(model=self.learner_local_stale.to(device).train(), x=x, y=y)
 
-                self.v_current = g + (self.v_current - g_local)
-                self.v_old = g_stale + (self.v_old - g_stale_local)
+                self.v_current = g + self.glomo_momentum * (self.v_current - g_local)
+                self.v_old = g_stale + self.glomo_momentum * (self.v_old - g_stale_local)
 
             # No optimizer step compute w using our update
             self.learner_local = copy.deepcopy(self.learner)  # tao-1
