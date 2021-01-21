@@ -42,11 +42,13 @@ class SparseApproxMatrix:
         # Invoke Sampling algorithm here
         # --------------------------------- #
         if self.sampling_rule == 'active_norm':
+            print('Applying active norm column sampling on gradients')
             I_k = self._active_norm_sampling(G=G)
         elif self.sampling_rule == 'random':
+            print('Applying random column sampling on gradients')
             I_k = self._random_sampling(d=d if self.axis == 0 else n)
         else:
-            raise NotImplementedError
+            return G
 
         if self.axis == 0:
             # column sampling
