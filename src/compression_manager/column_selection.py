@@ -14,7 +14,8 @@ class SparseApproxMatrix:
         self.conf = conf
         # sampling algo
         self.sampling_rule = self.conf.get('rule', None)
-        self.axis = self.conf.get('axis', 0)    # 0: column sampling, 1: row sampling
+        axis = self.conf.get('axis', 'column')    # 0: column sampling, 1: row sampling
+        self.axis = 0 if axis == 'column' else 1
         # number of coordinates to sample
         self.frac = conf.get('frac_coordinates', 1)
         self.k = None
@@ -23,7 +24,7 @@ class SparseApproxMatrix:
         self.ef = conf.get('ef', False)
         self.residual_error = None
 
-    def sparse_approx(self, G: np.ndarray):
+    def sparse_approx(self, G: np.ndarray) -> np.ndarray:
         n, d = G.shape
         G_sparse = np.zeros_like(G)
         # for the first run compute k
@@ -37,8 +38,28 @@ class SparseApproxMatrix:
         # Error Compensation (if ef is False, residual error = 0 as its not updated)
         G += self.residual_error
 
-        # Define Sampling Rule here
+        # --------------------------------- #
+        # Invoke Sampling algorithm here
+        # --------------------------------- #
+        if self.sampling_rule == 'active_norm':
+            I_k = self._active_norm_sampling(G=G)
+        elif self.sampling_rule == 'random':
+            I_k = self._random_sampling(d=d if self.axis == 0 else n)
+        else:
+            raise NotImplementedError
 
+        if self.axis == 0:
+            # column sampling
+            G_sparse[:, I_k] = G[:, I_k]
+        else:
+            G_sparse[I_k, :] = G[I_k, :]
+
+        # update residual error
+        if self.ef is True:
+            print('Error Feedback at Server')
+            self.residual_error = G - G_sparse
+
+        return G_sparse
 
     # Implementation of different Sparse Approximation strategies
     def _random_sampling(self, d: int) -> np.ndarray:
