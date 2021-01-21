@@ -58,7 +58,7 @@ class SparseApproxMatrix:
 
         # update residual error
         if self.ef is True:
-            print('Error Feedback at Server')
+            # print('Error Feedback at Server')
             self.residual_error = G - G_sparse
 
         return G_sparse
