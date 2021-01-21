@@ -71,7 +71,7 @@
       "sparse_approximation_config":
       {
         "axis": 'column',
-        "rule": 'active_norm',
+        "rule": null,
         "frac_coordinates": 0.1,
         "ef": False,
       }
