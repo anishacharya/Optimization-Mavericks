@@ -47,7 +47,7 @@
       {
         "lrs": 'step', # step, multi_step, exp, cyclic
         "milestones": [1, 5, 10],
-        "step_size": 15,
+        "step_size": 5,
         "gamma": 0.1
       },
 
