@@ -7,6 +7,7 @@ from src.model_manager import (get_model,
                                evaluate_classifier)
 from src.data_manager import process_data
 from src.aggregation_manager import get_gar
+from src.compression_manager import SparseApproxMatrix
 
 import torch
 from torch.utils.data import DataLoader
@@ -19,7 +20,8 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 def train_and_test_model(model, criterion, optimizer, lrs, gar,
-                         train_loader, test_loader, train_config, metrics):
+                         train_loader, test_loader, train_config, metrics,
+                         sparse_selection = None):
 
     num_batches = train_config.get('num_clients', 1)
     num_epochs = train_config.get('global_epochs', 10)
@@ -55,7 +57,11 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
 
             # -------  Communication Round ------- #
             if agg_ix == 0 and batch_ix is not 0:
-                agg_g = gar.aggregate(G=G)
+                # Sparse Approximation of G
+                G_sparse = sparse_selection.sparse_approx(G=G)
+                # Gradient aggregation
+                agg_g = gar.aggregate(G=G_sparse)
+
                 optimizer.zero_grad()
                 # Update Model Grads with aggregated g :\tilde(g)
                 dist_grads_to_model(grads=agg_g, learner=model)
@@ -99,6 +105,7 @@ def run_batch_train(config, metrics):
     lrs_config = training_config.get('lrs_config')
 
     aggregation_config = training_config["aggregation_config"]
+    sparse_approx_config = training_config["sparse_approximation_config"]
     compression_config = training_config["compression_config"]
 
     # ------------------------- Initializations --------------------- #
@@ -107,6 +114,7 @@ def run_batch_train(config, metrics):
     lrs = get_scheduler(optimizer=optimizer, lrs_config=lrs_config)
     criterion = get_loss(loss=optimizer_config.get('loss', 'ce'))
     gar = get_gar(aggregation_config=aggregation_config)
+    sparse_selection = SparseApproxMatrix(conf=sparse_approx_config)
 
     # ------------------------- get data --------------------- #
     batch_size = data_config.get('batch_size', 1)
@@ -118,8 +126,9 @@ def run_batch_train(config, metrics):
 
     t0 = time.time()
     train_and_test_model(model=model, criterion=criterion, optimizer=optimizer, lrs=lrs,
-                         gar=gar, train_loader=train_loader, test_loader=test_loader, metrics=metrics,
-                         train_config=training_config)
+                         gar=gar,  sparse_selection=sparse_selection,
+                         train_loader=train_loader, test_loader=test_loader,
+                         metrics=metrics, train_config=training_config)
     print("---------- End of Training -----------")
     time_taken = time.time() - t0
     metrics["runtime"] = time_taken

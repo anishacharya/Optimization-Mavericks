@@ -68,7 +68,7 @@
         "glomo_server_c": 1
       },
 
-      "saprse_approximation_config":
+      "sparse_approximation_config":
       {
         "axis": 'column',
         "rule": 'active_norm',
