@@ -74,7 +74,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                     train_error, train_acc, train_loss = evaluate_classifier(model=model, data_loader=train_loader,
                                                                              criterion=criterion, device=device)
 
-                    print('\n ---------------- Communication Round {} ------------------------'.format(comm_rounds))
+                    # print('\n ---------------- Communication Round {} ------------------------'.format(comm_rounds))
 
                     print('Epoch progress: {}/{}, train loss = {}, train acc = {}, test acc = {}'.
                           format(epoch, num_epochs, train_loss, train_acc, test_acc))
