@@ -3,6 +3,7 @@
 
 from .mlp import *
 from .cnn import *
+from .vgg import *
 import torch
 import functools
 import numpy as np
@@ -70,6 +71,9 @@ def get_model(learner_config: Dict, data_config: Dict):
     elif net == 'mlp':
         dim_in = np.prod(shape) * nc
         model = MLP(dim_in=dim_in, dim_out=data_config["num_labels"])
+
+    elif net == 'vgg':
+        model = VGG('VGG11')
     else:
         raise NotImplementedError
 
