@@ -32,7 +32,7 @@
         "loss": 'ce', # ce (Cross Entropy), mse (Mean Sq Error), bce(binary-CE)
         "lr0": 0.01,
         "momentum": 0.9,
-        "reg": 0.001,
+        "reg": 0.01,
         "nesterov": False,
         "amsgrad": False,
 
