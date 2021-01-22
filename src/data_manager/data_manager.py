@@ -105,10 +105,16 @@ class DataManager:
 
         # populate client data loader based on the distribution map
         for client in clients:
-            local_dataset = Subset(dataset=train_dataset,
-                                   indices=self.data_distribution_map[client.client_id])
+            indices = self.data_distribution_map[client.client_id]
+            flattened_indices = []
+            for ix in indices:
+                flattened_indices += ix
+            flattened_indices = torch.as_tensor(flattened_indices)
 
-            client.local_train_data = DataLoader(local_dataset.dataset,
+            local_dataset = Subset(dataset=train_dataset,
+                                   indices=flattened_indices)
+
+            client.local_train_data = DataLoader(local_dataset,
                                                  shuffle=True,
                                                  batch_size=self.data_config.get("train_batch_size", 256),
                                                  pin_memory=True,
