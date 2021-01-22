@@ -59,7 +59,7 @@
 
       "learner_config":
       {
-        "net": "vgg",
+        "net": "VGG19",
       },
 
       "aggregation_config":
