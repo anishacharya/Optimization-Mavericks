@@ -76,14 +76,11 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
 
                     print('\n ---------------- Communication Round {} ------------------------'.format(comm_rounds))
 
-                    print('--- Performance on Train Data -----')
-                    print('train loss = {}\n train acc = {}'.format(train_loss, train_acc))
+                    print('Epoch progress: {}/{}, train loss = {}, train acc = {}, test acc = {}'.
+                          format(epoch, num_epochs, train_loss, train_acc, test_acc))
                     metrics["train_error"].append(train_error)
                     metrics["train_loss"].append(train_loss)
                     metrics["train_acc"].append(train_acc)
-
-                    print('---- Generalization Performance ---- '.format(test_acc))
-                    print('test acc = {}'.format(test_acc))
 
                     metrics["test_error"].append(test_error)
                     metrics["test_acc"].append(test_acc)
