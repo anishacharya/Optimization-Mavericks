@@ -94,7 +94,10 @@ class DataManager:
             self.data_distribution_map = self._iid_sampling(clients=clients,
                                                             num_train=total_train_samples)
         elif sampler == 'non_iid':
-            labels = train_dataset.train_labels.numpy()
+            try:
+                labels = train_dataset.train_labels.numpy()
+            except:
+                labels = train_dataset.targets
             num_shards = self.data_config.get('num_shards', 100)
             self.data_distribution_map = self._non_iid_equal_sampling(clients=clients,
                                                                       labels=labels,
