@@ -72,8 +72,9 @@ def get_model(learner_config: Dict, data_config: Dict):
         dim_in = np.prod(shape) * nc
         model = MLP(dim_in=dim_in, dim_out=data_config["num_labels"])
 
-    elif net == 'vgg':
-        model = VGG('VGG16')
+    elif net in ['VGG11', 'VGG13', 'VGG16', 'VGG19']:
+        print('Building {}'.format(net))
+        model = VGG(net)
     else:
         raise NotImplementedError
 

@@ -4,9 +4,7 @@
 from .base import Agent
 from src.model_manager import (flatten_params,
                                dist_weights_to_model,
-                               flatten_grads,
-                               get_optimizer,
-                               get_scheduler)
+                               flatten_grads,)
 import copy
 from src.compression_manager import C
 
@@ -55,7 +53,6 @@ class FedClient(Agent):
 
     def train_step(self, num_steps=1, device="cpu"):  # -> float:
         dist_weights_to_model(self.w_current, learner=self.learner)
-        total_loss = 0
         for it in range(num_steps):
             model = self.learner.to(device)
             model.train()
@@ -146,8 +143,3 @@ class FedClient(Agent):
 
         # total_loss /= num_steps
         # return total_loss
-
-
-
-
-
