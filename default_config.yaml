@@ -1,6 +1,6 @@
 {
-  "train_mode": "fed", # fed(Federated), distributed(Distributed mini-batch SGD), decentralized (Decentralized SGD)
-  "pipeline": 'glomo', #
+  "train_mode": "distributed", # fed(Federated), distributed(Distributed mini-batch SGD), decentralized (Decentralized SGD)
+  "pipeline": 'default', #
 
   "data_config":
     {
@@ -14,7 +14,7 @@
       "train_num_workers": 1,
 
       ## For Federated / Decentralized Training
-      "data_sampling_strategy": 'non_iid', # Data distribution (Heterogeneous / Non-Heterogeneous)
+      "data_sampling_strategy": 'iid', # Data distribution (Heterogeneous / Non-Heterogeneous)
       "num_shards": 100, # Number of shards for non-iid ~~ usually set it to k * num_of_clients 2 is a good value for k
     },
 
@@ -64,16 +64,16 @@
 
       "aggregation_config":
       {
-        "gar": "geo_med",
+        "gar": "mean",
         "glomo_server_c": 1
       },
 
       "sparse_approximation_config":
       {
         "axis": 'column',
-        "rule": 'active_norm',
+        "rule": 'none',
         "frac_coordinates": 0.05,
-        "ef": True,
+        "ef": False,
       }
 
     },
