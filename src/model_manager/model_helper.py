@@ -73,7 +73,7 @@ def get_model(learner_config: Dict, data_config: Dict):
         model = MLP(dim_in=dim_in, dim_out=data_config["num_labels"])
 
     elif net == 'vgg':
-        model = VGG('VGG11')
+        model = VGG('VGG16')
     else:
         raise NotImplementedError
 
