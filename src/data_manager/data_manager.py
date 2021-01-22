@@ -119,7 +119,7 @@ class DataManager:
 
             client.local_train_data = DataLoader(local_dataset,
                                                  shuffle=True,
-                                                 batch_size=self.data_config.get("train_batch_size", 256),
+                                                 batch_size=self.data_config.get("batch_size", 256),
                                                  pin_memory=True,
                                                  num_workers=self.data_config.get("train_num_workers", 1))
             client.train_iter = iter(cycle(client.local_train_data))
