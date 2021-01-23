@@ -5,6 +5,15 @@ from .base import GAR
 from scipy.spatial.distance import cdist, euclidean
 
 
+class CoordinateWiseMedian(GAR):
+    def __init__(self, aggregation_config):
+        GAR.__init__(self, aggregation_config=aggregation_config)
+
+    def aggregate(self, G: np.ndarray) -> np.ndarray:
+        agg_grad = np.median(G, axis=0)
+        return agg_grad
+
+
 class GeometricMedian(GAR):
     def __init__(self, aggregation_config):
         GAR.__init__(self, aggregation_config=aggregation_config)

@@ -2,7 +2,7 @@
 # Licensed under the MIT License
 
 from .mean import Mean
-from .geomed import GeometricMedian
+from .median import GeometricMedian
 from .trimmed_mean import TrimmedMean
 from typing import Dict
 
