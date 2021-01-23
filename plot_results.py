@@ -33,26 +33,26 @@ if __name__ == '__main__':
     o = [
         'mean',
         'geo_med',
-        # 'mean.norm_0.1',
-        # 'mean.norm_0.1.ef',
+        'mean.norm_0.1',
+        'mean.norm_0.1.ef',
         'geo_med.norm_0.1',
         'geo_med.norm_0.1.ef',
-        # 'mean.norm_0.05',
-        # 'mean.norm_0.05.ef',
+        'mean.norm_0.05',
+        'mean.norm_0.05.ef',
         'geo_med.norm_0.05',
-        # 'geo_med.norm_0.05.ef'
+        #'geo_med.norm_0.05.ef'
 
     ]
     labels = ['Mini-Batch SGD',
               'GM SGD',
-              # 'Co-Sparse SGD (k=10%)',
-              # 'Co-Sparse EC-SGD (k=10%)',
+              'Co-Sparse SGD (k=10%)',
+              'Co-Sparse EC-SGD (k=10%)',
               'Co-Sparse GM SGD (k=10%)',
               'Co-Sparse GM EC-SGD (k=10%)',
-              # 'Co-Sparse SGD (k=5%)',
-              # 'Co-Sparse EC-SGD (k=5%)',
+              'Co-Sparse SGD (k=5%)',
+              'Co-Sparse EC-SGD (k=5%)',
               'Co-Sparse GM SGD (k=5%)',
-              # 'Co-Sparse GM EC-SGD (k=5%)'
+              #'Co-Sparse GM EC-SGD (k=5%)'
               ]
 
     plot_type = 'train_loss'
@@ -79,6 +79,7 @@ if __name__ == '__main__':
     elif plot_type is 'test_acc':
         plt.ylabel('Test Accuracy', fontsize=10)
         plt.xlabel('Communication Rounds', fontsize=10)
+        plt.ylim(bottom=80, top=90)
 
     elif plot_type is 'train_acc':
         plt.ylabel('Train Accuracy', fontsize=10)
