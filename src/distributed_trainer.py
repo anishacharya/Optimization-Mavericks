@@ -99,17 +99,20 @@ def run_batch_train(config, metrics):
 
     learner_config = training_config["learner_config"]
     optimizer_config = training_config.get("optimizer_config", {})
-    lrs_config = optimizer_config.get('lrs_config')
+
+    client_optimizer_config = optimizer_config.get("client_optimizer_config", {})
+    client_lrs_config = optimizer_config.get('client_lrs_config')
 
     aggregation_config = training_config["aggregation_config"]
     sparse_approx_config = aggregation_config.get("sparse_approximation_config", {})
     compression_config = aggregation_config.get("compression_config", {})
 
     # ------------------------- Initializations --------------------- #
-    model = get_model(learner_config=learner_config, data_config=data_config)
-    optimizer = get_optimizer(params=model.parameters(), optimizer_config=optimizer_config)
-    lrs = get_scheduler(optimizer=optimizer, lrs_config=lrs_config)
-    criterion = get_loss(loss=optimizer_config.get('loss', 'ce'))
+    client_model = get_model(learner_config=learner_config, data_config=data_config)
+    client_optimizer = get_optimizer(params=client_model.parameters(), optimizer_config=client_optimizer_config)
+    client_lrs = get_scheduler(optimizer=client_optimizer, lrs_config=client_lrs_config)
+    criterion = get_loss(loss=client_optimizer_config.get('loss', 'ce'))
+
     gar = get_gar(aggregation_config=aggregation_config)
     sparse_selection = SparseApproxMatrix(conf=sparse_approx_config)
 
@@ -122,7 +125,7 @@ def run_batch_train(config, metrics):
     test_loader = DataLoader(dataset=test_dataset, batch_size=len(test_dataset))
 
     t0 = time.time()
-    train_and_test_model(model=model, criterion=criterion, optimizer=optimizer, lrs=lrs,
+    train_and_test_model(model=client_model, criterion=criterion, optimizer=client_optimizer, lrs=client_lrs,
                          gar=gar,  sparse_selection=sparse_selection,
                          train_loader=train_loader, test_loader=test_loader,
                          metrics=metrics, train_config=training_config)

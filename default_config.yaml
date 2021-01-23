@@ -42,7 +42,7 @@
           "amsgrad": False,
         },
 
-        "lrs_config":
+        "client_lrs_config":
         {
           "lrs": 'step', # step, multi_step, exp, cyclic
           "milestones": [ 1, 5, 10 ],
