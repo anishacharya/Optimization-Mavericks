@@ -16,5 +16,5 @@ class TrimmedMean(GAR):
         self.proportion = self.trimmed_mean_config.get('proportion', 0.1)
 
     def aggregate(self, G: np.ndarray) -> np.ndarray:
-        agg_grad = stats.trim_mean(a=G, proportiontocut=self.proportion, axis=0)
+        agg_grad = stats.trim_mean(a=G, proportiontocut=self.proportion)
         return agg_grad
