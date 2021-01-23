@@ -21,7 +21,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 def train_and_test_model(model, criterion, optimizer, lrs, gar,
                          train_loader, test_loader, train_config, metrics,
-                         sparse_selection = None):
+                         sparse_selection=None):
 
     num_batches = train_config.get('num_clients', 1)
     num_epochs = train_config.get('global_epochs', 10)
@@ -99,11 +99,11 @@ def run_batch_train(config, metrics):
 
     learner_config = training_config["learner_config"]
     optimizer_config = training_config.get("optimizer_config", {})
-    lrs_config = training_config.get('lrs_config')
+    lrs_config = optimizer_config.get('lrs_config')
 
     aggregation_config = training_config["aggregation_config"]
-    sparse_approx_config = training_config["sparse_approximation_config"]
-    compression_config = training_config["compression_config"]
+    sparse_approx_config = aggregation_config.get("sparse_approximation_config", {})
+    compression_config = aggregation_config.get("compression_config", {})
 
     # ------------------------- Initializations --------------------- #
     model = get_model(learner_config=learner_config, data_config=data_config)

@@ -26,55 +26,62 @@
       "global_epochs": 20, # Number of communication Rounds
       "local_epochs": 1, # Local SGD number of local steps
 
+      # Define Optimization related Hyper params below
+      # -------------------------------------------------
       "optimizer_config":
       {
-        "optimizer": 'SGD', # SGD, Adam
-        "loss": 'ce', # ce (Cross Entropy), mse (Mean Sq Error), bce(binary-CE)
-        "lr0": 0.1,
-        "momentum": 0.9,
-        "reg": 0.01,
-        "nesterov": False,
-        "amsgrad": False,
-
+        "client_optimizer_config":
+        {
+          "optimizer": 'SGD', # SGD, Adam
+          "loss": 'ce', # ce (Cross Entropy), mse (Mean Sq Error), bce(binary-CE)
+          "lr0": 0.1,
+          "momentum": 0.9,
+          "reg": 0.01,
+          "nesterov": False,
+          "amsgrad": False,
+        },
+        "lrs_config":
+        {
+          "lrs": 'step', # step, multi_step, exp, cyclic
+          "milestones": [ 1, 5, 10 ],
+          "step_size": 5,
+          "gamma": 0.1
+        },
         "server_optimizer_config":
-          {
-            "optimizer": 'SGD',
-            "lr0": 1,
-          }
+        {
+          "optimizer": 'SGD',
+          "lr0": 1,
+        }
       },
 
-      "lrs_config":
-      {
-        "lrs": 'step', # step, multi_step, exp, cyclic
-        "milestones": [1, 5, 10],
-        "step_size": 5,
-        "gamma": 0.1
-      },
-
-      "compression_config":
-      {
-        "compression_operator": "full", # full (No Compression), top_k, rand_k
-        "frac_coordinates_to_keep": 0.5, # For top-k, rand-k specify sparsity (k)
-      },
-
+      # Define Model Architecture and related config
+      # -------------------------------------------------
       "learner_config":
-      {
-        "net": "lenet",
-      },
+        {
+          "net": "lenet",
+        },
 
+      # Define Communication Compression and related config
+      # -------------------------------------------------
       "aggregation_config":
       {
         "gar": "geo_med",
-        "glomo_server_c": 1
-      },
+        "trimmed_mean_config": { "proportion": 0.1 },
+        "glomo_config": { "glomo_server_c": 1 }
 
-      "sparse_approximation_config":
-      {
-        "axis": 'column',
-        "rule": 'active_norm',
-        "frac_coordinates": 0.05,
-        "ef": True,
+        "compression_config":
+        {
+          "compression_operator": "full", # full (No Compression), top_k, rand_k
+          "frac_coordinates_to_keep": 0.5, # For top-k, rand-k specify sparsity (k)
+        },
+
+        "sparse_approximation_config":
+          {
+            "rule": 'active_norm',
+            "axis": 'column',
+            "frac_coordinates": 0.05,
+            "ef": True,
+          },
       }
-
-    },
+    }
 }
