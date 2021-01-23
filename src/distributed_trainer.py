@@ -32,10 +32,10 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
         G = None
         comm_rounds = 0
 
-        print('\n--------------------------------------------------------\n'
-              ' ----------------------   Epoch: {} ----------------------\n '
-              '----------------------------------------------------------'.format(epoch))
-        print('learning rate: {} \n'.format(optimizer.param_groups[0]['lr']))
+        # print('\n--------------------------------------------------------\n'
+        #      ' ----------------------   Epoch: {} ----------------------\n '
+        #      '----------------------------------------------------------'.format(epoch))
+        print('learning rate: {}'.format(optimizer.param_groups[0]['lr']))
         # ------- Training Phase --------- #
         for batch_ix, (images, labels) in enumerate(train_loader):
             images = images.to(device)
@@ -73,9 +73,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                     test_error, test_acc, _ = evaluate_classifier(model=model, data_loader=test_loader, device=device)
                     train_error, train_acc, train_loss = evaluate_classifier(model=model, data_loader=train_loader,
                                                                              criterion=criterion, device=device)
-
                     # print('\n ---------------- Communication Round {} ------------------------'.format(comm_rounds))
-
                     print('Epoch progress: {}/{}, train loss = {}, train acc = {}, test acc = {}'.
                           format(epoch, num_epochs, train_loss, train_acc, test_acc))
                     metrics["train_error"].append(train_error)
