@@ -26,6 +26,7 @@
       "global_epochs": 20, # Number of communication Rounds
       "local_epochs": 1, # Local SGD number of local steps
 
+
       # Define Optimization related Hyper params below
       # -------------------------------------------------
       "optimizer_config":
@@ -40,6 +41,7 @@
           "nesterov": False,
           "amsgrad": False,
         },
+
         "lrs_config":
         {
           "lrs": 'step', # step, multi_step, exp, cyclic
@@ -47,6 +49,7 @@
           "step_size": 5,
           "gamma": 0.1
         },
+
         "server_optimizer_config":
         {
           "optimizer": 'SGD',
@@ -67,7 +70,7 @@
       {
         "gar": "mean",
         "trimmed_mean_config": { "proportion": 0.1 },
-        "glomo_config": { "glomo_server_c": 1 }
+        "glomo_config": { "glomo_server_c": 1 },
 
         "compression_config":
         {
