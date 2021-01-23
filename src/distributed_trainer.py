@@ -58,7 +58,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
             # -------  Communication Round ------- #
             if agg_ix == 0 and batch_ix is not 0:
                 # Sparse Approximation of G
-                G_sparse = sparse_selection.sparse_approx(G=G)
+                G_sparse = sparse_selection.sparse_approx(G=G, metrics=metrics)
                 # Gradient aggregation
                 agg_g = gar.aggregate(G=G_sparse)
 

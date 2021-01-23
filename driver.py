@@ -26,14 +26,15 @@ def run_main():
     config = yaml.load(open(config_path), Loader=yaml.FullLoader)
 
     metrics = {"config": config,
-               "epoch_loss": [],
+
                "test_error": [],
                "test_loss": [],
                "test_acc": [],
                "train_error": [],
                "train_loss": [],
                "train_acc": [],
-               "runtime": 0}
+
+               "frac_mass_retained": []}
     # Train
     train_mode = config.get("train_mode", 'fed')
     if train_mode == 'fed':
