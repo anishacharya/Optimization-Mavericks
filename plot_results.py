@@ -32,27 +32,27 @@ if __name__ == '__main__':
     d = 'result_dumps/Robust/distributed/fashion_mnist/'
     o = [
         'mean',
-        'geo_med',
+        # 'geo_med',
         'mean.norm_0.1',
         'mean.norm_0.1.ef',
-        'geo_med.norm_0.1',
-        'geo_med.norm_0.1.ef',
+        # 'geo_med.norm_0.1',
+        # 'geo_med.norm_0.1.ef',
         'mean.norm_0.05',
         'mean.norm_0.05.ef',
-        'geo_med.norm_0.05',
-        #'geo_med.norm_0.05.ef'
+        # 'geo_med.norm_0.05',
+        # 'geo_med.norm_0.05.ef'
 
     ]
     labels = ['Mini-Batch SGD',
-              'GM SGD',
-              'Co-Sparse SGD (k=10%)',
-              'Co-Sparse EC-SGD (k=10%)',
-              'Co-Sparse GM SGD (k=10%)',
-              'Co-Sparse GM EC-SGD (k=10%)',
-              'Co-Sparse SGD (k=5%)',
-              'Co-Sparse EC-SGD (k=5%)',
-              'Co-Sparse GM SGD (k=5%)',
-              #'Co-Sparse GM EC-SGD (k=5%)'
+              # 'GM SGD',
+              'Sparse SGD (k=10%)',
+              'Sparse SGD + Memory (k=10%)',
+              # 'Co-Sparse GM SGD (k=10%)',
+              # 'Co-Sparse GM EC-SGD (k=10%)',
+              'Sparse SGD (k=5%)',
+              'Sparse SGD + Memory (k=5%)',
+              # 'Co-Sparse GM SGD (k=5%)',
+              # 'Co-Sparse GM EC-SGD (k=5%)'
               ]
 
     plot_type = 'train_loss'
