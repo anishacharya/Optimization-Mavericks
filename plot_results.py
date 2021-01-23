@@ -20,7 +20,7 @@ def plot_driver(label: str, res_file: str, plt_type: str = 'epoch_loss',
     plt.plot(x, res, label=label, linewidth=line_width, marker=marker, linestyle=line_style)
 
 
-if __name__ == '__main__':
+def plot_metrics():
     # -------------------------------
     # ** Usually No Need to Modify **
     # -------------------------------
@@ -100,3 +100,7 @@ if __name__ == '__main__':
     # plt.title('')
     plt.legend(fontsize=11)
     plt.show()
+
+
+if __name__ == '__main__':
+    plot_metrics()
