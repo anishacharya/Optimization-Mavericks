@@ -4,13 +4,14 @@ from matplotlib.ticker import MaxNLocator
 import matplotlib.ticker as ticker
 import json
 from typing import List, Dict
+from src.aggregation_manager import get_gar
 import time
+from numpyencoder import NumpyEncoder
 
 
 def plot_driver(label: str, res_file: str, plt_type: str = 'epoch_loss',
                 line_width=2, marker=None, line_style=None, optima: float = 0.0,
                 sampling_freq: int = 1):
-
     with open(res_file, 'rb') as f:
         result = json.load(f)
 
@@ -114,15 +115,45 @@ def get_runtime(gar, X, repeat: int = 10):
     return T
 
 
-def compare_gar_speed(gar: str, repeat: int = 10):
+def compare_gar_speed(agg_config: Dict):
+
     d = [100, 1000, 10000, 100000]
     n = 500
-    runtimes = {}
-
+    res = {}
+    gar = get_gar(aggregation_config=agg_config)
     for dim in d:
         # generate n points in d dimensions
         X = np.random.normal(0, 0.3, (n, dim))
+        t = get_runtime(gar=gar, X=X, repeat=3)
+        res[dim] = t
+
+    return res
 
 
 if __name__ == '__main__':
-    plot_metrics()
+    # plot_metrics()
+
+    aggregation_config = \
+    {
+        "gar": "mean",
+        "trimmed_mean_config": {"proportion": 0.1},
+        "glomo_config": {"glomo_server_c": 1},
+
+        "compression_config":
+        {
+            "compression_operator": "full",  # full (No Compression), top_k, rand_k
+            "frac_coordinates_to_keep": 0.5,  # For top-k, rand-k specify sparsity (k)
+        },
+
+        "sparse_approximation_config":
+        {
+            "rule": 'active_norm',
+            "axis": 'column',
+            "frac_coordinates": 0.05,
+            "ef": True,
+        }
+    }
+    op_file = 'result_dumps/timing/mean'
+    results = compare_gar_speed(agg_config=aggregation_config)
+    with open(op_file, 'w+') as f:
+        json.dump(results, f, indent=4, ensure_ascii=False, cls=NumpyEncoder)
