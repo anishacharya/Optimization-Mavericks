@@ -7,6 +7,7 @@ from typing import List, Dict
 from src.aggregation_manager import get_gar
 import time
 from numpyencoder import NumpyEncoder
+from src.compression_manager import SparseApproxMatrix
 
 
 def plot_driver(label: str, res_file: str, plt_type: str = 'epoch_loss',
@@ -115,8 +116,7 @@ def get_runtime(gar, X, repeat: int = 10):
     return T
 
 
-def compare_gar_speed(agg_config: Dict):
-
+def compare_gar_speed(agg_config: Dict, column_sampling=None):
     d = [100, 1000, 10000, 100000]
     n = 500
     res = {}
@@ -124,7 +124,11 @@ def compare_gar_speed(agg_config: Dict):
     for dim in d:
         # generate n points in d dimensions
         X = np.random.normal(0, 0.3, (n, dim))
-        t = get_runtime(gar=gar, X=X, repeat=3)
+        if column_sampling is not None:
+            X_sparse = column_sampling.sparse_approx(G=X)
+            t = get_runtime(gar=gar, X=X_sparse, repeat=3)
+        else:
+            t = get_runtime(gar=gar, X=X, repeat=3)
         res[dim] = t
 
     return res
@@ -134,26 +138,27 @@ if __name__ == '__main__':
     # plot_metrics()
 
     aggregation_config = \
-    {
-        "gar": "mean",
-        "trimmed_mean_config": {"proportion": 0.1},
-        "glomo_config": {"glomo_server_c": 1},
-
-        "compression_config":
         {
-            "compression_operator": "full",  # full (No Compression), top_k, rand_k
-            "frac_coordinates_to_keep": 0.5,  # For top-k, rand-k specify sparsity (k)
-        },
-
-        "sparse_approximation_config":
-        {
-            "rule": 'active_norm',
-            "axis": 'column',
-            "frac_coordinates": 0.05,
-            "ef": True,
+            "gar": "mean",
+            "trimmed_mean_config": {"proportion": 0.1},
+            "glomo_config": {"glomo_server_c": 1},
         }
+
+    sparse_approximation_config = {
+        "rule": None,
+        "axis": 'column',
+        "frac_coordinates": 0.05,
+        "ef": True,
     }
+
     op_file = 'result_dumps/timing/mean'
-    results = compare_gar_speed(agg_config=aggregation_config)
+
+    sparse_approx = SparseApproxMatrix(conf=sparse_approximation_config)
+
+    if sparse_approximation_config["rule"] is not None:
+        results = compare_gar_speed(agg_config=aggregation_config, column_sampling=sparse_approx)
+    else:
+        results = compare_gar_speed(agg_config=aggregation_config)
+
     with open(op_file, 'w+') as f:
         json.dump(results, f, indent=4, ensure_ascii=False, cls=NumpyEncoder)

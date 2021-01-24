@@ -25,7 +25,9 @@ class SparseApproxMatrix:
         self.ef = conf.get('ef', False)
         self.residual_error = None
 
-    def sparse_approx(self, G: np.ndarray, metrics: Dict) -> np.ndarray:
+    def sparse_approx(self, G: np.ndarray, metrics=None) -> np.ndarray:
+        if metrics is None:
+            metrics = {}
         n, d = G.shape
         G_sparse = np.zeros_like(G)
         # for the first run compute k
@@ -50,7 +52,9 @@ class SparseApproxMatrix:
             I_k, frac_mass_retained = self._random_sampling(d=d if self.axis == 0 else n)
         else:
             return G
-        metrics["frac_mass_retained"].append(frac_mass_retained)
+
+        if metrics is not None:
+            metrics["frac_mass_retained"].append(frac_mass_retained)
 
         if self.axis == 0:
             # column sampling
