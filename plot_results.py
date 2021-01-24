@@ -134,31 +134,33 @@ def compare_gar_speed(agg_config: Dict, column_sampling=None):
     return res
 
 
-if __name__ == '__main__':
-    # plot_metrics()
-
+def runtime_exp():
+    op_file = 'result_dumps/timing_exp/geo_med.norm_0.1'
     aggregation_config = \
         {
-            "gar": "mean",
+            "gar": "geo_med",
             "trimmed_mean_config": {"proportion": 0.1},
             "glomo_config": {"glomo_server_c": 1},
         }
 
     sparse_approximation_config = {
-        "rule": None,
+        "rule": 'active_norm',
         "axis": 'column',
-        "frac_coordinates": 0.05,
-        "ef": True,
+        "frac_coordinates": 0.1,
     }
-
-    op_file = 'result_dumps/timing/mean'
 
     sparse_approx = SparseApproxMatrix(conf=sparse_approximation_config)
 
     if sparse_approximation_config["rule"] is not None:
+        print('Running with sparse G approx')
         results = compare_gar_speed(agg_config=aggregation_config, column_sampling=sparse_approx)
     else:
         results = compare_gar_speed(agg_config=aggregation_config)
 
     with open(op_file, 'w+') as f:
         json.dump(results, f, indent=4, ensure_ascii=False, cls=NumpyEncoder)
+
+
+if __name__ == '__main__':
+    # plot_metrics()
+    runtime_exp()

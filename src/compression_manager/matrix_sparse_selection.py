@@ -26,8 +26,6 @@ class SparseApproxMatrix:
         self.residual_error = None
 
     def sparse_approx(self, G: np.ndarray, metrics=None) -> np.ndarray:
-        if metrics is None:
-            metrics = {}
         n, d = G.shape
         G_sparse = np.zeros_like(G)
         # for the first run compute k
