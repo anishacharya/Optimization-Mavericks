@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import MaxNLocator
 import matplotlib.ticker as ticker
 import json
+from typing import List, Dict
 
 
 def plot_driver(label: str, res_file: str, plt_type: str = 'epoch_loss',
@@ -100,6 +101,21 @@ def plot_metrics():
     # plt.title('')
     plt.legend(fontsize=11)
     plt.show()
+
+
+def compare_gar_speed(gars: List[str], repeat: int = 10) -> Dict[str, float]:
+    d = [100, 1000, 10000, 100000]
+    n = 500
+
+    runtimes = {}
+    for dim in d:
+        # generate n points in d dimensions
+        X = np.random.normal(0, 0.3, (n, dim))
+        for it in range(repeat):
+
+        pass
+
+    return runtimes
 
 
 if __name__ == '__main__':
