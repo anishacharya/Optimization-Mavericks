@@ -34,7 +34,8 @@ def run_main():
                "train_loss": [],
                "train_acc": [],
 
-               "frac_mass_retained": []}
+               "frac_mass_retained": [],
+               "avg_frac_mass": 0}
     # Train
     train_mode = config.get("train_mode", 'fed')
     if train_mode == 'fed':

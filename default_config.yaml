@@ -61,7 +61,7 @@
       # -------------------------------------------------
       "learner_config":
         {
-          "net": "lenet",
+          "net": "VGG19",
         },
 
       # Define Communication Compression and related config

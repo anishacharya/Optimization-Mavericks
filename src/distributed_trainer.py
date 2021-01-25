@@ -12,7 +12,7 @@ from src.compression_manager import SparseApproxMatrix
 import torch
 from torch.utils.data import DataLoader
 import numpy as np
-import time
+import statistics
 
 torch.manual_seed(1)
 
@@ -88,6 +88,8 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
         if lrs is not None:
             lrs.step()
 
+    metrics["avg_frac_mass"] = statistics.mean(metrics["frac_mass_retained"])
+
 
 def run_batch_train(config, metrics):
     # ------------------------ Fetch configs ----------------------- #
@@ -122,13 +124,8 @@ def run_batch_train(config, metrics):
     train_loader = DataLoader(dataset=train_dataset, batch_size=batch_size, shuffle=True)
     test_loader = DataLoader(dataset=test_dataset, batch_size=len(test_dataset))
 
-    t0 = time.time()
     train_and_test_model(model=client_model, criterion=criterion, optimizer=client_optimizer, lrs=client_lrs,
                          gar=gar,  sparse_selection=sparse_selection,
                          train_loader=train_loader, test_loader=test_loader,
                          metrics=metrics, train_config=training_config)
-    print("---------- End of Training -----------")
-    time_taken = time.time() - t0
-    metrics["runtime"] = time_taken
-    print('Total Time to train = {} sec'.format(time_taken))
     return metrics
