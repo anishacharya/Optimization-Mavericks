@@ -80,7 +80,7 @@ class SparseApproxMatrix:
                                replace=False)
 
         # Needed only to get the mass retained stats
-        norm_dist = np.square(np.linalg.norm(G, axis=self.axis))
+        norm_dist = np.linalg.norm(G, axis=self.axis)
         mass_retained = sum(norm_dist[ix] for ix in I_k)
         frac_mass_retained = mass_retained / sum(norm_dist)
 
