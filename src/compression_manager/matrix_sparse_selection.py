@@ -99,4 +99,6 @@ class SparseApproxMatrix:
 
         mass_retained = sum(norm_dist[ix] for ix in I_k)
         frac_mass_retained = mass_retained / sum(norm_dist)
+
+        print('fraction of mass retained {}'.format(frac_mass_retained))
         return I_k, frac_mass_retained
