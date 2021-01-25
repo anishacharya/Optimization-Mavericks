@@ -52,6 +52,7 @@ def plot_metrics():
         'geo_med',
         'krum.0.3',
         'geo_med.0.1',
+        'geo_med.0.25',
         'geo_med.0.5'
 
     ]
@@ -60,6 +61,7 @@ def plot_metrics():
         'GM',
         'Krum',
         '10-sGM',
+        "25-sGM",
         '50-sGM'
               ]
 
@@ -159,10 +161,10 @@ def compare_gar_speed(agg_config: Dict,
 
 
 def runtime_exp():
-    op_file = 'result_dumps/timing_exp/krum.0.3'
+    op_file = 'result_dumps/timing_exp/mean'
     aggregation_config = \
         {
-            "gar": "krum",
+            "gar": "mean",
             "krum_config": {"krum_frac": 0.3},
         }
 
