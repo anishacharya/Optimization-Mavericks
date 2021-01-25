@@ -7,7 +7,7 @@ pre-defined k subset of co-ordinates and aggregate only along these directions.
 corresponds to g_i i.e. gradient vector computed on batch / client i
 """
 import numpy as np
-from typing import Dict
+from scipy import stats
 
 
 class SparseApproxMatrix:
@@ -52,7 +52,10 @@ class SparseApproxMatrix:
             return G
 
         if metrics is not None:
-            metrics["frac_mass_retained"].append(frac_mass_retained)
+            if metrics["frac_mass_retained"] is None:
+                metrics["frac_mass_retained"] = frac_mass_retained
+            else:
+                metrics["frac_mass_retained"] += frac_mass_retained
 
         if self.axis == 0:
             # column sampling
@@ -81,10 +84,11 @@ class SparseApproxMatrix:
 
         # Needed only to get the mass retained stats
         norm_dist = np.linalg.norm(G, axis=self.axis)
+
         mass_retained = sum(norm_dist[ix] for ix in I_k)
         frac_mass_retained = mass_retained / sum(norm_dist)
 
-        # print('fraction of mass retained {}'.format(frac_mass_retained))
+        print('fraction of mass retained {}'.format(frac_mass_retained))
         return I_k, frac_mass_retained
 
     def _active_norm_sampling(self, G: np.ndarray) -> [np.ndarray, float]:
@@ -94,11 +98,13 @@ class SparseApproxMatrix:
         Ref: Drineas, P., Kannan, R., and Mahoney, M. W.  Fast monte carlo algorithms for matrices:
         Approximating matrix multiplication. SIAM Journal on Computing, 36(1):132–157, 2006
         """
-        norm_dist = np.square(np.linalg.norm(G, axis=self.axis))
-        I_k = np.argsort(np.abs(norm_dist))[::-1][:self.k]
+        norm_dist = np.linalg.norm(G, axis=self.axis)
+        sorted_ix = np.argsort(norm_dist)[::-1]
+        norm_dist /= sum(norm_dist)
 
-        mass_retained = sum(norm_dist[ix] for ix in I_k)
-        frac_mass_retained = mass_retained / sum(norm_dist)
+        frac_mass_retained = np.cumsum(norm_dist)
+        # mass_retained = sum(norm_dist[ix] for ix in I_k)
+        # frac_mass_retained = mass_retained / sum(norm_dist)
 
-        print('fraction of mass retained {}'.format(frac_mass_retained))
-        return I_k, frac_mass_retained
+        print('fraction of mass retained by top 10% coordinates {}'.format(frac_mass_retained[int(0.1*len(norm_dist))]))
+        return sorted_ix[:self.k], frac_mass_retained
