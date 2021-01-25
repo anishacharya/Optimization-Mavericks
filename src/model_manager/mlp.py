@@ -23,7 +23,7 @@ class LogisticRegression(nn.Module):
 
 
 class MLP(nn.Module):
-    def __init__(self, dim_in, dim_out, hidden1=300, hidden2=300):
+    def __init__(self, dim_in, dim_out, hidden1, hidden2):
         super(MLP, self).__init__()
         self.fc1 = nn.Linear(dim_in, hidden1)
         # torch.nn.init.zeros_(self.fc1.weight)

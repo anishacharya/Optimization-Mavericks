@@ -61,7 +61,8 @@
       # -------------------------------------------------
       "learner_config":
         {
-          "net": "VGG19",
+          "net": "mlp",
+          "mlp_config": {"h1": 300, "h2": 300}
         },
 
       # Define Communication Compression and related config
