@@ -46,27 +46,23 @@ def plot_metrics():
 
     # -------------------------------------------------------------------------------------------
     # ------------------------------- Modify Here -----------------------------------------------
-    d = 'result_dumps/timing_exp/'
+    d = 'result_dumps/Robust/distributed/mnist/'
     o = [
-        'mean',
-        'geo_med',
-        'krum.0.3',
-        'geo_med.0.1',
-        'geo_med.0.25',
-        'geo_med.0.5'
+        'mean.norm_0.1',
+        'mean.norm_0.2',
+        'mean.norm_0.3',
+        'mean.norm_0.5',
 
     ]
     labels = [
-        'Mean',
-        'GM',
-        'Krum',
-        '10-sGM',
-        "25-sGM",
-        '50-sGM'
+        '10%',
+        '20%',
+        '30%',
+        '50%',
               ]
 
-    plot_type = 'timing'
-    sampling_freq = 5
+    plot_type = 'avg_frac_mass'
+    sampling_freq = 1
 
     for op, label in zip(o, labels):
         result_file = d + op
@@ -111,11 +107,15 @@ def plot_metrics():
         plt.ylabel('Time', fontsize=10)
         plt.xlabel('Dimension', fontsize=10)
 
+    elif plot_type is 'avg_frac_mass':
+        plt.xlabel('Fraction of Coordinates', fontsize=10)
+        plt.ylabel('Fraction of Gradient Mass Explained', fontsize=10)
     else:
         raise NotImplementedError
 
     # plt.title('')
-    plt.legend(fontsize=11)
+
+    plt.legend(fontsize=11, loc=2)
     plt.show()
 
 
@@ -161,10 +161,10 @@ def compare_gar_speed(agg_config: Dict,
 
 
 def runtime_exp():
-    op_file = 'result_dumps/timing_exp/mean'
+    op_file = 'result_dumps/timing_exp/trimmed_mean'
     aggregation_config = \
         {
-            "gar": "mean",
+            "gar": "trimmed_mean",
             "krum_config": {"krum_frac": 0.3},
         }
 
