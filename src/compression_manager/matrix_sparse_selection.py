@@ -33,7 +33,7 @@ class SparseApproxMatrix:
             self.k = int(self.frac * d)
         # Initialize residual error to zero first time
         if self.residual_error is None:
-            print('Initializing Residual Error')
+            # print('Initializing Residual Error')
             self.residual_error = np.zeros((n, d), dtype=G[0, :].dtype)
 
         # Error Compensation (if ef is False, residual error = 0 as its not updated)

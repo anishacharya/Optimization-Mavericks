@@ -21,10 +21,7 @@ class GeometricMedian(GAR):
         self.geo_med_alg = self.geo_med_config.get('geo_med_alg', 'vardi')
 
     def aggregate(self, G: np.ndarray) -> np.ndarray:
-        if self.geo_med_alg == 'vardi':
-            return vardi(X=G)
-        else:
-            raise NotImplementedError
+        return vardi(X=G)
 
 
 def vardi(X, eps=1e-5) -> np.ndarray:

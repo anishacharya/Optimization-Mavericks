@@ -33,10 +33,8 @@ def plot_timing(res_file: str, label, line_width=2, marker=None, line_style=None
     ax = plt.gca()
 
     plt.yscale('log')
-    #ax.set_xscale('log')
     plt.scatter(d, t, label=label)  #, linewidth=line_width, marker=marker, linestyle=line_style)
     plt.plot(d, t, linestyle='dashed')
-
 
 
 def plot_metrics():
@@ -52,13 +50,17 @@ def plot_metrics():
     o = [
         'mean',
         'geo_med',
-        'geo_med.norm_0.1'
+        'krum.0.3',
+        'geo_med.0.1',
+        'geo_med.0.5'
 
     ]
     labels = [
         'Mean',
         'GM',
-        '10-sGM'
+        'Krum',
+        '10-sGM',
+        '50-sGM'
               ]
 
     plot_type = 'timing'
@@ -115,7 +117,7 @@ def plot_metrics():
     plt.show()
 
 
-def get_runtime(gar, X, repeat: int = 10):
+def get_runtime(gar, X, repeat: int = 1):
     T = 0
     for it in range(repeat):
         t0 = time.time()
@@ -128,7 +130,7 @@ def get_runtime(gar, X, repeat: int = 10):
 def compare_gar_speed(agg_config: Dict,
                       sparse_approximation_config=None):
     # d = [100, 1000, 10000, 100000]
-    d = [100000, 1000000, 10000000, 100000000]
+    d = [int(1e3), int(5e3), int(1e4), int(5e4)]
     n = 500
     res = {}
     gar = get_gar(aggregation_config=agg_config)
@@ -136,31 +138,38 @@ def compare_gar_speed(agg_config: Dict,
     for dim in d:
         sparse_approx_op = SparseApproxMatrix(conf=sparse_approximation_config)
         # generate n points in d dimensions
+
         X = np.random.normal(0, 0.3, (n, dim))
+        k = sparse_approximation_config['frac_coordinates']
+        ix = list(range(int(k * dim)))
+        X_sparse = X[:, ix]
+
         if sparse_approximation_config["rule"] is not None:
-            print('Running with sparse G approx')
-            X_sparse = sparse_approx_op.sparse_approx(G=X)
-            t = get_runtime(gar=gar, X=X_sparse, repeat=3)
+            # Compute time for sparse approx.
+            # t0 = time.time()
+            # _ = sparse_approx_op.sparse_approx(G=X)
+            # t = time.time() - t0
+            # Compute GM time
+            t = get_runtime(gar=gar, X=X_sparse)
         else:
-            t = get_runtime(gar=gar, X=X, repeat=3)
+            t = get_runtime(gar=gar, X=X)
         res[dim] = t
 
     return res
 
 
 def runtime_exp():
-    op_file = 'result_dumps/timing_exp/geo_med.norm_0.1'
+    op_file = 'result_dumps/timing_exp/krum.0.3'
     aggregation_config = \
         {
-            "gar": "mean",
-            "trimmed_mean_config": {"proportion": 0.1},
-            "glomo_config": {"glomo_server_c": 1},
+            "gar": "krum",
+            "krum_config": {"krum_frac": 0.3},
         }
 
     sparse_approximation_config = {
         "rule": 'active_norm',
         "axis": 'column',
-        "frac_coordinates": 0.1,
+        "frac_coordinates": 1,
     }
 
     results = compare_gar_speed(agg_config=aggregation_config,
