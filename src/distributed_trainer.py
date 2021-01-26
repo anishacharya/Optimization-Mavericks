@@ -91,9 +91,9 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
     if compute_grad_stat_flag is True:
         # compute bins
         metrics["norm_bins"] = np.linspace(metrics["min_norm"], metrics["max_norm"], num=1000)
-
         for ix, norm_dist in enumerate(metrics["grad_norm_dist"]):
-            metrics["grad_norm_dist"][ix], _ = np.histogram(norm_dist, bins=metrics["norm_bins"])
+            vals, _ = np.histogram(norm_dist, bins=metrics["norm_bins"])
+            metrics["grad_norm_dist"][ix] = vals
 
 
 def run_batch_train(config, metrics):
