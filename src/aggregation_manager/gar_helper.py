@@ -42,7 +42,7 @@ def compute_grad_stats(G: np.ndarray, metrics: Dict):
     frac_mass_retained = np.cumsum(sorted_dist)
     ix = np.linspace(0, 1, 11)
     ix *= len(norm_dist)
-    ix.astype(int)
+    ix = ix.astype(int)
     # frac_mass, _ = np.histogram(frac_mass_retained, bins=metrics["mass_bins"])
     metrics["frac_mass_retained"].append(frac_mass_retained[ix])
 
