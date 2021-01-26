@@ -21,7 +21,6 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 def train_and_test_model(model, criterion, optimizer, lrs, gar,
                          train_loader, test_loader, train_config, metrics,
                          sparse_selection=None):
-
     num_batches = train_config.get('num_clients', 1)
     num_epochs = train_config.get('global_epochs', 10)
     compute_grad_stat_flag = train_config.get('compute_grad_stats', False)
@@ -92,10 +91,9 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
     if compute_grad_stat_flag is True:
         # compute bins
         metrics["norm_bins"] = np.linspace(metrics["min_norm"], metrics["max_norm"], num=1000)
-        metrics["mass_bins"] = np.linspace(0, 1, 11)
-        for ix, (norm_dist, frac_mass) in enumerate(zip(metrics["grad_norm_dist"], metrics["frac_mass_retained"])):
+
+        for ix, norm_dist in enumerate(metrics["grad_norm_dist"]):
             metrics["grad_norm_dist"][ix], _ = np.histogram(norm_dist, bins=metrics["norm_bins"])
-            metrics["frac_mass_retained"][ix], _ = np.histogram(frac_mass, bins=metrics["mass_bins"])
 
 
 def run_batch_train(config, metrics):
@@ -132,7 +130,7 @@ def run_batch_train(config, metrics):
     test_loader = DataLoader(dataset=test_dataset, batch_size=len(test_dataset))
 
     train_and_test_model(model=client_model, criterion=criterion, optimizer=client_optimizer, lrs=client_lrs,
-                         gar=gar,  sparse_selection=sparse_selection,
+                         gar=gar, sparse_selection=sparse_selection,
                          train_loader=train_loader, test_loader=test_loader,
                          metrics=metrics, train_config=training_config)
     return metrics
