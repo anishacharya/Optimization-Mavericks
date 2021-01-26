@@ -64,7 +64,7 @@
       "learner_config":
         {
           "net": "mlp",
-          "mlp_config": {"h1": 300, "h2": 300}
+          "mlp_config": {"h1": 500, "h2": 500}
         },
 
       # Define Communication Compression and related config
