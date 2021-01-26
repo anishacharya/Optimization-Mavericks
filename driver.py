@@ -36,7 +36,8 @@ def run_main():
 
                "frac_mass_retained": [],
                "grad_norm_dist": [],
-               "bins": None,
+               "norm_bins": None,
+               "mass_bins": None,
                "max_norm": 0,
                "min_norm": 1e6}
     # Train

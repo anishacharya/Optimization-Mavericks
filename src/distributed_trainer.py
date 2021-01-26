@@ -91,10 +91,11 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
     # #### ------- All Epochs Done ----------------- ####
     if compute_grad_stat_flag is True:
         # compute bins
-        metrics["bins"] = np.linspace(metrics["min_norm"], metrics["max_norm"], num=1000)
+        metrics["norm_bins"] = np.linspace(metrics["min_norm"], metrics["max_norm"], num=1000)
+        metrics["mass_bins"] = np.linspace(0, 1, 11)
         for ix, (norm_dist, frac_mass) in enumerate(zip(metrics["grad_norm_dist"], metrics["frac_mass_retained"])):
-            metrics["grad_norm_dist"][ix], _ = np.histogram(norm_dist, bins=metrics["bins"])
-            metrics["frac_mass_retained"][ix], _ = np.histogram(frac_mass, bins=metrics["bins"])
+            metrics["grad_norm_dist"][ix], _ = np.histogram(norm_dist, bins=metrics["norm_bins"])
+            metrics["frac_mass_retained"][ix], _ = np.histogram(frac_mass, bins=metrics["mass_bins"])
 
 
 def run_batch_train(config, metrics):
