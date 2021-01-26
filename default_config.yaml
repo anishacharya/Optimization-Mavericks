@@ -21,7 +21,7 @@
 
   "training_config":
     {
-      "num_clients": 50, # Number of clients / parallel batches
+      "num_clients": 10, # Number of clients / parallel batches
       "client_fraction": 1, # specify fraction of client participation per round
       "global_epochs": 20, # Number of communication Rounds
       "local_epochs": 1, # Local SGD number of local steps
