@@ -35,7 +35,10 @@ def run_main():
                "train_acc": [],
 
                "frac_mass_retained": [],
-               "avg_frac_mass": 0}
+               "grad_norm_dist": [],
+               "bins": None,
+               "max_norm": 0,
+               "min_norm": 1e6}
     # Train
     train_mode = config.get("train_mode", 'fed')
     if train_mode == 'fed':

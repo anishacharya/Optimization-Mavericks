@@ -26,6 +26,8 @@
       "global_epochs": 20, # Number of communication Rounds
       "local_epochs": 1, # Local SGD number of local steps
 
+      "compute_grad_stats": True,
+
 
       # Define Optimization related Hyper params below
       # -------------------------------------------------
@@ -82,7 +84,7 @@
 
         "sparse_approximation_config":
           {
-            "rule": 'active_norm',
+            "rule": None,
             "axis": 'column',
             "frac_coordinates": 0.5,
             "ef": False,

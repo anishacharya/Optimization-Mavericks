@@ -6,13 +6,12 @@ from src.model_manager import (get_model,
                                get_loss,
                                evaluate_classifier)
 from src.data_manager import process_data
-from src.aggregation_manager import get_gar
+from src.aggregation_manager import get_gar, compute_grad_stats
 from src.compression_manager import SparseApproxMatrix
 
 import torch
 from torch.utils.data import DataLoader
 import numpy as np
-import statistics
 
 torch.manual_seed(1)
 
@@ -25,16 +24,13 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
 
     num_batches = train_config.get('num_clients', 1)
     num_epochs = train_config.get('global_epochs', 10)
+    compute_grad_stat_flag = train_config.get('compute_grad_stats', False)
 
     for epoch in range(num_epochs):
         model.to(device)
         model.train()
         G = None
         comm_rounds = 0
-
-        # print('\n--------------------------------------------------------\n'
-        #      ' ----------------------   Epoch: {} ----------------------\n '
-        #      '----------------------------------------------------------'.format(epoch))
         print('learning rate: {}'.format(optimizer.param_groups[0]['lr']))
         # ------- Training Phase --------- #
         for batch_ix, (images, labels) in enumerate(train_loader):
@@ -88,7 +84,17 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
         if lrs is not None:
             lrs.step()
 
-    metrics["avg_frac_mass"] = statistics.mean(metrics["frac_mass_retained"])
+        if compute_grad_stat_flag is True and epoch % 5 == 0:
+            print("Computing Additional Stats on G")
+            compute_grad_stats(G=G, metrics=metrics)
+
+    # #### ------- All Epochs Done ----------------- ####
+    if compute_grad_stat_flag is True:
+        # compute bins
+        metrics["bins"] = np.linspace(metrics["min_norm"], metrics["max_norm"], num=1000)
+        for ix, (norm_dist, frac_mass) in enumerate(zip(metrics["grad_norm_dist"], metrics["frac_mass_retained"])):
+            metrics["grad_norm_dist"][ix], _ = np.histogram(norm_dist, bins=metrics["bins"])
+            metrics["frac_mass_retained"][ix], _ = np.histogram(frac_mass, bins=metrics["bins"])
 
 
 def run_batch_train(config, metrics):

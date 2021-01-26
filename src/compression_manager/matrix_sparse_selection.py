@@ -25,7 +25,7 @@ class SparseApproxMatrix:
         self.ef = conf.get('ef', False)
         self.residual_error = None
 
-    def sparse_approx(self, G: np.ndarray, metrics=None) -> np.ndarray:
+    def sparse_approx(self, G: np.ndarray) -> np.ndarray:
         n, d = G.shape
         G_sparse = np.zeros_like(G)
         # for the first run compute k
@@ -44,18 +44,12 @@ class SparseApproxMatrix:
         # --------------------------------- #
         if self.sampling_rule == 'active_norm':
             # print('Applying active norm column sampling on gradients')
-            I_k, frac_mass_retained = self._active_norm_sampling(G=G)
+            I_k = self._active_norm_sampling(G=G)
         elif self.sampling_rule == 'random':
             # print('Applying random column sampling on gradients')
-            I_k, frac_mass_retained = self._random_sampling(d=d if self.axis == 0 else n)
+            I_k = self._random_sampling(d=d if self.axis == 0 else n)
         else:
             return G
-
-        if metrics is not None:
-            if metrics["frac_mass_retained"] is None:
-                metrics["frac_mass_retained"] = frac_mass_retained
-            else:
-                metrics["frac_mass_retained"] += frac_mass_retained
 
         if self.axis == 0:
             # column sampling
@@ -73,7 +67,7 @@ class SparseApproxMatrix:
         return G_sparse
 
     # Implementation of different "Matrix Sparse Approximation" strategies
-    def _random_sampling(self, d: int, G: np.ndarray) -> [np.ndarray, float]:
+    def _random_sampling(self, d: int) -> np.ndarray:
         """
         Implements Random (Gauss Siedel) subset Selection
         """
@@ -81,17 +75,9 @@ class SparseApproxMatrix:
         I_k = np.random.choice(a=all_ix,
                                size=self.k,
                                replace=False)
+        return I_k
 
-        # Needed only to get the mass retained stats
-        norm_dist = np.linalg.norm(G, axis=self.axis)
-
-        mass_retained = sum(norm_dist[ix] for ix in I_k)
-        frac_mass_retained = mass_retained / sum(norm_dist)
-
-        print('fraction of mass retained {}'.format(frac_mass_retained))
-        return I_k, frac_mass_retained
-
-    def _active_norm_sampling(self, G: np.ndarray) -> [np.ndarray, float]:
+    def _active_norm_sampling(self, G: np.ndarray) -> np.ndarray:
         """
         Implements Gaussian Southwell Subset Selection / Active norm sampling
 
@@ -100,11 +86,5 @@ class SparseApproxMatrix:
         """
         norm_dist = np.linalg.norm(G, axis=self.axis)
         sorted_ix = np.argsort(norm_dist)[::-1]
-        norm_dist /= sum(norm_dist)
 
-        frac_mass_retained = np.cumsum(norm_dist)
-        # mass_retained = sum(norm_dist[ix] for ix in I_k)
-        # frac_mass_retained = mass_retained / sum(norm_dist)
-
-        print('fraction of mass retained by top 10% coordinates {}'.format(frac_mass_retained[int(0.1*len(norm_dist))]))
-        return sorted_ix[:self.k], frac_mass_retained
+        return sorted_ix[:self.k]

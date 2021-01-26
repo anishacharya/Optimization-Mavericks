@@ -7,6 +7,7 @@ from .trimmed_mean import TrimmedMean
 from .krum import Krum
 from .norm_clipping import NormClipping
 from typing import Dict
+import numpy as np
 
 
 def get_gar(aggregation_config: Dict):
@@ -28,3 +29,23 @@ def get_gar(aggregation_config: Dict):
         return TrimmedMean(aggregation_config=aggregation_config)
     else:
         raise NotImplementedError
+
+
+def compute_grad_stats(G: np.ndarray, metrics: Dict):
+    norm_dist = np.linalg.norm(G, axis=0)
+    metrics["grad_norm_dist"].append(norm_dist)
+
+    # compute cdf / mass retained
+    sorted_dist = np.sort(norm_dist)[::-1]
+    frac_mass_retained = np.cumsum(sorted_dist)
+
+    metrics["frac_mass_retained"].append(frac_mass_retained)
+
+    if metrics["max_norm"] < sorted_dist[0]:
+        metrics["max_norm"] = sorted_dist[0]
+    if metrics["min_norm"] > sorted_dist[-1]:
+        metrics["min_norm"] = sorted_dist[-1]
+
+
+
+
