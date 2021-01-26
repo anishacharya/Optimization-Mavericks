@@ -33,13 +33,14 @@ def get_gar(aggregation_config: Dict):
 
 def compute_grad_stats(G: np.ndarray, metrics: Dict):
     norm_dist = np.linalg.norm(G, axis=0)
-    metrics["grad_norm_dist"].append(norm_dist)
+    # metrics["grad_norm_dist"].append(norm_dist)
 
     # compute cdf / mass retained
     sorted_dist = np.sort(norm_dist)[::-1]
     sorted_dist /= sum(sorted_dist)
 
     frac_mass_retained = np.cumsum(sorted_dist)
+
     ix = np.linspace(0, len(norm_dist)-1, 11)
     # ix *= len(norm_dist)
     ix = np.floor(ix)
@@ -47,10 +48,10 @@ def compute_grad_stats(G: np.ndarray, metrics: Dict):
     # frac_mass, _ = np.histogram(frac_mass_retained, bins=metrics["mass_bins"])
     metrics["frac_mass_retained"].append(frac_mass_retained[ix])
 
-    if metrics["max_norm"] < sorted_dist[0]:
-        metrics["max_norm"] = sorted_dist[0]
-    if metrics["min_norm"] > sorted_dist[-1]:
-        metrics["min_norm"] = sorted_dist[-1]
+    # if metrics["max_norm"] < sorted_dist[0]:
+    #    metrics["max_norm"] = sorted_dist[0]
+    # if metrics["min_norm"] > sorted_dist[-1]:
+    #    metrics["min_norm"] = sorted_dist[-1]
 
 
 
