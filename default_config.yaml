@@ -4,7 +4,7 @@
 
   "data_config":
     {
-      "data_set": "mnist", # mnist, fashion_mnist, cifar10
+      "data_set": "fashion_mnist", # mnist, fashion_mnist, cifar10
       "shape": [28, 28],
       "num_labels": 10,
       "num_channels": 1,
