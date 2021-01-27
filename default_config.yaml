@@ -4,13 +4,13 @@
 
   "data_config":
     {
-      "data_set": "mnist", # mnist, fashion_mnist, cifar10
-      "shape": [28, 28],
+      "data_set": "cifar10", # mnist, fashion_mnist, cifar10
+      "shape": [32, 32],
       "num_labels": 10,
-      "num_channels": 1,
+      "num_channels": 3,
       "download": False,
 
-      "batch_size": 32, # Define Batch Size here since Data Loader will assign batches to clients
+      "batch_size": 256, # Define Batch Size here since Data Loader will assign batches to clients
       "train_num_workers": 1,
 
       ## For Federated / Decentralized Training
@@ -63,7 +63,7 @@
       # -------------------------------------------------
       "learner_config":
         {
-          "net": "log_reg",
+          "net": "VGG19",
           "mlp_config": {"h1": 500, "h2": 500}
         },
 
@@ -84,10 +84,10 @@
 
         "sparse_approximation_config":
           {
-            "rule": None,
+            "rule": 'active_norm',
             "axis": 'column',
-            "frac_coordinates": 0.5,
-            "ef": False,
+            "frac_coordinates": 0.1,
+            "ef": True,
           },
       }
     }
