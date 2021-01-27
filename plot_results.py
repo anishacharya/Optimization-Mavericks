@@ -50,11 +50,11 @@ def plot_mass(res_file):
         res = json.load(f)
 
     masses = res["frac_mass_retained"]
-    width = 0.1
+    width = 0.2
     offset = -1/2
     for frac_dist, leg in zip(masses, legends):
         frac_dist = frac_dist[1:]
-        frac_dist[-1] = 1
+        # frac_dist[-1] = 1
         plt.bar(height=frac_dist, x=x + offset * width, width=width, label=leg)
         offset += 1
 
