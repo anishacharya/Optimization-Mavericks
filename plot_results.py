@@ -24,17 +24,29 @@ def plot_driver(label: str, res_file: str, plt_type: str = 'epoch_loss',
     plt.plot(x, res, label=label, linewidth=line_width, marker=marker, linestyle=line_style)
 
 
-def plot_timing(res_file: str, label, line_width=2, marker=None, line_style=None):
+def plot_timing(res_file: str, label):
     # d = [100, 1000, 10000, 100000]
     with open(res_file, 'rb') as f:
         res = json.load(f)
     d = list(res.keys())
     t = list(res.values())
-    ax = plt.gca()
 
     plt.yscale('log')
-    plt.scatter(d, t, label=label)  #, linewidth=line_width, marker=marker, linestyle=line_style)
+    plt.scatter(d, t, label=label)
     plt.plot(d, t, linestyle='dashed')
+
+
+def plot_mass(res_file):
+    label = np.linspace(0, 1, 11)
+    x = np.arange(len(label))
+    fig, ax = plt.subplots()
+    ax.set_xticklabels(label)
+
+    with open(res_file, 'rb') as f:
+        res = json.load(f)
+    masses = res["frac_mass_retained"]
+    for frac_dist in masses:
+        plt.bar(height=frac_dist, x=x, width=0.1)
 
 
 def plot_metrics():
@@ -46,28 +58,23 @@ def plot_metrics():
 
     # -------------------------------------------------------------------------------------------
     # ------------------------------- Modify Here -----------------------------------------------
-    d = 'result_dumps/Robust/distributed/mnist/'
+    d = 'result_dumps/mass_exp/'
     o = [
-        'mean.norm_0.1',
-        'mean.norm_0.2',
-        'mean.norm_0.3',
-        'mean.norm_0.5',
-
+        'vgg19.cifar',
     ]
     labels = [
         '10%',
-        '20%',
-        '30%',
-        '50%',
               ]
 
-    plot_type = 'avg_frac_mass'
+    plot_type = 'frac_mass'
     sampling_freq = 1
 
     for op, label in zip(o, labels):
         result_file = d + op
         if plot_type is 'timing':
-            plot_timing(label=label, res_file=result_file, line_width=4)
+            plot_timing(label=label, res_file=result_file)
+        elif plot_type is 'frac_mass':
+            plot_mass(res_file=result_file)
         else:
             plot_driver(label=label, res_file=result_file,
                         plt_type=plot_type, optima=0, line_width=4,
@@ -107,7 +114,7 @@ def plot_metrics():
         plt.ylabel('Time', fontsize=10)
         plt.xlabel('Dimension', fontsize=10)
 
-    elif plot_type is 'avg_frac_mass':
+    elif plot_type is 'frac_mass':
         plt.xlabel('Fraction of Coordinates', fontsize=10)
         plt.ylabel('Fraction of Gradient Mass Explained', fontsize=10)
     else:
