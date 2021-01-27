@@ -37,16 +37,26 @@ def plot_timing(res_file: str, label):
 
 
 def plot_mass(res_file):
-    label = np.linspace(0, 1, 11)
-    x = np.arange(len(label))
+    x_labels = ['0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '1']
+    legends = ['e=5', 'e=10', 'e=15', 'e=20']
+    x = np.arange(len(x_labels))
+
     fig, ax = plt.subplots()
-    ax.set_xticklabels(label)
+
+    ax.set_xticks(x)
+    ax.set_xticklabels(x_labels)
 
     with open(res_file, 'rb') as f:
         res = json.load(f)
+
     masses = res["frac_mass_retained"]
-    for frac_dist in masses:
-        plt.bar(height=frac_dist, x=x, width=0.1)
+    width = 0.1
+    offset = -1/2
+    for frac_dist, leg in zip(masses, legends):
+        frac_dist = frac_dist[1:]
+        frac_dist[-1] = 1
+        plt.bar(height=frac_dist, x=x + offset * width, width=width, label=leg)
+        offset += 1
 
 
 def plot_metrics():

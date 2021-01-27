@@ -37,9 +37,10 @@ def compute_grad_stats(G: np.ndarray, metrics: Dict):
 
     # compute cdf / mass retained
     sorted_dist = np.sort(norm_dist)[::-1]
-    sorted_dist /= sum(sorted_dist)
+    # sorted_dist /= sum(sorted_dist)
 
     frac_mass_retained = np.cumsum(sorted_dist)
+    frac_mass_retained /= frac_mass_retained[-1]
 
     ix = np.linspace(0, len(norm_dist)-1, 11)
     ix = np.floor(ix)
