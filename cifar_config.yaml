@@ -1,0 +1,94 @@
+{
+  "train_mode": "distributed", # fed(Federated), distributed(Distributed mini-batch SGD), decentralized (Decentralized SGD)
+  "pipeline": 'default', #
+
+  "data_config":
+    {
+      "data_set": "cifar10", # mnist, fashion_mnist, cifar10
+      "shape": [32, 32],
+      "num_labels": 10,
+      "num_channels": 3,
+      "download": False,
+
+      "batch_size": 32, # Define Batch Size here since Data Loader will assign batches to clients
+      "train_num_workers": 1,
+
+      ## For Federated / Decentralized Training
+      "data_sampling_strategy": 'iid', # Data distribution (Heterogeneous / Non-Heterogeneous)
+      "num_shards": 100, # Number of shards for non-iid ~~ usually set it to k * num_of_clients 2 is a good value for k
+    },
+
+
+  "training_config":
+    {
+      "num_clients": 8, # Number of clients / parallel batches
+      "client_fraction": 1, # specify fraction of client participation per round
+      "global_epochs": 50, # Number of communication Rounds
+      "local_epochs": 1, # Local SGD number of local steps
+
+      "compute_grad_stats": True,
+
+
+      # Define Optimization related Hyper params below
+      # -------------------------------------------------
+      "optimizer_config":
+      {
+        "client_optimizer_config":
+        {
+          "optimizer": 'SGD', # SGD, Adam
+          "loss": 'ce', # ce (Cross Entropy), mse (Mean Sq Error), bce(binary-CE)
+          "lr0": 0.1,
+          "momentum": 0.9,
+          "reg": 0.0001,
+          "nesterov": False,
+          "amsgrad": False,
+        },
+
+        "client_lrs_config":
+        {
+          "lrs": 'step', # step, multi_step, exp, cyclic
+          "milestones": [ 1, 5, 10 ],
+          "step_size": 5,
+          "gamma": 0.1
+        },
+
+        "server_optimizer_config":
+        {
+          "optimizer": 'SGD',
+          "lr0": 1,
+        }
+      },
+
+      # Define Model Architecture and related config
+      # -------------------------------------------------
+      "learner_config":
+        {
+          "net": "VGG19",
+          "mlp_config": {"h1": 500, "h2": 500}
+        },
+
+      # Define Communication Compression and related config
+      # -------------------------------------------------
+      "aggregation_config":
+      {
+        "gar": "geo_med",
+        "trimmed_mean_config": { "proportion": 0.1 },
+        "krum_config": { "krum_frac": 0.3 },
+        "glomo_config": { "glomo_server_c": 1 },
+
+        "compression_config":
+        {
+          "compression_operator": "full", # full (No Compression), top_k, rand_k
+          "frac_coordinates_to_keep": 0.5, # For top-k, rand-k specify sparsity (k)
+        },
+
+        "sparse_approximation_config":
+          {
+            "rule": None,
+            "axis": 'column',
+            "frac_coordinates": 0.5,
+            "ef": True,
+          },
+      }
+    }
+}
