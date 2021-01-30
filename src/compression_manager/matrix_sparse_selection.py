@@ -26,6 +26,8 @@ class SparseApproxMatrix:
         self.residual_error = None
 
     def sparse_approx(self, G: np.ndarray) -> np.ndarray:
+        if self.sampling_rule is not in ['active_norm', 'random']:
+            return G
         n, d = G.shape
         G_sparse = np.zeros_like(G)
         # for the first run compute k
@@ -49,7 +51,7 @@ class SparseApproxMatrix:
             # print('Applying random column sampling on gradients')
             I_k = self._random_sampling(d=d if self.axis == 0 else n)
         else:
-            return G
+            raise NotImplementedError
 
         if self.axis == 0:
             # column sampling
