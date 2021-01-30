@@ -10,7 +10,7 @@
       "num_channels": 3,
       "download": False,
 
-      "batch_size": 32, # Define Batch Size here since Data Loader will assign batches to clients
+      "batch_size": 64, # Define Batch Size here since Data Loader will assign batches to clients
       "train_num_workers": 1,
 
       ## For Federated / Decentralized Training
@@ -39,7 +39,7 @@
           "loss": 'ce', # ce (Cross Entropy), mse (Mean Sq Error), bce(binary-CE)
           "lr0": 0.01,
           "momentum": 0.9,
-          "reg": 0.01,
+          "reg": 0.001,
           "nesterov": False,
           "amsgrad": False,
         },
