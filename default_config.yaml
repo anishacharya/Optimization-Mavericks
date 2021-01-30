@@ -26,7 +26,7 @@
       "global_epochs": 50, # Number of communication Rounds
       "local_epochs": 1, # Local SGD number of local steps
 
-      "compute_grad_stats": True,
+      "compute_grad_stats": False,
 
 
       # Define Optimization related Hyper params below
