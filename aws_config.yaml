@@ -4,13 +4,13 @@
 
   "data_config":
     {
-      "data_set": "cifar10", # mnist, fashion_mnist, cifar10
-      "shape": [32, 32],
+      "data_set": "fashion_mnist", # mnist, fashion_mnist, cifar10
+      "shape": [28, 28],
       "num_labels": 10,
-      "num_channels": 3,
+      "num_channels": 1,
       "download": False,
 
-      "batch_size": 64, # Define Batch Size here since Data Loader will assign batches to clients
+      "batch_size": 32, # Define Batch Size here since Data Loader will assign batches to clients
       "train_num_workers": 1,
 
       ## For Federated / Decentralized Training
@@ -21,7 +21,7 @@
 
   "training_config":
     {
-      "num_clients": 10, # Number of clients / parallel batches
+      "num_clients": 50, # Number of clients / parallel batches
       "client_fraction": 1, # specify fraction of client participation per round
       "global_epochs": 30, # Number of communication Rounds
       "local_epochs": 1, # Local SGD number of local steps
@@ -37,9 +37,9 @@
         {
           "optimizer": 'SGD', # SGD, Adam
           "loss": 'ce', # ce (Cross Entropy), mse (Mean Sq Error), bce(binary-CE)
-          "lr0": 0.01,
+          "lr0": 0.1,
           "momentum": 0.9,
-          "reg": 0.001,
+          "reg": 0.0001,
           "nesterov": False,
           "amsgrad": False,
         },
@@ -48,7 +48,7 @@
         {
           "lrs": 'step', # step, multi_step, exp, cyclic
           "milestones": [ 1, 5, 10 ],
-          "step_size": 15,
+          "step_size": 10,
           "gamma": 0.1
         },
 
@@ -63,7 +63,7 @@
       # -------------------------------------------------
       "learner_config":
         {
-          "net": "VGG16",
+          "net": "lenet",
           "mlp_config": {"h1": 500, "h2": 500}
         },
 
@@ -71,7 +71,7 @@
       # -------------------------------------------------
       "aggregation_config":
       {
-        "gar": "geo_med",
+        "gar": "mean",
         "trimmed_mean_config": { "proportion": 0.1 },
         "krum_config": { "krum_frac": 0.3 },
         "glomo_config": { "glomo_server_c": 1 },
@@ -84,10 +84,10 @@
 
         "sparse_approximation_config":
           {
-            "rule": None,
+            "rule": 'active_norm',
             "axis": 'column',
             "frac_coordinates": 0.5,
-            "ef": True,
+            "ef": False,
           },
       }
     }
