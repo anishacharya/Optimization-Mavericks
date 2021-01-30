@@ -11,13 +11,13 @@
             "num_labels": 10,
             "num_channels": 1,
             "download": false,
-            "batch_size": 32,
+            "batch_size": 1,
             "train_num_workers": 1,
             "data_sampling_strategy": "iid",
             "num_shards": 100
         },
         "training_config": {
-            "num_clients": 50,
+            "num_clients": 32,
             "client_fraction": 1,
             "global_epochs": 20,
             "local_epochs": 1,

@@ -38,7 +38,7 @@ def plot_timing(res_file: str, label):
 
 def plot_mass(res_file):
     x_labels = ['0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '1']
-    legends = ['e=5', 'e=10', 'e=15', 'e=20']
+    legends = ['epoch 5', 'epoch 10', 'epoch 15', 'epoch 20']
     x = np.arange(len(x_labels))
 
     fig, ax = plt.subplots()
@@ -51,10 +51,11 @@ def plot_mass(res_file):
 
     masses = res["frac_mass_retained"]
     width = 0.2
-    offset = -1/2
+    offset = -3/2
     for frac_dist, leg in zip(masses, legends):
         frac_dist = frac_dist[1:]
         # frac_dist[-1] = 1
+        # plt.plot(x, frac_dist)
         plt.bar(height=frac_dist, x=x + offset * width, width=width, label=leg)
         offset += 1
 
@@ -68,15 +69,19 @@ def plot_metrics():
 
     # -------------------------------------------------------------------------------------------
     # ------------------------------- Modify Here -----------------------------------------------
-    d = 'result_dumps/mass_exp/'
+    d = 'result_dumps/Robust/distributed/fashion_mnist/'
     o = [
-        'vgg19.cifar',
+        'mean',
+        'mean.norm_0.1.ef',
+        'mean.norm_0.05.ef'
     ]
     labels = [
-        '10%',
+        'SGD',
+        'mCD 10%',
+        'mCD 5%'
               ]
 
-    plot_type = 'frac_mass'
+    plot_type = 'train_loss'
     sampling_freq = 1
 
     for op, label in zip(o, labels):
@@ -125,7 +130,7 @@ def plot_metrics():
         plt.xlabel('Dimension', fontsize=10)
 
     elif plot_type is 'frac_mass':
-        plt.xlabel('Fraction of Coordinates', fontsize=10)
+        plt.xlabel('Fraction of Coordinates Retained', fontsize=10)
         plt.ylabel('Fraction of Gradient Mass Explained', fontsize=10)
     else:
         raise NotImplementedError
