@@ -27,46 +27,46 @@ class SparseApproxMatrix:
 
     def sparse_approx(self, G: np.ndarray) -> np.ndarray:
         if self.sampling_rule not in ['active_norm', 'random']:
-            n, d = G.shape
-            G_sparse = np.zeros_like(G)
-            # for the first run compute k
-            if self.k is None:
-                self.k = int(self.frac * d)
-            # Initialize residual error to zero first time
-            if self.residual_error is None:
-                # print('Initializing Residual Error')
-                self.residual_error = np.zeros((n, d), dtype=G[0, :].dtype)
+            return G
+        n, d = G.shape
+        G_sparse = np.zeros_like(G)
+        # for the first run compute k
+        if self.k is None:
+            self.k = int(self.frac * d)
+        # Initialize residual error to zero first time
+        if self.residual_error is None:
+            # print('Initializing Residual Error')
+            self.residual_error = np.zeros((n, d), dtype=G[0, :].dtype)
 
-            # Error Compensation (if ef is False, residual error = 0 as its not updated)
-            G += self.residual_error
+        # Error Compensation (if ef is False, residual error = 0 as its not updated)
+        G += self.residual_error
 
-            # --------------------------------- #
-            # Invoke Sampling algorithm here
-            # --------------------------------- #
-            if self.sampling_rule == 'active_norm':
-                # print('Applying active norm column sampling on gradients')
-                I_k = self._active_norm_sampling(G=G)
-            elif self.sampling_rule == 'random':
-                # print('Applying random column sampling on gradients')
-                I_k = self._random_sampling(d=d if self.axis == 0 else n)
-            else:
-                raise NotImplementedError
+        # --------------------------------- #
+        # Invoke Sampling algorithm here
+        # --------------------------------- #
+        if self.sampling_rule == 'active_norm':
+            # print('Applying active norm column sampling on gradients')
+            I_k = self._active_norm_sampling(G=G)
+        elif self.sampling_rule == 'random':
+            # print('Applying random column sampling on gradients')
+            I_k = self._random_sampling(d=d if self.axis == 0 else n)
+        else:
+            raise NotImplementedError
 
-            if self.axis == 0:
-                # column sampling
-                G_sparse[:, I_k] = G[:, I_k]
-            elif self.axis == 0:
-                # row sampling
-                G_sparse[I_k, :] = G[I_k, :]
-            else:
-                raise NotImplementedError
-            # update residual error
-            if self.ef is True:
-                # print('Error Feedback at Server')
-                self.residual_error = G - G_sparse
+        if self.axis == 0:
+            # column sampling
+            G_sparse[:, I_k] = G[:, I_k]
+        elif self.axis == 0:
+            # row sampling
+            G_sparse[I_k, :] = G[I_k, :]
+        else:
+            raise NotImplementedError
+        # update residual error
+        if self.ef is True:
+            # print('Error Feedback at Server')
+            self.residual_error = G - G_sparse
 
-            return G_sparse
-        return G
+        return G_sparse
 
     # Implementation of different "Matrix Sparse Approximation" strategies
     def _random_sampling(self, d: int) -> np.ndarray:
