@@ -84,10 +84,10 @@
 
         "sparse_approximation_config":
           {
-            "rule": None,
+            "rule": 'active_norm',
             "axis": 'column',
-            "frac_coordinates": 0.25,
-            "ef": True,
+            "frac_coordinates": 0.01,
+            "ef": False,
           },
       }
     }
