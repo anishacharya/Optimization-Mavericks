@@ -116,7 +116,7 @@ def plot_metrics():
     elif plot_type is 'train_loss':
         plt.ylabel('Training Loss', fontsize=10)
         plt.xlabel('Communication Rounds', fontsize=10)
-        plt.ylim(bottom=0.25, top=0.5)
+        #  plt.ylim(bottom=0.25, top=0.5)
 
     elif plot_type is 'train_error':
         plt.ylabel('Train Error', fontsize=10)
