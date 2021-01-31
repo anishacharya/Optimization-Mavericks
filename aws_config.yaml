@@ -84,7 +84,7 @@
 
         "sparse_approximation_config":
           {
-            "rule": None
+            "rule": None,
             "axis": 'column',
             "frac_coordinates": 0.25,
             "ef": True,
