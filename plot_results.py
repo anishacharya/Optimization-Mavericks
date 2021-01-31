@@ -74,7 +74,8 @@ def plot_metrics():
     o = [
         'mean',
         'mean.norm.0.01',
-        'mean.norm.0.05'
+        'mean.norm.0.05',
+        'mean.norm.'
 
     ]
     labels = [
