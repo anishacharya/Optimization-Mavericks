@@ -18,7 +18,7 @@ class LeNet(nn.Module):
         self.conv2 = nn.DataParallel(self.conv2)
 
         self.flat_shape = self.get_flat_shape(input_shape)
-        self.flat_shape = nn.DataParallel(self.flat_shape)
+        # self.flat_shape = nn.DataParallel(self.flat_shape)
 
         self.fc1 = nn.Linear(self.flat_shape, 1024)
         self.fc1 = nn.DataParallel(self.fc1)
