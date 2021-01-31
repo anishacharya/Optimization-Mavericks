@@ -4,7 +4,7 @@
 
   "data_config":
     {
-      "data_set": "cifar10", # mnist, fashion_mnist, cifar10
+      "data_set": "mnist", # mnist, fashion_mnist, cifar10
       "shape": [28, 28],
       "num_labels": 10,
       "num_channels": 1,
@@ -64,7 +64,7 @@
       "learner_config":
         {
           "net": "mlp",
-          "mlp_config": {"h1": 300, "h2": 300}
+          "mlp_config": {"h1": 500, "h2": 500}
         },
 
       # Define Communication Compression and related config

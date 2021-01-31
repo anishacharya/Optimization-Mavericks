@@ -72,10 +72,14 @@ def plot_metrics():
     d = 'result_dumps/clean/distributed/fashion_mnist/'
     o = [
         'mean',
+        'mean.norm.0.1',
+        'mean.norm.0.25'
 
     ]
     labels = [
         'SGD',
+        'BCD (0.1)',
+        'BCD (0.25)'
               ]
 
     plot_type = 'train_loss'
