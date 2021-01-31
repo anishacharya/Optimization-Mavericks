@@ -6,10 +6,10 @@ import torch
 
 class LeNet(nn.Module):
     def __init__(self, nc, nh, hw, num_classes):
+        super(LeNet, self).__init__()
         input_shape = (nc, nh, hw)
         self.flat_shape = self.get_flat_shape(input_shape)
 
-        super(LeNet, self).__init__()
         self.max_pool = nn.MaxPool2d((2, 2))
         self.max_pool = nn.DataParallel(self.max_pool)
 
