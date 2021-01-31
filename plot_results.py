@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MaxNLocator
 import matplotlib.ticker as ticker
+from matplotlib.ticker import ScalarFormatter
 import json
 from typing import List, Dict
 from src.aggregation_manager import get_gar
@@ -72,17 +73,17 @@ def plot_metrics():
     d = 'result_dumps/clean/distributed/fashion_mnist/'
     o = [
         'mean',
-        'mean.norm.0.1',
-        'mean.norm.0.25'
+        'mean.norm.0.01',
+        'mean.norm.0.05'
 
     ]
     labels = [
         'SGD',
-        'BCD (0.1)',
-        'BCD (0.25)'
+        'BCD (0.01)',
+        'BCD (0.05)'
               ]
 
-    plot_type = 'train_loss'
+    plot_type = 'test_acc'
     sampling_freq = 1
 
     for op, label in zip(o, labels):
@@ -111,7 +112,7 @@ def plot_metrics():
     elif plot_type is 'test_acc':
         plt.ylabel('Test Accuracy', fontsize=10)
         plt.xlabel('Communication Rounds', fontsize=10)
-        plt.ylim(bottom=80, top=90)
+        plt.ylim(bottom=50, top=95)
 
     elif plot_type is 'train_acc':
         plt.ylabel('Train Accuracy', fontsize=10)
@@ -120,7 +121,9 @@ def plot_metrics():
     elif plot_type is 'train_loss':
         plt.ylabel('Training Loss', fontsize=10)
         plt.xlabel('Communication Rounds', fontsize=10)
-        #  plt.ylim(bottom=0.25, top=0.5)
+        # plt.yscale('log')
+        plt.ylim(bottom=0, top=1.5)
+        # fig, ax = plt.subplots()
 
     elif plot_type is 'train_error':
         plt.ylabel('Train Error', fontsize=10)
@@ -138,7 +141,7 @@ def plot_metrics():
 
     # plt.title('')
 
-    plt.legend(fontsize=11, loc=2)
+    plt.legend(fontsize=11),# loc=2)
     plt.show()
 
 
