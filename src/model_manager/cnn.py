@@ -7,6 +7,8 @@ import torch
 class LeNet(nn.Module):
     def __init__(self, nc, nh, hw, num_classes):
         input_shape = (nc, nh, hw)
+        self.flat_shape = self.get_flat_shape(input_shape)
+
         super(LeNet, self).__init__()
         self.max_pool = nn.MaxPool2d((2, 2))
         self.max_pool = nn.DataParallel(self.max_pool)
@@ -17,7 +19,7 @@ class LeNet(nn.Module):
         self.conv2 = nn.Conv2d(64, 64, 5)
         self.conv2 = nn.DataParallel(self.conv2)
 
-        self.flat_shape = self.get_flat_shape(input_shape)
+        # self.flat_shape = self.get_flat_shape(input_shape)
         # self.flat_shape = nn.DataParallel(self.flat_shape)
 
         self.fc1 = nn.Linear(self.flat_shape, 1024)
@@ -51,3 +53,10 @@ class LeNet(nn.Module):
         # fc 2
         z = self.fc2(x)
         return z
+
+
+if __name__ == '__main__':
+    shape = 32*32*10
+
+    print(get_flat_shape(input_shape=shape))
+
