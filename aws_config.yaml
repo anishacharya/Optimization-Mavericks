@@ -10,7 +10,7 @@
       "num_channels": 1,
       "download": False,
 
-      "batch_size": 32, # Define Batch Size here since Data Loader will assign batches to clients
+      "batch_size": 64, # Define Batch Size here since Data Loader will assign batches to clients
       "train_num_workers": 1,
 
       ## For Federated / Decentralized Training
@@ -21,7 +21,7 @@
 
   "training_config":
     {
-      "num_clients": 50, # Number of clients / parallel batches
+      "num_clients": 1, # Number of clients / parallel batches
       "client_fraction": 1, # specify fraction of client participation per round
       "global_epochs": 30, # Number of communication Rounds
       "local_epochs": 1, # Local SGD number of local steps
@@ -39,7 +39,7 @@
           "loss": 'ce', # ce (Cross Entropy), mse (Mean Sq Error), bce(binary-CE)
           "lr0": 0.1,
           "momentum": 0.9,
-          "reg": 0.0001,
+          "reg": 0.00001,
           "nesterov": False,
           "amsgrad": False,
         },
@@ -84,7 +84,7 @@
 
         "sparse_approximation_config":
           {
-            "rule": 'active_norm',
+            "rule": None
             "axis": 'column',
             "frac_coordinates": 0.25,
             "ef": True,

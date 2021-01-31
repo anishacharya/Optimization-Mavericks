@@ -9,11 +9,22 @@ class LeNet(nn.Module):
         input_shape = (nc, nh, hw)
         super(LeNet, self).__init__()
         self.max_pool = nn.MaxPool2d((2, 2))
+        self.max_pool = nn.DataParallel(self.max_pool)
+
         self.conv1 = nn.Conv2d(nc, 64, 5)
+        self.conv1 = nn.DataParallel(self.conv1)
+
         self.conv2 = nn.Conv2d(64, 64, 5)
+        self.conv2 = nn.DataParallel(self.conv2)
+
         self.flat_shape = self.get_flat_shape(input_shape)
+        self.flat_shape = nn.DataParallel(self.flat_shape)
+
         self.fc1 = nn.Linear(self.flat_shape, 1024)
+        self.fc1 = nn.DataParallel(self.fc1)
+
         self.fc2 = nn.Linear(1024, num_classes)
+        self.fc2 = nn.DataParallel(self.fc2)
 
     # noinspection PyArgumentList,PyTypeChecker
     def get_flat_shape(self, input_shape):
