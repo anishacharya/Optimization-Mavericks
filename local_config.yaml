@@ -4,7 +4,7 @@
 
   "data_config":
     {
-      "data_set": "fashion_mnist", # mnist, fashion_mnist, cifar10
+      "data_set": "cifar10", # mnist, fashion_mnist, cifar10
       "shape": [28, 28],
       "num_labels": 10,
       "num_channels": 1,
@@ -21,7 +21,7 @@
 
   "training_config":
     {
-      "num_clients": 50, # Number of clients / parallel batches
+      "num_clients": 8, # Number of clients / parallel batches
       "client_fraction": 1, # specify fraction of client participation per round
       "global_epochs": 30, # Number of communication Rounds
       "local_epochs": 1, # Local SGD number of local steps
@@ -48,7 +48,7 @@
         {
           "lrs": 'step', # step, multi_step, exp, cyclic
           "milestones": [ 1, 5, 10 ],
-          "step_size": 10,
+          "step_size": 5,
           "gamma": 0.1
         },
 
@@ -63,8 +63,8 @@
       # -------------------------------------------------
       "learner_config":
         {
-          "net": "lenet",
-          "mlp_config": {"h1": 500, "h2": 500}
+          "net": "mlp",
+          "mlp_config": {"h1": 300, "h2": 300}
         },
 
       # Define Communication Compression and related config
@@ -84,9 +84,9 @@
 
         "sparse_approximation_config":
           {
-            "rule": 'active_norm',
+            "rule": None,
             "axis": 'column',
-            "frac_coordinates": 0.25,
+            "frac_coordinates": 0.5,
             "ef": True,
           },
       }
