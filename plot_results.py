@@ -85,10 +85,10 @@ def plot_metrics():
     labels = [
         'SGD',
         'GM-SGD',
-        'GM-BCD (0.01)',
-        'GM-BCD (0.05)',
-        'GM-BGD (0.1)',
-        'GM-BGD (0.25)',
+        'BGMD (0.01)',
+        'BGMD (0.05)',
+        'BGMD (0.1)',
+        'BGMD (0.25)',
               ]
 
     plot_type = 'test_acc'
