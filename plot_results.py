@@ -72,14 +72,18 @@ def plot_metrics():
     # ------------------------------- Modify Here -----------------------------------------------
     d = 'result_dumps/clean/distributed/fashion_mnist/gm/'
     o = [
+        'mean',
         'gm',
+        'tm',
         'gm.norm.0.01',
         'gm.norm.0.05',
         # 'mean.norm.'
 
     ]
     labels = [
+        'SGD',
         'GM-SGD',
+        'TM-SGD',
         'GM-BCD (0.01)',
         'GM-BCD (0.05)'
               ]
@@ -113,6 +117,7 @@ def plot_metrics():
     elif plot_type is 'test_acc':
         plt.ylabel('Test Accuracy', fontsize=10)
         plt.xlabel('Communication Rounds', fontsize=10)
+        plt.xlim(left=0, right=375)
         plt.ylim(bottom=50, top=95)
 
     elif plot_type is 'train_acc':
