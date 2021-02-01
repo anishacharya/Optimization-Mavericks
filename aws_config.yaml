@@ -71,11 +71,11 @@
       # -------------------------------------------------
       "aggregation_config":
       {
-        "gar": "geo_med",
+        "gar": "norm_clip",
         "trimmed_mean_config": { "proportion": 0.3 },
         "krum_config": { "krum_frac": 0.3 },
         "glomo_config": { "glomo_server_c": 1 },
-        "norm_clip_config": {"alpha": 0.1},
+        "norm_clip_config": {"alpha": 0.5},
 
         "compression_config":
         {
@@ -85,7 +85,7 @@
 
         "sparse_approximation_config":
           {
-            "rule": 'active_norm',
+            "rule": None,
             "axis": 'column',
             "frac_coordinates": 0.01,
             "ef": True,
