@@ -4,10 +4,10 @@
 
   "data_config":
     {
-      "data_set": "fashion_mnist", # mnist, fashion_mnist, cifar10
-      "shape": [28, 28],
+      "data_set": "cifar10", # mnist, fashion_mnist, cifar10
+      "shape": [32, 32],
       "num_labels": 10,
-      "num_channels": 1,
+      "num_channels": 3,
       "download": False,
 
       "batch_size": 32, # Define Batch Size here since Data Loader will assign batches to clients
@@ -21,9 +21,9 @@
 
   "training_config":
     {
-      "num_clients": 50, # Number of clients / parallel batches
+      "num_clients": 25, # Number of clients / parallel batches
       "client_fraction": 1, # specify fraction of client participation per round
-      "global_epochs": 30, # Number of communication Rounds
+      "global_epochs": 25, # Number of communication Rounds
       "local_epochs": 1, # Local SGD number of local steps
 
       "compute_grad_stats": False,
@@ -37,7 +37,7 @@
         {
           "optimizer": 'SGD', # SGD, Adam
           "loss": 'ce', # ce (Cross Entropy), mse (Mean Sq Error), bce(binary-CE)
-          "lr0": 0.1,
+          "lr0": 0.01,
           "momentum": 0.9,
           "reg": 0.0001,
           "nesterov": False,
@@ -48,8 +48,8 @@
         {
           "lrs": 'step', # step, multi_step, exp, cyclic
           "milestones": [ 1, 5, 10 ],
-          "step_size": 10,
-          "gamma": 0.1
+          "step_size": 5,
+          "gamma": 0.5
         },
 
         "server_optimizer_config":
@@ -63,7 +63,7 @@
       # -------------------------------------------------
       "learner_config":
         {
-          "net": "lenet",
+          "net": "mlp",
           "mlp_config": {"h1": 500, "h2": 500}
         },
 
@@ -71,10 +71,11 @@
       # -------------------------------------------------
       "aggregation_config":
       {
-        "gar": "mean",
-        "trimmed_mean_config": { "proportion": 0.1 },
+        "gar": "geo_med",
+        "trimmed_mean_config": { "proportion": 0.3 },
         "krum_config": { "krum_frac": 0.3 },
         "glomo_config": { "glomo_server_c": 1 },
+        "norm_clip_config": {"alpha": 0.5},
 
         "compression_config":
         {
@@ -84,10 +85,10 @@
 
         "sparse_approximation_config":
           {
-            "rule": 'active_norm',
+            "rule": None,
             "axis": 'column',
-            "frac_coordinates": 0.1,
-            "ef": False,
+            "frac_coordinates": 0.25,
+            "ef": True,
           },
       }
     }
