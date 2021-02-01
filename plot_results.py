@@ -74,18 +74,21 @@ def plot_metrics():
     o = [
         'mean',
         'gm',
-        'tm',
+        # 'tm',
         'gm.norm.0.01',
         'gm.norm.0.05',
+        'gm.norm.0.1',
+        'gm.norm.0.25',
         # 'mean.norm.'
 
     ]
     labels = [
         'SGD',
         'GM-SGD',
-        'TM-SGD',
         'GM-BCD (0.01)',
-        'GM-BCD (0.05)'
+        'GM-BCD (0.05)',
+        'GM-BGD (0.1)',
+        'GM-BGD (0.25)',
               ]
 
     plot_type = 'test_acc'

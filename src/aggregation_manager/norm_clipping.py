@@ -25,8 +25,7 @@ class NormClipping(GAR):
 
         if self.k is None:
             self.k = int(G.shape[0] * self.alpha)
-
-        print('clipping {} clients'.format(self.k))
+            print('clipping {} clients'.format(self.k))
         top_k_indices = np.argsort(np.abs(norms))[::-1][:self.k]
 
         # set weights of them to 0 filtering k top ones based on norm
