@@ -4,6 +4,7 @@
 from .mlp import *
 from .cnn import *
 from .vgg import *
+from .resnet import *
 import torch
 import functools
 import numpy as np
@@ -78,6 +79,8 @@ def get_model(learner_config: Dict, data_config: Dict):
     elif net in ['VGG11', 'VGG13', 'VGG16', 'VGG19']:
         print('Building {}'.format(net))
         model = VGG(net)
+    elif net == 'resnet':
+        model = ResNet18()
     else:
         raise NotImplementedError
 
