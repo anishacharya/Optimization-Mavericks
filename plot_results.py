@@ -70,18 +70,18 @@ def plot_metrics():
 
     # -------------------------------------------------------------------------------------------
     # ------------------------------- Modify Here -----------------------------------------------
-    d = 'result_dumps/clean/distributed/fashion_mnist/'
+    d = 'result_dumps/clean/distributed/fashion_mnist/gm/'
     o = [
-        'mean',
-        'mean.norm.0.01',
-        'mean.norm.0.05',
-        'mean.norm.'
+        'gm',
+        'gm.norm.0.01',
+        'gm.norm.0.05',
+        # 'mean.norm.'
 
     ]
     labels = [
-        'SGD',
-        'BCD (0.01)',
-        'BCD (0.05)'
+        'GM-SGD',
+        'GM-BCD (0.01)',
+        'GM-BCD (0.05)'
               ]
 
     plot_type = 'test_acc'
