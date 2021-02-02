@@ -37,7 +37,7 @@
         {
           "optimizer": 'SGD', # SGD, Adam
           "loss": 'ce', # ce (Cross Entropy), mse (Mean Sq Error), bce(binary-CE)
-          "lr0": 0.1,
+          "lr0": 0.01,
           "momentum": 0.9,
           "reg": 0.0001,
           "nesterov": False,
@@ -48,8 +48,8 @@
         {
           "lrs": 'step', # step, multi_step, exp, cyclic
           "milestones": [ 1, 5, 10 ],
-          "step_size": 15,
-          "gamma": 0.1
+          "step_size": 10,
+          "gamma": 0.5
         },
 
         "server_optimizer_config":
