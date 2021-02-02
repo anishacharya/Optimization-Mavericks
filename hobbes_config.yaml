@@ -4,10 +4,10 @@
 
   "data_config":
     {
-      "data_set": "cifar10", # mnist, fashion_mnist, cifar10
-      "shape": [32, 32],
+      "data_set": "fashion_mnist", # mnist, fashion_mnist, cifar10
+      "shape": [28, 28],
       "num_labels": 10,
-      "num_channels": 3,
+      "num_channels": 1,
       "download": False,
 
       "batch_size": 32, # Define Batch Size here since Data Loader will assign batches to clients
@@ -63,7 +63,7 @@
       # -------------------------------------------------
       "learner_config":
         {
-          "net": "mlp",
+          "net": "lenet",
           "mlp_config": {"h1": 500, "h2": 500}
         },
 
@@ -91,12 +91,12 @@
             "attack_model": "additive",
 
             "noise_dist": 'gaussian',
+            "mean_shift": 4,  # For additive Gaussian mean = mean(g) * mean_shift
 
+            "attack_std": 3, # for random attack
             "noise_range": [ -1, 0 ], # only if uniform noise is added
 
             "attack_n_std": 1, # only for Drift Attack
-            "attack_std": 3,
-            "mean_shift": 4  # For additive Gaussian mean = mean(g) * mean_shift
         },
 
         "sparse_approximation_config":
