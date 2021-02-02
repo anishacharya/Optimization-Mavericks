@@ -135,7 +135,7 @@ def run_fed_train(config, metrics):
     lrs_config = training_config.get('lrs_config')
 
     aggregation_config = training_config["aggregation_config"]
-    compression_config = training_config["compression_config"]
+    compression_config = aggregation_config["compression_config"]
 
     model = get_model(learner_config=learner_config, data_config=data_config)
     gar = get_gar(aggregation_config=aggregation_config)
