@@ -10,7 +10,7 @@
       "num_channels": 1,
       "download": False,
 
-      "batch_size": 32, # Define Batch Size here since Data Loader will assign batches to clients
+      "batch_size": 64, # Define Batch Size here since Data Loader will assign batches to clients
       "train_num_workers": 1,
 
       ## For Federated / Decentralized Training
@@ -37,7 +37,7 @@
         {
           "optimizer": 'SGD', # SGD, Adam
           "loss": 'ce', # ce (Cross Entropy), mse (Mean Sq Error), bce(binary-CE)
-          "lr0": 0.01,
+          "lr0": 0.1,
           "momentum": 0.9,
           "reg": 0.0001,
           "nesterov": False,
@@ -71,7 +71,7 @@
       # -------------------------------------------------
       "aggregation_config":
       {
-        "gar": "geo_med",
+        "gar": "mean",
         "trimmed_mean_config": { "proportion": 0.3 },
         "krum_config": { "krum_frac": 0.3 },
         "glomo_config": { "glomo_server_c": 1 },
@@ -88,7 +88,7 @@
         {
             "frac_adv": 0.4,
             "attack_mode": "un_coordinated",
-            "attack_model": "additive",
+            "attack_model": None, #"additive",
 
             "noise_dist": 'gaussian',
             "mean_shift": 4,  # For additive Gaussian mean = mean(g) * mean_shift

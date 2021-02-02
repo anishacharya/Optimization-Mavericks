@@ -21,7 +21,8 @@ def plot_driver(label: str, res_file: str, plt_type: str = 'epoch_loss',
     # res = res[0::sampling_freq]
     res -= optima * np.ones(len(res))
 
-    x = np.arange(len(res)) + np.ones(len(res)) * sampling_freq
+    x = np.arange(len(res)) + np.ones(len(res))
+    x *= sampling_freq # * sampling_freq
     plt.plot(x, res, label=label, linewidth=line_width, marker=marker, linestyle=line_style)
 
 
@@ -74,29 +75,21 @@ def plot_metrics():
     o = [
         'mean',
         'gm',
-        # 'tm',
-        'gm.norm.0.01',
-        'gm.norm.0.05',
-        'gm.norm.0.1',
-        'gm.norm.0.25',
-        'gm.norm.0.01.ef',
-        'gm.norm.0.05.ef',
-        # 'mean.norm.'
+        'tm',
+        'nc',
+        'gm.norm.0.1.ef',
 
     ]
     labels = [
         'SGD',
         'GM-SGD',
-        'BGMD (0.01)',
-        'BGMD (0.05)',
-        'BGMD (0.1)',
-        'BGMD (0.25)',
-        'BGMDm (0.01)',
-        'BGMDm (0.05)',
+        'Trimmed Mean',
+        'BGMD (This Work)',
+        'Norm Clip'
               ]
 
-    plot_type = 'test_acc'
-    sampling_freq = 1
+    plot_type = 'train_loss'
+    sampling_freq = 5
 
     for op, label in zip(o, labels):
         result_file = d + op
@@ -117,25 +110,26 @@ def plot_metrics():
 
     if plot_type is 'test_error':
         plt.ylabel('Test Error', fontsize=10)
-        plt.xlabel('Communication Rounds', fontsize=10)
+        plt.xlabel('Aggregation Rounds', fontsize=10)
         # plt.ylim(bottom=70, top=100)
         # ax.xaxis.set_major_locator(ticker.MultipleLocator(100))
 
     elif plot_type is 'test_acc':
         plt.ylabel('Test Accuracy', fontsize=10)
-        plt.xlabel('Communication Rounds', fontsize=10)
-        plt.xlim(left=0, right=375)
+        plt.xlabel('Aggregation Rounds', fontsize=10)
+        plt.xlim(left=0, right=375*5)
         plt.ylim(bottom=50, top=95)
 
     elif plot_type is 'train_acc':
         plt.ylabel('Train Accuracy', fontsize=10)
-        plt.xlabel('Communication Rounds', fontsize=10)
+        plt.xlabel('Aggregation Rounds', fontsize=10)
 
     elif plot_type is 'train_loss':
         plt.ylabel('Training Loss', fontsize=10)
         plt.xlabel('Communication Rounds', fontsize=10)
         # plt.yscale('log')
-        plt.ylim(bottom=0, top=1.5)
+        plt.xlim(left=0, right=375 * 5)
+        # plt.ylim(bottom=0.1)
         # fig, ax = plt.subplots()
 
     elif plot_type is 'train_error':
