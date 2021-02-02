@@ -132,7 +132,7 @@ def run_fed_train(config, metrics):
 
     learner_config = training_config["learner_config"]
     optimizer_config = training_config.get("optimizer_config", {})
-    lrs_config = training_config.get('lrs_config')
+    lrs_config = training_config.get('lrs_config', {})
 
     aggregation_config = training_config["aggregation_config"]
     compression_config = aggregation_config["compression_config"]

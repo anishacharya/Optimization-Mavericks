@@ -1,5 +1,5 @@
 {
-  "train_mode": "fed", # fed(Federated), distributed(Distributed mini-batch SGD), decentralized (Decentralized SGD)
+  "train_mode": "distributed", # fed(Federated), distributed(Distributed mini-batch SGD), decentralized (Decentralized SGD)
   "pipeline": 'default', #
 
   "data_config":
@@ -7,15 +7,15 @@
       "data_set": "fashion_mnist", # mnist, fashion_mnist, cifar10
       "shape": [28, 28],
       "num_labels": 10,
-      "num_channels": 3,
+      "num_channels": 1,
       "download": False,
 
-      "batch_size": 128, # Define Batch Size here since Data Loader will assign batches to clients
+      "batch_size": 32, # Define Batch Size here since Data Loader will assign batches to clients
       "train_num_workers": 1,
 
       ## For Federated / Decentralized Training
-      "data_sampling_strategy": 'non_iid', # Data distribution (Heterogeneous / Non-Heterogeneous)
-      "num_shards": 75, # Number of shards for non-iid ~~ usually set it to k * num_of_clients 2 is a good value for k
+      "data_sampling_strategy": 'iid', # Data distribution (Heterogeneous / Non-Heterogeneous)
+      "num_shards": 100, # Number of shards for non-iid ~~ usually set it to k * num_of_clients 2 is a good value for k
     },
 
 
@@ -23,8 +23,8 @@
     {
       "num_clients": 25, # Number of clients / parallel batches
       "client_fraction": 1, # specify fraction of client participation per round
-      "global_epochs": 50, # Number of communication Rounds
-      "local_epochs": 20, # Local SGD number of local steps
+      "global_epochs": 25, # Number of communication Rounds
+      "local_epochs": 1, # Local SGD number of local steps
 
       "compute_grad_stats": False,
 
@@ -48,8 +48,8 @@
         {
           "lrs": 'step', # step, multi_step, exp, cyclic
           "milestones": [ 1, 5, 10 ],
-          "step_size": 10,
-          "gamma": 0.1
+          "step_size": 5,
+          "gamma": 0.5
         },
 
         "server_optimizer_config":
@@ -71,7 +71,7 @@
       # -------------------------------------------------
       "aggregation_config":
       {
-        "gar": "mean",
+        "gar": "geo_med",
         "trimmed_mean_config": { "proportion": 0.3 },
         "krum_config": { "krum_frac": 0.3 },
         "glomo_config": { "glomo_server_c": 1 },
@@ -85,10 +85,10 @@
 
         # specify attack config
         "attack_config":
-          {
-            "frac_adv": 0.2,
+        {
+            "frac_adv": 0.4,
             "attack_mode": "un_coordinated",
-            "attack_model": None,  # additive,
+            "attack_model": "additive",
 
             "noise_dist": 'gaussian',
             "mean_shift": 4,  # For additive Gaussian mean = mean(g) * mean_shift
@@ -97,7 +97,7 @@
             "noise_range": [ -1, 0 ], # only if uniform noise is added
 
             "attack_n_std": 1, # only for Drift Attack
-          },
+        },
 
         "sparse_approximation_config":
           {
