@@ -25,7 +25,7 @@ class SparseApproxMatrix:
         self.ef = conf.get('ef', False)
         self.residual_error = None
 
-    def sparse_approx(self, G: np.ndarray) -> np.ndarray:
+    def sparse_approx(self, G: np.ndarray, lr=1) -> np.ndarray:
         if self.sampling_rule not in ['active_norm', 'random']:
             return G
         n, d = G.shape
@@ -39,7 +39,7 @@ class SparseApproxMatrix:
             self.residual_error = np.zeros((n, d), dtype=G[0, :].dtype)
 
         # Error Compensation (if ef is False, residual error = 0 as its not updated)
-        G += self.residual_error
+        G = (lr * G) + self.residual_error
 
         # --------------------------------- #
         # Invoke Sampling algorithm here
@@ -66,7 +66,7 @@ class SparseApproxMatrix:
             # print('Error Feedback at Server')
             self.residual_error = G - G_sparse
 
-        return G_sparse
+        return G_sparse / lr
 
     # Implementation of different "Matrix Sparse Approximation" strategies
     def _random_sampling(self, d: int) -> np.ndarray:
