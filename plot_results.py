@@ -70,7 +70,7 @@ def plot_metrics():
 
     # -------------------------------------------------------------------------------------------
     # ------------------------------- Modify Here -----------------------------------------------
-    d = 'result_dumps/clean/distributed/fashion_mnist/gm/'
+    d = 'result_dumps/distributed/fashion_mnist/main_paper/'
     o = [
         'mean',
         'gm',
@@ -79,6 +79,8 @@ def plot_metrics():
         'gm.norm.0.05',
         'gm.norm.0.1',
         'gm.norm.0.25',
+        'gm.norm.0.01.ef',
+        'gm.norm.0.05.ef',
         # 'mean.norm.'
 
     ]
@@ -89,6 +91,8 @@ def plot_metrics():
         'BGMD (0.05)',
         'BGMD (0.1)',
         'BGMD (0.25)',
+        'BGMDm (0.01)',
+        'BGMDm (0.05)',
               ]
 
     plot_type = 'test_acc'
