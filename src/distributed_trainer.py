@@ -8,6 +8,7 @@ from src.model_manager import (get_model,
 from src.data_manager import process_data
 from src.aggregation_manager import get_gar, compute_grad_stats
 from src.compression_manager import SparseApproxMatrix
+from src.attack_manager import get_attack
 
 import torch
 from torch.utils.data import DataLoader
@@ -20,7 +21,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 def train_and_test_model(model, criterion, optimizer, lrs, gar,
                          train_loader, test_loader, train_config, metrics,
-                         sparse_selection=None):
+                         sparse_selection=None, attack_model=None):
     num_batches = train_config.get('num_clients', 1)
     num_epochs = train_config.get('global_epochs', 10)
     compute_grad_stat_flag = train_config.get('compute_grad_stats', False)
@@ -53,9 +54,12 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
             # -------  Communication Round ------- #
             if agg_ix == 0 and batch_ix is not 0:
                 # Sparse Approximation of G
-                G_sparse = sparse_selection.sparse_approx(G=G)
+                if sparse_selection is not None:
+                    G = sparse_selection.sparse_approx(G=G)
+                if attack_model is not None:
+                    G = attack_model.launch_attack(G=G)
                 # Gradient aggregation
-                agg_g = gar.aggregate(G=G_sparse)
+                agg_g = gar.aggregate(G=G)
 
                 optimizer.zero_grad()
                 # Update Model Grads with aggregated g :\tilde(g)
@@ -103,6 +107,7 @@ def run_batch_train(config, metrics):
     aggregation_config = training_config["aggregation_config"]
     sparse_approx_config = aggregation_config.get("sparse_approximation_config", {})
     compression_config = aggregation_config.get("compression_config", {})
+    attack_config = aggregation_config.get("attack_config", {})
 
     # ------------------------- Initializations --------------------- #
     client_model = get_model(learner_config=learner_config, data_config=data_config)
@@ -112,6 +117,7 @@ def run_batch_train(config, metrics):
 
     gar = get_gar(aggregation_config=aggregation_config)
     sparse_selection = SparseApproxMatrix(conf=sparse_approx_config)
+    attack_model = get_attack(attack_config=attack_config)
 
     # ------------------------- get data --------------------- #
     batch_size = data_config.get('batch_size', 1)
@@ -122,7 +128,7 @@ def run_batch_train(config, metrics):
     test_loader = DataLoader(dataset=test_dataset, batch_size=len(test_dataset))
 
     train_and_test_model(model=client_model, criterion=criterion, optimizer=client_optimizer, lrs=client_lrs,
-                         gar=gar, sparse_selection=sparse_selection,
+                         gar=gar, sparse_selection=sparse_selection, attack_model=attack_model,
                          train_loader=train_loader, test_loader=test_loader,
                          metrics=metrics, train_config=training_config)
     return metrics
