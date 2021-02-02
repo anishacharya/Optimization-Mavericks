@@ -59,7 +59,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                     G = sparse_selection.sparse_approx(G=G, lr=lr)
 
                 if attack_model is not None:
-                    print('attack on')
+                    # print('attack on')
                     G = attack_model.launch_attack(G=G)
 
                 # Gradient aggregation
