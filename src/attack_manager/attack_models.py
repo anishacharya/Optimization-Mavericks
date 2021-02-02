@@ -83,14 +83,14 @@ class Additive(ByzAttack):
         self.noise_dist = self.attack_config["noise_dist"]
 
         self.attack_std = self.attack_config.get("attack_std", 1)
-        self.noise_mean = self.attack_config.get("noise_mean", 0)
+        self.mean_shift = self.attack_config.get("mean_shift", 1)
 
         self.noise_range = self.attack_config.get("noise_range", [0, 1])
 
     def attack(self, g):
         # apply gaussian noise (scaled appropriately)
         if self.noise_dist == 'gaussian':
-            noise = np.random.normal(loc=g*self.noise_mean,
+            noise = np.random.normal(loc=g*self.mean_shift,
                                      scale=self.attack_std,
                                      size=g.shape).astype(dtype=g.dtype)
 
