@@ -90,7 +90,7 @@
             "attack_mode": "un_coordinated",
             "attack_model": "additive",
 
-            "noise_dist": 'gaussian',
+            "noise_dist": None #'gaussian',
             "mean_shift": 4,  # For additive Gaussian mean = mean(g) * mean_shift
 
             "attack_std": 3, # for random attack
@@ -101,7 +101,7 @@
 
         "sparse_approximation_config":
           {
-            "rule": 'active_norm',
+            "rule": None, 'active_norm',
             "axis": 'column',
             "frac_coordinates": 0.05,
             "ef": True,
