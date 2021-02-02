@@ -87,10 +87,11 @@
         "attack_config":
         {
             "frac_adv": 0.4,
-            "attack_mode": "un_coordinated",
-            "attack_model": "additive",
+            "attack_model": None, "additive",  # Set to None to off
 
-            "noise_dist": None, #'gaussian',
+            "attack_mode": "un_coordinated",
+
+            "noise_dist": 'gaussian',
             "mean_shift": 4,  # For additive Gaussian mean = mean(g) * mean_shift
 
             "attack_std": 3, # for random attack
