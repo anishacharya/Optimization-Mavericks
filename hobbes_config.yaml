@@ -90,7 +90,7 @@
             "attack_mode": "un_coordinated",
             "attack_model": "additive",
 
-            "noise_dist": None #'gaussian',
+            "noise_dist": None, #'gaussian',
             "mean_shift": 4,  # For additive Gaussian mean = mean(g) * mean_shift
 
             "attack_std": 3, # for random attack
