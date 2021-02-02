@@ -35,6 +35,7 @@ class MLP(nn.Module):
         # torch.nn.init.zeros_(self.hidden1.weight)
         self.fc2 = nn.Linear(hidden2, dim_out)
         self.fc2 = nn.DataParallel(self.fc2)
+
         # torch.nn.init.zeros_(self.fc2.weight)
 
     def forward(self, x):
