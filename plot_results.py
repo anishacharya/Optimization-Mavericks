@@ -39,7 +39,7 @@ def plot_timing(res_file: str, label):
     d = list(res.keys())
     t = list(res.values())
 
-    plt.yscale('log')
+    # plt.yscale('log')
     t = smooth(y=t, box_pts=1)
 
     plt.scatter(d, t, label=label)

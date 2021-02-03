@@ -17,7 +17,7 @@ def time_coordinate_select(G: np.ndarray, k: int):
     return G_sparse, T
 
 
-def time_gar(gar, G, repeat: int = 1):
+def time_gar(gar, G, repeat: int = 5):
     T = 0
     for it in range(repeat):
         t0 = time.time()
