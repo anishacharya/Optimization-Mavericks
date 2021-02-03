@@ -73,19 +73,15 @@ def plot_metrics():
     # ------------------------------- Modify Here -----------------------------------------------
     d = 'result_dumps/distributed/fashion_mnist/main_paper/'
     o = [
-        'mean',
-        'gm',
-        'tm',
-        'nc',
-        'gm.norm.0.1.ef',
+        'ours',
+        'ours.ga.0.2',
+        'ours.ga.0.4',
 
     ]
     labels = [
         'SGD',
         'GM-SGD',
-        'Trimmed Mean',
         'BGMD (This Work)',
-        'Norm Clip'
               ]
 
     plot_type = 'train_loss'
@@ -117,8 +113,8 @@ def plot_metrics():
     elif plot_type is 'test_acc':
         plt.ylabel('Test Accuracy', fontsize=10)
         plt.xlabel('Aggregation Rounds', fontsize=10)
-        plt.xlim(left=0, right=375*5)
-        plt.ylim(bottom=50, top=95)
+        # plt.xlim(left=0, right=375*5)
+        # plt.ylim(bottom=50, top=95)
 
     elif plot_type is 'train_acc':
         plt.ylabel('Train Accuracy', fontsize=10)
@@ -127,9 +123,9 @@ def plot_metrics():
     elif plot_type is 'train_loss':
         plt.ylabel('Training Loss', fontsize=10)
         plt.xlabel('Communication Rounds', fontsize=10)
-        # plt.yscale('log')
-        plt.xlim(left=0, right=375 * 5)
-        # plt.ylim(bottom=0.1)
+        plt.yscale('log')
+        # plt.xlim(left=0, right=375 * 5)
+        plt.ylim(bottom=0.1, top=1)
         # fig, ax = plt.subplots()
 
     elif plot_type is 'train_error':
