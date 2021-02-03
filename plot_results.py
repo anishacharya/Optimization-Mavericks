@@ -26,6 +26,12 @@ def plot_driver(label: str, res_file: str, plt_type: str = 'epoch_loss',
     plt.plot(x, res, label=label, linewidth=line_width, marker=marker, linestyle=line_style)
 
 
+def smooth(y, box_pts):
+    box = np.ones(box_pts)/box_pts
+    y_smooth = np.convolve(y, box, mode='same')
+    return y_smooth
+
+
 def plot_timing(res_file: str, label):
     # d = [100, 1000, 10000, 100000]
     with open(res_file, 'rb') as f:
@@ -34,6 +40,8 @@ def plot_timing(res_file: str, label):
     t = list(res.values())
 
     plt.yscale('log')
+    t = smooth(y=t, box_pts=1)
+
     plt.scatter(d, t, label=label)
     plt.plot(d, t, linestyle='dashed')
 
@@ -71,19 +79,19 @@ def plot_metrics():
 
     # -------------------------------------------------------------------------------------------
     # ------------------------------- Modify Here -----------------------------------------------
-    d = 'result_dumps/timing_exp/'
+    d = 'result_dumps/timing_exp/cont/'
     o = [
-        'ours.0.01',
-        'ours.0.05',
+        #'ours.0.01',
+        #'ours.0.05',
         'mean',
-        'geo_med'
+        #'geo_med'
 
     ]
     labels = [
-        'BGMD (p=0.01)',
-        'BGDM (p=0.05)',
+        #'BGMD (p=0.01)',
+        #'BGDM (p=0.05)',
         'SGD',
-        'GM-SGD'
+        #'GM-SGD'
               ]
 
     plot_type = 'timing'
