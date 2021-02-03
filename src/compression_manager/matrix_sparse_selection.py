@@ -87,6 +87,14 @@ class SparseApproxMatrix:
         Approximating matrix multiplication. SIAM Journal on Computing, 36(1):132–157, 2006
         """
         norm_dist = np.linalg.norm(G, axis=self.axis)
-        sorted_ix = np.argsort(norm_dist)[::-1]
+        norm_dist /= sum(norm_dist)
 
-        return sorted_ix[:self.k]
+        # Probabilistic Implementation ~ O(d)
+        all_ix = np.arange(G.shape[1])
+        top_k = np.random.choice(a=all_ix, size=self.k, replace=False, p=norm_dist)
+
+        # Probabilistic Implementation ~ O(d log k)
+        # sorted_ix = np.argsort(norm_dist)[::-1]
+        # top_k = sorted_ix[:self.k]
+
+        return top_k
