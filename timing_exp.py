@@ -30,12 +30,12 @@ def time_gar(gar, G, repeat: int = 1):
 if __name__ == '__main__':
     # Hyper Params
     directory = 'result_dumps/timing_exp/'
-    op_file = 'ours.0.01'
+    op_file = 'ours.0.05'
 
     d = [int(1e3), int(5e3), int(1e4), int(5e4)]
     n = 5000
-
-    k = int(0.01 * n)
+    f = 0.05
+    k = int(f * n)
 
     res = {}
     agg_config = \
