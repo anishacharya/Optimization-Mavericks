@@ -39,7 +39,7 @@ if __name__ == '__main__':
     d = [int(el) for el in d]
 
     n = 5000
-    f = 0.01  # fraction of coordinates
+    p = 0.01  # fraction of coordinates
 
     res = {}
     agg_config = \
@@ -51,7 +51,7 @@ if __name__ == '__main__':
 
     # Gather Times
     for dim in d:
-        k = int(f * dim)
+        k = int(p * dim)
         t = 0
         X = np.random.normal(0, 0.3, (n, dim))
 
@@ -65,8 +65,8 @@ if __name__ == '__main__':
 
         res[dim] = t
 
-        if not os.path.exists(directory):
+    if not os.path.exists(directory):
             os.makedirs(directory)
 
-        with open(directory + op_file, 'w+') as f:
+    with open(directory + op_file, 'w+') as f:
             json.dump(res, f, indent=4, ensure_ascii=False, cls=NumpyEncoder)
