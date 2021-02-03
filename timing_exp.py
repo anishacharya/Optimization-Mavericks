@@ -30,8 +30,8 @@ def time_gar(gar, G, repeat: int = 5):
 if __name__ == '__main__':
     # Hyper Params
     directory = 'result_dumps/timing_exp/cont/'
-    algo = 'geo_med'
-    op_file = 'geo_med'
+    algo = 'BGMD'
+    op_file = 'ours.0.01'
 
     # d = [int(1e3), int(5e3), int(1e4), int(5e4)]
     d = np.arange(start=1e3, stop=1e4, step=250)
