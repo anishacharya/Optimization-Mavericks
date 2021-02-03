@@ -87,7 +87,7 @@
         # specify attack config
         "attack_config":
         {
-            "frac_adv": 0.3,
+            "frac_adv": 0.4,
             "attack_mode": "un_coordinated",
             "attack_model": 'random',
 
