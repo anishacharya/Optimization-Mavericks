@@ -29,7 +29,7 @@ def time_gar(gar, G, repeat: int = 1):
 
 if __name__ == '__main__':
     # Hyper Params
-    op_file = 'result_dumps/timing_exp/gm'
+    op_file = 'result_dumps/timing_exp/ours.0.01'
 
     d = [int(1e3), int(5e3), int(1e4), int(5e4)]
     n = 5000
