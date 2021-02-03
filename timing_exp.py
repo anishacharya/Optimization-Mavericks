@@ -36,7 +36,7 @@ if __name__ == '__main__':
     directory = 'result_dumps/timing_exp/cont/'
 
     algo = 'tm'
-    op_file = 'tm'
+    op_file = 'norm_clip'
     n = 5000
     p = 0.25  # fraction of coordinates
 
@@ -46,6 +46,7 @@ if __name__ == '__main__':
             "gar": "trimmed_mean",
             "trimmed_mean_config": {"proportion": 0.3},
             "krum_config": {"krum_frac": 0.3},
+            "norm_clip_config": {"alpha": 0.5},
         }
     gar = get_gar(aggregation_config=agg_config)
 
