@@ -84,6 +84,7 @@ def plot_metrics():
         #'ours.0.01',
         #'ours.0.05',
         'mean',
+        'geo_med',
         #'geo_med'
 
     ]
@@ -91,7 +92,7 @@ def plot_metrics():
         #'BGMD (p=0.01)',
         #'BGDM (p=0.05)',
         'SGD',
-        #'GM-SGD'
+        'GM-SGD'
               ]
 
     plot_type = 'timing'
