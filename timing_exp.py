@@ -29,7 +29,7 @@ def time_gar(gar, G, repeat: int = 1):
 
 if __name__ == '__main__':
     # Hyper Params
-    op_file = 'result_dumps/timing_exp/mean'
+    op_file = 'result_dumps/timing_exp/gm'
 
     d = [int(1e3), int(5e3), int(1e4), int(5e4)]
     n = 5000
@@ -39,7 +39,7 @@ if __name__ == '__main__':
     res = {}
     agg_config = \
         {
-            "gar": "mean",
+            "gar": "gm",
             "krum_config": {"krum_frac": 0.3},
         }
     gar = get_gar(aggregation_config=agg_config)
