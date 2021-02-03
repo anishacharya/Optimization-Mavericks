@@ -30,16 +30,15 @@ def time_gar(gar, G, repeat: int = 5):
 
 if __name__ == '__main__':
     # Hyper Params
-    directory = 'result_dumps/timing_exp/cont/'
-    algo = 'BGMD'
-    op_file = 'ours.0.01'
-
     # d = [int(1e3), int(5e3), int(1e4), int(5e4)]
     d = np.arange(start=1e3, stop=1e4, step=250)
     d = [int(el) for el in d]
+    directory = 'result_dumps/timing_exp/cont/'
 
+    algo = 'BGMD'
+    op_file = 'ours.0.05'
     n = 5000
-    p = 0.01  # fraction of coordinates
+    p = 0.05  # fraction of coordinates
 
     res = {}
     agg_config = \
