@@ -41,7 +41,7 @@ if __name__ == '__main__':
     res = {}
     agg_config = \
         {
-            "gar": "mean",
+            "gar": "geo_med",
             "krum_config": {"krum_frac": 0.3},
         }
     gar = get_gar(aggregation_config=agg_config)
