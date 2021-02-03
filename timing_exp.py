@@ -31,11 +31,11 @@ if __name__ == '__main__':
     # Hyper Params
     directory = 'result_dumps/timing_exp/'
     algo = 'BGMD'
-    op_file = 'ours.0.05'
+    op_file = 'ours.0.01'
 
     d = [int(1e3), int(5e3), int(1e4), int(5e4)]
     n = 5000
-    f = 0.05
+    f = 0.01
     k = int(f * n)
 
     res = {}
