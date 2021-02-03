@@ -120,7 +120,12 @@ def run_batch_train(config, metrics):
     criterion = get_loss(loss=client_optimizer_config.get('loss', 'ce'))
 
     gar = get_gar(aggregation_config=aggregation_config)
-    sparse_selection = SparseApproxMatrix(conf=sparse_approx_config)
+
+    sparse_rule = sparse_approx_config.get('rule', None)
+    if sparse_rule is not None:
+        sparse_selection = SparseApproxMatrix(conf=sparse_approx_config)
+    else:
+        sparse_selection = None
     attack_model = get_attack(attack_config=attack_config)
 
     # ------------------------- get data --------------------- #
