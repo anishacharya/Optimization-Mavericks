@@ -42,7 +42,7 @@ def plot_timing(res_file: str, label):
     # plt.yscale('log')
     t = smooth(y=t, box_pts=1)
 
-    plt.scatter(d, t, label=label)
+    plt.scatter(d, t, label=label, marker='.')
     plt.plot(d, t, linestyle='dashed')
 
 
@@ -83,15 +83,19 @@ def plot_metrics():
     o = [
         'ours.0.01',
         'ours.0.05',
+        'ours.0.25',
         'mean',
         'geo_med',
+        # 'tm'
 
     ]
     labels = [
         'BGMD ($R^{0.01d}$)',
         'BGDM ($R^{0.05d}$)',
+        'BGDM ($R^{0.25d}$)',
         'SGD ($R^d$)',
-        'GM-SGD ($R^d$)'
+        'GM-SGD ($R^d$)',
+        # 'TM-SGD'
               ]
 
     plot_type = 'timing'
