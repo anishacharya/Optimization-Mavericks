@@ -10,12 +10,12 @@
       "num_channels": 3,
       "download": False,
 
-      "batch_size": 64, # Define Batch Size here since Data Loader will assign batches to clients
+      "batch_size": 128, # Define Batch Size here since Data Loader will assign batches to clients
       "train_num_workers": 1,
 
       ## For Federated / Decentralized Training
       "data_sampling_strategy": 'iid', # Data distribution (Heterogeneous / Non-Heterogeneous)
-      "num_shards": 100, # Number of shards for non-iid ~~ usually set it to k * num_of_clients 2 is a good value for k
+      "num_shards": 50, # Number of shards for non-iid ~~ usually set it to k * num_of_clients 2 is a good value for k
     },
 
 
@@ -49,7 +49,7 @@
         {
           "lrs": 'step', # step, multi_step, exp, cyclic
           "milestones": [ 1, 5, 10 ],
-          "step_size": 25,
+          "step_size": 20,
           "gamma": 0.1
         },
 
