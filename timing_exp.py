@@ -5,6 +5,7 @@ import json
 from numpyencoder import NumpyEncoder
 import os
 
+
 def time_coordinate_select(G: np.ndarray, k: int):
     t0 = time.time()
     norm_dist = np.linalg.norm(G, axis=0)
@@ -31,14 +32,14 @@ if __name__ == '__main__':
     # Hyper Params
     directory = 'result_dumps/timing_exp/cont/'
     algo = 'BGMD'
-    op_file = 'ours.0.25'
+    op_file = 'ours.0.01'
 
     # d = [int(1e3), int(5e3), int(1e4), int(5e4)]
     d = np.arange(start=1e3, stop=1e4, step=250)
     d = [int(el) for el in d]
+
     n = 5000
-    f = 0.25
-    k = int(f * n)
+    f = 0.01  # fraction of coordinates
 
     res = {}
     agg_config = \
@@ -50,6 +51,7 @@ if __name__ == '__main__':
 
     # Gather Times
     for dim in d:
+        k = int(f * dim)
         t = 0
         X = np.random.normal(0, 0.3, (n, dim))
 
