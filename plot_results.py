@@ -76,12 +76,14 @@ def plot_metrics():
         'ours.0.01',
         'ours.0.05',
         'mean',
+        'geo_med'
 
     ]
     labels = [
         'BGMD (p=0.01)',
         'BGDM (p=0.05)',
-        'SGD'
+        'SGD',
+        'GM-SGD'
               ]
 
     plot_type = 'timing'

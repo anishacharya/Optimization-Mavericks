@@ -29,11 +29,12 @@ def time_gar(gar, G, repeat: int = 1):
 
 if __name__ == '__main__':
     # Hyper Params
-    directory = 'result_dumps/timing_exp/'
+    directory = 'result_dumps/timing_exp/cont/'
     algo = 'mean'
-    op_file = 'geo_med'
+    op_file = 'mean'
 
-    d = [int(1e3), int(5e3), int(1e4), int(5e4)]
+    # d = [int(1e3), int(5e3), int(1e4), int(5e4)]
+    d = np.arange(start=1e3, stop=5e4, step=100)
     n = 5000
     f = 0.01
     k = int(f * n)
@@ -41,7 +42,7 @@ if __name__ == '__main__':
     res = {}
     agg_config = \
         {
-            "gar": "geo_med",
+            "gar": "mean",
             "krum_config": {"krum_frac": 0.3},
         }
     gar = get_gar(aggregation_config=agg_config)
