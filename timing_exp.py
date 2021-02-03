@@ -31,7 +31,7 @@ if __name__ == '__main__':
     # Hyper Params
     directory = 'result_dumps/timing_exp/'
     algo = 'BGMD'
-    op_file = 'geo_med'
+    op_file = 'ours.0.05'
 
     d = [int(1e3), int(5e3), int(1e4), int(5e4)]
     n = 5000
