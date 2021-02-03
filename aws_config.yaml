@@ -10,7 +10,7 @@
       "num_channels": 3,
       "download": False,
 
-      "batch_size": 128, # Define Batch Size here since Data Loader will assign batches to clients
+      "batch_size": 64, # Define Batch Size here since Data Loader will assign batches to clients
       "train_num_workers": 1,
 
       ## For Federated / Decentralized Training
@@ -23,7 +23,7 @@
     {
       "num_clients": 10, # Number of clients / parallel batches
       "client_fraction": 1, # specify fraction of client participation per round
-      "global_epochs": 35, # Number of communication Rounds
+      "global_epochs": 100, # Number of communication Rounds
 
       "local_epochs": 1, # Local SGD number of local steps - For Federated Training Mode
 
@@ -49,8 +49,8 @@
         {
           "lrs": 'step', # step, multi_step, exp, cyclic
           "milestones": [ 1, 5, 10 ],
-          "step_size": 10,
-          "gamma": 0.5
+          "step_size": 25,
+          "gamma": 0.1
         },
 
         "server_optimizer_config":
