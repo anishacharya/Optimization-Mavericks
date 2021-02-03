@@ -3,7 +3,7 @@ import time
 from src.aggregation_manager import get_gar
 import json
 from numpyencoder import NumpyEncoder
-
+import os
 
 def time_coordinate_select(G: np.ndarray, k: int):
     t0 = time.time()
@@ -29,7 +29,8 @@ def time_gar(gar, G, repeat: int = 1):
 
 if __name__ == '__main__':
     # Hyper Params
-    op_file = 'result_dumps/timing_exp/ours.0.01'
+    directory = 'result_dumps/timing_exp/'
+    op_file = 'ours.0.01'
 
     d = [int(1e3), int(5e3), int(1e4), int(5e4)]
     n = 5000
@@ -56,5 +57,8 @@ if __name__ == '__main__':
         t += time_gar(gar=gar, G=X)
         res[dim] = t
 
-        with open(op_file, 'w+') as f:
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+
+        with open(directory + op_file, 'w+') as f:
             json.dump(res, f, indent=4, ensure_ascii=False, cls=NumpyEncoder)
