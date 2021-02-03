@@ -34,7 +34,8 @@ if __name__ == '__main__':
     op_file = 'mean'
 
     # d = [int(1e3), int(5e3), int(1e4), int(5e4)]
-    d = np.arange(start=1e3, stop=5e4, step=100, dtype='int')
+    d = np.arange(start=1e3, stop=5e4, step=100)
+    d = [int(el) for el in d]
     n = 5000
     f = 0.01
     k = int(f * n)
