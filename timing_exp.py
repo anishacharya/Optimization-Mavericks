@@ -30,7 +30,8 @@ def time_gar(gar, G, repeat: int = 1):
 if __name__ == '__main__':
     # Hyper Params
     directory = 'result_dumps/timing_exp/'
-    op_file = 'ours.0.05'
+    algo = 'BGMD'
+    op_file = 'geo_med'
 
     d = [int(1e3), int(5e3), int(1e4), int(5e4)]
     n = 5000
@@ -50,11 +51,14 @@ if __name__ == '__main__':
         t = 0
         X = np.random.normal(0, 0.3, (n, dim))
 
-        # only for BGMD
-        X_sparse, t0 = time_coordinate_select(G=X, k=k)
-        t += t0
+        if algo == 'BGMD':
+            # only for BGMD
+            X_sparse, t0 = time_coordinate_select(G=X, k=k)
+            t += t0
+            t += time_gar(gar=gar, G=X_sparse)
+        else:
+            t += time_gar(gar=gar, G=X)
 
-        t += time_gar(gar=gar, G=X)
         res[dim] = t
 
         if not os.path.exists(directory):
