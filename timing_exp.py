@@ -31,7 +31,7 @@ if __name__ == '__main__':
     # Hyper Params
     directory = 'result_dumps/timing_exp/cont/'
     algo = 'mean'
-    op_file = 'mean'
+    op_file = 'geo_med'
 
     # d = [int(1e3), int(5e3), int(1e4), int(5e4)]
     d = np.arange(start=1e3, stop=1e4, step=250)
@@ -43,7 +43,7 @@ if __name__ == '__main__':
     res = {}
     agg_config = \
         {
-            "gar": "mean",
+            "gar": "geo_med",
             "krum_config": {"krum_frac": 0.3},
         }
     gar = get_gar(aggregation_config=agg_config)
