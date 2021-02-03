@@ -17,7 +17,7 @@ def time_coordinate_select(G: np.ndarray, k: int):
     return G_sparse, T
 
 
-def time_gar(gar, G, repeat: int = 1):
+def time_gar(gar, G, repeat: int = 5):
     T = 0
     for it in range(repeat):
         t0 = time.time()
@@ -31,10 +31,10 @@ if __name__ == '__main__':
     # Hyper Params
     directory = 'result_dumps/timing_exp/cont/'
     algo = 'mean'
-    op_file = 'mean'
+    op_file = 'geo_med'
 
     # d = [int(1e3), int(5e3), int(1e4), int(5e4)]
-    d = np.arange(start=1e3, stop=1e4, step=200)
+    d = np.arange(start=1e3, stop=1e4, step=250)
     d = [int(el) for el in d]
     n = 5000
     f = 0.01
@@ -43,7 +43,7 @@ if __name__ == '__main__':
     res = {}
     agg_config = \
         {
-            "gar": "mean",
+            "gar": "geo_med",
             "krum_config": {"krum_frac": 0.3},
         }
     gar = get_gar(aggregation_config=agg_config)
