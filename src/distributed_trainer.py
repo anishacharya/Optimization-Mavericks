@@ -53,14 +53,14 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
 
             # -------  Communication Round ------- #
             if agg_ix == 0 and batch_ix is not 0:
+                if attack_model is not None:
+                    # print('attack on')
+                    G = attack_model.launch_attack(G=G)
+
                 # Sparse Approximation of G
                 if sparse_selection is not None:
                     lr = optimizer.param_groups[0]['lr']
                     G = sparse_selection.sparse_approx(G=G, lr=lr)
-
-                if attack_model is not None:
-                    # print('attack on')
-                    G = attack_model.launch_attack(G=G)
 
                 # Gradient aggregation
                 agg_g = gar.aggregate(G=G)

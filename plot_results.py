@@ -71,20 +71,21 @@ def plot_metrics():
 
     # -------------------------------------------------------------------------------------------
     # ------------------------------- Modify Here -----------------------------------------------
-    d = 'result_dumps/Robust/distributed/fashion_mnist/main_paper/'
+    d = 'result_dumps/timing_exp/'
     o = [
-        'mean',
-        'geo_med',
-        'geo_med',
+        'ours.0.01',
+        'ours.0.05',
+        #'geo_med',
 
     ]
     labels = [
-        'SGD',
-        'GM-SGD',
-        'BGMD (This Work)',
+        #'SGD',
+        #'GM-SGD',
+        'BGMD (p=0.01)',
+        'BGDM (p=0.05)'
               ]
 
-    plot_type = 'train_loss'
+    plot_type = 'timing'
     sampling_freq = 5
 
     for op, label in zip(o, labels):
