@@ -50,8 +50,8 @@ if __name__ == '__main__':
         X = np.random.normal(0, 0.3, (n, dim))
 
         # only for BGMD
-        # X_sparse, t0 = time_coordinate_select(G=X, k=k)
-        # t += t0
+        X_sparse, t0 = time_coordinate_select(G=X, k=k)
+        t += t0
 
         t += time_gar(gar=gar, G=X)
         res[dim] = t
