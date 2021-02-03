@@ -36,9 +36,9 @@ if __name__ == '__main__':
     directory = 'result_dumps/timing_exp/cont/'
 
     algo = 'BGMD'
-    op_file = 'ours.0.05'
+    op_file = 'ours.0.25'
     n = 5000
-    p = 0.05  # fraction of coordinates
+    p = 0.25  # fraction of coordinates
 
     res = {}
     agg_config = \
