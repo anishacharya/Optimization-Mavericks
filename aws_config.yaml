@@ -72,7 +72,7 @@
       # -------------------------------------------------
       "aggregation_config":
       {
-        "gar": "mean",
+        "gar": "geo_med",
         "trimmed_mean_config": { "proportion": 0.3 },
         "krum_config": { "krum_frac": 0.3 },
         "glomo_config": { "glomo_server_c": 1 },
