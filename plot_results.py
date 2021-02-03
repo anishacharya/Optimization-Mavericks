@@ -81,15 +81,15 @@ def plot_metrics():
     # ------------------------------- Modify Here -----------------------------------------------
     d = 'result_dumps/timing_exp/cont/'
     o = [
-        #'ours.0.01',
-        #'ours.0.05',
+        'ours.0.01',
+        # 'ours.0.05',
         'mean',
         'geo_med',
         #'geo_med'
 
     ]
     labels = [
-        #'BGMD (p=0.01)',
+        'BGMD (p=0.01)',
         #'BGDM (p=0.05)',
         'SGD',
         'GM-SGD'

@@ -31,13 +31,13 @@ if __name__ == '__main__':
     # Hyper Params
     directory = 'result_dumps/timing_exp/cont/'
     algo = 'BGMD'
-    op_file = 'ours.0.01'
+    op_file = 'ours.0.05'
 
     # d = [int(1e3), int(5e3), int(1e4), int(5e4)]
     d = np.arange(start=1e3, stop=1e4, step=250)
     d = [int(el) for el in d]
     n = 5000
-    f = 0.01
+    f = 0.05
     k = int(f * n)
 
     res = {}
