@@ -71,11 +71,11 @@ def plot_metrics():
 
     # -------------------------------------------------------------------------------------------
     # ------------------------------- Modify Here -----------------------------------------------
-    d = 'result_dumps/distributed/fashion_mnist/main_paper/'
+    d = 'result_dumps/Robust/distributed/fashion_mnist/main_paper/'
     o = [
-        'ours',
-        'ours.ga.0.2',
-        'ours.ga.0.4',
+        'mean',
+        'geo_med',
+        'geo_med',
 
     ]
     labels = [
@@ -114,7 +114,7 @@ def plot_metrics():
         plt.ylabel('Test Accuracy', fontsize=10)
         plt.xlabel('Aggregation Rounds', fontsize=10)
         # plt.xlim(left=0, right=375*5)
-        # plt.ylim(bottom=50, top=95)
+        plt.ylim(bottom=80, top=95)
 
     elif plot_type is 'train_acc':
         plt.ylabel('Train Accuracy', fontsize=10)
