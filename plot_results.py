@@ -82,17 +82,16 @@ def plot_metrics():
     d = 'result_dumps/timing_exp/cont/'
     o = [
         'ours.0.01',
-        # 'ours.0.05',
+        'ours.0.05',
         'mean',
         'geo_med',
-        #'geo_med'
 
     ]
     labels = [
-        'BGMD (p=0.01)',
-        #'BGDM (p=0.05)',
-        'SGD',
-        'GM-SGD'
+        'BGMD ($R^{0.01d}$)',
+        'BGDM ($R^{0.05d}$)',
+        'SGD ($R^d$)',
+        'GM-SGD ($R^d$)'
               ]
 
     plot_type = 'timing'
