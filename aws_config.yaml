@@ -94,8 +94,8 @@
             "noise_dist": 'gaussian',
             "mean_shift": 4,  # For additive Gaussian mean = mean(g) * mean_shift
 
-            "noise_mean": 0.5, # for random attack
-            "attack_std": 2, # for random attack
+            "noise_mean": 0, # for random attack
+            "attack_std": 1, # for random attack
             "noise_range": [ -1, 0 ], # only if uniform noise is added
 
             "attack_n_std": 1, # only for Drift Attack
