@@ -83,18 +83,18 @@ def plot_metrics():
     o = [
         'ours.0.01',
         'ours.0.05',
-        'ours.0.25',
+        #'ours.0.25',
         'mean',
         'geo_med',
         # 'tm'
 
     ]
     labels = [
-        'BGMD ($R^{0.01d}$)',
-        'BGDM ($R^{0.05d}$)',
-        'BGDM ($R^{0.25d}$)',
-        'SGD ($R^d$)',
-        'GM-SGD ($R^d$)',
+        'BGMD (0.01})',
+        'BGDM (0.05})',
+        # 'BGDM ($R^{0.25d}$)',
+        'SGD',
+        'GM-SGD',
         # 'TM-SGD'
               ]
 

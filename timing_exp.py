@@ -35,15 +35,15 @@ if __name__ == '__main__':
     d = [int(el) for el in d]
     directory = 'result_dumps/timing_exp/cont/'
 
-    algo = 'BGMD'
-    op_file = 'ours.0.25'
+    algo = 'tm'
+    op_file = 'tm'
     n = 5000
     p = 0.25  # fraction of coordinates
 
     res = {}
     agg_config = \
         {
-            "gar": "geo_med",
+            "gar": "trimmed_mean",
             "trimmed_mean_config": {"proportion": 0.3},
             "krum_config": {"krum_frac": 0.3},
         }
