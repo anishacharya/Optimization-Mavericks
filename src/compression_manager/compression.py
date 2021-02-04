@@ -69,14 +69,14 @@ class Qsgd(C):
 
         #g_sign = np.sign(g)
         #g_val = np.abs(g)
-        g_levels = np.floor((np.abs(g)/g_norm)*s).astype(np.float16)
+        g_levels = np.floor((np.abs(g)/g_norm)*s) #.astype(np.float16)
         #g_probs = ((g_val/g_norm)*s - g_levels)
-        g_probs = (np.abs(g)/g_norm)*s - g_levels#np.floor((np.abs(g)/g_norm)*s)
+        g_probs = (np.abs(g)/g_norm)*s - g_levels #np.floor((np.abs(g)/g_norm)*s)
 
         zeta = np.random.binomial(1, 1.0 - g_probs, len(g)).astype(np.float16)
         val = (zeta*(g_levels/s) + (1.0-zeta)*((g_levels+1)/s)).astype(np.float16)
         #compressed_g = g_norm*np.sign(g)*val
-        return (g_norm*np.sign(g)*val).astype(np.float16)
+        return (g_norm*np.sign(g)*val) #.astype(np.float16)
 
 
 class Rand(C):
