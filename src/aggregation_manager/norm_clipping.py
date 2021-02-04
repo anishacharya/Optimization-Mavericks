@@ -21,6 +21,7 @@ class NormClipping(GAR):
 
     def aggregate(self, G: np.ndarray) -> np.ndarray:
         # Compute norms of each gradient vector
+        # norm_dist = np.linalg.norm(G, axis=1)
         norms = np.sqrt(np.einsum('ij,ij->i', G, G))
 
         if self.k is None:
