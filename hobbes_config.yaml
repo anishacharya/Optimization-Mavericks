@@ -87,7 +87,7 @@
         # specify attack config
         "attack_config":
         {
-            "frac_adv": 0.3,
+            "frac_adv": 0.1,
             "attack_model": 'bit_flip',  # Set to None to off
 
             "attack_mode": "un_coordinated",
