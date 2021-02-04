@@ -79,7 +79,7 @@
 
         "compression_config":
         {
-          "compression_operator": "qsgd", # full (No Compression), top_k, rand_k
+          "compression_operator": "top", # full (No Compression), top_k, rand_k
           "frac_coordinates_to_keep": 0.5, # For top-k, rand-k specify sparsity (k)
           "bits": 2,
         },
