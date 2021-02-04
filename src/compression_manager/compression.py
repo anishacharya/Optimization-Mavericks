@@ -64,7 +64,7 @@ class QSGD(C):
         tau = 1 + min((np.sqrt(q.shape[0]) / s), (q.shape[0] / (s ** 2)))
         for i in range(0, q.shape[1]):
             unif_i = np.random.rand(q.shape[0], )
-            x_i = x[:, i]
+            x_i = g[:, i]
             q[:, i] = ((np.sign(x_i) * np.linalg.norm(x_i)) / (s * tau)) * \
                       np.floor((s * np.abs(x_i) / np.linalg.norm(x_i)) + unif_i)
         return q

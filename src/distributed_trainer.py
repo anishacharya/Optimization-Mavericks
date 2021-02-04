@@ -58,8 +58,9 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                     G = attack_model.launch_attack(G=G)
 
                 # Compression before aggregation
-                for ix, g_i in enumerate(G):
-                    G[ix, :] = C.compress(g_i)
+                G = C.compress(G)
+                #for ix, g_i in enumerate(G):
+                #    G[ix, :] = C.compress(g_i)
                 # Sparse Approximation of G
                 if sparse_selection is not None:
                     lr = optimizer.param_groups[0]['lr']
