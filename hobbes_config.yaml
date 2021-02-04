@@ -93,9 +93,9 @@
             "attack_mode": "un_coordinated",
 
             "noise_dist": 'gaussian',
-            "mean_shift": 5,  # For additive Gaussian mean = mean(g) * mean_shift
+            "mean_shift": 100,  # For additive Gaussian mean = mean(g) * mean_shift
 
-            "attack_std": 3, # for random attack
+            "attack_std": 1, # for random attack
             "noise_range": [ -1, 0 ], # only if uniform noise is added
 
             "attack_n_std": 1, # only for Drift Attack
