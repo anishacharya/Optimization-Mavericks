@@ -8,7 +8,7 @@
                 28
         ],
         "num_labels": 10,
-        "num_channels": 3,
+        "num_channels": 1,
         "download": false,
         "batch_size": 128,
         "train_num_workers": 1,
