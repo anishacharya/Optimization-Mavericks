@@ -91,11 +91,11 @@ class SparseApproxMatrix:
         norm_dist /= sum(norm_dist)
 
         # Probabilistic Implementation ~ O(d)
-        all_ix = np.arange(G.shape[1])
-        top_k = np.random.choice(a=all_ix, size=self.k, replace=False, p=norm_dist)
+        # all_ix = np.arange(G.shape[1])
+        # top_k = np.random.choice(a=all_ix, size=self.k, replace=False, p=norm_dist)
 
         # Probabilistic Implementation ~ O(d log k)
-        # sorted_ix = np.argsort(norm_dist)[::-1]
-        # top_k = sorted_ix[:self.k]
+        sorted_ix = np.argsort(norm_dist)[::-1]
+        top_k = sorted_ix[:self.k]
 
         return top_k
