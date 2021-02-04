@@ -92,7 +92,7 @@ def plot_metrics():
 
     # -------------------------------------------------------------------------------------------
     # ------------------------------- Modify Here -----------------------------------------------
-    d = 'result_dumps/distributed/cifar10/'
+    d = 'result_dumps/distributed/fashion_mnist/rerun/'
     o = [
         'mean',
         'gm',
@@ -148,7 +148,7 @@ def plot_metrics():
         plt.xlabel('Communication Rounds', fontsize=10)
         plt.yscale('log')
         # plt.xlim(left=0, right=375 * 5)
-        # plt.ylim(bottom=0.1, top=5)
+        plt.ylim(top=1)
 
     elif plot_type is 'train_error':
         plt.ylabel('Train Error', fontsize=10)
