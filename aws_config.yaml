@@ -16,9 +16,9 @@
     "num_shards": 50
   },
   "training_config": {
-    "num_clients": 20,
+    "num_clients": 10,
     "client_fraction": 1,
-    "global_epochs": 30,
+    "global_epochs": 20,
     "local_epochs": 10,
     "compute_grad_stats": false,
     "optimizer_config": {
