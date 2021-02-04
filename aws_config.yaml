@@ -72,11 +72,11 @@
                 "frac_coordinates_to_keep": 0.5
             },
             "attack_config": {
-                "frac_adv": 0.1,
+                "frac_adv": 0.3,
                 "attack_mode": "un_coordinated",
                 "attack_model": "bit_flip",
                 "noise_dist": "gaussian",
-                "mean_shift": 100,
+                "mean_shift": 5,
                 "attack_std": 1,
                 "noise_range": [
                         -1,
