@@ -35,18 +35,18 @@ if __name__ == '__main__':
     d = [int(el) for el in d]
     directory = 'result_dumps/timing_exp/cont/'
 
-    algo = 'tm'
-    op_file = 'norm_clip'
+    algo = 'BGMD'
+    op_file = 'ours.0.25'
     n = 5000
     p = 0.25  # fraction of coordinates
 
     res = {}
     agg_config = \
         {
-            "gar": "norm_clip",
+            "gar": "geo_med",
             "trimmed_mean_config": {"proportion": 0.3},
             "krum_config": {"krum_frac": 0.3},
-            "norm_clip_config": {"alpha": 0.5},
+            "norm_clip_config": {"alpha": 0.3},
         }
     gar = get_gar(aggregation_config=agg_config)
 
