@@ -26,7 +26,8 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
     num_epochs = train_config.get('global_epochs', 10)
     compute_grad_stat_flag = train_config.get('compute_grad_stats', False)
 
-    for epoch in range(num_epochs):
+    epoch = 0
+    while epoch <= num_epochs:
         model.to(device)
         model.train()
         G = None
@@ -101,6 +102,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
         if compute_grad_stat_flag is True and epoch % 5 == 0:
             print("Computing Additional Stats on G")
             compute_grad_stats(G=G, metrics=metrics)
+        epoch += 1
 
 
 def run_batch_train(config, metrics):

@@ -88,7 +88,7 @@ class SparseApproxMatrix:
         Approximating matrix multiplication. SIAM Journal on Computing, 36(1):132–157, 2006
         """
         sample_norms = np.sqrt(np.einsum('ij,ij->i', G, G))
-        clip_k = int(G.shape[0]*0.1)
+        clip_k = int(G.shape[0]*0.2)
         top_k_indices = np.argsort(np.abs(sample_norms))[::-1][:clip_k]
         G = G[top_k_indices, :]
 
