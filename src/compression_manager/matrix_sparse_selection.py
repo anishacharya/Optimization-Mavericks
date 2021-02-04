@@ -17,6 +17,7 @@ class SparseApproxMatrix:
         self.sampling_rule = self.conf.get('rule', None)
         axis = self.conf.get('axis', 'column')  # 0: column sampling, 1: row sampling
         self.axis = 0 if axis == 'column' else 1
+        print('axis = {}'.format(self.axis))
         # number of coordinates to sample
         self.frac = conf.get('frac_coordinates', 1)
         self.k = None
@@ -90,11 +91,11 @@ class SparseApproxMatrix:
         norm_dist /= sum(norm_dist)
 
         # Probabilistic Implementation ~ O(d)
-        all_ix = np.arange(G.shape[1])
-        top_k = np.random.choice(a=all_ix, size=self.k, replace=False, p=norm_dist)
+        # all_ix = np.arange(G.shape[1])
+        # top_k = np.random.choice(a=all_ix, size=self.k, replace=False, p=norm_dist)
 
         # Probabilistic Implementation ~ O(d log k)
-        # sorted_ix = np.argsort(norm_dist)[::-1]
-        # top_k = sorted_ix[:self.k]
+        sorted_ix = np.argsort(norm_dist)[::-1]
+        top_k = sorted_ix[:self.k]
 
         return top_k
