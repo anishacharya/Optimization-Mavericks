@@ -87,8 +87,10 @@ class SparseApproxMatrix:
         Ref: Drineas, P., Kannan, R., and Mahoney, M. W.  Fast monte carlo algorithms for matrices:
         Approximating matrix multiplication. SIAM Journal on Computing, 36(1):132–157, 2006
         """
-        norm_dist = np.linalg.norm(G, axis=self.axis)
-        norm_dist /= sum(norm_dist)
+        norm_dist = G.sum(axis=self.axis)
+        norm_dist = np.square(norm_dist)
+        # norm_dist = np.linalg.norm(G, axis=self.axis)
+        norm_dist /= norm_dist.sum()
 
         # Probabilistic Implementation ~ O(d)
         # all_ix = np.arange(G.shape[1])
