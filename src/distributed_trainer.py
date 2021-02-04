@@ -90,6 +90,10 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                     metrics["test_error"].append(test_error)
                     metrics["test_acc"].append(test_acc)
 
+                    if train_loss > 1e3:
+                        break
+                        # epoch = num_epochs
+
                 comm_rounds += 1
 
         if lrs is not None:
