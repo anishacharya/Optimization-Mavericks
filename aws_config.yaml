@@ -21,9 +21,9 @@
 
   "training_config":
     {
-      "num_clients": 10, # Number of clients / parallel batches
+      "num_clients": 20, # Number of clients / parallel batches
       "client_fraction": 1, # specify fraction of client participation per round
-      "global_epochs": 40, # Number of communication Rounds
+      "global_epochs": 35, # Number of communication Rounds
 
       "local_epochs": 1, # Local SGD number of local steps - For Federated Training Mode
 
@@ -87,15 +87,15 @@
         # specify attack config
         "attack_config":
         {
-            "frac_adv": 0.2,
+            "frac_adv": 0.4,
             "attack_mode": "un_coordinated",
             "attack_model": 'additive',
 
-            "noise_dist": 'gaussian',
+            "noise_dist": 'random',
             "mean_shift": 4,  # For additive Gaussian mean = mean(g) * mean_shift
             "attack_std": 3, # for random and Additive attack
 
-            "noise_mean": 0.5, # for random attack
+            "noise_mean": 4, # for random attack
 
             "noise_range": [ -1, 0 ], # only if uniform noise is added
 
