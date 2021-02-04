@@ -87,9 +87,9 @@
         # specify attack config
         "attack_config":
         {
-            "frac_adv": 0.3,
+            "frac_adv": 0.4,
             "attack_mode": "un_coordinated",
-            "attack_model": 'additive',
+            "attack_model": 'bit_flip',
 
             "noise_dist": 'gaussian',
             "mean_shift": 4,  # For additive Gaussian mean = mean(g) * mean_shift
@@ -106,7 +106,7 @@
           {
             "rule": 'active_norm',
             "axis": 'column',
-            "frac_coordinates": 0.1,
+            "frac_coordinates": 0.05,
             "ef": True,
           },
       }
