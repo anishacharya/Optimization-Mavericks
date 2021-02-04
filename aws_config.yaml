@@ -72,7 +72,7 @@
                 "frac_coordinates_to_keep": 0.5
             },
             "attack_config": {
-                "frac_adv": 0.4,
+                "frac_adv": 0.2,
                 "attack_mode": "un_coordinated",
                 "attack_model": "additve",
                 "noise_dist": "gaussian",
