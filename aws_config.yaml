@@ -23,7 +23,7 @@
     {
       "num_clients": 10, # Number of clients / parallel batches
       "client_fraction": 1, # specify fraction of client participation per round
-      "global_epochs": 50, # Number of communication Rounds
+      "global_epochs": 40, # Number of communication Rounds
 
       "local_epochs": 1, # Local SGD number of local steps - For Federated Training Mode
 
@@ -38,7 +38,7 @@
         {
           "optimizer": 'SGD', # SGD, Adam
           "loss": 'ce', # ce (Cross Entropy), mse (Mean Sq Error), bce(binary-CE)
-          "lr0": 0.1,
+          "lr0": 0.01,
           "momentum": 0.9,
           "reg": 0.0001,
           "nesterov": False,
