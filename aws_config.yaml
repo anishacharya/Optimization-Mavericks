@@ -89,7 +89,7 @@
         {
             "frac_adv": 0.4,
             "attack_mode": "un_coordinated",
-            "attack_model": 'bit_flip',
+            "attack_model": 'random',
 
             "noise_dist": 'gaussian',
             "mean_shift": 4,  # For additive Gaussian mean = mean(g) * mean_shift

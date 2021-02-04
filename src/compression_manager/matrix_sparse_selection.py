@@ -56,7 +56,7 @@ class SparseApproxMatrix:
         if self.axis == 0:
             # column sampling
             G_sparse[:, I_k] = G[:, I_k]
-        elif self.axis == 0:
+        elif self.axis == 1:
             # row sampling
             G_sparse[I_k, :] = G[I_k, :]
         else:
