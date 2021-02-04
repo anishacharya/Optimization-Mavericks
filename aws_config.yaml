@@ -10,7 +10,7 @@
     "num_labels": 10,
     "num_channels": 3,
     "download": false,
-    "batch_size": 128,
+    "batch_size": 256,
     "train_num_workers": 1,
     "data_sampling_strategy": "iid",
     "num_shards": 50
@@ -19,7 +19,7 @@
     "num_clients": 20,
     "client_fraction": 1,
     "global_epochs": 30,
-    "local_epochs": 1,
+    "local_epochs": 10,
     "compute_grad_stats": false,
     "optimizer_config": {
       "client_optimizer_config": {
@@ -87,7 +87,7 @@
       "sparse_approximation_config": {
         "rule": "active_norm",
         "axis": "column",
-        "frac_coordinates": 0.3,
+        "frac_coordinates": 0.05,
         "ef": true
       }
     }
