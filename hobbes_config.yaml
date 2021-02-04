@@ -71,7 +71,7 @@
       # -------------------------------------------------
       "aggregation_config":
       {
-        "gar": "geo_med",
+        "gar": "mean",
         "trimmed_mean_config": { "proportion": 0.3 },
         "krum_config": { "krum_frac": 0.3 },
         "glomo_config": { "glomo_server_c": 1 },
@@ -87,8 +87,8 @@
         # specify attack config
         "attack_config":
         {
-            "frac_adv": 0.4,
-            "attack_model": None,  # Set to None to off
+            "frac_adv": 0.1,
+            "attack_model": 'bit_flip',  # Set to None to off
 
             "attack_mode": "un_coordinated",
 
