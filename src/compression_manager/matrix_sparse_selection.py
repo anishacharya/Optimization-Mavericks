@@ -17,6 +17,7 @@ class SparseApproxMatrix:
         self.sampling_rule = self.conf.get('rule', None)
         axis = self.conf.get('axis', 'column')  # 0: column sampling, 1: row sampling
         self.axis = 0 if axis == 'column' else 1
+        print('axis = {}'.format(self.axis))
         # number of coordinates to sample
         self.frac = conf.get('frac_coordinates', 1)
         self.k = None
