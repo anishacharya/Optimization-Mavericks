@@ -10,7 +10,7 @@
       "num_channels": 3,
       "download": False,
 
-      "batch_size": 64, # Define Batch Size here since Data Loader will assign batches to clients
+      "batch_size": 128, # Define Batch Size here since Data Loader will assign batches to clients
       "train_num_workers": 1,
 
       ## For Federated / Decentralized Training
@@ -21,9 +21,9 @@
 
   "training_config":
     {
-      "num_clients": 20, # Number of clients / parallel batches
+      "num_clients": 9, # Number of clients / parallel batches
       "client_fraction": 1, # specify fraction of client participation per round
-      "global_epochs": 35, # Number of communication Rounds
+      "global_epochs": 30, # Number of communication Rounds
 
       "local_epochs": 1, # Local SGD number of local steps - For Federated Training Mode
 
@@ -38,7 +38,7 @@
         {
           "optimizer": 'SGD', # SGD, Adam
           "loss": 'ce', # ce (Cross Entropy), mse (Mean Sq Error), bce(binary-CE)
-          "lr0": 0.01,
+          "lr0": 0.1,
           "momentum": 0.9,
           "reg": 0.0001,
           "nesterov": False,
@@ -87,7 +87,7 @@
         # specify attack config
         "attack_config":
         {
-            "frac_adv": 0.4,
+            "frac_adv": 0.3,
             "attack_mode": "un_coordinated",
             "attack_model": 'additive',
 
