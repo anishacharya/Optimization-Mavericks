@@ -2,13 +2,13 @@
     "train_mode": "distributed",
     "pipeline": "default",
     "data_config": {
-        "data_set": "cifar10",
+        "data_set": "fashion_mnist",
         "shape": [
                 28,
                 28
         ],
         "num_labels": 10,
-        "num_channels": 1,
+        "num_channels": 3,
         "download": false,
         "batch_size": 128,
         "train_num_workers": 1,
@@ -72,7 +72,7 @@
                 "frac_coordinates_to_keep": 0.5
             },
             "attack_config": {
-                "frac_adv": 0.1,
+                "frac_adv": 0.4,
                 "attack_mode": "un_coordinated",
                 "attack_model": "additve",
                 "noise_dist": "gaussian",
@@ -86,7 +86,7 @@
                 "attack_n_std": 1
             },
             "sparse_approximation_config": {
-                "rule": "active_norm",
+                "rule": None, #"active_norm",
                 "axis": "column",
                 "frac_coordinates": 0.05,
                 "ef": true
