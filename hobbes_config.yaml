@@ -87,7 +87,7 @@
         # specify attack config
         "attack_config":
         {
-            "frac_adv": 0.3,
+            "frac_adv": 0.1,
             "attack_model": 'additive',  # Set to None to off
 
             "attack_mode": "un_coordinated",
@@ -105,7 +105,7 @@
           {
             "rule": None, # 'active_norm',
             "axis": 'column',
-            "frac_coordinates": 0.05,
+            "frac_coordinates": 0.2,
             "ef": True,
           },
       }

@@ -65,7 +65,7 @@ class Qsgd(C):
         g_norm = np.linalg.norm(g)
 
         if g_norm == 0:
-           return np.zeros_like(g).astype(np.float16) #compressed_g
+           return np.zeros_like(g)#.astype(np.float16) #compressed_g
 
         #g_sign = np.sign(g)
         #g_val = np.abs(g)
