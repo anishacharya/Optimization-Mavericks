@@ -25,7 +25,7 @@
             "client_optimizer_config": {
                 "optimizer": "SGD",
                 "loss": "ce",
-                "lr0": 0.005,
+                "lr0": 0.01,
                 "momentum": 0.9,
                 "reg": 0.0001,
                 "nesterov": false,
@@ -72,11 +72,11 @@
                 "frac_coordinates_to_keep": 0.5
             },
             "attack_config": {
-                "frac_adv": 0.3,
+                "frac_adv": 0.1,
                 "attack_mode": "un_coordinated",
                 "attack_model": "bit_flip",
                 "noise_dist": "gaussian",
-                "mean_shift": 5,
+                "mean_shift": 100,
                 "attack_std": 1,
                 "noise_range": [
                         -1,
