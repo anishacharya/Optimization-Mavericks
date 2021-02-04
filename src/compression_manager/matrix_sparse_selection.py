@@ -83,7 +83,7 @@ class SparseApproxMatrix:
         """
         sample_norms = np.sqrt(np.einsum('ij,ij->i', G, G))
         keep = G.shape[0] - int(G.shape[0] * 0.3)
-        indices = np.argsort(np.abs(sample_norms))[:keep]
+        indices = np.argsort(np.abs(sample_norms))[keep:]
         G = G[indices, :]
 
         # Exact Implementation ~ O(d log k)
@@ -91,6 +91,11 @@ class SparseApproxMatrix:
         norm_dist = np.square(norm_dist)
         sorted_ix = np.argsort(norm_dist)[::-1]
         I_k = sorted_ix[:self.k]
+
+        # G = G[:, I_k]
+        # sample_norms = np.sqrt(np.einsum('ij,ij->i', G, G))
+        # keep = G.shape[0] - int(G.shape[0] * 0.1)
+        # indices = np.argsort(np.abs(sample_norms))[:keep]
 
         # Probabilistic Implementation ~ O(d)
         # norm_dist = np.linalg.norm(G, axis=self.axis)

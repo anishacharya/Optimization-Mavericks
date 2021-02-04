@@ -20,7 +20,7 @@ class ByzAttack:
         pass
 
     def launch_attack(self, G: np.ndarray):
-        max_adv = int(0.5 * int(self.frac_adv * G.shape[0]))
+        max_adv = int(self.frac_adv * G.shape[0])
         if self.attack_mode == 'un_coordinated':
             for i in range(G.shape[0]):
                 # Toss a coin
@@ -28,8 +28,9 @@ class ByzAttack:
                     perturbed_grad = self.attack(g=G[i, :])
                     G[i, :] = perturbed_grad
                     max_adv -= 1
+
                 if max_adv == 0:
-                    break
+                    return G
                 else:
                     continue
         elif self.attack_mode == 'coordinated':
