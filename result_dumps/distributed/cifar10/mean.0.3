@@ -1,0 +1,134 @@
+{
+    "config": {
+        "train_mode": "distributed",
+        "pipeline": "default",
+        "data_config": {
+            "data_set": "cifar10",
+            "shape": [
+                32,
+                32
+            ],
+            "num_labels": 10,
+            "num_channels": 3,
+            "download": false,
+            "batch_size": 128,
+            "train_num_workers": 1,
+            "data_sampling_strategy": "iid",
+            "num_shards": 50
+        },
+        "training_config": {
+            "num_clients": 20,
+            "client_fraction": 1,
+            "global_epochs": 30,
+            "local_epochs": 1,
+            "compute_grad_stats": false,
+            "optimizer_config": {
+                "client_optimizer_config": {
+                    "optimizer": "SGD",
+                    "loss": "ce",
+                    "lr0": 0.01,
+                    "momentum": 0.9,
+                    "reg": 0.0001,
+                    "nesterov": false,
+                    "amsgrad": false
+                },
+                "client_lrs_config": {
+                    "lrs": "step",
+                    "milestones": [
+                        1,
+                        5,
+                        10
+                    ],
+                    "step_size": 1,
+                    "gamma": 0.99
+                },
+                "server_optimizer_config": {
+                    "optimizer": "SGD",
+                    "lr0": 1
+                }
+            },
+            "learner_config": {
+                "net": "resnet",
+                "mlp_config": {
+                    "h1": 500,
+                    "h2": 500
+                }
+            },
+            "aggregation_config": {
+                "gar": "mean",
+                "trimmed_mean_config": {
+                    "proportion": 0.3
+                },
+                "krum_config": {
+                    "krum_frac": 0.3
+                },
+                "glomo_config": {
+                    "glomo_server_c": 1
+                },
+                "norm_clip_config": {
+                    "alpha": 0.5
+                },
+                "compression_config": {
+                    "compression_operator": "full",
+                    "frac_coordinates_to_keep": 0.5
+                },
+                "attack_config": {
+                    "frac_adv": 0.3,
+                    "attack_mode": "un_coordinated",
+                    "attack_model": "bit_flip",
+                    "noise_dist": "gaussian",
+                    "mean_shift": 10,
+                    "attack_std": 1,
+                    "noise_range": [
+                        -1,
+                        0
+                    ],
+                    "attack_n_std": 1
+                },
+                "sparse_approximation_config": {
+                    "rule": "None",
+                    "axis": "column",
+                    "frac_coordinates": 0.3,
+                    "ef": true
+                }
+            }
+        }
+    },
+    "test_error": [
+        90.0,
+        90.0,
+        90.0,
+        90.0
+    ],
+    "test_loss": [],
+    "test_acc": [
+        10.0,
+        10.0,
+        10.0,
+        10.0
+    ],
+    "train_error": [
+        90.002,
+        90.0,
+        90.0,
+        90.0
+    ],
+    "train_loss": [
+        6.542868583708468,
+        1266.4417911929547,
+        44065.753336796675,
+        2291243.6707161125
+    ],
+    "train_acc": [
+        9.998,
+        10.0,
+        10.0,
+        10.0
+    ],
+    "frac_mass_retained": [],
+    "grad_norm_dist": [],
+    "norm_bins": null,
+    "mass_bins": null,
+    "max_norm": 0,
+    "min_norm": 1000000.0
+}
