@@ -71,7 +71,7 @@
       # -------------------------------------------------
       "aggregation_config":
       {
-        "gar": "mean",
+        "gar": "geo_med",
         "trimmed_mean_config": { "proportion": 0.3 },
         "krum_config": { "krum_frac": 0.3 },
         "glomo_config": { "glomo_server_c": 1 },
@@ -87,13 +87,13 @@
         # specify attack config
         "attack_config":
         {
-            "frac_adv": 0,
-            "attack_model": None ,#'bit_flip',  # Set to None to off
+            "frac_adv": 0.1,
+            "attack_model": "random",  # Set to None to off
 
             "attack_mode": "un_coordinated",
 
             "noise_dist": 'gaussian',
-            "mean_shift": 4,  # For additive Gaussian mean = mean(g) * mean_shift
+            "mean_shift": 100,  # For additive Gaussian mean = mean(g) * mean_shift
 
             "attack_std": 3, # for random attack
             "noise_range": [ -1, 0 ], # only if uniform noise is added
@@ -103,7 +103,7 @@
 
         "sparse_approximation_config":
           {
-            "rule": None, #'active_norm',
+            "rule": 'active_norm',
             "axis": 'column',
             "frac_coordinates": 0.2,
             "ef": True,
