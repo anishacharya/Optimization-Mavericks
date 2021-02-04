@@ -47,21 +47,13 @@ class SparseApproxMatrix:
         # --------------------------------- #
         if self.sampling_rule == 'active_norm':
             # print('Applying active norm column sampling on gradients')
-            I_k = self._active_norm_sampling(G=G)
+            G_sparse = self._active_norm_sampling(G=G)
         elif self.sampling_rule == 'random':
             # print('Applying random column sampling on gradients')
             I_k = self._random_sampling(d=d if self.axis == 0 else n)
         else:
             raise NotImplementedError
 
-        if self.axis == 0:
-            # column sampling
-            G_sparse[:, I_k] = G[:, I_k]
-        elif self.axis == 1:
-            # row sampling
-            G_sparse[I_k, :] = G[I_k, :]
-        else:
-            raise NotImplementedError
         # update residual error
         if self.ef is True:
             # print('Error Feedback at Server')
@@ -70,7 +62,7 @@ class SparseApproxMatrix:
         return G_sparse / lr
 
     # Implementation of different "Matrix Sparse Approximation" strategies
-    def _random_sampling(self, d: int) -> np.ndarray:
+    def _random_sampling(self, G, d) -> np.ndarray:
         """
         Implements Random (Gauss Siedel) subset Selection
         """
@@ -78,7 +70,18 @@ class SparseApproxMatrix:
         I_k = np.random.choice(a=all_ix,
                                size=self.k,
                                replace=False)
-        return I_k
+
+        G_sparse = np.zeros_like(G)
+        if self.axis == 0:
+            # column sampling
+            G_sparse[:, I_k] = G[:, I_k]
+        elif self.axis == 1:
+            # row sampling
+            G_sparse[I_k, :] = G[I_k, :]
+        else:
+            raise NotImplementedError
+
+        return G_sparse
 
     def _active_norm_sampling(self, G: np.ndarray) -> np.ndarray:
         """
@@ -87,16 +90,11 @@ class SparseApproxMatrix:
         Ref: Drineas, P., Kannan, R., and Mahoney, M. W.  Fast monte carlo algorithms for matrices:
         Approximating matrix multiplication. SIAM Journal on Computing, 36(1):132–157, 2006
         """
-        sample_norms = np.sqrt(np.einsum('ij,ij->i', G, G))
-        keep = G.shape[0] - int(G.shape[0]*0.1)
-        indices = np.argsort(np.abs(sample_norms))[:keep]
-        G = G[indices, :]
-
         # Exact Implementation ~ O(d log k)
         norm_dist = G.sum(axis=self.axis)
         norm_dist = np.square(norm_dist)
         sorted_ix = np.argsort(norm_dist)[::-1]
-        top_k = sorted_ix[:self.k]
+        I_k = sorted_ix[:self.k]
 
         # Probabilistic Implementation ~ O(d)
         # norm_dist = np.linalg.norm(G, axis=self.axis)
@@ -104,4 +102,19 @@ class SparseApproxMatrix:
         # all_ix = np.arange(G.shape[1])
         # top_k = np.random.choice(a=all_ix, size=self.k, replace=False, p=norm_dist)
 
-        return top_k
+        G_sparse = np.zeros_like(G)
+        if self.axis == 0:
+            # column sampling
+            G_sparse[:, I_k] = G[:, I_k]
+        elif self.axis == 1:
+            # row sampling
+            G_sparse[I_k, :] = G[I_k, :]
+        else:
+            raise NotImplementedError
+
+        sample_norms = np.sqrt(np.einsum('ij,ij->i', G_sparse, G_sparse))
+        keep = G_sparse.shape[0] - int(G_sparse.shape[0] * 0.1)
+        indices = np.argsort(np.abs(sample_norms))[:keep]
+        G_sparse = G_sparse[indices, :]
+
+        return G_sparse
