@@ -25,7 +25,7 @@
       "client_optimizer_config": {
         "optimizer": "SGD",
         "loss": "ce",
-        "lr0": 0.01,
+        "lr0": 0.005,
         "momentum": 0.9,
         "reg": 0.0001,
         "nesterov": false,
@@ -39,7 +39,7 @@
             10
         ],
         "step_size": 1,
-        "gamma": 0.99
+        "gamma": 0.999
       },
       "server_optimizer_config": {
         "optimizer": "SGD",
