@@ -92,11 +92,11 @@ def plot_metrics():
 
     # -------------------------------------------------------------------------------------------
     # ------------------------------- Modify Here -----------------------------------------------
-    d = 'result_dumps/distributed/fashion_mnist/main_paper/'
+    d = 'result_dumps/distributed/cifar10/'
     o = [
-        'mean.ga.0.4',
-        'gm.ga.0.4',
-        'ours.ga.0.4'
+        'mean',
+        'gm',
+        'ours'
     ]
     labels = [
         r"\textsc{SGD}",
@@ -121,7 +121,7 @@ def plot_metrics():
             plot_mass(masses=masses)
         else:
             plot_driver(label=label, res_file=result_file,
-                        plt_type=plot_type, optima=0, line_width=3,
+                        plt_type=plot_type, optima=0, line_width=4,
                         sampling_freq=sampling_freq)
     # -------------------------------------------------------------------------------------------
     # -------------------------------
@@ -148,7 +148,7 @@ def plot_metrics():
         plt.xlabel('Communication Rounds', fontsize=10)
         plt.yscale('log')
         # plt.xlim(left=0, right=375 * 5)
-        plt.ylim(bottom=0.1, top=5)
+        # plt.ylim(bottom=0.1, top=5)
 
     elif plot_type is 'train_error':
         plt.ylabel('Train Error', fontsize=10)

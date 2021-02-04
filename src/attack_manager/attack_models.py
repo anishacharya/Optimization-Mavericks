@@ -121,14 +121,14 @@ class Random(ByzAttack):
         self.noise_dist = attack_config["noise_dist"]
 
         self.attack_std = attack_config["attack_std"]
-        self.noise_mean = attack_config["noise_mean"]
+        self.mean_shift = self.attack_config.get("mean_shift", 1)
 
         self.noise_range = attack_config["noise_range"]
 
     def attack(self, g):
         # apply gaussian noise (scaled appropriately)
         if self.noise_dist == 'gaussian':
-            noise = np.random.normal(loc=self.noise_mean,
+            noise = np.random.normal(loc=g*self.mean_shift,
                                      scale=self.attack_std,
                                      size=g.shape).astype(dtype=g.dtype)
 
