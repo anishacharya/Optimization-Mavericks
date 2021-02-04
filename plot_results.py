@@ -53,7 +53,7 @@ def plot_mass(masses):
     # x_labels = ['0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '1']
     # legends = ['epoch 5', 'epoch 10', 'epoch 15', 'epoch 20']
 
-    x_labels = ['$0\%$', '$20\%$', '$40\%$']
+    x_labels = ['$0\%$', '$10\%$', '$30\%$']
     legends = [r"\textsc{SGD}",
         r"\textsc{Gm-SGD}",
         r"\textsc{BGmD}"]
@@ -93,20 +93,25 @@ def plot_metrics():
     # -------------------------------------------------------------------------------------------
     # ------------------------------- Modify Here -----------------------------------------------
     # d = 'result_dumps/distributed/fashion_mnist/rerun/'
-    d = 'result_dumps/fed/'
+    d = 'result_dumps/distributed/cifar10/old/'
     o = [
-        'mean.0.3',
-        'gm.0.3',
-        'ours.0.3'
+        'mean.r.0.2',
+        'gm.r.0.2',
+        '../gm.0.1'
     ]
     labels = [
         r"\textsc{SGD}",
         r"\textsc{Gm-SGD}",
         r"\textsc{BGmD}"
               ]
+    # Fig 5
+    #y_sgd = [85.31, 31.36, 20.28]
+    #y_gm = [85.73, 84.75, 88.51]
+    #y_bgmd = [85.72, 84.92, 85.07]
+
     y_sgd = [85.31, 31.36, 20.28]
     y_gm = [85.73, 84.75, 88.51]
-    y_bgmd = [85.72, 84.92, 91.13]
+    y_bgmd = [85.72, 84.92, 85.07]
 
     masses = [y_sgd, y_gm, y_bgmd]
 
