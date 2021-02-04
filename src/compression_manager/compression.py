@@ -16,8 +16,8 @@ def get_compression_operator(compression_config: Dict):
         k = compression_config.get('frac_coordinates_to_keep', 0.1)
         return Rand(k=k)
     elif compression_function == 'qsgd':
-        b = compression_config.get('bits', 2)
-        return QSGD(b=b)
+        q = compression_config.get('bits', 2)
+        return Qsgd(q=q)
     else:
         raise NotImplementedError
 
@@ -52,22 +52,31 @@ class Top(C):
         return compressed_g
 
 
-class QSGD(C):
-    def __init__(self, b: float):
-        self.b = b
+class Qsgd(C):
+    def __init__(self, q: int):
+        self.q = q
         C.__init__(self)
 
     def compress(self, g: np.ndarray) -> np.ndarray:
-        q = np.zeros_like(g)
-        bits = self.b
-        s = 2 ** bits
-        tau = 1 + min((np.sqrt(q.shape[0]) / s), (q.shape[0] / (s ** 2)))
-        for i in range(0, q.shape[1]):
-            unif_i = np.random.rand(q.shape[0], )
-            x_i = g[:, i]
-            q[:, i] = ((np.sign(x_i) * np.linalg.norm(x_i)) / (s * tau)) * \
-                      np.floor((s * np.abs(x_i) / np.linalg.norm(x_i)) + unif_i)
-        return q
+        s = 2**self.q
+        #levels = np.arange(s+1)/s
+
+        #compressed_g = np.zeros_like(g)
+        g_norm = np.linalg.norm(g)
+
+        if g_norm == 0:
+           return np.zeros_like(g).astype(np.float16) #compressed_g
+
+        #g_sign = np.sign(g)
+        #g_val = np.abs(g)
+        g_levels = np.floor((np.abs(g)/g_norm)*s).astype(np.float16)
+        #g_probs = ((g_val/g_norm)*s - g_levels)
+        g_probs = (np.abs(g)/g_norm)*s - g_levels#np.floor((np.abs(g)/g_norm)*s)
+
+        zeta = np.random.binomial(1, 1.0 - g_probs, len(g)).astype(np.float16)
+        val = (zeta*(g_levels/s) + (1.0-zeta)*((g_levels+1)/s)).astype(np.float16)
+        #compressed_g = g_norm*np.sign(g)*val
+        return (g_norm*np.sign(g)*val).astype(np.float16)
 
 
 class Rand(C):
