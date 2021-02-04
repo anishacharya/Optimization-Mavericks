@@ -93,22 +93,22 @@ def plot_metrics():
     # -------------------------------------------------------------------------------------------
     # ------------------------------- Modify Here -----------------------------------------------
     # d = 'result_dumps/distributed/fashion_mnist/rerun/'
-    d = 'result_dumps/distributed/cifar10/'
+    d = 'result_dumps/fed/'
     o = [
-        'mean.0.1',
-        'gm.0.1',
-        'ours.0.1'
+        'mean.0.3',
+        'gm.0.3',
+        'ours.0.3'
     ]
     labels = [
         r"\textsc{SGD}",
         r"\textsc{Gm-SGD}",
         r"\textsc{BGmD}"
               ]
-    # y_sgd = [85.31, 31.36, 20.28]  Fed
-    # y_gm = [85.73, 84.75, 88.51]
-    # y_bgmd = [85.72, 84.92, 91.13]
+    y_sgd = [85.31, 31.36, 20.28]
+    y_gm = [85.73, 84.75, 88.51]
+    y_bgmd = [85.72, 84.92, 91.13]
 
-    # masses = [y_sgd, y_gm, y_bgmd]
+    masses = [y_sgd, y_gm, y_bgmd]
 
     plot_type = 'train_loss'
     sampling_freq = 5
@@ -149,7 +149,7 @@ def plot_metrics():
         plt.xlabel('Communication Rounds', fontsize=10)
         plt.yscale('log')
         # plt.xlim(left=0, right=375 * 5)
-        plt.ylim(top=10)
+        plt.ylim(top=5, bottom=0.1)
 
     elif plot_type is 'train_error':
         plt.ylabel('Train Error', fontsize=10)
