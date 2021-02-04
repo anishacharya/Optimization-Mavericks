@@ -72,7 +72,7 @@
       # -------------------------------------------------
       "aggregation_config":
       {
-        "gar": "norm_clip",
+        "gar": "geo_med",
         "trimmed_mean_config": { "proportion": 0.3 },
         "krum_config": { "krum_frac": 0.3 },
         "glomo_config": { "glomo_server_c": 1 },
@@ -87,15 +87,15 @@
         # specify attack config
         "attack_config":
         {
-            "frac_adv": 0.2,
+            "frac_adv": 0.4,
             "attack_mode": "un_coordinated",
-            "attack_model": None,
+            "attack_model": 'random',
 
             "noise_dist": 'gaussian',
             "mean_shift": 4,  # For additive Gaussian mean = mean(g) * mean_shift
 
             "noise_mean": 0, # for random attack
-            "attack_std": 1, # for random attack
+            "attack_std": 4, # for random attack
             "noise_range": [ -1, 0 ], # only if uniform noise is added
 
             "attack_n_std": 1, # only for Drift Attack
