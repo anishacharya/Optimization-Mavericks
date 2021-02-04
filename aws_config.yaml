@@ -74,7 +74,7 @@
             "attack_config": {
                 "frac_adv": 0.1,
                 "attack_mode": "un_coordinated",
-                "attack_model": "additive",
+                "attack_model": "bit_flip",
                 "noise_dist": "gaussian",
                 "mean_shift": 4,
                 "noise_mean": 0.5,
