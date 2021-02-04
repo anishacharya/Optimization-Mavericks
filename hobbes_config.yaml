@@ -1,5 +1,5 @@
 {
-  "train_mode": "fed", # fed(Federated), distributed(Distributed mini-batch SGD), decentralized (Decentralized SGD)
+  "train_mode": "distributed", # fed(Federated), distributed(Distributed mini-batch SGD), decentralized (Decentralized SGD)
   "pipeline": 'default', #
 
   "data_config":
@@ -23,8 +23,8 @@
     {
       "num_clients": 20, # Number of clients / parallel batches
       "client_fraction": 1, # specify fraction of client participation per round
-      "global_epochs": 100, # Number of communication Rounds
-      "local_epochs": 10, # Local SGD number of local steps
+      "global_epochs": 30, # Number of communication Rounds
+      "local_epochs": 1, # Local SGD number of local steps
 
       "compute_grad_stats": False,
 
@@ -87,7 +87,7 @@
         "attack_config":
         {
             "frac_adv": 0.4,
-            "attack_model": "additive",  # Set to None to off
+            "attack_model": None,  # Set to None to off
 
             "attack_mode": "un_coordinated",
 

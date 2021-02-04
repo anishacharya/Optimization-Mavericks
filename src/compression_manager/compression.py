@@ -15,6 +15,9 @@ def get_compression_operator(compression_config: Dict):
     elif compression_function == 'rand_k':
         k = compression_config.get('frac_coordinates_to_keep', 0.1)
         return Rand(k=k)
+    elif compression_function == 'qsgd':
+        b = compression_config.get('bits', 2)
+        return QSGD(b=b)
     else:
         raise NotImplementedError
 
@@ -47,6 +50,24 @@ class Top(C):
         compressed_g[indices] = g[indices]
 
         return compressed_g
+
+
+class QSGD(C):
+    def __init__(self, b: float):
+        self.b = b
+        C.__init__(self)
+
+    def compress(self, g: np.ndarray) -> np.ndarray:
+        q = np.zeros_like(g)
+        bits = self.b
+        s = 2 ** bits
+        tau = 1 + min((np.sqrt(q.shape[0]) / s), (q.shape[0] / (s ** 2)))
+        for i in range(0, q.shape[1]):
+            unif_i = np.random.rand(q.shape[0], )
+            x_i = x[:, i]
+            q[:, i] = ((np.sign(x_i) * np.linalg.norm(x_i)) / (s * tau)) * \
+                      np.floor((s * np.abs(x_i) / np.linalg.norm(x_i)) + unif_i)
+        return q
 
 
 class Rand(C):
