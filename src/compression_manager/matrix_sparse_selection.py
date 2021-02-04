@@ -89,7 +89,7 @@ class SparseApproxMatrix:
         """
         sample_norms = np.sqrt(np.einsum('ij,ij->i', G, G))
         clip_k = int(G.shape[0]*0.2)
-        top_k_indices = np.argsort(np.abs(sample_norms))[::-1][:clip_k]
+        top_k_indices = np.argsort(np.abs(sample_norms))[::-1][clip_k:]
         G = G[top_k_indices, :]
 
         # Exact Implementation ~ O(d log k)
