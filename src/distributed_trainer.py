@@ -7,7 +7,7 @@ from src.model_manager import (get_model,
                                evaluate_classifier)
 from src.data_manager import process_data
 from src.aggregation_manager import get_gar, compute_grad_stats
-from src.compression_manager import SparseApproxMatrix
+from src.compression_manager import SparseApproxMatrix, get_compression_operator
 from src.attack_manager import get_attack
 
 import torch
@@ -21,7 +21,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 def train_and_test_model(model, criterion, optimizer, lrs, gar,
                          train_loader, test_loader, train_config, metrics,
-                         sparse_selection=None, attack_model=None):
+                         sparse_selection=None, attack_model=None, C=None):
     num_batches = train_config.get('num_clients', 1)
     num_epochs = train_config.get('global_epochs', 10)
     compute_grad_stat_flag = train_config.get('compute_grad_stats', False)
@@ -57,6 +57,9 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                     # print('attack on')
                     G = attack_model.launch_attack(G=G)
 
+                # Compression before aggregation
+                for ix, g_i in enumerate(G):
+                    G[ix, :] = C.compress(g_i)
                 # Sparse Approximation of G
                 if sparse_selection is not None:
                     lr = optimizer.param_groups[0]['lr']
@@ -126,7 +129,9 @@ def run_batch_train(config, metrics):
         sparse_selection = SparseApproxMatrix(conf=sparse_approx_config)
     else:
         sparse_selection = None
+
     attack_model = get_attack(attack_config=attack_config)
+    C = get_compression_operator(compression_config=compression_config)
 
     # ------------------------- get data --------------------- #
     batch_size = data_config.get('batch_size', 1)
@@ -137,7 +142,7 @@ def run_batch_train(config, metrics):
     test_loader = DataLoader(dataset=test_dataset, batch_size=len(test_dataset))
 
     train_and_test_model(model=client_model, criterion=criterion, optimizer=client_optimizer, lrs=client_lrs,
-                         gar=gar, sparse_selection=sparse_selection, attack_model=attack_model,
+                         gar=gar, sparse_selection=sparse_selection, attack_model=attack_model, C=C,
                          train_loader=train_loader, test_loader=test_loader,
                          metrics=metrics, train_config=training_config)
     return metrics
