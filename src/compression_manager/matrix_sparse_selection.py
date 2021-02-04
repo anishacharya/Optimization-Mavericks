@@ -47,13 +47,14 @@ class SparseApproxMatrix:
         # --------------------------------- #
         if self.sampling_rule == 'active_norm':
             # print('Applying active norm column sampling on gradients')
-            G_sparse = self._active_norm_sampling(G=G)
+            I_k = self._active_norm_sampling(G=G)
         elif self.sampling_rule == 'random':
             # print('Applying random column sampling on gradients')
             I_k = self._random_sampling(d=d if self.axis == 0 else n)
         else:
             raise NotImplementedError
 
+        G_sparse[:, I_k] = G[:, I_k]
         # update residual error
         if self.ef is True:
             # print('Error Feedback at Server')
@@ -62,7 +63,7 @@ class SparseApproxMatrix:
         return G_sparse / lr
 
     # Implementation of different "Matrix Sparse Approximation" strategies
-    def _random_sampling(self, G, d) -> np.ndarray:
+    def _random_sampling(self, d) -> np.ndarray:
         """
         Implements Random (Gauss Siedel) subset Selection
         """
@@ -71,17 +72,7 @@ class SparseApproxMatrix:
                                size=self.k,
                                replace=False)
 
-        G_sparse = np.zeros_like(G)
-        if self.axis == 0:
-            # column sampling
-            G_sparse[:, I_k] = G[:, I_k]
-        elif self.axis == 1:
-            # row sampling
-            G_sparse[I_k, :] = G[I_k, :]
-        else:
-            raise NotImplementedError
-
-        return G_sparse
+        return I_k
 
     def _active_norm_sampling(self, G: np.ndarray) -> np.ndarray:
         """
@@ -102,19 +93,11 @@ class SparseApproxMatrix:
         # all_ix = np.arange(G.shape[1])
         # top_k = np.random.choice(a=all_ix, size=self.k, replace=False, p=norm_dist)
 
-        G_sparse = np.zeros_like(G)
-        if self.axis == 0:
-            # column sampling
-            G_sparse[:, I_k] = G[:, I_k]
-        elif self.axis == 1:
-            # row sampling
-            G_sparse[I_k, :] = G[I_k, :]
-        else:
-            raise NotImplementedError
+        G = G[:, I_k]
 
-        sample_norms = np.sqrt(np.einsum('ij,ij->i', G_sparse, G_sparse))
-        keep = G_sparse.shape[0] - int(G_sparse.shape[0] * 0.1)
+        sample_norms = np.sqrt(np.einsum('ij,ij->i', G, G))
+        keep = G.shape[0] - int(G.shape[0] * 0.1)
         indices = np.argsort(np.abs(sample_norms))[:keep]
-        G_sparse = G_sparse[indices, :]
+        # G_sparse = G_sparse[indices, :]
 
-        return G_sparse
+        return indices
