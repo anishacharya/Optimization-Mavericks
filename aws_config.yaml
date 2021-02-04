@@ -77,7 +77,7 @@
         "attack_model": "bit_flip",
         "noise_dist": "gaussian",
         "mean_shift": 10,
-        "attack_std": 1,
+        "attack_std": 3,
         "noise_range": [
             -1,
             0
