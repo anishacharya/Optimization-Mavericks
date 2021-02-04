@@ -4,27 +4,26 @@
 
   "data_config":
     {
-      "data_set": "mnist", # mnist, fashion_mnist, cifar10
+      "data_set": "fashion_mnist", # mnist, fashion_mnist, cifar10
       "shape": [28, 28],
       "num_labels": 10,
       "num_channels": 1,
       "download": False,
 
-      "batch_size": 64, # Define Batch Size here since Data Loader will assign batches to clients
+      "batch_size": 128, # Define Batch Size here since Data Loader will assign batches to clients
       "train_num_workers": 1,
 
       ## For Federated / Decentralized Training
       "data_sampling_strategy": 'iid', # Data distribution (Heterogeneous / Non-Heterogeneous)
-      "num_shards": 100, # Number of shards for non-iid ~~ usually set it to k * num_of_clients 2 is a good value for k
+      "num_shards": 80, # Number of shards for non-iid ~~ usually set it to k * num_of_clients 2 is a good value for k
     },
 
 
   "training_config":
     {
-      "num_clients": 1, # Number of clients / parallel batches
+      "num_clients": 20, # Number of clients / parallel batches
       "client_fraction": 1, # specify fraction of client participation per round
-
-      "global_epochs": 10, # Number of communication Rounds
+      "global_epochs": 20, # Number of communication Rounds
       "local_epochs": 1, # Local SGD number of local steps
 
       "compute_grad_stats": False,
@@ -38,7 +37,7 @@
         {
           "optimizer": 'SGD', # SGD, Adam
           "loss": 'ce', # ce (Cross Entropy), mse (Mean Sq Error), bce(binary-CE)
-          "lr0": 0.001,
+          "lr0": 0.1,
           "momentum": 0.9,
           "reg": 0.0001,
           "nesterov": False,
@@ -49,8 +48,8 @@
         {
           "lrs": 'step', # step, multi_step, exp, cyclic
           "milestones": [ 1, 5, 10 ],
-          "step_size": 15,
-          "gamma": 0.1
+          "step_size": 1,
+          "gamma": 0.99,
         },
 
         "server_optimizer_config":
@@ -65,7 +64,7 @@
       "learner_config":
         {
           "net": "mlp",
-          "mlp_config": {"h1": 100, "h2": 100}
+          "mlp_config": {"h1": 300, "h2": 300}
         },
 
       # Define Communication Compression and related config
@@ -73,36 +72,38 @@
       "aggregation_config":
       {
         "gar": "mean",
-        "trimmed_mean_config": { "proportion": 0.1 },
+        "trimmed_mean_config": { "proportion": 0.3 },
         "krum_config": { "krum_frac": 0.3 },
         "glomo_config": { "glomo_server_c": 1 },
+        "norm_clip_config": {"alpha": 0.5},
 
         "compression_config":
         {
-          "compression_operator": "full", # full (No Compression), top_k, rand_k
+          "compression_operator": "qsgd", # full (No Compression), top_k, rand_k
           "frac_coordinates_to_keep": 0.5, # For top-k, rand-k specify sparsity (k)
+          "bits": 2,
         },
 
         # specify attack config
         "attack_config":
-          {
-            "frac_adv": 0.2,
+        {
+            "frac_adv": 0,
+            "attack_model": None ,#'bit_flip',  # Set to None to off
+
             "attack_mode": "un_coordinated",
-            "attack_model": None,
 
             "noise_dist": 'gaussian',
             "mean_shift": 4,  # For additive Gaussian mean = mean(g) * mean_shift
 
-            "noise_mean": 0.5, # for random attack
             "attack_std": 3, # for random attack
             "noise_range": [ -1, 0 ], # only if uniform noise is added
 
             "attack_n_std": 1, # only for Drift Attack
-          },
+        },
 
         "sparse_approximation_config":
           {
-            "rule": 'active_norm',
+            "rule": None, #'active_norm',
             "axis": 'column',
             "frac_coordinates": 0.05,
             "ef": True,
