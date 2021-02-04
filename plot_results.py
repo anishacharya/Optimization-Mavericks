@@ -3,6 +3,8 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import MaxNLocator
 import matplotlib.ticker as ticker
 from matplotlib.ticker import ScalarFormatter
+from matplotlib import rc
+from matplotlib.pyplot import figure
 import json
 from typing import List, Dict
 from src.aggregation_manager import get_gar
@@ -46,28 +48,37 @@ def plot_timing(res_file: str, label):
     plt.plot(d, t, linestyle='dashed')
 
 
-def plot_mass(res_file):
-    x_labels = ['0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '1']
-    legends = ['epoch 5', 'epoch 10', 'epoch 15', 'epoch 20']
+# def plot_mass(res_file):
+def plot_mass(masses):
+    # x_labels = ['0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '1']
+    # legends = ['epoch 5', 'epoch 10', 'epoch 15', 'epoch 20']
+
+    x_labels = ['$0\%$', '$20\%$', '$40\%$']
+    legends = [r"\textsc{SGD}",
+        r"\textsc{Gm-SGD}",
+        r"\textsc{BGmD}"]
+
     x = np.arange(len(x_labels))
 
     fig, ax = plt.subplots()
 
     ax.set_xticks(x)
+    ax.set_yticks(np.arange(start=0, stop=100, step=10))
     ax.set_xticklabels(x_labels)
 
-    with open(res_file, 'rb') as f:
-        res = json.load(f)
-
-    masses = res["frac_mass_retained"]
-    width = 0.2
+    # with open(res_file, 'rb') as f:
+    #    res = json.load(f)
+    # masses = res["frac_mass_retained"]
+    width = 0.1
     offset = -3/2
     for frac_dist, leg in zip(masses, legends):
-        frac_dist = frac_dist[1:]
+        # frac_dist = frac_dist[1:]
         # frac_dist[-1] = 1
         # plt.plot(x, frac_dist)
         plt.bar(height=frac_dist, x=x + offset * width, width=width, label=leg)
         offset += 1
+    ax.legend(loc='lower left', bbox_to_anchor=(0.0, 1.01), ncol=3,
+              borderaxespad=0, frameon=False, fontsize=11)
 
 
 def plot_metrics():
@@ -76,29 +87,29 @@ def plot_metrics():
     # -------------------------------
     ax = plt.figure().gca()
     ax.xaxis.set_major_locator(MaxNLocator(integer=True))
+    # activate latex text rendering
+    rc('text', usetex=True)
 
     # -------------------------------------------------------------------------------------------
     # ------------------------------- Modify Here -----------------------------------------------
-    d = 'result_dumps/timing_exp/cont/'
+    d = 'result_dumps/distributed/fashion_mnist/main_paper/'
     o = [
-        'ours.0.01',
-        'ours.0.05',
-        #'ours.0.25',
-        'mean',
-        'geo_med',
-        'tm'
-
+        'mean.ga.0.4',
+        'gm.ga.0.4',
+        'ours.ga.0.4'
     ]
     labels = [
-        'BGMD (0.01})',
-        'BGDM (0.05})',
-        # 'BGDM ($R^{0.25d}$)',
-        'SGD',
-        'GM-SGD',
-        'TM-SGD'
+        r"\textsc{SGD}",
+        r"\textsc{Gm-SGD}",
+        r"\textsc{BGmD}"
               ]
+    y_sgd = [91.73, 44.92, 30.78]
+    y_gm = [91.23, 91.13, 82.58]
+    y_bgmd = [91.36, 91.41, 91.13]
 
-    plot_type = 'timing'
+    masses = [y_sgd, y_gm, y_bgmd]
+
+    plot_type = 'train_loss'
     sampling_freq = 5
 
     for op, label in zip(o, labels):
@@ -106,18 +117,16 @@ def plot_metrics():
         if plot_type is 'timing':
             plot_timing(label=label, res_file=result_file)
         elif plot_type is 'frac_mass':
-            plot_mass(res_file=result_file)
+            # plot_mass(res_file=result_file)
+            plot_mass(masses=masses)
         else:
             plot_driver(label=label, res_file=result_file,
-                        plt_type=plot_type, optima=0, line_width=4,
+                        plt_type=plot_type, optima=0, line_width=3,
                         sampling_freq=sampling_freq)
     # -------------------------------------------------------------------------------------------
     # -------------------------------
     # ** Usually No Need to Modify **
     # -------------------------------
-    plt.grid()
-    plt.tick_params(labelsize=10)
-
     if plot_type is 'test_error':
         plt.ylabel('Test Error', fontsize=10)
         plt.xlabel('Aggregation Rounds', fontsize=10)
@@ -128,7 +137,7 @@ def plot_metrics():
         plt.ylabel('Test Accuracy', fontsize=10)
         plt.xlabel('Aggregation Rounds', fontsize=10)
         # plt.xlim(left=0, right=375*5)
-        plt.ylim(bottom=80, top=95)
+        # plt.ylim(bottom=80, top=95)
 
     elif plot_type is 'train_acc':
         plt.ylabel('Train Accuracy', fontsize=10)
@@ -139,8 +148,7 @@ def plot_metrics():
         plt.xlabel('Communication Rounds', fontsize=10)
         plt.yscale('log')
         # plt.xlim(left=0, right=375 * 5)
-        plt.ylim(bottom=0.1, top=1)
-        # fig, ax = plt.subplots()
+        plt.ylim(bottom=0.1, top=5)
 
     elif plot_type is 'train_error':
         plt.ylabel('Train Error', fontsize=10)
@@ -151,14 +159,19 @@ def plot_metrics():
         plt.xlabel('Dimension', fontsize=10)
 
     elif plot_type is 'frac_mass':
-        plt.xlabel('Fraction of Coordinates Retained', fontsize=10)
-        plt.ylabel('Fraction of Gradient Mass Explained', fontsize=10)
+        plt.xlabel('Corruption Level', fontsize=10)
+        plt.ylabel('Test Accuracy ($\%$)', fontsize=10)
     else:
         raise NotImplementedError
 
     # plt.title('')
+    # plt.legend(fontsize=11),# loc=2)
+    plt.legend(loc='lower left', bbox_to_anchor=(0.0, 1.01), ncol=3,
+              borderaxespad=0, frameon=False, fontsize=11)
+    plt.grid(True) #, which='both', linestyle='--')
+    plt.tick_params(labelsize=10)
 
-    plt.legend(fontsize=11),# loc=2)
+    figure(figsize=(1, 1))
     plt.show()
 
 
