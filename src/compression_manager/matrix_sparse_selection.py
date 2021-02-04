@@ -81,10 +81,10 @@ class SparseApproxMatrix:
         Ref: Drineas, P., Kannan, R., and Mahoney, M. W.  Fast monte carlo algorithms for matrices:
         Approximating matrix multiplication. SIAM Journal on Computing, 36(1):132–157, 2006
         """
-        sample_norms = np.sqrt(np.einsum('ij,ij->i', G, G))
-        keep = G.shape[0] - int(G.shape[0] * 0.3)
-        indices = np.argsort(np.abs(sample_norms))[keep:]
-        G = G[indices, :]
+        # sample_norms = np.sqrt(np.einsum('ij,ij->i', G, G))
+        # keep = G.shape[0] - int(G.shape[0] * 0.3)
+        # indices = np.argsort(np.abs(sample_norms))[keep:]
+        # G = G[indices, :]
 
         # Exact Implementation ~ O(d log k)
         norm_dist = G.sum(axis=self.axis)

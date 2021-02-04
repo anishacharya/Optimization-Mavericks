@@ -31,6 +31,7 @@ class ByzAttack:
 
                 if max_adv == 0:
                     return G
+
                 else:
                     continue
         elif self.attack_mode == 'coordinated':
