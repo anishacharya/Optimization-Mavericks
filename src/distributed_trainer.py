@@ -27,7 +27,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
     compute_grad_stat_flag = train_config.get('compute_grad_stats', False)
 
     epoch = 0
-    while epoch <= num_epochs:
+    while epoch < num_epochs:
         model.to(device)
         model.train()
         G = None
