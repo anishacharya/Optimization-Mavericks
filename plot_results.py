@@ -93,22 +93,22 @@ def plot_metrics():
     # -------------------------------------------------------------------------------------------
     # ------------------------------- Modify Here -----------------------------------------------
     # d = 'result_dumps/distributed/fashion_mnist/rerun/'
-    d = 'result_dumps/distributed/cifar10/old/'
+    d = 'result_dumps/distributed/cifar10/'
     o = [
-        '../mean',
-        'gm',
-        'ours'
+        'mean.0.1',
+        'gm.0.1',
+        'ours.0.1'
     ]
     labels = [
         r"\textsc{SGD}",
         r"\textsc{Gm-SGD}",
         r"\textsc{BGmD}"
               ]
-    y_sgd = [91.73, 44.92, 30.78]
-    y_gm = [91.23, 91.13, 82.58]
-    y_bgmd = [91.36, 91.41, 91.13]
+    # y_sgd = [85.31, 31.36, 20.28]  Fed
+    # y_gm = [85.73, 84.75, 88.51]
+    # y_bgmd = [85.72, 84.92, 91.13]
 
-    masses = [y_sgd, y_gm, y_bgmd]
+    # masses = [y_sgd, y_gm, y_bgmd]
 
     plot_type = 'train_loss'
     sampling_freq = 5
