@@ -43,7 +43,7 @@ if __name__ == '__main__':
     res = {}
     agg_config = \
         {
-            "gar": "trimmed_mean",
+            "gar": "norm_clip",
             "trimmed_mean_config": {"proportion": 0.3},
             "krum_config": {"krum_frac": 0.3},
             "norm_clip_config": {"alpha": 0.5},
