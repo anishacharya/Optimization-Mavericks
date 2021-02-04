@@ -76,7 +76,7 @@
                 "attack_mode": "un_coordinated",
                 "attack_model": "bit_flip",
                 "noise_dist": "gaussian",
-                "mean_shift": 10,
+                "mean_shift": 5,
                 "attack_std": 1,
                 "noise_range": [
                         -1,
