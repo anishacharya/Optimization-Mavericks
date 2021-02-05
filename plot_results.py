@@ -92,13 +92,12 @@ def plot_metrics():
 
     # -------------------------------------------------------------------------------------------
     # ------------------------------- Modify Here -----------------------------------------------
-    d = 'result_dumps/distributed/fashion_mnist/rerun/'
+    d = 'result_dumps/distributed/fashion_mnist/role_k/'
 
     o = [
-        'mean_benchmark',
-        'gm_benchmark',
+        'gm',
         # 'ours',
-        'ours.norm_0.01',
+        # 'ours.norm_0.01',
         'ours.norm_0.05',
         'ours.norm_0.1',
         'ours.norm_0.2',
@@ -106,9 +105,9 @@ def plot_metrics():
         'ours.norm_0.5',
     ]
     labels = [
-        r"\textsc{SGD}",
+        # r"\textsc{SGD}",
         r"\textsc{Gm-SGD}",
-        r"\textsc{BGmD}, p=0.01",
+        #r"\textsc{BGmD}, p=0.01",
         r"\textsc{BGmD}, p=0.05",
         r"\textsc{BGmD}, p=0.1",
         r"\textsc{BGmD}, p=0.2",
