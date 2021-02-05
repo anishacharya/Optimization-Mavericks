@@ -48,7 +48,7 @@ def vardi(X, eps=1e-5) -> np.ndarray:
         if num_zeros == 0:
             mu1 = T
         elif num_zeros == len(X):
-            print('Time Taken For GM'.format(time.time() - t0))
+            print('Time Taken For GM ={}'.format(time.time() - t0))
             return mu
         else:
             r = np.linalg.norm((T - mu) * sum(D_inv))
