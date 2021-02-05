@@ -95,7 +95,7 @@ def plot_metrics():
     d = 'result_dumps/distributed/fashion_mnist/rerun/'
 
     o = [
-        'mean',
+        'mean_benchmark',
         'gm_benchmark',
         # 'ours',
         'ours.norm_0.01',
@@ -188,8 +188,9 @@ def plot_metrics():
 
     # plt.title('')
     # plt.legend(fontsize=11),# loc=2)
-    plt.legend(loc='lower left', bbox_to_anchor=(0.0, 1.01), ncol=3,
-              borderaxespad=0, frameon=False, fontsize=11)
+    # plt.legend(loc='lower left', bbox_to_anchor=(0.0, 1.01), ncol=4,
+    #           borderaxespad=0, frameon=False, fontsize=11)
+    plt.legend()
     plt.grid(True) #, which='both', linestyle='--')
     plt.tick_params(labelsize=10)
 
