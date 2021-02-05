@@ -35,8 +35,8 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
         comm_rounds = 0
         print('learning rate: {}'.format(optimizer.param_groups[0]['lr']))
         # ------- Training Phase --------- #
-        total_time = time.time()
         for batch_ix, (images, labels) in enumerate(train_loader):
+            total_time = time.time()
             images = images.to(device)
             labels = labels.to(device)
             outputs = model(images)
