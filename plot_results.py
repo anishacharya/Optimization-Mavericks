@@ -95,14 +95,25 @@ def plot_metrics():
     d = 'result_dumps/distributed/fashion_mnist/rerun/'
 
     o = [
-        'mean.',
+        'mean',
         'gm',
-        'ours'
+        # 'ours',
+        'ours.norm_0.01',
+        'ours.norm_0.05',
+        'ours.norm_0.1',
+        'ours.norm_0.2',
+        'ours.norm_0.3',
+        'ours.norm_0.5',
     ]
     labels = [
         r"\textsc{SGD}",
         r"\textsc{Gm-SGD}",
-        r"\textsc{BGmD}"
+        r"\textsc{BGmD}, p=0.01",
+        r"\textsc{BGmD}, p=0.05",
+        r"\textsc{BGmD}, p=0.1",
+        r"\textsc{BGmD}, p=0.2",
+        r"\textsc{BGmD}, p=0.3",
+        r"\textsc{BGmD}, p=0.5",
               ]
     # MLP
     #y_sgd = [85.31, 31.36, 20.28]
@@ -120,7 +131,7 @@ def plot_metrics():
     y_bgmd = [91.4, 81.29, 80.95]
     masses = [y_sgd, y_gm, y_bgmd]
 
-    plot_type = 'frac_mass'
+    plot_type = 'train_loss'
     sampling_freq = 1
 
     for op, label in zip(o, labels):
