@@ -88,7 +88,7 @@
         "attack_config":
         {
             "frac_adv": 0.1,
-            "attack_model": None # 'additive',  # Set to None to off
+            "attack_model": None, # 'additive',  # Set to None to off
 
             "attack_mode": "un_coordinated",
 
