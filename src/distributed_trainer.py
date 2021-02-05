@@ -97,7 +97,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                         epoch = num_epochs
 
                 comm_rounds += 1
-                print('Time Total='.format(time.time()-total_time))
+                print('Time Total={}'.format(time.time()-total_time))
 
         if lrs is not None:
             lrs.step()
