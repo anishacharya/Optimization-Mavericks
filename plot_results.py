@@ -97,7 +97,7 @@ def plot_metrics():
     o = [
         'gm',
         # 'ours',
-        # 'ours.norm_0.01',
+        'ours.norm_0.01',
         'ours.norm_0.05',
         'ours.norm_0.1',
         'ours.norm_0.2',
@@ -107,7 +107,7 @@ def plot_metrics():
     labels = [
         # r"\textsc{SGD}",
         r"\textsc{Gm-SGD}",
-        #r"\textsc{BGmD}, p=0.01",
+        r"\textsc{BGmD}, p=0.01",
         r"\textsc{BGmD}, p=0.05",
         r"\textsc{BGmD}, p=0.1",
         r"\textsc{BGmD}, p=0.2",

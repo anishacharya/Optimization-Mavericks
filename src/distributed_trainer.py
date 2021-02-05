@@ -13,6 +13,7 @@ from src.attack_manager import get_attack
 import torch
 from torch.utils.data import DataLoader
 import numpy as np
+import time
 
 torch.manual_seed(1)
 
@@ -34,6 +35,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
         comm_rounds = 0
         print('learning rate: {}'.format(optimizer.param_groups[0]['lr']))
         # ------- Training Phase --------- #
+        total_time = time.time()
         for batch_ix, (images, labels) in enumerate(train_loader):
             images = images.to(device)
             labels = labels.to(device)
@@ -95,6 +97,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                         epoch = num_epochs
 
                 comm_rounds += 1
+                print('Time Total='.format(time.time()-total_time))
 
         if lrs is not None:
             lrs.step()

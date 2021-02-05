@@ -33,6 +33,9 @@ def vardi(X, eps=1e-5) -> np.ndarray:
     Yehuda Vardi and Cun-Hui Zhang; PNAS'2000"
     """
     # Assume each data point is arranged in a row
+    import time
+    t0 = time.time()
+
     mu = np.mean(X, 0)
     while True:
         # noinspection PyTypeChecker
@@ -52,8 +55,11 @@ def vardi(X, eps=1e-5) -> np.ndarray:
             mu1 = max(0, 1 - r_inv) * T + min(1, r_inv) * mu
 
         if euclidean(mu, mu1) < eps:
+            print('Time Taken For GM'.format(time.time() - t0))
             return mu1
         mu = mu1
+
+
 
 
 if __name__ == '__main__':
