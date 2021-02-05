@@ -53,7 +53,7 @@ def plot_mass(masses):
     # x_labels = ['0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '1']
     # legends = ['epoch 5', 'epoch 10', 'epoch 15', 'epoch 20']
 
-    x_labels = ['$0\%$', '$10\%$', '$30\%$']
+    x_labels = ['$0\%$', '$10\%$', '$20\%$']
     legends = [r"\textsc{SGD}",
         r"\textsc{Gm-SGD}",
         r"\textsc{BGmD}"]
@@ -95,28 +95,33 @@ def plot_metrics():
     d = 'result_dumps/distributed/fashion_mnist/rerun/'
 
     o = [
-        'mean.0.3',
-        'gm.0.3',
-        'ours.0.3'
+        'mean.',
+        'gm',
+        'ours'
     ]
     labels = [
         r"\textsc{SGD}",
         r"\textsc{Gm-SGD}",
         r"\textsc{BGmD}"
               ]
-    # Fig 5
+    # MLP
     #y_sgd = [85.31, 31.36, 20.28]
     #y_gm = [85.73, 84.75, 88.51]
     #y_bgmd = [85.72, 84.92, 85.07]
 
-    y_sgd = [85.31, 31.36, 20.28]
-    y_gm = [85.73, 84.75, 88.51]
-    y_bgmd = [85.72, 84.92, 85.07]
+    # CIFAR
+    # y_sgd = [82.13, 11.97, 10]
+    # y_gm = [81.15, 80.77, 80.86]
+    # y_bgmd = [81.15, 81.29, 80.95]
 
+    # LENET
+    y_sgd = [91.73, 44.92, 54.03]
+    y_gm = [91.33, 91.59, 85.9]
+    y_bgmd = [91.4, 81.29, 80.95]
     masses = [y_sgd, y_gm, y_bgmd]
 
-    plot_type = 'train_loss'
-    sampling_freq = 5
+    plot_type = 'frac_mass'
+    sampling_freq = 1
 
     for op, label in zip(o, labels):
         result_file = d + op
@@ -154,7 +159,7 @@ def plot_metrics():
         plt.xlabel('Communication Rounds', fontsize=10)
         plt.yscale('log')
         # plt.xlim(left=0, right=375 * 5)
-        # plt.ylim(top=10)
+        plt.ylim(top=10)
 
     elif plot_type is 'train_error':
         plt.ylabel('Train Error', fontsize=10)
