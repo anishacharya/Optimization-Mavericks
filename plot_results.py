@@ -96,7 +96,7 @@ def plot_metrics():
 
     o = [
         'mean',
-        'gm',
+        'gm_benchmark',
         # 'ours',
         'ours.norm_0.01',
         'ours.norm_0.05',
@@ -170,7 +170,7 @@ def plot_metrics():
         plt.xlabel('Communication Rounds', fontsize=10)
         plt.yscale('log')
         # plt.xlim(left=0, right=375 * 5)
-        plt.ylim(top=10)
+        # plt.ylim(top=10)
 
     elif plot_type is 'train_error':
         plt.ylabel('Train Error', fontsize=10)
