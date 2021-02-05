@@ -56,7 +56,7 @@ def vardi(X, eps=1e-5) -> np.ndarray:
             mu1 = max(0, 1 - r_inv) * T + min(1, r_inv) * mu
 
         if euclidean(mu, mu1) < eps:
-            print('Time Taken For GM'.format(time.time() - t0))
+            print('Time Taken For GM {}'.format(time.time() - t0))
             return mu1
         mu = mu1
 
