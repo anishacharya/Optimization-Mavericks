@@ -94,7 +94,25 @@ def cycle(iterable):
             yield x
 
 
-def evaluate_classifier(model, data_loader, verbose=False, criterion=None, device="cpu"):
+def evaluate_classifier(epoch, num_epochs, model, train_loader, test_loader, metrics,
+                        criterion=None, device="cpu") -> float:
+
+    test_error, test_acc, _ = _evaluate(model=model, data_loader=test_loader, device=device)
+    train_error, train_acc, train_loss = _evaluate(model=model, data_loader=train_loader,
+                                                   criterion=criterion, device=device)
+    print('Epoch progress: {}/{}, train loss = {}, train acc = {}, test acc = {}'.
+          format(epoch, num_epochs, train_loss, train_acc, test_acc))
+    metrics["train_error"].append(train_error)
+    metrics["train_loss"].append(train_loss)
+    metrics["train_acc"].append(train_acc)
+
+    metrics["test_error"].append(test_error)
+    metrics["test_acc"].append(test_acc)
+
+    return train_loss
+
+
+def _evaluate(model, data_loader, verbose=False, criterion=None, device="cpu"):
     model.to(device)
     with torch.no_grad():
         correct = 0
@@ -117,7 +135,5 @@ def evaluate_classifier(model, data_loader, verbose=False, criterion=None, devic
         acc = 100 * correct / total
         total_loss /= batches
         if verbose:
-            print('Test Accuracy: {} %'.format(acc))
+            print('Accuracy: {} %'.format(acc))
         return 100 - acc, acc, total_loss
-
-

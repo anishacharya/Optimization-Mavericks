@@ -35,7 +35,8 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
         model.train()
         G = None
         comm_rounds = 0
-        print('learning rate: {}'.format(optimizer.param_groups[0]['lr']))
+        print('epoch {}/{} || learning rate: {}'.format(epoch, num_epochs, optimizer.param_groups[0]['lr']))
+
         # ------- Training Phase --------- #
         for batch_ix, (images, labels) in enumerate(train_loader):
             images = images.to(device)
@@ -81,18 +82,10 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
 
                 # Compute Metrics
                 if comm_rounds % 5 == 0:
-                    test_error, test_acc, _ = evaluate_classifier(model=model, data_loader=test_loader, device=device)
-                    train_error, train_acc, train_loss = evaluate_classifier(model=model, data_loader=train_loader,
-                                                                             criterion=criterion, device=device)
-                    print('Epoch progress: {}/{}, train loss = {}, train acc = {}, test acc = {}'.
-                          format(epoch, num_epochs, train_loss, train_acc, test_acc))
-                    metrics["train_error"].append(train_error)
-                    metrics["train_loss"].append(train_loss)
-                    metrics["train_acc"].append(train_acc)
-
-                    metrics["test_error"].append(test_error)
-                    metrics["test_acc"].append(test_acc)
-
+                    train_loss = evaluate_classifier(model=model, train_loader=train_loader, test_loader=test_loader,
+                                                     metrics=metrics, criterion=criterion, device=device,
+                                                     epoch=epoch, num_epochs=num_epochs)
+                    # Stop if diverging
                     if train_loss > 1e3:
                         epoch = num_epochs
 
