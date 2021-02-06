@@ -66,10 +66,10 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                 # Sparse Approximation of G
                 if sparse_selection is not None:
                     lr = optimizer.param_groups[0]['lr']
-                    G = sparse_selection.sparse_approx(G=G, lr=lr)
+                    G, I_k = sparse_selection.sparse_approx(G=G, lr=lr)
 
                 # Gradient aggregation
-                agg_g = gar.aggregate(G=G)
+                agg_g = gar.aggregate(G=G, ix=I_k)
 
                 print('New time ={}'.format(time.time() - total_time))
 
