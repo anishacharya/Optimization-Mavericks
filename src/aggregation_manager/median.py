@@ -2,6 +2,7 @@
 # Licensed under the MIT License
 import numpy as np
 from .base import GAR
+from typing import List
 from scipy.spatial.distance import cdist, euclidean
 
 
@@ -20,8 +21,12 @@ class GeometricMedian(GAR):
         self.geo_med_config = aggregation_config.get('geo_med_config', {})
         self.geo_med_alg = self.geo_med_config.get('geo_med_alg', 'vardi')
 
-    def aggregate(self, G: np.ndarray) -> np.ndarray:
-        return vardi(X=G)
+    def aggregate(self, G: np.ndarray, ix: List[int] = None) -> np.ndarray:
+        # if ix given only aggregate along the indexes ignoring the rest of the ix
+
+        g_lr = vardi(X=G[:, ix])  # it would have only
+
+        return g_agg
 
 
 def vardi(X, eps=1e-5) -> np.ndarray:

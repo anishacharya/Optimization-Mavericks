@@ -72,6 +72,8 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                 # Gradient aggregation
                 agg_g = gar.aggregate(G=G)
 
+                print('New time ={}'.format(time.time() - total_time))
+
                 optimizer.zero_grad()
                 # Update Model Grads with aggregated g :\tilde(g)
                 dist_grads_to_model(grads=agg_g, learner=model)
