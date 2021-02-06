@@ -23,7 +23,7 @@
     {
       "num_clients": 20, # Number of clients / parallel batches
       "client_fraction": 1, # specify fraction of client participation per round
-      "global_epochs": 15, # Number of communication Rounds
+      "global_epochs": 2, # Number of passes through train data : SGD
       "local_epochs": 1, # Local SGD number of local steps
 
       "compute_grad_stats": False,
