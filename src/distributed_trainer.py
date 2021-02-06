@@ -36,7 +36,6 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
         print('learning rate: {}'.format(optimizer.param_groups[0]['lr']))
         # ------- Training Phase --------- #
         for batch_ix, (images, labels) in enumerate(train_loader):
-            total_time = time.time()
             images = images.to(device)
             labels = labels.to(device)
             outputs = model(images)
@@ -64,15 +63,13 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                     G[ix, :] = C.compress(g_i)
 
                 # Sparse Approximation of G
+                I_k = None
                 if sparse_selection is not None:
                     lr = optimizer.param_groups[0]['lr']
                     G, I_k = sparse_selection.sparse_approx(G=G, lr=lr)
 
                 # Gradient aggregation
                 agg_g = gar.aggregate(G=G, ix=I_k)
-
-                print('New time ={}'.format(time.time() - total_time))
-
                 optimizer.zero_grad()
                 # Update Model Grads with aggregated g :\tilde(g)
                 dist_grads_to_model(grads=agg_g, learner=model)
