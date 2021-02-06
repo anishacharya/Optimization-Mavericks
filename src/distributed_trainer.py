@@ -69,8 +69,9 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                     G = attack_model.launch_attack(G=G)
 
                 # Compress each vector before aggregation
-                for ix, g_i in enumerate(G):
-                    G[ix, :] = C.compress(g_i)
+                if C is not None:
+                    for ix, g_i in enumerate(G):
+                        G[ix, :] = C.compress(g_i)
 
                 # -------  Gradient Aggregation  ------- #
                 t_aggregation = time.time()

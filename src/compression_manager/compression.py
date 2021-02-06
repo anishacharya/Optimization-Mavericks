@@ -19,7 +19,8 @@ def get_compression_operator(compression_config: Dict):
         q = compression_config.get('bits', 2)
         return Qsgd(q=q)
     else:
-        raise NotImplementedError
+        return None
+        # raise NotImplementedError
 
 
 class C:

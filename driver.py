@@ -22,7 +22,7 @@ def run_main():
     args = _parse_args()
     print(args)
     root = os.getcwd()
-    config_path = args.conf if args.conf else root + '/hobbes_config.yaml'
+    config_path = args.conf if args.conf else root + '/default_config.yaml'
     config = yaml.load(open(config_path), Loader=yaml.FullLoader)
 
     metrics = {"config": config,

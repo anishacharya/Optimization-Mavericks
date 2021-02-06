@@ -26,7 +26,8 @@ class GeometricMedian(GAR):
         g_agg = np.zeros_like(G[0, :])
         if ix is not None:
             G = G[:, ix]
-        g_agg[:, ix] = vardi(X=G)
+        low_rank_gm = vardi(X=G)
+        g_agg[ix] = low_rank_gm
         return g_agg
 
 
