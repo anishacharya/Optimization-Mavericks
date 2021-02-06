@@ -49,7 +49,6 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                 d = len(g_i)
                 G = np.zeros((num_batches, d), dtype=g_i.dtype)
 
-            # -------  Aggregation Step ------- #
             ix = batch_ix % num_batches
             agg_ix = (batch_ix + 1) % num_batches
             G[ix, :] = g_i
@@ -60,10 +59,10 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                     # print('attack on')
                     G = attack_model.launch_attack(G=G)
 
-                # Compression before aggregation
-                # G = C.compress(G)
+                # Compress each vector before aggregation
                 for ix, g_i in enumerate(G):
                     G[ix, :] = C.compress(g_i)
+
                 # Sparse Approximation of G
                 if sparse_selection is not None:
                     lr = optimizer.param_groups[0]['lr']
@@ -81,11 +80,11 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                 # Now Do an optimizer step with x_t+1 = x_t - \eta \tilde(g)
                 optimizer.step()
 
+                # Compute Metrics
                 if comm_rounds % 5 == 0:
                     test_error, test_acc, _ = evaluate_classifier(model=model, data_loader=test_loader, device=device)
                     train_error, train_acc, train_loss = evaluate_classifier(model=model, data_loader=train_loader,
                                                                              criterion=criterion, device=device)
-                    # print('\n ---------------- Communication Round {} ------------------------'.format(comm_rounds))
                     print('Epoch progress: {}/{}, train loss = {}, train acc = {}, test acc = {}'.
                           format(epoch, num_epochs, train_loss, train_acc, test_acc))
                     metrics["train_error"].append(train_error)

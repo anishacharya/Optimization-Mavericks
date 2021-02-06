@@ -23,9 +23,10 @@ class GeometricMedian(GAR):
 
     def aggregate(self, G: np.ndarray, ix: List[int] = None) -> np.ndarray:
         # if ix given only aggregate along the indexes ignoring the rest of the ix
-
-        g_lr = vardi(X=G[:, ix])  # it would have only
-
+        g_agg = np.zeros_like(G[0, :])
+        if ix is not None:
+            G = G[:, ix]
+        g_agg[:, ix] = vardi(X=G)
         return g_agg
 
 

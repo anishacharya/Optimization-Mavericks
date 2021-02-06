@@ -27,10 +27,13 @@ class SparseApproxMatrix:
         self.ef = conf.get('ef', False)
         self.residual_error = None
 
-    def sparse_approx(self, G: np.ndarray, lr=1) -> np.ndarray:
+    def sparse_approx(self, G: np.ndarray, lr=1) -> [np.ndarray, np.ndarray]:
         if self.sampling_rule not in ['active_norm', 'random']:
             return G
 
+        #####################################################
+        # Otherwise do Block Selection with memory feedback #
+        #####################################################
         n, d = G.shape
         G_sparse = np.zeros_like(G)
 
@@ -59,7 +62,7 @@ class SparseApproxMatrix:
             self.residual_error = G - G_sparse
             G_sparse /= lr
 
-        return G_sparse
+        return G_sparse, I_k
 
     # Implementation of different "Matrix Sparse Approximation" strategies
     def _random_sampling(self, d) -> np.ndarray:
