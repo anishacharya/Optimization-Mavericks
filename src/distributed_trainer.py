@@ -38,7 +38,10 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
         print('epoch {}/{} || learning rate: {}'.format(epoch, num_epochs, optimizer.param_groups[0]['lr']))
 
         # ------- Training Phase --------- #
+
         for batch_ix, (images, labels) in enumerate(train_loader):
+            t_iter = time.time()
+
             images = images.to(device)
             labels = labels.to(device)
             outputs = model(images)
@@ -55,16 +58,22 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
             agg_ix = (batch_ix + 1) % num_batches
             G[ix, :] = g_i
 
+            iteration_time = time.time() - t_iter
+            print('One iteration over batch takes {} seconds'.format(iteration_time))
+            total_train_time += iteration_time  # Add iteration Time
+
             # -------  Communication Round ------- #
             if agg_ix == 0 and batch_ix is not 0:
+                # Adversarial Attack
                 if attack_model is not None:
-                    # print('attack on')
                     G = attack_model.launch_attack(G=G)
 
                 # Compress each vector before aggregation
                 for ix, g_i in enumerate(G):
                     G[ix, :] = C.compress(g_i)
 
+                # -------  Gradient Aggregation  ------- #
+                t_aggregation = time.time()
                 # Sparse Approximation of G
                 I_k = None
                 if sparse_selection is not None:
@@ -79,6 +88,10 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                 model.to(device)
                 # Now Do an optimizer step with x_t+1 = x_t - \eta \tilde(g)
                 optimizer.step()
+
+                aggregation_time = time.time() - t_aggregation
+                print('Gradient Aggregation took {} seconds'.format(aggregation_time))
+                total_train_time += aggregation_time  # Add Gradient Aggregation Time
 
                 # Compute Metrics
                 if comm_rounds % 5 == 0:
@@ -97,7 +110,10 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
         if compute_grad_stat_flag is True and epoch % 5 == 0:
             print("Computing Additional Stats on G")
             compute_grad_stats(G=G, metrics=metrics)
+
         epoch += 1
+
+    metrics["train_time"] = total_train_time
 
 
 def run_batch_train(config, metrics):

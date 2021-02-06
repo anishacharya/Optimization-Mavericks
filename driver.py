@@ -26,7 +26,7 @@ def run_main():
     config = yaml.load(open(config_path), Loader=yaml.FullLoader)
 
     metrics = {"config": config,
-               "run_time": 0,
+               "train_time": 0,
                "test_error": [],
                "test_loss": [],
                "test_acc": [],
