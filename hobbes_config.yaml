@@ -4,10 +4,10 @@
 
   "data_config":
     {
-      "data_set": "fashion_mnist", # mnist, fashion_mnist, cifar10
-      "shape": [28, 28],
+      "data_set": "cifar10", # mnist, fashion_mnist, cifar10
+      "shape": [32, 32],
       "num_labels": 10,
-      "num_channels": 1,
+      "num_channels": 3,
       "download": False,
 
       "batch_size": 128, # Define Batch Size here since Data Loader will assign batches to clients
@@ -63,7 +63,7 @@
       # -------------------------------------------------
       "learner_config":
         {
-          "net": "lenet",
+          "net": "resnet",
           "mlp_config": {"h1": 300, "h2": 300}
         },
 
