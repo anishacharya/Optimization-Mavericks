@@ -67,7 +67,7 @@ class FedServer(Agent):
 
     def compute_agg_grad_mime(self, clients: List[FedClient]):
         n = len(clients)
-        self.client_drift = np.zeros_like(clients[0].grad_current)
+        self.client_drift = np.zeros_like(clients[0].glomo_grad)
         self.w_current = np.zeros_like(clients[0].w_current)
 
         for client in clients:
