@@ -65,6 +65,22 @@ class FedServer(Agent):
         # invoke gar and get aggregate
         self.u = self.gar.aggregate(G=self.G)
 
+    def compute_agg_grad_mime(self, clients: List[FedClient]):
+        n = len(clients)
+        self.client_drift = 0
+        self.w_current = 0
+        for client in clients:
+            self.client_drift += client.glomo_grad
+            self.w_current += client.w_current
+
+        self.client_drift /= len(clients)
+        self.w_current /= len(clients)
+
+        self.mime_momentum = (1 - self.c) * self.client_drift + self.c * self.mime_momentum
+
+
+
+
     def compute_agg_grad_glomo(self, clients: List[FedClient]):
         """ Implements Das et.al. FedGlomo: server update step with (Glo)bal (Mo)mentum"""
         n = len(clients)

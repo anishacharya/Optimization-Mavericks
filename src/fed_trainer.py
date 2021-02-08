@@ -99,14 +99,16 @@ def train_and_test_model(server: FedServer,
         # Aggregate client grads and update server model
         if pipeline == 'default':
             server.compute_agg_grad(clients=sampled_clients)
+            server.update_step()
         elif pipeline == 'glomo':
             # fix the beta parameter dynamically
             # server.beta = server.c * current_lr ** 2
             server.compute_agg_grad_glomo(clients=sampled_clients)
-
+            server.update_step()
+        elif pipeline == 'mime':
+            server.compute_agg_grad_mime(clients=sampled_clients)
         else:
             raise NotImplementedError
-        server.update_step()
 
         # Evaluate Train Loss
         # -------- Compute Metrics ---------- #

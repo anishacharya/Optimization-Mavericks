@@ -86,9 +86,9 @@ class FedClient(Agent):
             x, y = x.float(), y
             x, y = x.to(device), y.to(device)
             sg = self.compute_grad(model=self.learner.to(device).train(), x=x, y=y)  # sg_(w_tau)
-            self.grad_current = self.compute_grad(model=self.learner_stale.to(device).train(), x=x, y=y)  # sg_(w_0)
+            self.glomo_grad = self.compute_grad(model=self.learner_stale.to(device).train(), x=x, y=y)  # sg_(w_0)
 
-            grad = sg - self.grad_current + client_drift  # g(w_tau)
+            grad = sg - self.glomo_grad + client_drift  # g(w_tau)
             self.w_current -= self.optimizer.param_groups[0]['lr'] * \
                               ((1 - self.glomo_momentum) * grad + (self.glomo_momentum * server_momentum))
             dist_weights_to_model(self.w_current, learner=self.learner)  # learner has w_tau+1
