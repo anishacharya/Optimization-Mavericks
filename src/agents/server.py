@@ -79,9 +79,6 @@ class FedServer(Agent):
 
         self.mime_momentum = (1 - self.c) * self.client_drift + self.c * self.mime_momentum
 
-
-
-
     def compute_agg_grad_glomo(self, clients: List[FedClient]):
         """ Implements Das et.al. FedGlomo: server update step with (Glo)bal (Mo)mentum"""
         n = len(clients)
