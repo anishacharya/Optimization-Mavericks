@@ -4,7 +4,7 @@
 from .base import Agent
 from src.model_manager import (flatten_params,
                                dist_weights_to_model,
-                               flatten_grads,)
+                               flatten_grads, )
 import copy
 from src.compression_manager import C
 
@@ -40,7 +40,7 @@ class FedClient(Agent):
         self.glomo_grad = None
 
         self.v_current = None  # glomo momentum
-        self.v_old = None      # glomo momentum
+        self.v_old = None  # glomo momentum
 
         self.local_train_data = None
         self.train_iter = None
@@ -74,6 +74,24 @@ class FedClient(Agent):
         self.grad_current = self.C.compress(g=grad_current)
 
         # return total_loss
+
+    def train_step_mime(self, client_drift, server_momentum,
+                        num_steps=1, device="cpu"):
+
+        dist_weights_to_model(self.w_current, learner=self.learner)  # w_0
+        dist_weights_to_model(self.w_current, learner=self.learner_stale)
+
+        for it in range(num_steps):
+            x, y = next(self.train_iter)
+            x, y = x.float(), y
+            x, y = x.to(device), y.to(device)
+            sg = self.compute_grad(model=self.learner.to(device).train(), x=x, y=y)  # sg_(w_tau)
+            sg_0 = self.compute_grad(model=self.learner_stale.to(device).train(), x=x, y=y)  # sg_(w_0)
+
+            grad = sg - sg_0 + client_drift  # g(w_tau)
+            self.w_current -= self.optimizer.param_groups[0]['lr'] * \
+                              ((1 - self.glomo_momentum) * grad + (self.glomo_momentum * server_momentum))
+            dist_weights_to_model(self.w_current, learner=self.learner)  # learner has w_tau+1
 
     def compute_grad(self, model, x, y):
         y_hat = model(x)
@@ -116,8 +134,8 @@ class FedClient(Agent):
                 self.v_old = g_stale + self.glomo_momentum * (self.v_old - g_stale_local)
 
             # No optimizer step compute w using our update
-            self.learner_local = copy.deepcopy(self.learner)  # tao-1
-            self.learner_local_stale = copy.deepcopy(self.learner_stale)  # Tao-1
+            self.learner_local = copy.deepcopy(self.learner)  # tau-1
+            self.learner_local_stale = copy.deepcopy(self.learner_stale)  # tau-1
 
             lr = self.optimizer.param_groups[0]['lr']
             self.w_current -= lr * self.v_current

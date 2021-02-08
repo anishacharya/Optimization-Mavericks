@@ -29,8 +29,10 @@ class FedServer(Agent):
 
         # initialize params
         self.w_current = flatten_params(self.learner)
-        self.w_old = copy.deepcopy(self.w_current)
+        self.w_old = copy.deepcopy(self.w_current)      # For Glomo
 
+        self.client_drift = 0   # For MIME
+        self.mime_momentum = 0  # MIME
         self.u = None
 
         self.beta = 1

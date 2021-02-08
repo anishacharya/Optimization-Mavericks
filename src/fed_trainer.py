@@ -40,6 +40,10 @@ def init_and_train_clients(server: FedServer,
         elif pipeline == 'glomo':
             # epoch_loss += client.train_step_glomo(num_steps=num_local_steps, device=device)
             client.train_step_glomo(num_steps=num_local_steps, device=device)
+        elif pipeline == 'mime':
+            client.train_step_mime(client_drift=server.client_drift, server_momentum=server.mime_momentum,
+                                   num_steps=num_local_steps, device=device)
+
         else:
             raise NotImplementedError
 
@@ -99,6 +103,7 @@ def train_and_test_model(server: FedServer,
             # fix the beta parameter dynamically
             # server.beta = server.c * current_lr ** 2
             server.compute_agg_grad_glomo(clients=sampled_clients)
+
         else:
             raise NotImplementedError
         server.update_step()
