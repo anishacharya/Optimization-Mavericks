@@ -78,7 +78,7 @@ class FedClient(Agent):
     def train_step_mime(self, client_drift, server_momentum,
                         num_steps=1, device="cpu"):
 
-        dist_weights_to_model(self.w_current, learner=self.learner)  # w_0
+        dist_weights_to_model(self.w_current, learner=self.learner)
         dist_weights_to_model(self.w_current, learner=self.learner_stale)
 
         for it in range(num_steps):
@@ -86,9 +86,9 @@ class FedClient(Agent):
             x, y = x.float(), y
             x, y = x.to(device), y.to(device)
             sg = self.compute_grad(model=self.learner.to(device).train(), x=x, y=y)  # sg_(w_tau)
-            sg_0 = self.compute_grad(model=self.learner_stale.to(device).train(), x=x, y=y)  # sg_(w_0)
+            self.grad_current = self.compute_grad(model=self.learner_stale.to(device).train(), x=x, y=y)  # sg_(w_0)
 
-            grad = sg - sg_0 + client_drift  # g(w_tau)
+            grad = sg - self.grad_current + client_drift  # g(w_tau)
             self.w_current -= self.optimizer.param_groups[0]['lr'] * \
                               ((1 - self.glomo_momentum) * grad + (self.glomo_momentum * server_momentum))
             dist_weights_to_model(self.w_current, learner=self.learner)  # learner has w_tau+1
