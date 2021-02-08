@@ -31,8 +31,8 @@ class FedServer(Agent):
         self.w_current = flatten_params(self.learner)
         self.w_old = copy.deepcopy(self.w_current)      # For Glomo
 
-        self.client_drift = 0   # For MIME
-        self.mime_momentum = 0  # MIME
+        self.client_drift = None   # For MIME
+        self.mime_momentum = None  # MIME
         self.u = None
 
         self.beta = 1
@@ -67,14 +67,15 @@ class FedServer(Agent):
 
     def compute_agg_grad_mime(self, clients: List[FedClient]):
         n = len(clients)
-        self.client_drift = 0
-        self.w_current = 0
+        self.client_drift = np.zeros_like(clients[0].grad_current)
+        self.w_current = np.zeros_like(clients[0].w_current)
+
         for client in clients:
             self.client_drift += client.glomo_grad
             self.w_current += client.w_current
 
-        self.client_drift /= len(clients)
-        self.w_current /= len(clients)
+        self.client_drift /= n
+        self.w_current /= n
 
         self.mime_momentum = (1 - self.c) * self.client_drift + self.c * self.mime_momentum
 
