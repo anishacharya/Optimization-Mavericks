@@ -27,6 +27,7 @@ def run_main():
 
     metrics = {"config": config,
 
+               # Train and Test Performance
                "test_error": [],
                "test_loss": [],
                "test_acc": [],
@@ -34,6 +35,7 @@ def run_main():
                "train_loss": [],
                "train_acc": [],
 
+               # Grad Matrix Stats
                "frac_mass_retained": [],
                "grad_norm_dist": [],
                "norm_bins": None,
@@ -41,10 +43,15 @@ def run_main():
                "max_norm": 0,
                "min_norm": 1e6,
 
+               # compute Time
                "batch_grad_cost": 0,
                "batch_agg_cost": 0,
                "comm_time": 0,
-               "total_cost":0,
+               "total_cost": 0,
+
+               # Count steps
+               "total_iter": 0,
+               "total_agg": 0,
                }
     # Train
     train_mode = config.get("train_mode", 'fed')

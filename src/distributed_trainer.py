@@ -102,7 +102,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                 total_agg += 1
 
                 # Compute Metrics
-                if verbose:
+                if verbose and comm_rounds % 5 == 0:
                     train_loss = evaluate_classifier(model=model, train_loader=train_loader, test_loader=test_loader,
                                                      metrics=metrics, criterion=criterion, device=device,
                                                      epoch=epoch, num_epochs=num_epochs)
@@ -115,15 +115,6 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
         if lrs is not None:
             lrs.step()
 
-        if not verbose:
-            train_loss = evaluate_classifier(model=model, train_loader=train_loader, test_loader=test_loader,
-                                         metrics=metrics, criterion=criterion, device=device,
-                                         epoch=epoch, num_epochs=num_epochs)
-
-            # Stop if diverging
-            if train_loss > 1e3:
-                epoch = num_epochs
-
         if compute_grad_stat_flag is True and epoch % 5 == 0:
             print("Computing Additional Stats on G")
             compute_grad_stats(G=G, metrics=metrics)
@@ -131,6 +122,9 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
         epoch += 1
 
     metrics["total_cost"] = metrics["batch_grad_cost"] + metrics["batch_agg_cost"] + metrics["comm_time"]
+
+    metrics["total_iter"] = total_iter
+    metrics["total_agg"] = total_agg
     metrics["batch_grad_cost"] /= total_iter
     metrics["batch_agg_cost"] /= total_agg
     metrics["comm_time"] /= total_agg
