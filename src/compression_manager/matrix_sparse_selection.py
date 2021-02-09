@@ -24,7 +24,7 @@ class SparseApproxMatrix:
         self.k = None
 
         # error feedback
-        self.ef = conf.get('ef', False)
+        self.ef = conf.get('ef_server', False)
         self.residual_error = None
 
     def sparse_approx(self, G: np.ndarray, lr=1) -> [np.ndarray, np.ndarray]:

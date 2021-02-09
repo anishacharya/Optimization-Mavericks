@@ -1,16 +1,16 @@
 {
-  "train_mode": "fed", # fed(Federated), distributed(Distributed mini-batch SGD), decentralized (Decentralized SGD)
+  "train_mode": "federated", # fed(Federated), distributed(Distributed mini-batch SGD), decentralized (Decentralized SGD)
   "pipeline": 'default', #
 
   "data_config":
     {
-      "data_set": "fashion_mnist", # mnist, fashion_mnist, cifar10
-      "shape": [28, 28],
+      "data_set": "cifar10", # mnist, fashion_mnist, cifar10
+      "shape": [32, 32],
       "num_labels": 10,
-      "num_channels": 1,
+      "num_channels": 3,
       "download": False,
 
-      "batch_size": 128, # Define Batch Size here since Data Loader will assign batches to clients
+      "batch_size": 32, # Define Batch Size here since Data Loader will assign batches to clients
       "train_num_workers": 1,
 
       ## For Federated / Decentralized Training
@@ -63,7 +63,7 @@
       # -------------------------------------------------
       "learner_config":
         {
-          "net": "mlp",
+          "net": "lenet",
           "mlp_config": {"h1": 100, "h2": 100}
         },
 
@@ -82,6 +82,7 @@
           "compression_operator": , # "top_k", # full (No Compression), top_k, rand_k
           "frac_coordinates_to_keep": 0.8, # For top-k, rand-k specify sparsity (k)
           "bits": 2,
+          "ef_client": True,
         },
 
         # specify attack config
@@ -106,7 +107,7 @@
             "rule": , #'active_norm', # Leave Black to switch off
             "axis": 'column',
             "frac_coordinates": 0.3,
-            "ef": True,
+            "ef_server": True,
           },
       }
     }

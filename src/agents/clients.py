@@ -72,7 +72,7 @@ class FedClient(Agent):
         updated_model_weights = flatten_params(learner=self.learner)
         self.grad_current = self.w_current - updated_model_weights
         if self.C:
-            self.grad_current = self.C.compress(g=self.grad_current)
+            self.grad_current = self.C.compress(g=self.grad_current, lr=self.optimizer.param_groups[0]['lr'])
 
         # return total_loss
 
