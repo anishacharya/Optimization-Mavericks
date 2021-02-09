@@ -78,7 +78,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                         G[ix, :] = C.compress(g_i, lr=lr)
                 comm_time = time.time() - t0
                 metrics["comm_time"] += comm_time
-                print('Communication took {} seconds'.format(comm_time))
+                # print('Communication took {} seconds'.format(comm_time))
 
                 # -------  Gradient Aggregation Round ------- #
                 t_aggregation = time.time()
@@ -97,7 +97,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                 optimizer.step()
 
                 aggregation_time = time.time() - t_aggregation
-                print('Gradient Aggregation took {} seconds'.format(aggregation_time))
+                # print('Gradient Aggregation took {} seconds'.format(aggregation_time))
                 metrics["batch_agg_cost"] += aggregation_time
                 total_agg += 1
 
@@ -130,7 +130,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
 
         epoch += 1
 
-    metrics["total_cose"] = metrics["batch_grad_cost"] + metrics["batch_agg_cost"] + metrics["comm_time"]
+    metrics["total_cost"] = metrics["batch_grad_cost"] + metrics["batch_agg_cost"] + metrics["comm_time"]
     metrics["batch_grad_cost"] /= total_iter
     metrics["batch_agg_cost"] /= total_agg
     metrics["comm_time"] /= total_agg
