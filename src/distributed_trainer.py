@@ -32,6 +32,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
     total_agg = 0
 
     while epoch < num_epochs:
+        t0 = 0
         model.to(device)
         model.train()
         G = None
@@ -111,6 +112,10 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
         if lrs is not None:
             lrs.step()
 
+        epoch_time = time.time()-t0
+        print('One Full Pass took: {}s'.format(epoch_time))
+        metrics["total_run_time"] += epoch_time
+
         if compute_grad_stat_flag is True and epoch % 5 == 0:
             print("Computing Additional Stats on G")
             compute_grad_stats(G=G, metrics=metrics)
@@ -119,6 +124,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
 
     metrics["batch_grad_cost"] /= total_iter
     metrics["batch_agg_cost"] /= total_agg
+    metrics["total_run_time"] /= num_epochs
 
 
 def run_batch_train(config, metrics):
@@ -163,10 +169,9 @@ def run_batch_train(config, metrics):
     train_loader = DataLoader(dataset=train_dataset, batch_size=batch_size, shuffle=True)
     test_loader = DataLoader(dataset=test_dataset, batch_size=len(test_dataset))
 
-    T0 = time.time()
     train_and_test_model(model=client_model, criterion=criterion, optimizer=client_optimizer, lrs=client_lrs,
                          gar=gar, sparse_selection=sparse_selection, attack_model=attack_model, C=C,
                          train_loader=train_loader, test_loader=test_loader,
                          metrics=metrics, train_config=training_config)
-    metrics["total_run_time"] = time.time() - T0
+
     return metrics
