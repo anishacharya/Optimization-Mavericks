@@ -60,12 +60,12 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
             G[ix, :] = g_i
 
             iteration_time = time.time() - t_iter
-            # print('One iteration over batch takes {} seconds'.format(iteration_time))
+            print('One iteration over batch takes {} seconds'.format(iteration_time))
             metrics["batch_grad_cost"] += iteration_time
             total_iter += 1
 
-            # -------  Communication Round ------- #
             if agg_ix == 0 and batch_ix is not 0:
+                # -------  Communication Round ------- #
                 t0 = time.time()
                 lr = optimizer.param_groups[0]['lr']
                 # Adversarial Attack
@@ -76,8 +76,11 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                 if C is not None:
                     for ix, g_i in enumerate(G):
                         G[ix, :] = C.compress(g_i, lr=lr)
-                metrics["comm_time"] += time.time() - t0
-                # -------  Gradient Aggregation  ------- #
+                comm_time = time.time() - t0
+                metrics["comm_time"] += comm_time
+                print('Communication took {} seconds'.format(comm_time))
+
+                # -------  Gradient Aggregation Round ------- #
                 t_aggregation = time.time()
                 # Sparse Approximation of G
                 I_k = None
@@ -94,7 +97,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                 optimizer.step()
 
                 aggregation_time = time.time() - t_aggregation
-                # print('Gradient Aggregation took {} seconds'.format(aggregation_time))
+                print('Gradient Aggregation took {} seconds'.format(aggregation_time))
                 metrics["batch_agg_cost"] += aggregation_time
                 total_agg += 1
 
