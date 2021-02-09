@@ -63,7 +63,7 @@ class FedServer(Agent):
             self.G[ix, :] = g_i
 
         # invoke gar and get aggregate
-        self.u = self.gar.aggregate(G=self.G)
+        self.u = self.gar.aggregate(G=self.G, )
 
     def compute_agg_grad_mime(self, clients: List[FedClient]):
         n = len(clients)
