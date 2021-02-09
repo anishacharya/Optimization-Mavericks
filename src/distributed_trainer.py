@@ -22,7 +22,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 def train_and_test_model(model, criterion, optimizer, lrs, gar,
                          train_loader, test_loader, train_config, metrics,
-                         sparse_selection=None, attack_model=None, C=None, verbose=True, verbose_freq=10):
+                         sparse_selection=None, attack_model=None, C=None, verbose=False, verbose_freq=10):
     num_batches = train_config.get('num_clients', 1)
     num_epochs = train_config.get('global_epochs', 10)
     compute_grad_stat_flag = train_config.get('compute_grad_stats', False)
@@ -118,6 +118,14 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
         if compute_grad_stat_flag is True and epoch % 5 == 0:
             print("Computing Additional Stats on G")
             compute_grad_stats(G=G, metrics=metrics)
+
+        if not verbose:
+            train_loss = evaluate_classifier(model=model, train_loader=train_loader, test_loader=test_loader,
+                                             metrics=metrics, criterion=criterion, device=device,
+                                             epoch=epoch, num_epochs=num_epochs)
+            # Stop if diverging
+            if train_loss > 1e3:
+                epoch = num_epochs
 
         epoch += 1
 
