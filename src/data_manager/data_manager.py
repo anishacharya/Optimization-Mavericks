@@ -111,7 +111,7 @@ class DataManager:
             indices = self.data_distribution_map[client.client_id]
             flattened_indices = []
             for ix in indices:
-                flattened_indices += ix
+                flattened_indices.append(ix)
             flattened_indices = torch.as_tensor(flattened_indices)
 
             local_dataset = Subset(dataset=train_dataset,

@@ -94,7 +94,7 @@ def train_and_test_model(server: FedServer,
                                num_local_steps=local_epochs)
 
         # Now take a lrs step across all clients (** Not just sampled ones)
-        current_lr = take_lrs_step(clients=clients)
+        _ = take_lrs_step(clients=clients)
 
         # Aggregate client grads and update server model
         if pipeline == 'default':
@@ -112,24 +112,9 @@ def train_and_test_model(server: FedServer,
 
         # Evaluate Train Loss
         # -------- Compute Metrics ---------- #
-        train_error, train_acc, train_loss = evaluate_classifier(model=server.learner,
-                                                                 data_loader=train_loader,
-                                                                 criterion=clients[0].criterion,
-                                                                 device=device)
-        test_error, test_acc, _ = evaluate_classifier(model=server.learner,
-                                                      data_loader=test_loader,
-                                                      device=device)
-        print('--- Performance on Train Data -----')
-        print('train loss = {}\n train acc = {}'.format(train_loss, train_acc))
-        metrics["train_error"].append(train_error)
-        metrics["train_loss"].append(train_loss)
-        metrics["train_acc"].append(train_acc)
-
-        print('---- Generalization Performance ---- '.format(test_acc))
-        print('test acc = {}'.format(test_acc))
-
-        metrics["test_error"].append(test_error)
-        metrics["test_acc"].append(test_acc)
+        _ = evaluate_classifier(model=server.learner, train_loader=train_loader, test_loader=test_loader,
+                                metrics=metrics, criterion=clients[0].criterion, device=device,
+                                epoch=comm_round, num_epochs=global_epochs)
 
 
 def run_fed_train(config, metrics):

@@ -71,7 +71,8 @@ class FedClient(Agent):
         # update the estimated gradients
         updated_model_weights = flatten_params(learner=self.learner)
         grad_current = self.w_current - updated_model_weights
-        self.grad_current = self.C.compress(g=grad_current)
+        if self.C:
+            self.grad_current = self.C.compress(g=grad_current)
 
         # return total_loss
 
