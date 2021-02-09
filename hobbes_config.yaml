@@ -37,7 +37,7 @@
         {
           "optimizer": 'SGD', # SGD, Adam
           "loss": 'ce', # ce (Cross Entropy), mse (Mean Sq Error), bce(binary-CE)
-          "lr0": 0.005,
+          "lr0": 0.01,
           "momentum": 0.9,
           "reg": 0.0001,
           "nesterov": False,
@@ -63,7 +63,7 @@
       # -------------------------------------------------
       "learner_config":
         {
-          "net": "resnet",
+          "net": "lenet",
           "mlp_config": {"h1": 300, "h2": 300}
         },
 
@@ -71,7 +71,7 @@
       # -------------------------------------------------
       "aggregation_config":
       {
-        "gar": "geo_med",
+        "gar": "mean",
         "trimmed_mean_config": { "proportion": 0.3 },
         "krum_config": { "krum_frac": 0.3 },
         "glomo_config": { "glomo_server_c": 1 },
@@ -82,6 +82,7 @@
           "compression_operator": "full", # full (No Compression), top_k, rand_k
           "frac_coordinates_to_keep": 0.5, # For top-k, rand-k specify sparsity (k)
           "bits": 2,
+          "ef_client": False,
         },
 
         # specify attack config
@@ -103,7 +104,7 @@
 
         "sparse_approximation_config":
           {
-            "rule": 'active_norm',
+            "rule": ,
             "axis": 'column',
             "frac_coordinates": 0.3,
             "ef": True,

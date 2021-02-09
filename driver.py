@@ -26,7 +26,7 @@ def run_main():
     config = yaml.load(open(config_path), Loader=yaml.FullLoader)
 
     metrics = {"config": config,
-               "train_time": 0,
+
                "test_error": [],
                "test_loss": [],
                "test_acc": [],
@@ -39,7 +39,12 @@ def run_main():
                "norm_bins": None,
                "mass_bins": None,
                "max_norm": 0,
-               "min_norm": 1e6}
+               "min_norm": 1e6,
+
+               "batch_grad_cost": 0,
+               "batch_agg_cost": 0,
+               "total_run_time": 0,
+               }
     # Train
     train_mode = config.get("train_mode", 'fed')
     if train_mode == 'fed':

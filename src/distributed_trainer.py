@@ -22,13 +22,14 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 def train_and_test_model(model, criterion, optimizer, lrs, gar,
                          train_loader, test_loader, train_config, metrics,
-                         sparse_selection=None, attack_model=None, C=None):
+                         sparse_selection=None, attack_model=None, C=None, verbose=False):
     num_batches = train_config.get('num_clients', 1)
     num_epochs = train_config.get('global_epochs', 10)
     compute_grad_stat_flag = train_config.get('compute_grad_stats', False)
 
     epoch = 0
-    total_train_time = 0
+    total_iter = 0
+    total_agg = 0
 
     while epoch < num_epochs:
         model.to(device)
@@ -60,7 +61,8 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
 
             iteration_time = time.time() - t_iter
             print('One iteration over batch takes {} seconds'.format(iteration_time))
-            total_train_time += iteration_time  # Add iteration Time
+            metrics["batch_grad_cost"] += iteration_time
+            total_iter += 1
 
             # -------  Communication Round ------- #
             if agg_ix == 0 and batch_ix is not 0:
@@ -92,7 +94,8 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
 
                 aggregation_time = time.time() - t_aggregation
                 print('Gradient Aggregation took {} seconds'.format(aggregation_time))
-                total_train_time += aggregation_time  # Add Gradient Aggregation Time
+                metrics["batch_agg_cost"] += aggregation_time
+                total_agg += 1
 
                 # Compute Metrics
                 if comm_rounds % 5 == 0:
@@ -114,8 +117,8 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
 
         epoch += 1
 
-    metrics["train_time"] = total_train_time
-
+    metrics["batch_grad_cost"] /= total_iter
+    metrics["batch_agg_cost"] /= total_agg
 
 def run_batch_train(config, metrics):
     # ------------------------ Fetch configs ----------------------- #
@@ -159,8 +162,10 @@ def run_batch_train(config, metrics):
     train_loader = DataLoader(dataset=train_dataset, batch_size=batch_size, shuffle=True)
     test_loader = DataLoader(dataset=test_dataset, batch_size=len(test_dataset))
 
+    T0 = time.time()
     train_and_test_model(model=client_model, criterion=criterion, optimizer=client_optimizer, lrs=client_lrs,
                          gar=gar, sparse_selection=sparse_selection, attack_model=attack_model, C=C,
                          train_loader=train_loader, test_loader=test_loader,
                          metrics=metrics, train_config=training_config)
+    metrics["total_run_time"] = time.time() - T0
     return metrics
