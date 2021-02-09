@@ -32,7 +32,6 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
     total_agg = 0
 
     while epoch < num_epochs:
-        t0 = 0
         model.to(device)
         model.train()
         G = None
@@ -67,6 +66,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
 
             # -------  Communication Round ------- #
             if agg_ix == 0 and batch_ix is not 0:
+                t0 = time.time()
                 lr = optimizer.param_groups[0]['lr']
                 # Adversarial Attack
                 if attack_model is not None:
@@ -76,7 +76,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                 if C is not None:
                     for ix, g_i in enumerate(G):
                         G[ix, :] = C.compress(g_i, lr=lr)
-
+                metrics["comm_time"] += time.time() - t0
                 # -------  Gradient Aggregation  ------- #
                 t_aggregation = time.time()
                 # Sparse Approximation of G
@@ -112,10 +112,6 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
         if lrs is not None:
             lrs.step()
 
-        epoch_time = time.time()-t0
-        print('One Full Pass took: {}s'.format(epoch_time))
-        metrics["total_run_time"] += epoch_time
-
         if not verbose:
             train_loss = evaluate_classifier(model=model, train_loader=train_loader, test_loader=test_loader,
                                          metrics=metrics, criterion=criterion, device=device,
@@ -131,9 +127,10 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
 
         epoch += 1
 
+    metrics["total_cose"] = metrics["batch_grad_cost"] + metrics["batch_agg_cost"] + metrics["comm_time"]
     metrics["batch_grad_cost"] /= total_iter
     metrics["batch_agg_cost"] /= total_agg
-    # metrics["total_run_time"] /= num_epochs
+    metrics["comm_time"] /= total_agg
 
 
 def run_batch_train(config, metrics):

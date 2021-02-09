@@ -43,7 +43,8 @@ def run_main():
 
                "batch_grad_cost": 0,
                "batch_agg_cost": 0,
-               "total_run_time": 0,
+               "comm_time": 0,
+               "total_cost":0,
                }
     # Train
     train_mode = config.get("train_mode", 'fed')
