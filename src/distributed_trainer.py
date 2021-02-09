@@ -94,7 +94,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                 optimizer.step()
 
                 aggregation_time = time.time() - t_aggregation
-                print('Gradient Aggregation took {} seconds'.format(aggregation_time))
+                # print('Gradient Aggregation took {} seconds'.format(aggregation_time))
                 metrics["batch_agg_cost"] += aggregation_time
                 total_agg += 1
 
@@ -133,7 +133,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
 
     metrics["batch_grad_cost"] /= total_iter
     metrics["batch_agg_cost"] /= total_agg
-    metrics["total_run_time"] /= num_epochs
+    # metrics["total_run_time"] /= num_epochs
 
 
 def run_batch_train(config, metrics):
