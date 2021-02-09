@@ -64,6 +64,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
 
             # -------  Communication Round ------- #
             if agg_ix == 0 and batch_ix is not 0:
+                lr = optimizer.param_groups[0]['lr']
                 # Adversarial Attack
                 if attack_model is not None:
                     G = attack_model.launch_attack(G=G)
@@ -71,14 +72,13 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                 # Compress each vector before aggregation
                 if C is not None:
                     for ix, g_i in enumerate(G):
-                        G[ix, :] = C.compress(g_i)
+                        G[ix, :] = C.compress(g_i, lr=lr)
 
                 # -------  Gradient Aggregation  ------- #
                 t_aggregation = time.time()
                 # Sparse Approximation of G
                 I_k = None
                 if sparse_selection is not None:
-                    lr = optimizer.param_groups[0]['lr']
                     G, I_k = sparse_selection.sparse_approx(G=G, lr=lr)
 
                 # Gradient aggregation
