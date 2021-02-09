@@ -99,7 +99,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                 total_agg += 1
 
                 # Compute Metrics
-                if comm_rounds % 5 == 0:
+                if verbose:
                     train_loss = evaluate_classifier(model=model, train_loader=train_loader, test_loader=test_loader,
                                                      metrics=metrics, criterion=criterion, device=device,
                                                      epoch=epoch, num_epochs=num_epochs)
@@ -115,6 +115,15 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
         epoch_time = time.time()-t0
         print('One Full Pass took: {}s'.format(epoch_time))
         metrics["total_run_time"] += epoch_time
+
+        if not verbose:
+            train_loss = evaluate_classifier(model=model, train_loader=train_loader, test_loader=test_loader,
+                                         metrics=metrics, criterion=criterion, device=device,
+                                         epoch=epoch, num_epochs=num_epochs)
+
+            # Stop if diverging
+            if train_loss > 1e3:
+                epoch = num_epochs
 
         if compute_grad_stat_flag is True and epoch % 5 == 0:
             print("Computing Additional Stats on G")
