@@ -60,7 +60,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
             G[ix, :] = g_i
 
             iteration_time = time.time() - t_iter
-            print('One iteration over batch takes {} seconds'.format(iteration_time))
+            # print('One iteration over batch takes {} seconds'.format(iteration_time))
             metrics["batch_grad_cost"] += iteration_time
             total_iter += 1
 
