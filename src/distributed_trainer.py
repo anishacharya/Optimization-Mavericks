@@ -120,6 +120,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
     metrics["batch_grad_cost"] /= total_iter
     metrics["batch_agg_cost"] /= total_agg
 
+
 def run_batch_train(config, metrics):
     # ------------------------ Fetch configs ----------------------- #
     pipeline = config.get('pipeline', 'default')
