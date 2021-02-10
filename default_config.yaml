@@ -21,9 +21,9 @@
 
   "training_config":
     {
-      "num_clients": 9, # Number of clients / parallel batches
+      "num_clients": 10, # Number of clients / parallel batches
       "client_fraction": 1, # specify fraction of client participation per round
-      "global_epochs": 40, # Number of communication Rounds
+      "global_epochs": 30, # Number of communication Rounds
       "local_epochs": 1, # Local SGD number of local steps
 
       "compute_grad_stats": False,
@@ -63,7 +63,7 @@
       # -------------------------------------------------
       "learner_config":
         {
-          "net": "lenet",
+          "net": "resnet",
           "mlp_config": {"h1": 100, "h2": 100}
         },
 
