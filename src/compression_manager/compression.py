@@ -52,7 +52,7 @@ class Top(C):
         indices = np.argsort(np.abs(g))[::-1][:num_coordinates_to_keep]
         compressed_g[indices] = g[indices]
 
-        if self.ef:
+        if self.ef is True:
             self.residual_error = g - compressed_g
             compressed_g /= lr
 
