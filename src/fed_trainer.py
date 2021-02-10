@@ -73,7 +73,7 @@ def train_and_test_model(server: FedServer,
     # Distribute Data among clients
     data_manager.distribute_data(train_dataset=train_dataset, clients=clients)
 
-    train_loader = DataLoader(dataset=train_dataset, batch_size=len(train_dataset))
+    train_loader = DataLoader(dataset=train_dataset, batch_size=128)
     test_loader = DataLoader(dataset=test_dataset, batch_size=len(test_dataset))
 
     print('# ------------------------------------------------- #')
@@ -84,9 +84,7 @@ def train_and_test_model(server: FedServer,
     local_epochs = training_config.get('local_epochs', 1)
 
     for comm_round in range(1, global_epochs + 1):
-        print(' ------------------------------------------ ')
         print('         Communication Round {}             '.format(comm_round))
-        print(' -------------------------------------------')
         # Sample Participating Devices
         num_devices = math.floor(len(clients) * device_participation)
         sampled_clients = random.sample(population=clients, k=num_devices)
