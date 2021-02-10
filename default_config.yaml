@@ -1,5 +1,5 @@
 {
-  "train_mode": "fed", # fed(Federated), distributed(Distributed mini-batch SGD), decentralized (Decentralized SGD)
+  "train_mode": "distributed", # fed(Federated), distributed(Distributed mini-batch SGD), decentralized (Decentralized SGD)
   "pipeline": 'default', #
 
   "data_config":
