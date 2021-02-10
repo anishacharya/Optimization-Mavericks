@@ -61,7 +61,8 @@ def train_and_test_model(server: FedServer,
                          training_config: Dict,
                          data_config: Dict,
                          metrics,
-                         pipeline: str = 'default'):
+                         pipeline: str = 'default',
+                         verbose_freq=10):
     print('# ------------------------------------------------- #')
     print('#          Getting and Distributing Data            #')
     print('# ------------------------------------------------- #')
@@ -110,11 +111,11 @@ def train_and_test_model(server: FedServer,
         else:
             raise NotImplementedError
 
-        # Evaluate Train Loss
         # -------- Compute Metrics ---------- #
-        _ = evaluate_classifier(model=server.learner, train_loader=train_loader, test_loader=test_loader,
-                                metrics=metrics, criterion=clients[0].criterion, device=device,
-                                epoch=comm_round, num_epochs=global_epochs)
+        if comm_round % verbose_freq == 0:
+            _ = evaluate_classifier(model=server.learner, train_loader=train_loader, test_loader=test_loader,
+                                    metrics=metrics, criterion=clients[0].criterion, device=device,
+                                    epoch=comm_round, num_epochs=global_epochs)
 
 
 def run_fed_train(config, metrics):
