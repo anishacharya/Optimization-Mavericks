@@ -76,7 +76,7 @@ class Rand(C):
                                    size=num_coordinates_to_keep)
         compressed_g[indices] = g[indices]
 
-        if self.ef:
+        if self.ef is not None:
             self.residual_error = g - compressed_g
             compressed_g /= lr
 
