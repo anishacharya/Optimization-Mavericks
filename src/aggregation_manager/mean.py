@@ -19,7 +19,6 @@ class Mean(GAR):
         g_agg = np.zeros_like(G[0, :])
         if ix is not None:
             G = G[:, ix]
-            g_agg[:, ix] = self.weighted_average(stacked_grad=G)
-        else:
-            g_agg = self.weighted_average(stacked_grad=G)
+        low_rank_mean = self.weighted_average(stacked_grad=G)
+        g_agg[ix] = low_rank_mean
         return g_agg
