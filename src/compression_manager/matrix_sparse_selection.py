@@ -58,7 +58,7 @@ class SparseApproxMatrix:
         G_sparse[:, I_k] = G[:, I_k]
 
         if self.ef is True:
-            print('EF')
+            # print('EF')
             # update residual error
             self.residual_error = G - G_sparse
             G_sparse /= lr
