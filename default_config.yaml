@@ -23,7 +23,7 @@
     {
       "num_clients": 20, # Number of clients / parallel batches
       "client_fraction": 0.5, # specify fraction of client participation per round
-      "global_epochs": 30, # Number of communication Rounds
+      "global_epochs": 8, # Number of communication Rounds
       "local_epochs": 1, # Local SGD number of local steps
 
       "compute_grad_stats": False,
@@ -79,7 +79,7 @@
 
         "compression_config":
         {
-          "compression_operator": 'top_k', # "top_k", # full (No Compression), top_k, rand_k
+          "compression_operator": 'full', # "top_k", # full (No Compression), top_k, rand_k
           "frac_coordinates_to_keep": 0.25, # For top-k, rand-k specify sparsity (k)
           "bits": 2,
           "ef_client": True,
