@@ -67,14 +67,12 @@ class FedClient(Agent):
             self.optimizer.step()
 
         # total_loss /= num_steps
-
         # update the estimated gradients
         updated_model_weights = flatten_params(learner=self.learner)
         self.grad_current = self.w_current - updated_model_weights
         if self.C:
             self.grad_current = self.C.compress(g=self.grad_current, lr=self.optimizer.param_groups[0]['lr'])
-
-        # return total_loss
+            self.w_current = self.C.compress(g=self.w_current, lr=self.optimizer.param_groups[0]['lr'])
 
     def train_step_mime(self, client_drift, server_momentum,
                         num_steps=1, device="cpu"):

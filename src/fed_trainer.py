@@ -22,17 +22,18 @@ from torch.utils.data import DataLoader
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
-def init_and_train_clients(server: FedServer,
-                           clients: List[FedClient],
-                           pipeline: str = 'default',
-                           num_local_steps: int = 1):
+def init_clients(server: FedServer, clients: List[FedClient]):
     w_current = server.w_current
     w_old = server.w_old
-
-    # epoch_loss = 0
     for client in clients:
-        # initialize with global params
         client.initialize_params(w_current=w_current, w_old=w_old)
+
+
+def train_clients(server: FedServer,
+                  clients: List[FedClient],
+                  pipeline: str = 'default',
+                  num_local_steps: int = 1):
+    for client in clients:
         # train step
         if pipeline == 'default':
             # epoch_loss += client.train_step(num_steps=num_local_steps, device=device)
@@ -43,7 +44,8 @@ def init_and_train_clients(server: FedServer,
         elif pipeline == 'mime':
             client.train_step_mime(client_drift=server.client_drift, server_momentum=server.mime_momentum,
                                    num_steps=num_local_steps, device=device)
-
+        elif pipeline == 'delicoco':
+            client.train_step(num_steps=num_local_steps, device=device)
         else:
             raise NotImplementedError
 
@@ -82,6 +84,7 @@ def train_and_test_model(server: FedServer,
     device_participation = training_config.get('client_fraction', 1.0)  # partial device participation
     global_epochs = training_config.get('global_epochs', 10)
     local_epochs = training_config.get('local_epochs', 1)
+    Q = training_config.get('Q', 1)
 
     for comm_round in range(1, global_epochs + 1):
         print('         Communication Round {}             '.format(comm_round))
@@ -89,23 +92,33 @@ def train_and_test_model(server: FedServer,
         num_devices = math.floor(len(clients) * device_participation)
         sampled_clients = random.sample(population=clients, k=num_devices)
 
-        init_and_train_clients(server=server, clients=sampled_clients, pipeline=pipeline,
-                               num_local_steps=local_epochs)
+        if pipeline is not 'delicoco':
+            init_clients(server=server, clients=sampled_clients)
 
-        # Now take a lrs step across all clients (** Not just sampled ones)
-        _ = take_lrs_step(clients=clients)
+        if (comm_round - 1) % Q == 0:
+            train_clients(server=server, clients=clients, pipeline=pipeline,
+                          num_local_steps=local_epochs)
+
+            # Now take a lrs step across all clients (** Not just sampled ones)
+            _ = take_lrs_step(clients=clients)
 
         # Aggregate client grads and update server model
         if pipeline == 'default':
             server.compute_agg_grad(clients=sampled_clients)
             server.update_step()
+
         elif pipeline == 'glomo':
             # fix the beta parameter dynamically
             # server.beta = server.c * current_lr ** 2
             server.compute_agg_grad_glomo(clients=sampled_clients)
             server.update_step()
+
         elif pipeline == 'mime':
             server.compute_agg_grad_mime(clients=sampled_clients)
+
+        elif pipeline == 'delicoco':
+            server.compute_agg_grad_delicoco(clients=sampled_clients)
+            init_clients(server=server, clients=sampled_clients)
         else:
             raise NotImplementedError
 

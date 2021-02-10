@@ -26,6 +26,8 @@
       "global_epochs": 8, # Number of communication Rounds
       "local_epochs": 1, # Local SGD number of local steps
 
+      "Q": 4,
+
       "compute_grad_stats": False,
 
 
@@ -50,6 +52,8 @@
           "milestones": [ 1, 5, 10 ],
           "step_size": 1,
           "gamma": 0.99,
+
+
         },
 
         "server_optimizer_config":

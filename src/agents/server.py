@@ -1,6 +1,7 @@
 from .base import Agent
 from src.model_manager import (flatten_params,
-                               dist_grads_to_model)
+                               dist_grads_to_model,
+                               dist_weights_to_model)
 from src.aggregation_manager import GAR
 import numpy as np
 from typing import List
@@ -65,6 +66,14 @@ class FedServer(Agent):
         # invoke gar and get aggregate
         self.u = self.gar.aggregate(G=self.G, )
 
+    def compute_agg_grad_delicoco(self, clients: List[FedClient]):
+        n = len(clients)
+        self.w_current = np.zeros_like(clients[0].w_current)
+        for client in clients:
+            self.w_current += client.w_current
+        self.w_current /= n
+        dist_weights_to_model(weights=self.w_current, learner=self.learner)
+
     def compute_agg_grad_mime(self, clients: List[FedClient]):
         n = len(clients)
         self.client_drift = np.zeros_like(clients[0].glomo_grad)
@@ -78,6 +87,7 @@ class FedServer(Agent):
         self.w_current /= n
 
         self.mime_momentum = (1 - self.c) * self.client_drift + self.c * self.mime_momentum
+        dist_weights_to_model(weights=self.w_current, learner=self.learner)
 
     def compute_agg_grad_glomo(self, clients: List[FedClient]):
         """ Implements Das et.al. FedGlomo: server update step with (Glo)bal (Mo)mentum"""
