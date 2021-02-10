@@ -17,13 +17,16 @@ class FedServer(Agent):
                  server_optimizer,
                  server_lrs,
                  gar: GAR,
-                 gar_config):
+                 gar_config,
+                 C=None):
         Agent.__init__(self)
         self.learner = server_model
         self.optimizer = server_optimizer
         self.lrs = server_lrs
         self.gar = gar
         self.gar_config = gar_config
+
+        self.C = C
 
         self.G = None
         self.G_stale = None
@@ -68,11 +71,14 @@ class FedServer(Agent):
 
     def compute_agg_grad_delicoco(self, clients: List[FedClient]):
         n = len(clients)
+        self.w_old = self.w_current
         self.w_current = np.zeros_like(clients[0].w_current)
+
         for client in clients:
             self.w_current += client.w_current
         self.w_current /= n
-        dist_weights_to_model(weights=self.w_current, learner=self.learner)
+
+        dist_weights_to_model(weights=self.w_old + self.C.compress(self.w_current - self.w_old), learner=self.learner)
 
     def compute_agg_grad_mime(self, clients: List[FedClient]):
         n = len(clients)

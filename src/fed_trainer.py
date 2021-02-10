@@ -159,7 +159,8 @@ def run_fed_train(config, metrics):
                        server_optimizer=server_opt,
                        server_lrs=server_lrs,
                        gar=gar,
-                       gar_config=aggregation_config)
+                       gar_config=aggregation_config,
+                       C=get_compression_operator(compression_config=compression_config))
     # *** Set up Client Nodes ****
     # -----------------------------
     clients = []
