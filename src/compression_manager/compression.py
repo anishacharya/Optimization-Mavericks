@@ -42,7 +42,7 @@ class Top(C):
         self.k = conf.get('frac_coordinates_to_keep', 0.1)
 
     def compress(self, g: np.ndarray, lr=1) -> np.ndarray:
-        if not self.residual_error:
+        if self.residual_error is None:
             self.residual_error = np.zeros_like(g)
 
         g = (lr * g) + self.residual_error
@@ -65,7 +65,7 @@ class Rand(C):
         self.k = conf.get('frac_coordinates_to_keep', 0.1)
 
     def compress(self, g: np.ndarray, lr=1) -> np.ndarray:
-        if not self.residual_error:
+        if self.residual_error is None:
             self.residual_error = np.zeros_like(g)
 
         g = (lr * g) + self.residual_error
