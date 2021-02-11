@@ -92,7 +92,7 @@ def train_and_test_model(server: FedServer,
         num_devices = math.floor(len(clients) * device_participation)
         sampled_clients = random.sample(population=clients, k=num_devices)
 
-        if pipeline is not 'delicoco':
+        if comm_round == 1 or pipeline is not 'delicoco':
             init_clients(server=server, clients=sampled_clients)
 
         if (comm_round - 1) % Q == 0:

@@ -115,12 +115,16 @@ def plot_metrics():
     o = [
         'mean.lenet',
         'geo_med.lenet',
-        'ours.0.05.lenet'
+        'ours.0.05.lenet',
+        'ours.0.1.lenet',
+        'ours.0.2.lenet',
     ]
     labels = [
         r"\textsc{SGD}",
         r"\textsc{Gm-SGD}",
-        r"\textsc{BGmD}",
+        r"\textsc{BGmD(k=0.05)}",
+        r"\textsc{BGmD(k=0.1)}",
+        r"\textsc{BGmD(k=0.2)}",
 
     ]
     plot_type = 'test_acc'
@@ -165,6 +169,7 @@ def plot_metrics():
             plt.xlabel('Time (seconds)', fontsize=10)
         else:
             plt.xlabel('Epochs (Full Pass over Data)', fontsize=10)
+            plt.xlim(left=0, right=35)
 
     elif plot_type is 'train_acc':
         plt.ylabel('Train Accuracy', fontsize=10)
@@ -172,12 +177,12 @@ def plot_metrics():
 
     elif plot_type is 'train_loss':
         plt.ylabel('Training Loss', fontsize=10)
+        plt.yscale('log')
         if x_ax is 'time':
             plt.xlabel('Time (seconds)', fontsize=10)
         else:
             plt.xlabel('Epochs (Full Pass over Data)', fontsize=10)
-        plt.yscale('log')
-        plt.xlim(left=0, right=35)
+            plt.xlim(left=0, right=35)
         # plt.ylim(top=10)
 
     elif plot_type is 'train_error':
