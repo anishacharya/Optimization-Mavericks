@@ -24,12 +24,30 @@ def plot_driver(label: str, res_file: str, plt_type: str = 'epoch_loss',
     res -= optima * np.ones(len(res))
 
     x = np.arange(len(res)) + np.ones(len(res))
-    x *= sampling_freq # * sampling_freq
+    x *= sampling_freq  # * sampling_freq
+    plt.plot(x, res, label=label, linewidth=line_width, marker=marker, linestyle=line_style)
+
+
+def plot_time(label: str, res_file: str, plt_type: str = 'epoch_loss',
+              line_width=2, marker=None, line_style=None, optima: float = 0.0,
+              sampling_freq: int = 1):
+    with open(res_file, 'rb') as f:
+        result = json.load(f)
+
+    res = result[plt_type][:35]
+    # res = res[0::sampling_freq]
+    res -= optima * np.ones(len(res))
+
+    tot_epochs = 35  # result["config"]["training_config"]["global_epochs"]
+    x_freq = int(result["total_cost"] / tot_epochs)
+    x = np.arange(tot_epochs) * x_freq
+    # x = np.arange(len(res)) + np.ones(len(res))
+    # x *= sampling_freq # * sampling_freq
     plt.plot(x, res, label=label, linewidth=line_width, marker=marker, linestyle=line_style)
 
 
 def smooth(y, box_pts):
-    box = np.ones(box_pts)/box_pts
+    box = np.ones(box_pts) / box_pts
     y_smooth = np.convolve(y, box, mode='same')
     return y_smooth
 
@@ -55,8 +73,8 @@ def plot_mass(masses):
 
     x_labels = ['$0\%$', '$10\%$', '$20\%$']
     legends = [r"\textsc{SGD}",
-        r"\textsc{Gm-SGD}",
-        r"\textsc{BGmD}"]
+               r"\textsc{Gm-SGD}",
+               r"\textsc{BGmD}"]
 
     x = np.arange(len(x_labels))
 
@@ -70,7 +88,7 @@ def plot_mass(masses):
     #    res = json.load(f)
     # masses = res["frac_mass_retained"]
     width = 0.1
-    offset = -3/2
+    offset = -3 / 2
     for frac_dist, leg in zip(masses, legends):
         # frac_dist = frac_dist[1:]
         # frac_dist[-1] = 1
@@ -92,58 +110,45 @@ def plot_metrics():
 
     # -------------------------------------------------------------------------------------------
     # ------------------------------- Modify Here -----------------------------------------------
-    d = 'result_dumps/distributed/fashion_mnist/role_k/'
+    d = 'result_dumps/supplimentary/timing/'
 
     o = [
-        'gm',
-        # 'ours',
-        'ours.norm_0.01',
-        'ours.norm_0.05',
-        'ours.norm_0.1',
-        'ours.norm_0.2',
-        'ours.norm_0.3',
-        'ours.norm_0.5',
+        'mean.lenet',
+        'geo_med.lenet',
+        'ours.0.05.lenet'
     ]
     labels = [
-        # r"\textsc{SGD}",
+        r"\textsc{SGD}",
         r"\textsc{Gm-SGD}",
-        r"\textsc{BGmD}, p=0.01",
-        r"\textsc{BGmD}, p=0.05",
-        r"\textsc{BGmD}, p=0.1",
-        r"\textsc{BGmD}, p=0.2",
-        r"\textsc{BGmD}, p=0.3",
-        r"\textsc{BGmD}, p=0.5",
-              ]
-    # MLP
-    #y_sgd = [85.31, 31.36, 20.28]
-    #y_gm = [85.73, 84.75, 88.51]
-    #y_bgmd = [85.72, 84.92, 85.07]
+        r"\textsc{BGmD}",
 
-    # CIFAR
-    # y_sgd = [82.13, 11.97, 10]
-    # y_gm = [81.15, 80.77, 80.86]
-    # y_bgmd = [81.15, 81.29, 80.95]
-
-    # LENET
-    y_sgd = [91.73, 44.92, 54.03]
-    y_gm = [91.33, 91.59, 85.9]
-    y_bgmd = [91.4, 81.29, 80.95]
-    masses = [y_sgd, y_gm, y_bgmd]
-
-    plot_type = 'train_loss'
+    ]
+    plot_type = 'test_acc'
+    x_ax = 'time'
     sampling_freq = 1
+
+    # masses
+    # y_sgd = [85.31, 31.36, 20.28]
+    # y_gm = [85.73, 84.75, 88.51]
+    # y_bgmd = [85.72, 84.92, 85.07]
+    masses = None  # [y_sgd, y_gm, y_bgmd]
 
     for op, label in zip(o, labels):
         result_file = d + op
         if plot_type is 'timing':
             plot_timing(label=label, res_file=result_file)
-        elif plot_type is 'frac_mass':
+        elif plot_type is 'frac_mass' and masses is not None:
             # plot_mass(res_file=result_file)
             plot_mass(masses=masses)
         else:
-            plot_driver(label=label, res_file=result_file,
-                        plt_type=plot_type, optima=0, line_width=4,
-                        sampling_freq=sampling_freq)
+            if x_ax is 'time':
+                plot_time(label=label, res_file=result_file,
+                          plt_type=plot_type, optima=0, line_width=4,
+                          sampling_freq=sampling_freq)
+            else:
+                plot_driver(label=label, res_file=result_file,
+                            plt_type=plot_type, optima=0, line_width=4,
+                            sampling_freq=sampling_freq)
     # -------------------------------------------------------------------------------------------
     # -------------------------------
     # ** Usually No Need to Modify **
@@ -156,9 +161,10 @@ def plot_metrics():
 
     elif plot_type is 'test_acc':
         plt.ylabel('Test Accuracy', fontsize=10)
-        plt.xlabel('Aggregation Rounds', fontsize=10)
-        # plt.xlim(left=0, right=375*5)
-        # plt.ylim(bottom=80, top=95)
+        if x_ax is 'time':
+            plt.xlabel('Time (seconds)', fontsize=10)
+        else:
+            plt.xlabel('Epochs (Full Pass over Data)', fontsize=10)
 
     elif plot_type is 'train_acc':
         plt.ylabel('Train Accuracy', fontsize=10)
@@ -166,9 +172,12 @@ def plot_metrics():
 
     elif plot_type is 'train_loss':
         plt.ylabel('Training Loss', fontsize=10)
-        plt.xlabel('Communication Rounds', fontsize=10)
+        if x_ax is 'time':
+            plt.xlabel('Time (seconds)', fontsize=10)
+        else:
+            plt.xlabel('Epochs (Full Pass over Data)', fontsize=10)
         plt.yscale('log')
-        # plt.xlim(left=0, right=375 * 5)
+        plt.xlim(left=0, right=35)
         # plt.ylim(top=10)
 
     elif plot_type is 'train_error':
@@ -190,7 +199,7 @@ def plot_metrics():
     # plt.legend(loc='lower left', bbox_to_anchor=(0.0, 1.01), ncol=4,
     #           borderaxespad=0, frameon=False, fontsize=11)
     plt.legend()
-    plt.grid(True) #, which='both', linestyle='--')
+    plt.grid(True, which='both', linestyle='--')
     plt.tick_params(labelsize=10)
 
     figure(figsize=(1, 1))
