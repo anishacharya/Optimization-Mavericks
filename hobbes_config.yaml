@@ -9,15 +9,12 @@
       "num_labels": 10,
       "num_channels": 1,
       "download": False,
-
       "batch_size": 32, # Define Batch Size here since Data Loader will assign batches to clients
       "train_num_workers": 1,
-
       ## For Federated / Decentralized Training
       "data_sampling_strategy": 'iid', # Data distribution (Heterogeneous / Non-Heterogeneous)
       "num_shards": 80, # Number of shards for non-iid ~~ usually set it to k * num_of_clients 2 is a good value for k
     },
-
 
   "training_config":
     {
@@ -25,10 +22,7 @@
       "client_fraction": 1, # specify fraction of client participation per round
       "global_epochs": 35, # Number of passes through train data : SGD
       "local_epochs": 1, # Local SGD number of local steps
-
       "compute_grad_stats": False,
-
-
       # Define Optimization related Hyper params below
       # -------------------------------------------------
       "optimizer_config":
@@ -90,15 +84,11 @@
         {
             "frac_adv": 0.1,
             "attack_model": ,  # Leave Empty to off
-
             "attack_mode": "un_coordinated",
-
             "noise_dist": 'gaussian',
             "mean_shift": 100,  # For additive Gaussian mean = mean(g) * mean_shift
-
             "attack_std": 1, # for random attack
             "noise_range": [ -1, 0 ], # only if uniform noise is added
-
             "attack_n_std": 1, # only for Drift Attack
         },
 
@@ -106,7 +96,7 @@
           {
             "rule": 'active_norm',
             "axis": 'column',
-            "frac_coordinates": 0.1,
+            "frac_coordinates": 0.2,
             "ef_server": true,
           },
       }
