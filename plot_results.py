@@ -34,13 +34,12 @@ def plot_time(label: str, res_file: str, plt_type: str = 'epoch_loss',
     with open(res_file, 'rb') as f:
         result = json.load(f)
 
-    res = result[plt_type][:35]
+    res = result[plt_type]# [:35]
     # res = res[0::sampling_freq]
     res -= optima * np.ones(len(res))
 
-    tot_epochs = 35  # result["config"]["training_config"]["global_epochs"]
-    x_freq = int(result["total_cost"] / tot_epochs)
-    x = np.arange(tot_epochs) * x_freq
+    x_freq = int(result["total_cost"] / len(res))
+    x = np.arange(len(res)) * x_freq
     # x = np.arange(len(res)) + np.ones(len(res))
     # x *= sampling_freq # * sampling_freq
     plt.plot(x, res, label=label, linewidth=line_width, marker=marker, linestyle=line_style)
@@ -116,18 +115,18 @@ def plot_metrics():
         'mean.cifar10',
         'geo_med.cifar10',
         'ours.0.05.cifar10',
-        #'ours.0.1.fmnist',
-        #'ours.0.15.fmnist',
-        #'ours.0.2.fmnist',
+        'ours.0.1.cifar10',
+        'ours.0.15.cifar10',
+        'ours.0.2.cifar10',
 
     ]
     labels = [
         r"\textsc{SGD}",
         r"\textsc{Gm-SGD}",
-        r"\textsc{BGmD}" # ( $\beta$ = 0.05)",
-        #r"\textsc{BGmD}( $\beta$ = 0.1)",
-        #r"\textsc{BGmD}( $\beta$ = 0.15)",
-        #r"\textsc{BGmD}( $\beta$ = 0.2)",
+        r"\textsc{BGmD}( $\beta$ = 0.05)",
+        r"\textsc{BGmD}( $\beta$ = 0.1)",
+        r"\textsc{BGmD}( $\beta$ = 0.15)",
+        r"\textsc{BGmD}( $\beta$ = 0.2)",
     ]
     plot_type = 'train_loss'
     x_ax = 'time'
@@ -182,10 +181,11 @@ def plot_metrics():
         plt.yscale('log')
         if x_ax is 'time':
             plt.xlabel('Time (seconds)', fontsize=10)
+            plt.ylim(bottom=0.4)
         else:
             plt.xlabel('Epochs (Full Pass over Data)', fontsize=10)
-            plt.xlim(left=0, right=35)
-        # plt.ylim(top=10)
+            # plt.xlim(left=0, right=35)
+            # plt.ylim(bottom=0.4)
 
     elif plot_type is 'train_error':
         plt.ylabel('Train Error', fontsize=10)
