@@ -113,21 +113,21 @@ def plot_metrics():
     d = 'result_dumps/supplimentary/timing/'
 
     o = [
-        'mean.fmnist',
-        'geo_med.fmnist',
-        'ours.0.05.fmnist',
-        'ours.0.1.fmnist',
-        'ours.0.15.fmnist',
-        'ours.0.2.fmnist',
+        'mean.cifar10',
+        'geo_med.cifar10',
+        'ours.0.05.cifar10',
+        #'ours.0.1.fmnist',
+        #'ours.0.15.fmnist',
+        #'ours.0.2.fmnist',
 
     ]
     labels = [
         r"\textsc{SGD}",
         r"\textsc{Gm-SGD}",
-        r"\textsc{BGmD}( $\alpha$ = 0.05)",
-        r"\textsc{BGmD}( $\alpha$ = 0.1)",
-        r"\textsc{BGmD}( $\alpha$ = 0.15)",
-        r"\textsc{BGmD}( $\alpha$ = 0.2)",
+        r"\textsc{BGmD}" # ( $\beta$ = 0.05)",
+        #r"\textsc{BGmD}( $\beta$ = 0.1)",
+        #r"\textsc{BGmD}( $\beta$ = 0.15)",
+        #r"\textsc{BGmD}( $\beta$ = 0.2)",
     ]
     plot_type = 'train_loss'
     x_ax = 'time'
