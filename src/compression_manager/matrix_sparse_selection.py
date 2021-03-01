@@ -25,7 +25,7 @@ class SparseApproxMatrix:
 
         # error feedback
         self.ef = conf.get('ef_server', False)
-        self.residual_error = None
+        self.residual_error = 0
 
     def sparse_approx(self, G: np.ndarray, lr=1) -> [np.ndarray, np.ndarray]:
         if self.sampling_rule not in ['active_norm', 'random']:
