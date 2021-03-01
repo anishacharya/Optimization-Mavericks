@@ -22,7 +22,9 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 def train_and_test_model(model, criterion, optimizer, lrs, gar,
                          train_loader, test_loader, train_config, metrics,
-                         sparse_selection=None, attack_model=None, C=None, verbose=False, verbose_freq=10):
+                         sparse_selection=None, attack_model=None, C=None,
+                         verbose=False, verbose_freq=10):
+
     num_batches = train_config.get('num_clients', 1)
     num_epochs = train_config.get('global_epochs', 10)
     compute_grad_stat_flag = train_config.get('compute_grad_stats', False)
@@ -163,15 +165,15 @@ def run_batch_train(config, metrics):
     client_lrs = get_scheduler(optimizer=client_optimizer, lrs_config=client_lrs_config)
     criterion = get_loss(loss=client_optimizer_config.get('loss', 'ce'))
 
+    # gradient aggregation related objects
+    # gar
     gar = get_gar(aggregation_config=aggregation_config)
-
+    # sparse approximation of the gradients before aggregating
     sparse_rule = sparse_approx_config.get('rule', None)
-    if sparse_rule is not None:
-        sparse_selection = SparseApproxMatrix(conf=sparse_approx_config)
-    else:
-        sparse_selection = None
-
+    sparse_selection = SparseApproxMatrix(conf=sparse_approx_config) if sparse_rule is not None else None
+    # for adversarial - get attack model
     attack_model = get_attack(attack_config=attack_config)
+    # gradient compression object
     C = get_compression_operator(compression_config=compression_config)
 
     # ------------------------- get data --------------------- #
