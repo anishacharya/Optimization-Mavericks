@@ -31,7 +31,6 @@ class SparseApproxMatrix:
         if self.sampling_rule not in ['active_norm', 'random']:
             return G
 
-        print('Applying Sparse Column Selection')
         #####################################################
         # Otherwise do Block Selection with memory feedback #
         #####################################################
