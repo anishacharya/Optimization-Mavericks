@@ -31,6 +31,7 @@ class SparseApproxMatrix:
         if self.sampling_rule not in ['active_norm', 'random']:
             return G
 
+        print('Applying Sparse Column Selection')
         #####################################################
         # Otherwise do Block Selection with memory feedback #
         #####################################################
@@ -39,8 +40,15 @@ class SparseApproxMatrix:
 
         # for the first run compute k and residual error
         if self.k is None:
-            self.k = int(self.frac * d)
-            self.residual_error = np.zeros((n, d), dtype=G[0, :].dtype)
+            if self.frac > 0:
+                self.k = int(self.frac * d)
+                self.residual_error = np.zeros((n, d), dtype=G[0, :].dtype)
+            elif self.frac == 0:
+                self.k = 1
+            else:
+                raise ValueError
+
+            print('Sampling {} coordinates'.format(self.k))
 
         # Error Compensation (if ef is False, residual error = 0 as its not updated
         G = (lr * G) + self.residual_error
