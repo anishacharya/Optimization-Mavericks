@@ -72,6 +72,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                 lr = optimizer.param_groups[0]['lr']
                 # Adversarial Attack
                 if attack_model is not None:
+                    print('Applying Gradient Attack')
                     G = attack_model.launch_attack(G=G)
 
                 # Compress each vector before aggregation
@@ -84,6 +85,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
 
                 # -------  Gradient Aggregation Round ------- #
                 t_aggregation = time.time()
+
                 # Sparse Approximation of G
                 I_k = None
                 if sparse_selection is not None:
