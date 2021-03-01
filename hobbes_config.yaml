@@ -90,7 +90,7 @@
                 "sparse_approximation_config": {
                     "rule": 'active_norm',
                     "axis": "column",
-                    "frac_coordinates": 0.01,
+                    "frac_coordinates": 0,
                     "ef_server": true
                 }
             }
