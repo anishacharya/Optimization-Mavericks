@@ -54,7 +54,7 @@
                 }
             },
             "aggregation_config": {
-                "gar": "mean",
+                "gar": "geo_med",
                 "trimmed_mean_config":
                   {
                     "proportion": 0.3
