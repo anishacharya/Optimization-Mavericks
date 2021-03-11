@@ -82,10 +82,11 @@
 
                     "frac_adv": 0.49,
 
-                    "additive_attack_conf": { "noise_dist": "gaussian",
-                                              "mean_shift": 100, "attack_std": 1,   # Gaussian noise
-                                              "noise_range": [ -1, 0 ],             # Uniform noise }
-
+                    "additive_attack_conf":
+                      { "noise_dist": "gaussian",
+                        "mean_shift": 100, "attack_std": 1,   # Gaussian noise
+                        "noise_range": [ -1, 0 ],             # Uniform noise
+                      }
 
                     "attack_n_std": 1
                 },
