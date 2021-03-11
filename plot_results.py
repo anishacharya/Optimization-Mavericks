@@ -34,7 +34,7 @@ def plot_time(label: str, res_file: str, plt_type: str = 'epoch_loss',
     with open(res_file, 'rb') as f:
         result = json.load(f)
 
-    res = result[plt_type]# [:35]
+    res = result[plt_type]  # [:35]
     # res = res[0::sampling_freq]
     res -= optima * np.ones(len(res))
 
@@ -99,9 +99,6 @@ def plot_mass(masses):
 
 
 def plot_metrics():
-    # -------------------------------
-    # ** Usually No Need to Modify **
-    # -------------------------------
     ax = plt.figure().gca()
     ax.xaxis.set_major_locator(MaxNLocator(integer=True))
     # activate latex text rendering
@@ -109,102 +106,49 @@ def plot_metrics():
 
     # -------------------------------------------------------------------------------------------
     # ------------------------------- Modify Here -----------------------------------------------
-    d = 'result_dumps/supplimentary/timing/'
+    d = 'result_dumps/fmnist/'
 
     o = [
-        'mean.cifar10',
-        'geo_med.cifar10',
-        'ours.0.05.cifar10',
-        'ours.0.1.cifar10',
-        'ours.0.15.cifar10',
-        'ours.0.2.cifar10',
-
+        'mean',
+        'gm',
+        'co_med'
     ]
     labels = [
         r"\textsc{SGD}",
         r"\textsc{Gm-SGD}",
-        r"\textsc{BGmD}( $\beta$ = 0.05)",
-        r"\textsc{BGmD}( $\beta$ = 0.1)",
-        r"\textsc{BGmD}( $\beta$ = 0.15)",
-        r"\textsc{BGmD}( $\beta$ = 0.2)",
+        r"\textsc{Cm-SGD}",
     ]
     plot_type = 'train_loss'
-    x_ax = 'time'
+    x_ax = 'epoch'
     sampling_freq = 1
-
-    # masses
-    # y_sgd = [85.31, 31.36, 20.28]
-    # y_gm = [85.73, 84.75, 88.51]
-    # y_bgmd = [85.72, 84.92, 85.07]
-    masses = None  # [y_sgd, y_gm, y_bgmd]
 
     for op, label in zip(o, labels):
         result_file = d + op
-        if plot_type is 'timing':
-            plot_timing(label=label, res_file=result_file)
-        elif plot_type is 'frac_mass' and masses is not None:
-            # plot_mass(res_file=result_file)
-            plot_mass(masses=masses)
+
+        if x_ax is 'time':
+            plot_time(label=label, res_file=result_file,
+                      plt_type=plot_type, optima=0, line_width=4,
+                      sampling_freq=sampling_freq)
+            plt.xlabel('Time (seconds)', fontsize=10)
         else:
-            if x_ax is 'time':
-                plot_time(label=label, res_file=result_file,
-                          plt_type=plot_type, optima=0, line_width=4,
-                          sampling_freq=sampling_freq)
-            else:
-                plot_driver(label=label, res_file=result_file,
-                            plt_type=plot_type, optima=0, line_width=4,
-                            sampling_freq=sampling_freq)
-    # -------------------------------------------------------------------------------------------
-    # -------------------------------
-    # ** Usually No Need to Modify **
-    # -------------------------------
+            plot_driver(label=label, res_file=result_file,
+                        plt_type=plot_type, optima=0, line_width=4,
+                        sampling_freq=sampling_freq)
+            plt.xlabel('Epochs (Full Pass over Data)', fontsize=10)
+
     if plot_type is 'test_error':
         plt.ylabel('Test Error', fontsize=10)
-        plt.xlabel('Aggregation Rounds', fontsize=10)
-        # plt.ylim(bottom=70, top=100)
-        # ax.xaxis.set_major_locator(ticker.MultipleLocator(100))
-
     elif plot_type is 'test_acc':
         plt.ylabel('Test Accuracy', fontsize=10)
-        if x_ax is 'time':
-            plt.xlabel('Time (seconds)', fontsize=10)
-        else:
-            plt.xlabel('Epochs (Full Pass over Data)', fontsize=10)
-            plt.xlim(left=0, right=35)
-
     elif plot_type is 'train_acc':
         plt.ylabel('Train Accuracy', fontsize=10)
-        plt.xlabel('Aggregation Rounds', fontsize=10)
-
     elif plot_type is 'train_loss':
         plt.ylabel('Training Loss', fontsize=10)
-        plt.yscale('log')
-        if x_ax is 'time':
-            plt.xlabel('Time (seconds)', fontsize=10)
-            plt.ylim(bottom=0.4)
-        else:
-            plt.xlabel('Epochs (Full Pass over Data)', fontsize=10)
-            # plt.xlim(left=0, right=35)
-            # plt.ylim(bottom=0.4)
-
     elif plot_type is 'train_error':
         plt.ylabel('Train Error', fontsize=10)
-        plt.xlabel('Communication Rounds', fontsize=10)
-
-    elif plot_type is 'timing':
-        plt.ylabel('Time', fontsize=10)
-        plt.xlabel('Dimension', fontsize=10)
-
-    elif plot_type is 'frac_mass':
-        plt.xlabel('Corruption Level', fontsize=10)
-        plt.ylabel('Test Accuracy ($\%$)', fontsize=10)
     else:
         raise NotImplementedError
 
-    # plt.title('')
-    # plt.legend(fontsize=11),# loc=2)
-    # plt.legend(loc='lower left', bbox_to_anchor=(0.0, 1.01), ncol=4,
-    #           borderaxespad=0, frameon=False, fontsize=11)
     plt.legend()
     plt.grid(True, which='both', linestyle='--')
     plt.tick_params(labelsize=10)
