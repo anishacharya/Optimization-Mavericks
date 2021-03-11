@@ -113,7 +113,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                 #         epoch = num_epochs
 
                 comm_rounds += 1
-
+            p_bar.close()
         if lrs is not None:
             lrs.step()
 
