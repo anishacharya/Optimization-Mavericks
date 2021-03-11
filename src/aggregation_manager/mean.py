@@ -16,9 +16,11 @@ class Mean(GAR):
 
     def aggregate(self, G: np.ndarray, ix: List[int] = None) -> np.ndarray:
         # if ix given only aggregate along the indexes ignoring the rest of the ix
-        g_agg = np.zeros_like(G[0, :])
         if ix is not None:
+            g_agg = np.zeros_like(G[0, :])
             G = G[:, ix]
-        low_rank_mean = self.weighted_average(stacked_grad=G)
-        g_agg[ix] = low_rank_mean
-        return g_agg
+            low_rank_mean = self.weighted_average(stacked_grad=G)
+            g_agg[ix] = low_rank_mean
+            return g_agg
+        else:
+            return self.weighted_average(stacked_grad=G)

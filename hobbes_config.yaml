@@ -1,6 +1,6 @@
 {
         "train_mode": "distributed",
-        "pipeline": "default",
+
         "data_config": {
             "data_set": "fashion_mnist",
             "shape": [
@@ -9,12 +9,12 @@
             ],
             "num_labels": 10,
             "num_channels": 1,
-            "download": false,
             "batch_size": 32,
             "train_num_workers": 1,
             "data_sampling_strategy": "iid",
             "num_shards": 80
         },
+
         "training_config": {
             "num_clients": 8,
             "client_fraction": 1,
@@ -46,6 +46,7 @@
                     "lr0": 1
                 }
             },
+
             "learner_config": {
                 "net": "lenet",
                 "mlp_config": {
@@ -53,6 +54,7 @@
                     "h2": 300
                 }
             },
+
             "aggregation_config": {
                 "gar": "co_med",
                 "trimmed_mean_config":
@@ -61,9 +63,6 @@
                 },
                 "krum_config": {
                     "krum_frac": 0.3
-                },
-                "glomo_config": {
-                    "glomo_server_c": 1
                 },
                 "norm_clip_config": {
                     "alpha": 0.5

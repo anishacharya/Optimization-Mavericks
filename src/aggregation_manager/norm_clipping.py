@@ -3,34 +3,38 @@
 
 import numpy as np
 from .base import GAR
+from typing import List
 
-""" 
-Implements remove points with large norm.
- 
-Ghosh, Maity, Kadhe, Mazumdar, Ramchandran :
-Communication-Efficient and Byzantine-Robust Distributed Learning with Error Feedback 
+"""
+Ghosh et.al. Communication-Efficient and Byzantine-Robust Distributed Learning with Error Feedback
 """
 
 
 class NormClipping(GAR):
+
     def __init__(self, aggregation_config):
         GAR.__init__(self, aggregation_config=aggregation_config)
         # Find Number of top norms to drop
         self.alpha = self.aggregation_config.get("norm_clip_config", {}).get("alpha", 0.1)
         self.k = None
 
-    def aggregate(self, G: np.ndarray) -> np.ndarray:
+    def aggregate(self, G: np.ndarray, ix: List[int] = None) -> np.ndarray:
         # Compute norms of each gradient vector
         # norm_dist = np.linalg.norm(G, axis=1)
-        norms = np.sqrt(np.einsum('ij,ij->i', G, G))
 
         if self.k is None:
             self.k = int(G.shape[0] * self.alpha)
-            print('clipping {} clients'.format(self.k))
+            print('Norm clipping {} clients'.format(self.k))
+
+        norms = np.sqrt(np.einsum('ij,ij->i', G, G))
         top_k_indices = np.argsort(np.abs(norms))[::-1][:self.k]
 
         # set weights of them to 0 filtering k top ones based on norm
         alphas = np.ones(G.shape[0]) * (1 / (G.shape[0] - self.k))
         alphas[top_k_indices] = 0
         agg_grad = self.weighted_average(stacked_grad=G, alphas=alphas)
-        return agg_grad
+
+        if ix is not None:
+            return agg_grad[ix]
+        else:
+            return agg_grad

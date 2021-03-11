@@ -10,9 +10,15 @@ class CoordinateWiseMedian(GAR):
     def __init__(self, aggregation_config):
         GAR.__init__(self, aggregation_config=aggregation_config)
 
-    def aggregate(self, G: np.ndarray) -> np.ndarray:
-        agg_grad = np.median(G, axis=0)
-        return agg_grad
+    def aggregate(self, G: np.ndarray, ix: List[int] = None) -> np.ndarray:
+        if ix is not None:
+            g_agg = np.zeros_like(G[0, :])
+            G = G[:, ix]
+            low_rank_med = np.median(G, axis=0)
+            g_agg[ix] = low_rank_med
+            return g_agg
+        else:
+            return np.median(G, axis=0)
 
 
 class GeometricMedian(GAR):
@@ -23,12 +29,14 @@ class GeometricMedian(GAR):
 
     def aggregate(self, G: np.ndarray, ix: List[int] = None) -> np.ndarray:
         # if ix given only aggregate along the indexes ignoring the rest of the ix
-        g_agg = np.zeros_like(G[0, :])
         if ix is not None:
+            g_agg = np.zeros_like(G[0, :])
             G = G[:, ix]
-        low_rank_gm = vardi(X=G)
-        g_agg[ix] = low_rank_gm
-        return g_agg
+            low_rank_gm = vardi(X=G)
+            g_agg[ix] = low_rank_gm
+            return g_agg
+        else:
+            return vardi(X=G)
 
 
 def vardi(X, eps=1e-5) -> np.ndarray:

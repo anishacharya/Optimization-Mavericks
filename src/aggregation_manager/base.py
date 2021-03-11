@@ -3,6 +3,7 @@
 
 import numpy as np
 import torch
+from typing import List
 
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -17,7 +18,11 @@ class GAR:
         self.aggregation_config = aggregation_config
         self.current_losses = []
 
-    def aggregate(self, G: np.ndarray) -> np.ndarray:
+    def aggregate(self, G: np.ndarray, ix: List[int] = None) -> np.ndarray:
+        """
+        G: Gradient Matrix where each row is a gradient vector (g_i)
+        ix: Columns specified to be aggregated on (if None done on full dimension)
+        """
         pass
 
     @staticmethod

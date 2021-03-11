@@ -52,6 +52,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
             loss = criterion(outputs, labels)
             loss.backward()
             # Note: No Optimizer Step yet.
+
             g_i = flatten_grads(learner=model)
             if G is None:
                 d = len(g_i)
@@ -67,8 +68,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
             total_iter += 1
 
             if agg_ix == 0 and batch_ix is not 0:
-                # -------  Communication Round ------- #
-                t0 = time.time()
+                # -------  Server / Aggregation Step ------- #
                 lr = optimizer.param_groups[0]['lr']
                 # Adversarial Attack
                 if attack_model is not None:
@@ -79,22 +79,19 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                 if C is not None:
                     for ix, g_i in enumerate(G):
                         G[ix, :] = C.compress(g_i, lr=lr)
-                comm_time = time.time() - t0
-                metrics["comm_time"] += comm_time
-                # print('Communication took {} seconds'.format(comm_time))
 
                 # -------  Gradient Aggregation Round ------- #
                 t_aggregation = time.time()
-
                 # Sparse Approximation of G
                 I_k = None
+
                 if sparse_selection is not None:
                     G, I_k = sparse_selection.sparse_approx(G=G, lr=lr)
 
                 # Gradient aggregation
                 agg_g = gar.aggregate(G=G, ix=I_k)
                 optimizer.zero_grad()
-                # Update Model Grads with aggregated g :\tilde(g)
+                # Update Model Grads with aggregated g : i.e. compute \tilde(g)
                 dist_grads_to_model(grads=agg_g, learner=model)
                 model.to(device)
                 # Now Do an optimizer step with x_t+1 = x_t - \eta \tilde(g)
@@ -146,7 +143,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
 
 def run_batch_train(config, metrics):
     # ------------------------ Fetch configs ----------------------- #
-    pipeline = config.get('pipeline', 'default')
+    print('---- Fetching configs -----')
     data_config = config["data_config"]
     training_config = config["training_config"]
 
