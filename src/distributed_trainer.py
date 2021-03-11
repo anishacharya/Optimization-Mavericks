@@ -14,6 +14,7 @@ import torch
 from torch.utils.data import DataLoader
 import numpy as np
 import time
+from tqdm import tqdm
 
 torch.manual_seed(1)
 
@@ -40,8 +41,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
         print('epoch {}/{} || learning rate: {}'.format(epoch, num_epochs, optimizer.param_groups[0]['lr']))
 
         # ------- Training Phase --------- #
-
-        for batch_ix, (images, labels) in enumerate(train_loader):
+        for batch_ix, (images, labels) in tqdm(enumerate(train_loader)):
             t_iter = time.time()
 
             images = images.to(device)
