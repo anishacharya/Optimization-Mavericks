@@ -41,7 +41,8 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
         print('epoch {}/{} || learning rate: {}'.format(epoch, num_epochs, optimizer.param_groups[0]['lr']))
 
         # ------- Training Phase --------- #
-        for batch_ix, (images, labels) in tqdm(enumerate(train_loader)):
+        p_bar = tqdm(total=len(train_loader))
+        for batch_ix, (images, labels) in enumerate(train_loader):
             t_iter = time.time()
 
             images = images.to(device)
@@ -65,7 +66,8 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
             # print('One iteration over batch takes {} seconds'.format(iteration_time))
             metrics["batch_grad_cost"] += iteration_time
             total_iter += 1
-
+            p_bar.update()
+            pbar.set_description("Iteration Progress: ")
             if agg_ix == 0 and batch_ix is not 0:
                 # -------  Server / Aggregation Step ------- #
                 lr = optimizer.param_groups[0]['lr']
