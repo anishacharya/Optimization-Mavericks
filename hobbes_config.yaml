@@ -77,14 +77,15 @@
 
                 "attack_config":
                 {
-                    "attack_model": None,
+                    "attack_model": 'additive',
                     "attack_mode": "un_coordinated",
-                    "noise_dist": "gaussian",
 
-                    "frac_adv": 0.1,
-                    "mean_shift": 100,
-                    "attack_std": 1,
-                    "noise_range": [ -1, 0 ],
+                    "frac_adv": 0.49,
+
+                    "additive_attack_conf": { "noise_dist": "gaussian", "mean_shift": 100, "attack_std": 1, # Gaussian
+                                              "noise_range": [ -1, 0 ], # uniform noise distribution }
+
+
                     "attack_n_std": 1
                 },
 

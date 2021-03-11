@@ -77,7 +77,7 @@ class Additive(ByzAttack):
     """
     Additive Gaussian Noise, scaled w.r.t the original values.
     Implementation of the attack mentioned (in un-coordinated setting only) in:
-    Ref: Fu et.al. Attack-Resistant Federated Learning with Residual-based Reweighting
+    Ref: Fu et.al. Attack-Resistant Federated Learning with Residual-based Re-weighting
     https://arxiv.org/abs/1912.11464.
 
     [Our Proposal] In Co-ordinated Mode: We take the mean of all clients and generate noise based on the
