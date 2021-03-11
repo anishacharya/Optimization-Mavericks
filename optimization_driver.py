@@ -46,7 +46,6 @@ def run_main():
                # compute Time
                "batch_grad_cost": 0,
                "batch_agg_cost": 0,
-               "comm_time": 0,
                "total_cost": 0,
 
                # Count steps

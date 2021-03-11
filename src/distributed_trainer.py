@@ -22,8 +22,8 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 def train_and_test_model(model, criterion, optimizer, lrs, gar,
                          train_loader, test_loader, train_config, metrics,
-                         sparse_selection=None, attack_model=None, C=None,
-                         verbose=False, verbose_freq=10):
+                         sparse_selection=None, attack_model=None, C=None):
+    #  verbose=False, verbose_freq=10):
     num_batches = train_config.get('num_clients', 1)
     num_epochs = train_config.get('global_epochs', 10)
     compute_grad_stat_flag = train_config.get('compute_grad_stats', False)
@@ -101,14 +101,14 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                 metrics["batch_agg_cost"] += aggregation_time
                 total_agg += 1
 
-                # Compute Metrics
-                if verbose and comm_rounds % verbose_freq == 0:
-                    train_loss = evaluate_classifier(model=model, train_loader=train_loader, test_loader=test_loader,
-                                                     metrics=metrics, criterion=criterion, device=device,
-                                                     epoch=epoch, num_epochs=num_epochs)
-                    # Stop if diverging
-                    if train_loss > 1e3:
-                        epoch = num_epochs
+                # # Compute Metrics
+                # if verbose and comm_rounds % verbose_freq == 0:
+                #     train_loss = evaluate_classifier(model=model, train_loader=train_loader, test_loader=test_loader,
+                #                                      metrics=metrics, criterion=criterion, device=device,
+                #                                      epoch=epoch, num_epochs=num_epochs)
+                #     # Stop if diverging
+                #     if train_loss > 1e3:
+                #         epoch = num_epochs
 
                 comm_rounds += 1
 
@@ -119,25 +119,22 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
             print("Computing Additional Stats on G")
             compute_grad_stats(G=G, metrics=metrics)
 
-        if not verbose:
-            train_loss = evaluate_classifier(model=model, train_loader=train_loader, test_loader=test_loader,
-                                             metrics=metrics, criterion=criterion, device=device,
-                                             epoch=epoch, num_epochs=num_epochs)
-            # Stop if diverging
-            if train_loss > 1e3:
-                epoch = num_epochs
+        train_loss = evaluate_classifier(model=model, train_loader=train_loader, test_loader=test_loader,
+                                         metrics=metrics, criterion=criterion, device=device,
+                                         epoch=epoch, num_epochs=num_epochs)
+        # Stop if diverging
+        if train_loss > 1e3:
+            epoch = num_epochs
 
         epoch += 1
-        print('Training Time Progress: {}'.format(metrics["batch_grad_cost"]
-                                                  + metrics["batch_agg_cost"] + metrics["comm_time"]))
+        print('Training Time Progress: {}'.format(metrics["batch_grad_cost"] + metrics["batch_agg_cost"]))
 
-    metrics["total_cost"] = metrics["batch_grad_cost"] + metrics["batch_agg_cost"] + metrics["comm_time"]
-
+    # Update Time Complexities
+    metrics["total_cost"] = metrics["batch_grad_cost"] + metrics["batch_agg_cost"]
     metrics["total_iter"] = total_iter
     metrics["total_agg"] = total_agg
     metrics["batch_grad_cost"] /= total_iter
     metrics["batch_agg_cost"] /= total_agg
-    metrics["comm_time"] /= total_agg
 
 
 def run_batch_train(config, metrics):
