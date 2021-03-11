@@ -86,7 +86,7 @@
                       { "noise_dist": "gaussian",
                         "mean_shift": 100, "attack_std": 1,   # Gaussian noise
                         "noise_range": [ -1, 0 ],             # Uniform noise
-                      }
+                      },
 
                     "attack_n_std": 1
                 },
