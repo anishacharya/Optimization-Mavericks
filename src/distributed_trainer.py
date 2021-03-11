@@ -24,7 +24,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 def train_and_test_model(model, criterion, optimizer, lrs, gar,
                          train_loader, test_loader, train_config, metrics,
                          sparse_selection=None, attack_model=None, C=None):
-    #  verbose=False, verbose_freq=10):
+
     num_batches = train_config.get('num_clients', 1)
     num_epochs = train_config.get('global_epochs', 10)
     compute_grad_stat_flag = train_config.get('compute_grad_stats', False)
@@ -72,9 +72,9 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
             if agg_ix == 0 and batch_ix is not 0:
                 # -------  Server / Aggregation Step ------- #
                 lr = optimizer.param_groups[0]['lr']
+
                 # Adversarial Attack
                 if attack_model is not None:
-                    print('Applying Gradient Attack')
                     G = attack_model.launch_attack(G=G)
 
                 # Compress each vector before aggregation
@@ -82,37 +82,27 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                     for ix, g_i in enumerate(G):
                         G[ix, :] = C.compress(g_i, lr=lr)
 
-                # -------  Gradient Aggregation Round ------- #
                 t_aggregation = time.time()
-                # Sparse Approximation of G
-                I_k = None
 
+                # Sparse Approximation of G
+
+                I_k = None
                 if sparse_selection is not None:
                     G, I_k = sparse_selection.sparse_approx(G=G, lr=lr)
 
                 # Gradient aggregation
                 agg_g = gar.aggregate(G=G, ix=I_k)
-                optimizer.zero_grad()
+
                 # Update Model Grads with aggregated g : i.e. compute \tilde(g)
+                optimizer.zero_grad()
                 dist_grads_to_model(grads=agg_g, learner=model)
                 model.to(device)
                 # Now Do an optimizer step with x_t+1 = x_t - \eta \tilde(g)
                 optimizer.step()
 
                 aggregation_time = time.time() - t_aggregation
-                # print('Gradient Aggregation took {} seconds'.format(aggregation_time))
                 metrics["batch_agg_cost"] += aggregation_time
                 total_agg += 1
-
-                # # Compute Metrics
-                # if verbose and comm_rounds % verbose_freq == 0:
-                #     train_loss = evaluate_classifier(model=model, train_loader=train_loader, test_loader=test_loader,
-                #                                      metrics=metrics, criterion=criterion, device=device,
-                #                                      epoch=epoch, num_epochs=num_epochs)
-                #     # Stop if diverging
-                #     if train_loss > 1e3:
-                #         epoch = num_epochs
-
                 comm_rounds += 1
 
         p_bar.close()
@@ -128,7 +118,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                                          metrics=metrics, criterion=criterion, device=device,
                                          epoch=epoch, num_epochs=num_epochs)
         # Stop if diverging
-        if train_loss > 1e3:
+        if train_loss > 1e3 and epoch > 5:
             epoch = num_epochs
 
         epoch += 1
