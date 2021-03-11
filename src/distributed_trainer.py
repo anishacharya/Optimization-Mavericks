@@ -42,6 +42,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
 
         # ------- Training Phase --------- #
         p_bar = tqdm(total=len(train_loader))
+        p_bar.set_description("Epoch Progress: ")
 
         for batch_ix, (images, labels) in enumerate(train_loader):
             t_iter = time.time()
@@ -66,9 +67,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
             iteration_time = time.time() - t_iter
             metrics["batch_grad_cost"] += iteration_time
             total_iter += 1
-
             p_bar.update()
-            p_bar.set_description("Iteration Progress: ")
 
             if agg_ix == 0 and batch_ix is not 0:
                 # -------  Server / Aggregation Step ------- #
