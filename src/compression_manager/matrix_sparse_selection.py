@@ -29,7 +29,7 @@ class SparseApproxMatrix:
 
     def sparse_approx(self, G: np.ndarray, lr=1) -> [np.ndarray, np.ndarray]:
         if self.sampling_rule not in ['active_norm', 'random']:
-            return G
+           raise NotImplementedError
 
         #####################################################
         # Otherwise do Block Selection with memory feedback #
