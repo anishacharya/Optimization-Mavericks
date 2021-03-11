@@ -120,6 +120,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
         if lrs is not None:
             lrs.step()
 
+        # Compute gradient statistics
         if compute_grad_stat_flag is True and epoch % 5 == 0:
             print("Computing Additional Stats on G")
             compute_grad_stats(G=G, metrics=metrics)
