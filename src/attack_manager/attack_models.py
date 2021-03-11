@@ -86,31 +86,34 @@ class Additive(ByzAttack):
 
     def __init__(self, attack_config: Dict):
         ByzAttack.__init__(self, attack_config=attack_config)
-        self.noise_dist = self.attack_config["noise_dist"]
 
-        self.attack_std = self.attack_config.get("attack_std", 1)
-        self.mean_shift = self.attack_config.get("mean_shift", 1)
+        self.additive_attack_conf = attack_config.get("additive_attack_conf", {})
+        print(' Additive Noise Attack {} '.format(self.additive_attack_conf))
 
-        self.noise_range = self.attack_config.get("noise_range", [0, 1])
+        self.noise_dist = self.additive_attack_conf["noise_dist"]
+
+        # Gaussian Noise Model Configs
+        self.attack_std = self.additive_attack_conf.get("attack_std", 1)
+        self.mean_shift = self.additive_attack_conf.get("mean_shift", 1)
+
+        # Uniform Noise Model Config
+        self.noise_range = self.additive_attack_conf.get("noise_range", [0, 1])
 
     def attack(self, g):
-        # print('Applying Additive Attack')
-        # apply gaussian noise (scaled appropriately)
         if self.noise_dist == 'gaussian':
             noise = np.random.normal(loc=g*self.mean_shift,
                                      scale=self.attack_std,
                                      size=g.shape).astype(dtype=g.dtype)
 
         elif self.noise_dist == 'uniform':
-            dist = self.noise_range[1] - self.noise_range[0]
-            min = self.noise_range[0]
-            noise = np.random.random(g.shape) * dist + min
+            noise_ub = self.noise_range[1]
+            noise_lb = self.noise_range[0]
+            dist = noise_ub - noise_lb
+            noise = np.random.random(g.shape) * dist + noise_lb
         else:
             raise NotImplementedError
 
-        byz_grad = g + noise
-
-        return byz_grad
+        return g + noise
 
 
 class Random(ByzAttack):
