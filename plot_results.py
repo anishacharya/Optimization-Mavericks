@@ -109,17 +109,19 @@ def plot_metrics():
     d = 'result_dumps/fmnist/'
 
     o = [
-        'mean.ag.49',
-        'gm.ag.49',
-        'cm.ag.49'
+        'mean',
+        'gm',
+        'cm',
+        'bgm'
     ]
     labels = [
         r"\textsc{SGD}",
         r"\textsc{Gm-SGD}",
         r"\textsc{Cm-SGD}",
+        r"\textsc{BGm-SGD}",
     ]
     plot_type = 'train_loss'
-    x_ax = 'epoch'
+    x_ax = 'time'
     sampling_freq = 1
 
     plt.ylim(top=1, bottom=0.1)
