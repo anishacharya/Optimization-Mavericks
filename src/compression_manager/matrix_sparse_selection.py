@@ -18,7 +18,7 @@ class SparseApproxMatrix:
     def __init__(self, conf):
         self.conf = conf
         self.sampling_rule = self.conf.get('rule', None)  # sampling algo
-        axis = self.conf.get('axis', 'column')      # 0: column sampling, 1: row sampling
+        axis = self.conf.get('axis', 'column')  # 0: column sampling, 1: row sampling
         self.axis = 0 if axis == 'column' else 1
         self.frac = conf.get('frac_coordinates', 1)  # number of coordinates to sample
         self.k = None
@@ -29,7 +29,7 @@ class SparseApproxMatrix:
 
     def sparse_approx(self, G: np.ndarray, lr=1) -> [np.ndarray, np.ndarray]:
         if self.sampling_rule not in ['active_norm', 'random']:
-           raise NotImplementedError
+            raise NotImplementedError
 
         #####################################################
         # Otherwise do Block Selection with memory feedback #
@@ -47,7 +47,7 @@ class SparseApproxMatrix:
             else:
                 raise ValueError
 
-            print('Sampling {} coordinates'.format(self.k))
+            print('Sampling {} coordinates out of {}'.format(self.k, d))
 
         # Error Compensation (if ef is False, residual error = 0 as its not updated
         G = (lr * G) + self.residual_error
