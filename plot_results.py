@@ -109,9 +109,9 @@ def plot_metrics():
     d = 'result_dumps/fmnist/'
 
     o = [
-        'mean',
-        'gm',
-        'co_med'
+        'mean.ag.49',
+        'gm.ag.49',
+        'cm.ag.49'
     ]
     labels = [
         r"\textsc{SGD}",
@@ -121,6 +121,8 @@ def plot_metrics():
     plot_type = 'train_loss'
     x_ax = 'epoch'
     sampling_freq = 1
+
+    plt.ylim(top=1, bottom=0.1)
 
     for op, label in zip(o, labels):
         result_file = d + op
