@@ -25,6 +25,16 @@ class GAR:
         """
         pass
 
+    def block_descent_aggregate(self, sparse_approx_config: Dict, G: np.ndarray):
+        sparse_rule = sparse_approx_config.get('rule', None)
+        sparse_selection = SparseApproxMatrix(conf=sparse_approx_config) if sparse_rule in ['active_norm', 'random'] \
+            else None
+        I_k = None
+        if sparse_selection is not None:
+            G, I_k = sparse_selection.sparse_approx(G=G, lr=1)
+        agg_g = self.aggregate(G=G, ix=I_k)
+        return agg_g
+
     @staticmethod
     def weighted_average(stacked_grad: np.ndarray, alphas=None):
         """

@@ -2,8 +2,9 @@
 # Licensed under the MIT License
 import numpy as np
 from .base import GAR
-from typing import List
+from typing import List, Dict
 from scipy.spatial.distance import cdist, euclidean
+from src.compression_manager import SparseApproxMatrix
 
 
 class CoordinateWiseMedian(GAR):

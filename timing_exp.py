@@ -6,23 +6,15 @@ from numpyencoder import NumpyEncoder
 import os
 
 
-def time_coordinate_select(G: np.ndarray, k: int):
-    t0 = time.time()
-    norm_dist = np.linalg.norm(G, axis=0)
-    norm_dist /= sum(norm_dist)
-    all_ix = np.arange(G.shape[1])
-    top_k = np.random.choice(a=all_ix, size=k, replace=False, p=norm_dist)
-    G_sparse = G[:, top_k]
-    T = time.time() - t0
-
-    return G_sparse, T
-
-
-def time_gar(gar, G, repeat: int = 5):
+def time_gar(grad_agg_rule, X, repeat: int = 5, sparse_approx_config={}):
     T = 0
     for it in range(repeat):
-        t0 = time.time()
-        _ = gar.aggregate(G=G)
+        if sparse_approx_config is not {}:
+            t0 = time.time()
+            _ = grad_agg_rule.block_descent_aggregate(G=X, sparse_approximation_config=sparse_approximation_config)
+        else:
+            t0 = time.time()
+            _ = grad_agg_rule.aggregate(G=X)
         T += time.time() - t0
     T /= repeat
     return T
@@ -30,15 +22,13 @@ def time_gar(gar, G, repeat: int = 5):
 
 if __name__ == '__main__':
     # Hyper Params
-    # d = [int(1e3), int(5e3), int(1e4), int(5e4)]
-    d = np.arange(start=1e3, stop=1e4, step=250)
+    d = np.arange(start=1e3, stop=1e4, step=200)
     d = [int(el) for el in d]
-    directory = 'result_dumps/timing_exp/cont/'
+    directory = 'result_dumps/timing_exp/'
 
     algo = 'BGMD'
-    op_file = 'ours.0.25'
+    op_file = 'bgmd'
     n = 5000
-    p = 0.25  # fraction of coordinates
 
     res = {}
     agg_config = \
@@ -48,26 +38,25 @@ if __name__ == '__main__':
             "krum_config": {"krum_frac": 0.3},
             "norm_clip_config": {"alpha": 0.3},
         }
+    sparse_approximation_config = \
+        {
+            "rule": 'active_norm',
+            "axis": "column",
+            "frac_coordinates": 0.1,
+            "ef_server": true,
+        }
+
     gar = get_gar(aggregation_config=agg_config)
 
-    # Gather Times
     for dim in d:
-        k = int(p * dim)
-        t = 0
-        X = np.random.normal(0, 0.3, (n, dim))
-
+        G = np.random.normal(0, 0.3, (n, dim))
         if algo == 'BGMD':
-            # only for BGMD
-            X_sparse, t0 = time_coordinate_select(G=X, k=k)
-            t += t0
-            t += time_gar(gar=gar, G=X_sparse)
+            res[dim] = time_gar(grad_agg_rule=gar, X=G, sparse_approx_config=sparse_approximation_config)
         else:
-            t += time_gar(gar=gar, G=X)
-
-        res[dim] = t
+            res[dim] = time_gar(grad_agg_rule=gar, X=G)
 
     if not os.path.exists(directory):
-            os.makedirs(directory)
+        os.makedirs(directory)
 
     with open(directory + op_file, 'w+') as f:
-            json.dump(res, f, indent=4, ensure_ascii=False, cls=NumpyEncoder)
+        json.dump(res, f, indent=4, ensure_ascii=False, cls=NumpyEncoder)
