@@ -30,7 +30,7 @@ if __name__ == '__main__':
     directory = 'result_dumps/timing_exp/'
 
     algo = 'BD'
-    op_file = 'bgmd'
+    op_file = 'bgmd.0.2'
     n = 10000
 
     res = {}
@@ -46,7 +46,7 @@ if __name__ == '__main__':
             {
                 "rule": 'active_norm',
                 "axis": "column",
-                "frac_coordinates": 0.1,
+                "frac_coordinates": 0.2,
                 "ef_server": True,
             }
     }
