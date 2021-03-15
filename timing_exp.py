@@ -27,21 +27,21 @@ if __name__ == '__main__':
     d = [int(el) for el in d]
     directory = 'result_dumps/timing_exp/'
 
-    algo = 'mean'
-    op_file = 'mean'
+    algo = 'co_med'
+    op_file = 'cm'
     n = 10000
 
     res = {}
     agg_config = \
         {
-            "gar": "mean",
+            "gar": "geo_med",
             "trimmed_mean_config": {"proportion": 0.3},
             "krum_config": {"krum_frac": 0.3},
             "norm_clip_config": {"alpha": 0.3},
         }
     sparse_approximation_config = \
         {
-            "rule": 'active_norm',
+            "rule": None,
             "axis": "column",
             "frac_coordinates": 0.1,
             "ef_server": True,
