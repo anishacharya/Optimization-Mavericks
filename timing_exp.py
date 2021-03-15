@@ -2,6 +2,7 @@ import numpy as np
 import time
 from src.aggregation_manager import get_gar
 import json
+from typing import Dict
 from numpyencoder import NumpyEncoder
 import os
 
@@ -11,7 +12,7 @@ def time_gar(grad_agg_rule, X, repeat: int = 5, sparse_approx_config={}):
     for it in range(repeat):
         if sparse_approx_config is not {}:
             t0 = time.time()
-            _ = grad_agg_rule.block_descent_aggregate(G=X, sparse_approximation_config=sparse_approximation_config)
+            _ = grad_agg_rule.block_descent_aggregate(G=X, sparse_approx_config=sparse_approximation_config)
         else:
             t0 = time.time()
             _ = grad_agg_rule.aggregate(G=X)
@@ -26,14 +27,14 @@ if __name__ == '__main__':
     d = [int(el) for el in d]
     directory = 'result_dumps/timing_exp/'
 
-    algo = 'BGMD'
-    op_file = 'bgmd'
-    n = 5000
+    algo = 'mean'
+    op_file = 'mean'
+    n = 10000
 
     res = {}
     agg_config = \
         {
-            "gar": "geo_med",
+            "gar": "mean",
             "trimmed_mean_config": {"proportion": 0.3},
             "krum_config": {"krum_frac": 0.3},
             "norm_clip_config": {"alpha": 0.3},
@@ -43,7 +44,7 @@ if __name__ == '__main__':
             "rule": 'active_norm',
             "axis": "column",
             "frac_coordinates": 0.1,
-            "ef_server": true,
+            "ef_server": True,
         }
 
     gar = get_gar(aggregation_config=agg_config)

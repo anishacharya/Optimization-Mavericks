@@ -3,7 +3,8 @@
 
 import numpy as np
 import torch
-from typing import List
+from typing import List, Dict
+from src.compression_manager import SparseApproxMatrix
 
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

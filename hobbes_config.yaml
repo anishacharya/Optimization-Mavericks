@@ -2,7 +2,7 @@
         "train_mode": "distributed",
 
         "data_config": {
-            "data_set": "fashion_mnist",
+            "data_set": "mnist",
             "shape": [
                 28,
                 28
@@ -55,13 +55,13 @@
 
             "learner_config":
             {
-                "net": "lenet",
+                "net": "log_reg",
                 "mlp_config": { "h1": 300, "h2": 300 }
             },
 
             "aggregation_config":
               {
-                "gar": "geo_med",
+                "gar": "mean",
 
                 "trimmed_mean_config":{"proportion": 0.3},
                 "krum_config": {"krum_frac": 0.3},
@@ -72,12 +72,12 @@
                     "compression_operator": None,
                     "frac_coordinates_to_keep": 0.5,
                     "bits": 2,
-                    "ef_client": false
+                    "ef_client": False
                 },
 
                 "attack_config":
                 {
-                    "attack_model": 'additive',
+                    "attack_model": None,
                     "attack_mode": "un_coordinated",
 
                     "frac_adv": 0.49,
@@ -93,10 +93,10 @@
 
                 "sparse_approximation_config":
                 {
-                    "rule": 'active_norm',
+                    "rule": None,
                     "axis": "column",
                     "frac_coordinates": 0.1,
-                    "ef_server": true
+                    "ef_server": True
                 }
             }
         }
