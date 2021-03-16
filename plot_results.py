@@ -1,16 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MaxNLocator
-import matplotlib.ticker as ticker
-from matplotlib.ticker import ScalarFormatter
 from matplotlib import rc
 from matplotlib.pyplot import figure
 import json
-from typing import List, Dict
-from src.aggregation_manager import get_gar
-import time
-from numpyencoder import NumpyEncoder
-from src.compression_manager import SparseApproxMatrix
 
 
 def plot_driver(label: str, res_file: str, plt_type: str = 'epoch_loss',
@@ -51,21 +44,6 @@ def smooth(y, box_pts):
     return y_smooth
 
 
-def plot_timing(res_file: str, label):
-    # d = [100, 1000, 10000, 100000]
-    with open(res_file, 'rb') as f:
-        res = json.load(f)
-    d = list(res.keys())
-    t = list(res.values())
-
-    # plt.yscale('log')
-    t = smooth(y=t, box_pts=1)
-
-    plt.scatter(d, t, label=label, marker='.')
-    plt.plot(d, t, linestyle='dashed')
-
-
-# def plot_mass(res_file):
 def plot_mass(masses):
     # x_labels = ['0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '1']
     # legends = ['epoch 5', 'epoch 10', 'epoch 15', 'epoch 20']
@@ -161,68 +139,5 @@ def plot_metrics():
     plt.show()
 
 
-def get_runtime(gar, X, repeat: int = 1):
-    T = 0
-    for it in range(repeat):
-        t0 = time.time()
-        _ = gar.aggregate(G=X)
-        T += time.time() - t0
-    T /= repeat
-    return T
-
-
-def compare_gar_speed(agg_config: Dict,
-                      sparse_approximation_config=None):
-    # d = [100, 1000, 10000, 100000]
-    d = [int(1e3), int(5e3), int(1e4), int(5e4)]
-    n = 500
-    res = {}
-    gar = get_gar(aggregation_config=agg_config)
-
-    for dim in d:
-        sparse_approx_op = SparseApproxMatrix(conf=sparse_approximation_config)
-        # generate n points in d dimensions
-
-        X = np.random.normal(0, 0.3, (n, dim))
-        k = sparse_approximation_config['frac_coordinates']
-        ix = list(range(int(k * dim)))
-        X_sparse = X[:, ix]
-
-        if sparse_approximation_config["rule"] is not None:
-            # Compute time for sparse approx.
-            # t0 = time.time()
-            # _ = sparse_approx_op.sparse_approx(G=X)
-            # t = time.time() - t0
-            # Compute GM time
-            t = get_runtime(gar=gar, X=X_sparse)
-        else:
-            t = get_runtime(gar=gar, X=X)
-        res[dim] = t
-
-    return res
-
-
-def runtime_exp():
-    op_file = 'result_dumps/timing_exp/trimmed_mean'
-    aggregation_config = \
-        {
-            "gar": "trimmed_mean",
-            "krum_config": {"krum_frac": 0.3},
-        }
-
-    sparse_approximation_config = {
-        "rule": 'active_norm',
-        "axis": 'column',
-        "frac_coordinates": 1,
-    }
-
-    results = compare_gar_speed(agg_config=aggregation_config,
-                                sparse_approximation_config=sparse_approximation_config)
-
-    with open(op_file, 'w+') as f:
-        json.dump(results, f, indent=4, ensure_ascii=False, cls=NumpyEncoder)
-
-
 if __name__ == '__main__':
     plot_metrics()
-    # runtime_exp()
