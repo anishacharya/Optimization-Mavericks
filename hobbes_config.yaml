@@ -55,13 +55,13 @@
 
             "learner_config":
             {
-                "net": "VGG11",
+                "net": "resnet",
                 "mlp_config": { "h1": 300, "h2": 300 }
             },
 
             "aggregation_config":
               {
-                "gar": "co_med",
+                "gar": "mean",
 
                 "trimmed_mean_config":{"proportion": 0.3},
                 "krum_config": {"krum_frac": 0.3},

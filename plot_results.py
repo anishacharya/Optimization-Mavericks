@@ -84,25 +84,25 @@ def plot_metrics():
 
     # -------------------------------------------------------------------------------------------
     # ------------------------------- Modify Here -----------------------------------------------
-    d = 'result_dumps/fmnist/'
+    d = 'result_dumps/fmnist/lenet/'
 
     o = [
-        'mean.ag.49',
-        'gm.ag.49',
-        'cm.ag.49',
-        #'bgm'
+        'mean',
+        'gm',
+        # 'cm',
+        'bgmd'
     ]
     labels = [
         r"\textsc{SGD}",
         r"\textsc{Gm-SGD}",
-        r"\textsc{Cm-SGD}",
-        # r"\textsc{BGm-SGD}",
+        # r"\textsc{Cm-SGD}",
+        r"\textsc{BGmD}",
     ]
     plot_type = 'train_loss'
-    x_ax = 'epoch'
+    x_ax = 'time'
     sampling_freq = 1
 
-    plt.ylim(top=1, bottom=0.1)
+    # plt.ylim(top=1, bottom=0.1)
 
     for op, label in zip(o, labels):
         result_file = d + op
