@@ -98,11 +98,11 @@ def plot_metrics():
         # r"\textsc{Cm-SGD}",
         r"\textsc{BGmD}",
     ]
-    plot_type = 'train_loss'
+    plot_type = 'test_acc'
     x_ax = 'time'
     sampling_freq = 1
 
-    # plt.ylim(top=1, bottom=0.1)
+    # plt.ylim(top=90, bottom=0)
 
     for op, label in zip(o, labels):
         result_file = d + op
