@@ -87,18 +87,16 @@ def plot_metrics():
     d = 'result_dumps/fmnist/lenet/'
 
     o = [
-        'mean',
-        'gm',
-        # 'cm',
-        'bgmd'
+        'mean.ag.49',
+        'gm.ag.49',
+        'bgmd.ag.49'
     ]
     labels = [
         r"\textsc{SGD}",
         r"\textsc{Gm-SGD}",
-        # r"\textsc{Cm-SGD}",
         r"\textsc{BGmD}",
     ]
-    plot_type = 'test_acc'
+    plot_type = 'train_loss'
     x_ax = 'time'
     sampling_freq = 1
 
