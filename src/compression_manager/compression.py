@@ -26,6 +26,14 @@ class C:
         pass
 
 
+class Adaptive(C):
+    def __init__(self, conf):
+        C.__init__(self, conf=conf)
+
+    def compress(self, g:np.ndarray, lr=1):
+        pass
+
+
 class Full(C):
     def __init__(self, conf):
         C.__init__(self, conf=conf)
