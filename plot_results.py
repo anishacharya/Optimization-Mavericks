@@ -87,9 +87,9 @@ def plot_metrics():
     d = 'result_dumps/fmnist/lenet/'
 
     o = [
-        'mean.ag.49',
-        'gm.ag.49',
-        'bgmd.ag.49'
+        'mean',
+        'gm',
+        'bgmd'
     ]
     labels = [
         r"\textsc{SGD}",
