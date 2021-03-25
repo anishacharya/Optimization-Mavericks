@@ -3,6 +3,8 @@ import torch.nn.functional as F
 from torch.autograd import Variable
 import torch
 
+torch.manual_seed(1)
+
 
 class LeNet(nn.Module):
     def __init__(self, nc, nh, hw, num_classes):

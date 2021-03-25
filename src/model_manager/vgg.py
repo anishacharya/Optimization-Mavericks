@@ -2,6 +2,8 @@
 import torch
 import torch.nn as nn
 
+torch.manual_seed(1)
+
 
 cfg = {
     'VGG11': [64, 'M', 128, 'M', 256, 256, 'M', 512, 512, 'M', 512, 512, 'M'],
