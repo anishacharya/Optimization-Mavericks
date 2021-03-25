@@ -14,11 +14,11 @@
             "data_sampling_strategy": "iid",
             "num_shards": 80,
 
-            "batch_size": 64,
+            "batch_size": 32,
         },
 
         "training_config": {
-            "num_clients": 16, # Number of batches in distributed setting
+            "num_clients": 32, # Number of batches in distributed setting
             "client_fraction": 1, # partial device participation
             "global_epochs": 25, # epochs
             "local_epochs": 1, # local SGD
@@ -55,7 +55,7 @@
 
             "learner_config":
             {
-                "net": "VGG11",
+                "net": "resnet",
                 "mlp_config": { "h1": 300, "h2": 300 }
             },
 
