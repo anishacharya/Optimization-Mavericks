@@ -173,7 +173,7 @@ def run_batch_train(config, metrics):
     train_dataset, test_dataset = data_manager.download_data()
 
     train_loader = DataLoader(dataset=train_dataset, batch_size=batch_size, shuffle=True)
-    test_loader = DataLoader(dataset=test_dataset, batch_size=len(test_dataset))
+    test_loader = DataLoader(dataset=test_dataset, batch_size=batch_size)
 
     train_and_test_model(model=client_model, criterion=criterion, optimizer=client_optimizer, lrs=client_lrs,
                          gar=gar, sparse_selection=sparse_selection, attack_model=attack_model, C=C,
