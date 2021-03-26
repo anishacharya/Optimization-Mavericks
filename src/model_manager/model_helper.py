@@ -124,13 +124,12 @@ def _evaluate(model, data_loader, verbose=False, criterion=None, device="cpu"):
             images = images.to(device)
             labels = labels.to(device)
             outputs = model(images)
+
             if criterion is not None:
-                total_loss += criterion(outputs, labels).detach().item()
-            else:
-                raise ValueError
+                total_loss += criterion(outputs, labels).item()
 
             batches += 1
-            _, predicted = torch.max(outputs.detach().data, 1)
+            _, predicted = torch.max(outputs.data, 1)
             total += labels.size(0)
             correct += (predicted == labels).sum().item()
 
