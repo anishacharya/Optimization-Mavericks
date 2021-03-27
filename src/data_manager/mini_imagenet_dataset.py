@@ -60,7 +60,7 @@ class MiniImagenetDataset(data.Dataset):
 def index_classes(items):
     idx = {}
     for i in items:
-        if not i in idx:
+        if i not in idx:
             idx[i] = len(idx)
     print("== Dataset: Found %d classes" % len(idx))
     return idx

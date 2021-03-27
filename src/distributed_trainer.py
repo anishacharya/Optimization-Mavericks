@@ -152,6 +152,14 @@ def run_batch_train(config, metrics):
     compression_config = aggregation_config.get("compression_config", {})
     attack_config = aggregation_config.get("attack_config", {})
 
+    # ------------------------- get data --------------------- #
+    batch_size = data_config.get('batch_size', 1)
+    data_manager = process_data(data_config=data_config)
+    train_dataset, test_dataset = data_manager.download_data()
+
+    train_loader = DataLoader(dataset=train_dataset, batch_size=batch_size, shuffle=True)
+    test_loader = DataLoader(dataset=test_dataset, batch_size=batch_size)
+
     # ------------------------- Initializations --------------------- #
     client_model = get_model(learner_config=learner_config, data_config=data_config)
     client_optimizer = get_optimizer(params=client_model.parameters(), optimizer_config=client_optimizer_config)
@@ -170,14 +178,7 @@ def run_batch_train(config, metrics):
     # gradient compression object
     C = get_compression_operator(compression_config=compression_config)
 
-    # ------------------------- get data --------------------- #
-    batch_size = data_config.get('batch_size', 1)
-    data_manager = process_data(data_config=data_config)
-    train_dataset, test_dataset = data_manager.download_data()
-
-    train_loader = DataLoader(dataset=train_dataset, batch_size=batch_size, shuffle=True)
-    test_loader = DataLoader(dataset=test_dataset, batch_size=batch_size)
-
+    # ------------------------- Run Training --------------------- #
     train_and_test_model(model=client_model, criterion=criterion, optimizer=client_optimizer, lrs=client_lrs,
                          gar=gar, sparse_selection=sparse_selection, attack_model=attack_model, C=C,
                          train_loader=train_loader, test_loader=test_loader,
