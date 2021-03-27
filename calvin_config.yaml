@@ -17,11 +17,11 @@
             "data_sampling_strategy": "iid",
             "num_shards": 80,
 
-            "batch_size": 32,
+            "batch_size": 128,
         },
 
         "training_config": {
-            "num_clients": 16, # Number of batches in distributed setting
+            "num_clients": 8, # Number of batches in distributed setting
             "client_fraction": 1, # partial device participation
             "global_epochs": 20, # epochs
             "local_epochs": 1, # local SGD
@@ -64,7 +64,7 @@
 
             "aggregation_config":
               {
-                "gar": "geo_med",
+                "gar": "mean",
 
                 "trimmed_mean_config":{"proportion": 0.3},
                 "krum_config": {"krum_frac": 0.3},
@@ -86,9 +86,10 @@
                     "frac_adv": 0.3,
 
                     "additive_attack_conf":
-                      { "noise_dist": "gaussian",
-                        "mean_shift": 100, "attack_std": 1,   # Gaussian noise
-                        "noise_range": [ -1, 0 ],             # Uniform noise
+                      {
+                          "noise_dist": "gaussian",
+                          "mean_shift": 100, "attack_std": 1,   # Gaussian noise
+                          "noise_range": [ -1, 0 ],             # Uniform noise
                       },
 
                     "attack_n_std": 1
