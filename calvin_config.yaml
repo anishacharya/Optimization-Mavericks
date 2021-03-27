@@ -4,7 +4,7 @@
         "train_mode": "distributed",
 
         "data_config": {
-            "data_set": "extended_mnist",
+            "data_set": "mnist",
             "shape": [
                 28,
                 28
@@ -20,9 +20,9 @@
         },
 
         "training_config": {
-            "num_clients": 32, # Number of batches in distributed setting
+            "num_clients": 16, # Number of batches in distributed setting
             "client_fraction": 1, # partial device participation
-            "global_epochs": 50, # epochs
+            "global_epochs": 20, # epochs
             "local_epochs": 1, # local SGD
             "compute_grad_stats": false,
 
@@ -79,7 +79,7 @@
 
                 "attack_config":
                 {
-                    "attack_model": 'additive',
+                    "attack_model": None,
                     "attack_mode": "un_coordinated",
 
                     "frac_adv": 0.3,
@@ -95,7 +95,7 @@
 
                 "sparse_approximation_config":
                 {
-                    "rule": 'active_norm',
+                    "rule": None,
                     "axis": "column",
                     "frac_coordinates": 0.2,
                     "ef_server": True
