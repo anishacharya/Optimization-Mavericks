@@ -12,7 +12,7 @@ Inspired by https://github.com/pytorch/vision/pull/46
 
 
 class MiniImagenetDataset(data.Dataset):
-    def __init__(self, mode='train', root='/data/mini-imagenet', transform=None, target_transform=None):
+    def __init__(self, mode='train', root='/data/mini_imagenet', transform=None, target_transform=None):
         """
         The items are (filename,category). The index of all the categories can be found in self.idx_classes
         Args:
