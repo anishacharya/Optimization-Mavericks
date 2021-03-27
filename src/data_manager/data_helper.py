@@ -6,7 +6,8 @@ from typing import Dict
 from .vision_datasets import (MNIST,
                               CIFAR10,
                               FashionMNIST,
-                              ImageNet)
+                              ImageNet,
+                              MiniImageNet)
 from .data_manager import DataManager
 
 
@@ -20,5 +21,7 @@ def process_data(data_config: Dict) -> DataManager:
         return FashionMNIST(data_config=data_config)
     elif data_set == 'imagenet':
         return ImageNet(data_config=data_config)
+    elif data_set == 'm_imagenet':
+        return MiniImageNet(data_config=data_config)
     else:
         raise NotImplemented
