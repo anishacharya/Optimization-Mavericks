@@ -3,11 +3,10 @@ import torch.nn.functional as F
 from torch.autograd import Variable
 import torch
 
-torch.manual_seed(1)
-
 
 class LeNet(nn.Module):
-    def __init__(self, nc, nh, hw, num_classes):
+    def __init__(self, nc, nh, hw, num_classes, seed=1):
+        torch.manual_seed(seed)
         super(LeNet, self).__init__()
         input_shape = (nc, nh, hw)
 

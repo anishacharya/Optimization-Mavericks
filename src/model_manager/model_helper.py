@@ -54,7 +54,7 @@ def dist_grads_to_model(grads, learner):
         offset += new_size
 
 
-def get_model(learner_config: Dict, data_config: Dict):
+def get_model(learner_config: Dict, data_config: Dict, seed=1):
     """ wrapper to return appropriate model class """
     net = learner_config.get("net", 'lenet')
     print('Loading Model: {}'.format(net))
@@ -63,7 +63,7 @@ def get_model(learner_config: Dict, data_config: Dict):
     shape = data_config.get("shape", [28, 28])
 
     if net == 'lenet':
-        model = LeNet(nc=nc, nh=shape[0], hw=shape[1], num_classes=data_config["num_labels"])
+        model = LeNet(nc=nc, nh=shape[0], hw=shape[1], num_classes=data_config["num_labels"], seed=seed)
 
     elif net == 'log_reg':
         dim_in = np.prod(data_config["shape"]) * data_config["num_channels"]

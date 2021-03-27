@@ -138,6 +138,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
 def run_batch_train(config, metrics):
     # ------------------------ Fetch configs ----------------------- #
     print('---- Fetching configs -----')
+    seed = config["seed"]
     data_config = config["data_config"]
     training_config = config["training_config"]
 
@@ -161,7 +162,7 @@ def run_batch_train(config, metrics):
     test_loader = DataLoader(dataset=test_dataset, batch_size=batch_size)
 
     # ------------------------- Initializations --------------------- #
-    client_model = get_model(learner_config=learner_config, data_config=data_config)
+    client_model = get_model(learner_config=learner_config, data_config=data_config, seed=seed)
     client_optimizer = get_optimizer(params=client_model.parameters(), optimizer_config=client_optimizer_config)
     client_lrs = get_scheduler(optimizer=client_optimizer, lrs_config=client_lrs_config)
     criterion = get_loss(loss=client_optimizer_config.get('loss', 'ce'))
