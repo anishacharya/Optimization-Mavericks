@@ -51,7 +51,7 @@ class MiniImagenetDataset(data.Dataset):
         return x, self.y[idx]
 
     def __len__(self):
-        return len(self.all_items)
+        return len(self.data)
 
     def _check_exists(self):
         return os.path.exists(self.root)
