@@ -8,7 +8,7 @@ from src.model_manager import (get_model,
                                flatten_grads,
                                get_loss,
                                evaluate_classifier)
-from src.data_manager import process_data
+from src.data_manager import process_data, PrototypicalBatchSampler
 from src.aggregation_manager import get_gar, compute_grad_stats
 from src.compression_manager import SparseApproxMatrix, get_compression_operator
 from src.attack_manager import get_attack

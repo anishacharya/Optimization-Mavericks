@@ -6,12 +6,12 @@
         "data_config": {
             "data_set": "m_imagenet",
             "shape": [
-                84,
-                84
+                28,
+                28
             ],
 
-            "num_labels": 64,
-            "num_channels": 3,
+            "num_labels": 10,
+            "num_channels": 1,
 
             "data_sampling_strategy": "iid",
             "num_shards": 80,

@@ -44,6 +44,22 @@ class FashionMNIST(DataManager):
         return _train_dataset, _test_dataset
 
 
+class ExtendedMNIST(DataManager):
+    def __init__(self, data_config: Dict):
+        DataManager.__init__(self, data_config=data_config)
+
+    def download_data(self):
+        _train_dataset = datasets.EMNIST(root=root, download=True, split='balanced')
+        mean, std = self._get_common_data_trans(_train_dataset)
+        train_trans = transforms.Compose([transforms.ToTensor(), transforms.Normalize(mean=mean, std=std)])
+        test_trans = transforms.Compose([transforms.ToTensor(), transforms.Normalize(mean=mean, std=std)])
+
+        _train_dataset = datasets.EMNIST(root=root, download=True, transform=train_trans, split='balanced')
+        _test_dataset = datasets.EMNIST(root=root, download=True, train=False, transform=test_trans, split='balanced')
+
+        return _train_dataset, _test_dataset
+
+
 class CIFAR10(DataManager):
     def __init__(self, data_config: Dict):
         DataManager.__init__(self, data_config=data_config)
