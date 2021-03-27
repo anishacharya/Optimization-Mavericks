@@ -4,7 +4,7 @@
 
 from .data_manager import DataManager
 from torchvision import datasets, transforms
-from mini_imagenet_dataset import MiniImagenetDataset
+from .mini_imagenet_dataset import MiniImagenetDataset
 from typing import Dict
 import os
 curr_dir = os.path.dirname(__file__)
