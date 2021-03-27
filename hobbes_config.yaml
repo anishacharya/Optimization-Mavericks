@@ -4,7 +4,7 @@
         "train_mode": "distributed",
 
         "data_config": {
-            "data_set": "imagenet",
+            "data_set": "m_imagenet",
             "shape": [
                 28,
                 28
