@@ -1,3 +1,6 @@
+# Copyright (c) Anish Acharya.
+# Licensed under the MIT License
+
 from src.model_manager import (get_model,
                                get_optimizer,
                                get_scheduler,
