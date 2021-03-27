@@ -1,0 +1,371 @@
+[
+    {
+        "config": {
+            "seed": 3,
+            "train_mode": "distributed",
+            "data_config": {
+                "data_set": "mnist",
+                "shape": [
+                    28,
+                    28
+                ],
+                "num_labels": 10,
+                "num_channels": 1,
+                "data_sampling_strategy": "iid",
+                "num_shards": 80,
+                "batch_size": 32
+            },
+            "training_config": {
+                "num_clients": 16,
+                "client_fraction": 1,
+                "global_epochs": 1,
+                "local_epochs": 1,
+                "compute_grad_stats": false,
+                "optimizer_config": {
+                    "client_optimizer_config": {
+                        "optimizer": "SGD",
+                        "loss": "ce",
+                        "lr0": 0.01,
+                        "momentum": 0.9,
+                        "reg": 0.0001,
+                        "nesterov": false,
+                        "amsgrad": false
+                    },
+                    "client_lrs_config": {
+                        "lrs": "step",
+                        "milestones": [
+                            1,
+                            5,
+                            10
+                        ],
+                        "step_size": 1,
+                        "gamma": 0.99
+                    },
+                    "server_optimizer_config": {
+                        "optimizer": "SGD",
+                        "lr0": 1
+                    }
+                },
+                "learner_config": {
+                    "net": "lenet",
+                    "mlp_config": {
+                        "h1": 300,
+                        "h2": 300
+                    }
+                },
+                "aggregation_config": {
+                    "gar": "mean",
+                    "trimmed_mean_config": {
+                        "proportion": 0.3
+                    },
+                    "krum_config": {
+                        "krum_frac": 0.3
+                    },
+                    "norm_clip_config": {
+                        "alpha": 0.5
+                    },
+                    "compression_config": {
+                        "compression_operator": "None",
+                        "frac_coordinates_to_keep": 0.5,
+                        "bits": 2,
+                        "ef_client": false
+                    },
+                    "attack_config": {
+                        "attack_model": "None",
+                        "attack_mode": "un_coordinated",
+                        "frac_adv": 0.3,
+                        "additive_attack_conf": {
+                            "noise_dist": "None",
+                            "mean_shift": 100,
+                            "attack_std": 1,
+                            "noise_range": [
+                                -1,
+                                0
+                            ]
+                        },
+                        "attack_n_std": 1
+                    },
+                    "sparse_approximation_config": {
+                        "rule": "None",
+                        "axis": "column",
+                        "frac_coordinates": 0.1,
+                        "ef_server": true
+                    }
+                }
+            }
+        },
+        "test_error": [
+            4.530000000000001
+        ],
+        "test_loss": [],
+        "test_acc": [
+            95.47
+        ],
+        "train_error": [
+            5.051666666666662
+        ],
+        "train_loss": [
+            0.16490029993702968
+        ],
+        "train_acc": [
+            94.94833333333334
+        ],
+        "frac_mass_retained": [],
+        "grad_norm_dist": [],
+        "norm_bins": null,
+        "mass_bins": null,
+        "max_norm": 0,
+        "min_norm": 1000000.0,
+        "batch_grad_cost": 0.020061279296875,
+        "batch_agg_cost": 0.030971938728267312,
+        "total_cost": 41.2386155128479,
+        "total_iter": 1875,
+        "total_agg": 117
+    },
+    {
+        "config": {
+            "seed": 3,
+            "train_mode": "distributed",
+            "data_config": {
+                "data_set": "mnist",
+                "shape": [
+                    28,
+                    28
+                ],
+                "num_labels": 10,
+                "num_channels": 1,
+                "data_sampling_strategy": "iid",
+                "num_shards": 80,
+                "batch_size": 32
+            },
+            "training_config": {
+                "num_clients": 16,
+                "client_fraction": 1,
+                "global_epochs": 1,
+                "local_epochs": 1,
+                "compute_grad_stats": false,
+                "optimizer_config": {
+                    "client_optimizer_config": {
+                        "optimizer": "SGD",
+                        "loss": "ce",
+                        "lr0": 0.01,
+                        "momentum": 0.9,
+                        "reg": 0.0001,
+                        "nesterov": false,
+                        "amsgrad": false
+                    },
+                    "client_lrs_config": {
+                        "lrs": "step",
+                        "milestones": [
+                            1,
+                            5,
+                            10
+                        ],
+                        "step_size": 1,
+                        "gamma": 0.99
+                    },
+                    "server_optimizer_config": {
+                        "optimizer": "SGD",
+                        "lr0": 1
+                    }
+                },
+                "learner_config": {
+                    "net": "lenet",
+                    "mlp_config": {
+                        "h1": 300,
+                        "h2": 300
+                    }
+                },
+                "aggregation_config": {
+                    "gar": "mean",
+                    "trimmed_mean_config": {
+                        "proportion": 0.3
+                    },
+                    "krum_config": {
+                        "krum_frac": 0.3
+                    },
+                    "norm_clip_config": {
+                        "alpha": 0.5
+                    },
+                    "compression_config": {
+                        "compression_operator": "None",
+                        "frac_coordinates_to_keep": 0.5,
+                        "bits": 2,
+                        "ef_client": false
+                    },
+                    "attack_config": {
+                        "attack_model": "None",
+                        "attack_mode": "un_coordinated",
+                        "frac_adv": 0.3,
+                        "additive_attack_conf": {
+                            "noise_dist": "None",
+                            "mean_shift": 100,
+                            "attack_std": 1,
+                            "noise_range": [
+                                -1,
+                                0
+                            ]
+                        },
+                        "attack_n_std": 1
+                    },
+                    "sparse_approximation_config": {
+                        "rule": "None",
+                        "axis": "column",
+                        "frac_coordinates": 0.1,
+                        "ef_server": true
+                    }
+                }
+            }
+        },
+        "test_error": [
+            4.569999999999993
+        ],
+        "test_loss": [],
+        "test_acc": [
+            95.43
+        ],
+        "train_error": [
+            5.016666666666666
+        ],
+        "train_loss": [
+            0.1682187087997794
+        ],
+        "train_acc": [
+            94.98333333333333
+        ],
+        "frac_mass_retained": [],
+        "grad_norm_dist": [],
+        "norm_bins": null,
+        "mass_bins": null,
+        "max_norm": 0,
+        "min_norm": 1000000.0,
+        "batch_grad_cost": 0.020197800572713216,
+        "batch_agg_cost": 0.03323952968303974,
+        "total_cost": 41.75990104675293,
+        "total_iter": 1875,
+        "total_agg": 117
+    },
+    {
+        "config": {
+            "seed": 3,
+            "train_mode": "distributed",
+            "data_config": {
+                "data_set": "mnist",
+                "shape": [
+                    28,
+                    28
+                ],
+                "num_labels": 10,
+                "num_channels": 1,
+                "data_sampling_strategy": "iid",
+                "num_shards": 80,
+                "batch_size": 32
+            },
+            "training_config": {
+                "num_clients": 16,
+                "client_fraction": 1,
+                "global_epochs": 1,
+                "local_epochs": 1,
+                "compute_grad_stats": false,
+                "optimizer_config": {
+                    "client_optimizer_config": {
+                        "optimizer": "SGD",
+                        "loss": "ce",
+                        "lr0": 0.01,
+                        "momentum": 0.9,
+                        "reg": 0.0001,
+                        "nesterov": false,
+                        "amsgrad": false
+                    },
+                    "client_lrs_config": {
+                        "lrs": "step",
+                        "milestones": [
+                            1,
+                            5,
+                            10
+                        ],
+                        "step_size": 1,
+                        "gamma": 0.99
+                    },
+                    "server_optimizer_config": {
+                        "optimizer": "SGD",
+                        "lr0": 1
+                    }
+                },
+                "learner_config": {
+                    "net": "lenet",
+                    "mlp_config": {
+                        "h1": 300,
+                        "h2": 300
+                    }
+                },
+                "aggregation_config": {
+                    "gar": "mean",
+                    "trimmed_mean_config": {
+                        "proportion": 0.3
+                    },
+                    "krum_config": {
+                        "krum_frac": 0.3
+                    },
+                    "norm_clip_config": {
+                        "alpha": 0.5
+                    },
+                    "compression_config": {
+                        "compression_operator": "None",
+                        "frac_coordinates_to_keep": 0.5,
+                        "bits": 2,
+                        "ef_client": false
+                    },
+                    "attack_config": {
+                        "attack_model": "None",
+                        "attack_mode": "un_coordinated",
+                        "frac_adv": 0.3,
+                        "additive_attack_conf": {
+                            "noise_dist": "None",
+                            "mean_shift": 100,
+                            "attack_std": 1,
+                            "noise_range": [
+                                -1,
+                                0
+                            ]
+                        },
+                        "attack_n_std": 1
+                    },
+                    "sparse_approximation_config": {
+                        "rule": "None",
+                        "axis": "column",
+                        "frac_coordinates": 0.1,
+                        "ef_server": true
+                    }
+                }
+            }
+        },
+        "test_error": [
+            4.8799999999999955
+        ],
+        "test_loss": [],
+        "test_acc": [
+            95.12
+        ],
+        "train_error": [
+            5.203333333333333
+        ],
+        "train_loss": [
+            0.17093524709989627
+        ],
+        "train_acc": [
+            94.79666666666667
+        ],
+        "frac_mass_retained": [],
+        "grad_norm_dist": [],
+        "norm_bins": null,
+        "mass_bins": null,
+        "max_norm": 0,
+        "min_norm": 1000000.0,
+        "batch_grad_cost": 0.018666259638468425,
+        "batch_agg_cost": 0.02880876288454757,
+        "total_cost": 38.36986207962036,
+        "total_iter": 1875,
+        "total_agg": 117
+    }
+]
