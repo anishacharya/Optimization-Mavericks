@@ -64,7 +64,7 @@
 
             "aggregation_config":
               {
-                "gar": "mean",
+                "gar": "geo_med",
 
                 "trimmed_mean_config":{"proportion": 0.3},
                 "krum_config": {"krum_frac": 0.3},
@@ -97,7 +97,7 @@
 
                 "sparse_approximation_config":
                 {
-                    "rule": 'active_norm',
+                    "rule": None,
                     "axis": "column",
                     "frac_coordinates": 0.1,
                     "ef_server": True
