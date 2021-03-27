@@ -55,7 +55,7 @@
 
             "learner_config":
             {
-                "net": "resnet",
+                "net": "lenet",
                 "mlp_config": { "h1": 300, "h2": 300 }
             },
 
