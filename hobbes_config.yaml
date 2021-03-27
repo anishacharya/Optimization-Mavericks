@@ -82,7 +82,7 @@
                     "attack_model": 'additive',
                     "attack_mode": "un_coordinated",
 
-                    "frac_adv": 0.3,
+                    "frac_adv": 0.1,
 
                     "additive_attack_conf":
                       { "noise_dist": "gaussian",
