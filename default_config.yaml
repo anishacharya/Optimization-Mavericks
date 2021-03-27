@@ -1,10 +1,11 @@
 # Copyright (c) Anish Acharya.
 # Licensed under the MIT License
 {
+        "seed": 1,
         "train_mode": "distributed",
 
         "data_config": {
-            "data_set": "m_imagenet",
+            "data_set": "mnist",
             "shape": [
                 28,
                 28
@@ -20,9 +21,9 @@
         },
 
         "training_config": {
-            "num_clients": 32, # Number of batches in distributed setting
+            "num_clients": 16, # Number of batches in distributed setting
             "client_fraction": 1, # partial device participation
-            "global_epochs": 50, # epochs
+            "global_epochs": 1, # epochs
             "local_epochs": 1, # local SGD
             "compute_grad_stats": false,
 
@@ -63,7 +64,7 @@
 
             "aggregation_config":
               {
-                "gar": "geo_med",
+                "gar": "mean",
 
                 "trimmed_mean_config":{"proportion": 0.3},
                 "krum_config": {"krum_frac": 0.3},
@@ -79,13 +80,13 @@
 
                 "attack_config":
                 {
-                    "attack_model": 'additive',
+                    "attack_model": None,
                     "attack_mode": "un_coordinated",
 
                     "frac_adv": 0.3,
 
                     "additive_attack_conf":
-                      { "noise_dist": "gaussian",
+                      { "noise_dist": None,
                         "mean_shift": 100, "attack_std": 1,   # Gaussian noise
                         "noise_range": [ -1, 0 ],             # Uniform noise
                       },
@@ -95,9 +96,9 @@
 
                 "sparse_approximation_config":
                 {
-                    "rule": 'active_norm',
+                    "rule": None,
                     "axis": "column",
-                    "frac_coordinates": 0.2,
+                    "frac_coordinates": 0.1,
                     "ef_server": True
                 }
             }

@@ -1,6 +1,7 @@
 # Copyright (c) Anish Acharya.
 # Licensed under the MIT License
 {
+        "seed": 1,
         "train_mode": "distributed",
 
         "data_config": {
@@ -95,7 +96,7 @@
 
                 "sparse_approximation_config":
                 {
-                    "rule": None,
+                    "rule": 'active_norm',
                     "axis": "column",
                     "frac_coordinates": 0.1,
                     "ef_server": True

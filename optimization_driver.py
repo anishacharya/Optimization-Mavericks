@@ -2,6 +2,7 @@ import argparse
 import json
 import os
 import yaml
+import numpy as np
 
 from numpyencoder import NumpyEncoder
 
@@ -18,13 +19,7 @@ def _parse_args():
     return args
 
 
-def run_main():
-    args = _parse_args()
-    print(args)
-    root = os.getcwd()
-    config_path = args.conf if args.conf else root + '/default_config.yaml'
-    config = yaml.load(open(config_path), Loader=yaml.FullLoader)
-
+def init_metric(config):
     metrics = {"config": config,
 
                # Train and Test Performance
@@ -52,21 +47,37 @@ def run_main():
                "total_iter": 0,
                "total_agg": 0,
                }
+    return metrics
+
+
+def run_main():
+    args = _parse_args()
+    print(args)
+    root = os.getcwd()
+    config_path = args.conf if args.conf else root + '/default_config.yaml'
+    config = yaml.load(open(config_path), Loader=yaml.FullLoader)
+
     # Train
-    train_mode = config.get("train_mode", 'fed')
-    if train_mode == 'fed':
-        run_fed_train(config=config, metrics=metrics)
-    elif train_mode == 'distributed':
-        run_batch_train(config=config, metrics=metrics)
-    else:
-        raise NotImplementedError
+    results = []
+    for seed in np.arange(1, args.n_repeat+1):
+        config["seed"] = seed
+        train_mode = config.get("train_mode", 'distributed')
+        metrics = init_metric(config=config)
+        if train_mode == 'fed':
+            run_fed_train(config=config, metrics=metrics)
+            results.append(metrics)
+        elif train_mode == 'distributed':
+            run_batch_train(config=config, metrics=metrics)
+            results.append(metrics)
+        else:
+            raise NotImplementedError
 
     # Write Results
     directory = args.dir if args.dir else "result_dumps/"
     if not os.path.exists(directory):
         os.makedirs(directory)
     with open(directory + args.o, 'w+') as f:
-        json.dump(metrics, f, indent=4, ensure_ascii=False, cls=NumpyEncoder)
+        json.dump(results, f, indent=4, ensure_ascii=False, cls=NumpyEncoder)
 
 
 if __name__ == '__main__':
