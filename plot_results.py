@@ -27,15 +27,27 @@ def plot_time(label: str, res_file: str, plt_type: str = 'epoch_loss',
     with open(res_file, 'rb') as f:
         result = json.load(f)
 
-    res = result[plt_type]  # [:35]
-    # res = res[0::sampling_freq]
-    res -= optima * np.ones(len(res))
+    scores = []
+    for run in result:
+        res = run[plt_type]
+        res -= optima * np.ones(len(res))
+        scores += [res]
 
-    x_freq = int(result["total_cost"] / len(res))
-    x = np.arange(len(res)) * x_freq
+    scores = np.array(scores)
+    mean = np.mean(scores, axis=0)
+    UB = mean + np.std(scores, axis=0)
+    LB = mean - np.std(scores, axis=0)
+
+    # res = result[plt_type]  # [:35]
+    # res = res[0::sampling_freq]
+    # res -= optima * np.ones(len(res))
+
+    x_freq = int(result[0]["total_cost"] / len(result[0][plt_type]))
+    x = np.arange(len(result[0][plt_type])) * x_freq
     # x = np.arange(len(res)) + np.ones(len(res))
     # x *= sampling_freq # * sampling_freq
-    plt.plot(x, res, label=label, linewidth=line_width, marker=marker, linestyle=line_style)
+    plt.plot(x, mean, label=label, linewidth=line_width, marker=marker, linestyle=line_style)
+    plt.fill_between(x, LB, UB, alpha=0.2, linewidth=1)
 
 
 def smooth(y, box_pts):
@@ -84,17 +96,13 @@ def plot_metrics():
 
     # -------------------------------------------------------------------------------------------
     # ------------------------------- Modify Here -----------------------------------------------
-    d = 'result_dumps/fmnist/lenet/'
+    d = 'result_dumps/'
 
     o = [
-        'mean',
-        'gm',
-        'bgmd'
+       'output'
     ]
     labels = [
         r"\textsc{SGD}",
-        r"\textsc{Gm-SGD}",
-        r"\textsc{BGmD}",
     ]
     plot_type = 'train_loss'
     x_ax = 'time'
