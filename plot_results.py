@@ -4,6 +4,7 @@ from matplotlib.ticker import MaxNLocator
 from matplotlib import rc
 from matplotlib.pyplot import figure
 import json
+import pylab
 
 
 def plot_driver(label: str, res_file: str, plt_type: str = 'epoch_loss',
@@ -43,11 +44,11 @@ def plot_time(label: str, res_file: str, plt_type: str = 'epoch_loss',
     # res -= optima * np.ones(len(res))
 
     x_freq = int(result[0]["total_cost"] / len(result[0][plt_type]))
-    x = np.arange(len(result[0][plt_type])) * x_freq
+    x = np.arange(len(result[0][plt_type])) * 10 * x_freq
     # x = np.arange(len(res)) + np.ones(len(res))
     # x *= sampling_freq # * sampling_freq
     plt.plot(x, mean, label=label, linewidth=line_width, marker=marker, linestyle=line_style)
-    plt.fill_between(x, LB, UB, alpha=0.2, linewidth=1)
+    plt.fill_between(x, LB, UB, alpha=0.5, linewidth=3)
 
 
 def smooth(y, box_pts):
@@ -100,11 +101,13 @@ def plot_metrics():
 
     o = [
        'mean',
-       'gm'
+       'gm',
+       'bgmd'
     ]
     labels = [
         r"\textsc{SGD}",
-        r"\textsc{Gm-SGD}"
+        r"\textsc{GM-SGD}",
+        r"\textsc{BGmD}"
     ]
     plot_type = 'train_loss'
     x_ax = 'time'
@@ -117,7 +120,7 @@ def plot_metrics():
 
         if x_ax is 'time':
             plot_time(label=label, res_file=result_file,
-                      plt_type=plot_type, optima=0, line_width=4,
+                      plt_type=plot_type, optima=0, line_width=2,
                       sampling_freq=sampling_freq)
             plt.xlabel('Time (seconds)', fontsize=10)
         else:
