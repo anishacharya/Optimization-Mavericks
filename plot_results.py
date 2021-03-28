@@ -44,7 +44,7 @@ def plot_time(label: str, res_file: str, plt_type: str = 'epoch_loss',
     # res -= optima * np.ones(len(res))
 
     x_freq = int(result[0]["total_cost"] / len(result[0][plt_type]))
-    x = np.arange(len(result[0][plt_type])) * 10 * x_freq
+    x = np.arange(len(result[0][plt_type])) * x_freq
     # x = np.arange(len(res)) + np.ones(len(res))
     # x *= sampling_freq # * sampling_freq
     plt.plot(x, mean, label=label, linewidth=line_width, marker=marker, linestyle=line_style)
@@ -122,7 +122,7 @@ def plot_metrics():
             plot_time(label=label, res_file=result_file,
                       plt_type=plot_type, optima=0, line_width=2,
                       sampling_freq=sampling_freq)
-            plt.xlabel('Time (seconds)', fontsize=10)
+            plt.xlabel(r'Time ($\mathcal{O}$(min))', fontsize=10)
         else:
             plot_driver(label=label, res_file=result_file,
                         plt_type=plot_type, optima=0, line_width=4,
