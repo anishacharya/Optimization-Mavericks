@@ -5,7 +5,7 @@
         "train_mode": "distributed",
 
         "data_config": {
-            "data_set": "mnist",
+            "data_set": "fashion_mnist",
             "shape": [
                 28,
                 28
@@ -17,7 +17,7 @@
             "data_sampling_strategy": "iid",
             "num_shards": 80,
 
-            "batch_size": 128,
+            "batch_size": 64,
         },
 
         "training_config": {
