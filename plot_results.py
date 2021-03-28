@@ -96,13 +96,15 @@ def plot_metrics():
 
     # -------------------------------------------------------------------------------------------
     # ------------------------------- Modify Here -----------------------------------------------
-    d = 'result_dumps/'
+    d = 'result_dumps/fmnist/lenet/'
 
     o = [
-       'output'
+       'mean',
+       'gm'
     ]
     labels = [
         r"\textsc{SGD}",
+        r"\textsc{Gm-SGD}"
     ]
     plot_type = 'train_loss'
     x_ax = 'time'
