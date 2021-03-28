@@ -36,8 +36,8 @@ def plot_time(label: str, res_file: str, plt_type: str = 'epoch_loss',
 
     scores = np.array(scores)
     mean = np.mean(scores, axis=0)
-    UB = mean + np.std(scores, axis=0)
-    LB = mean - np.std(scores, axis=0)
+    UB = mean + 3*np.std(scores, axis=0)
+    LB = mean - 3*np.std(scores, axis=0)
 
     # res = result[plt_type]  # [:35]
     # res = res[0::sampling_freq]
@@ -120,7 +120,7 @@ def plot_metrics():
 
         if x_ax is 'time':
             plot_time(label=label, res_file=result_file,
-                      plt_type=plot_type, optima=0, line_width=2,
+                      plt_type=plot_type, optima=0, line_width=1,
                       sampling_freq=sampling_freq)
             plt.xlabel(r'Time ($\mathcal{O}$(min))', fontsize=10)
         else:

@@ -83,7 +83,7 @@
                     "attack_model": 'additive',
                     "attack_mode": "un_coordinated",
 
-                    "frac_adv": 0.3,
+                    "frac_adv": 0.35,
 
                     "additive_attack_conf":
                       {
