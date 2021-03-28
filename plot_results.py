@@ -36,8 +36,8 @@ def plot_time(label: str, res_file: str, plt_type: str = 'epoch_loss',
 
     scores = np.array(scores)
     mean = np.mean(scores, axis=0)
-    UB = mean + 1.5*np.std(scores, axis=0)
-    LB = mean - 1.5*np.std(scores, axis=0)
+    UB = mean + 3*np.std(scores, axis=0)
+    LB = mean - 3*np.std(scores, axis=0)
 
     # res = result[plt_type]  # [:35]
     # res = res[0::sampling_freq]
