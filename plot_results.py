@@ -113,7 +113,7 @@ def plot_metrics():
     x_ax = 'time'
     sampling_freq = 1
 
-    # plt.ylim(top=3, bottom=0)
+    plt.ylim(bottom=0.3)
 
     for op, label in zip(o, labels):
         result_file = d + op
