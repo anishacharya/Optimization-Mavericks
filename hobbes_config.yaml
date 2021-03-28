@@ -83,7 +83,7 @@
                     "attack_model": 'additive',
                     "attack_mode": "un_coordinated",
 
-                    "frac_adv": 0.3,
+                    "frac_adv": 0.2,
 
                     "additive_attack_conf":
                       {
@@ -99,7 +99,7 @@
                 {
                     "rule": 'active_norm',
                     "axis": "column",
-                    "frac_coordinates": 0.25,
+                    "frac_coordinates": 0.15,
                     "ef_server": True
                 }
             }

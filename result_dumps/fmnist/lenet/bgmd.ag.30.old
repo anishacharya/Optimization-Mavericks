@@ -213,7 +213,7 @@
         "min_norm": 1000000.0,
         "batch_grad_cost": 0.032862006042049384,
         "batch_agg_cost": 2.732439643555674,
-        "total_cost": 3786.1212198734283,
+        "total_cost": 3001.13063120842,
         "total_iter": 18760,
         "total_agg": 1160
     },
@@ -649,7 +649,7 @@
         "min_norm": 1000000.0,
         "batch_grad_cost": 0.03430148510536405,
         "batch_agg_cost": 2.9124858697940565,
-        "total_cost": 4021.979469537735,
+        "total_cost": 3001.13063120842,
         "total_iter": 18760,
         "total_agg": 1160
     }

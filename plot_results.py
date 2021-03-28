@@ -100,9 +100,9 @@ def plot_metrics():
     d = 'result_dumps/fmnist/lenet/'
 
     o = [
-       'mean',
-       'gm',
-       'bgmd'
+       'mean.ag.30',
+       'gm.ag.30',
+       'bgmd.ag.30'
     ]
     labels = [
         r"\textsc{SGD}",
@@ -113,7 +113,7 @@ def plot_metrics():
     x_ax = 'time'
     sampling_freq = 1
 
-    # plt.ylim(top=90, bottom=0)
+    # plt.ylim(top=3, bottom=0)
 
     for op, label in zip(o, labels):
         result_file = d + op
