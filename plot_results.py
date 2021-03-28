@@ -36,8 +36,8 @@ def plot_time(label: str, res_file: str, plt_type: str = 'epoch_loss',
 
     scores = np.array(scores)
     mean = np.mean(scores, axis=0)
-    UB = mean + 3*np.std(scores, axis=0)
-    LB = mean - 3*np.std(scores, axis=0)
+    UB = mean + 1.5*np.std(scores, axis=0)
+    LB = mean - 1.5*np.std(scores, axis=0)
 
     # res = result[plt_type]  # [:35]
     # res = res[0::sampling_freq]
@@ -100,9 +100,9 @@ def plot_metrics():
     d = 'result_dumps/fmnist/lenet/'
 
     o = [
-       'mean.ag.30',
-       'gm.ag.30',
-       'bgmd.ag.30'
+       'mean.ag.40',
+       'gm.ag.45',
+       'bgmd.ag.40'
     ]
     labels = [
         r"\textsc{SGD}",
@@ -113,7 +113,7 @@ def plot_metrics():
     x_ax = 'time'
     sampling_freq = 1
 
-    plt.ylim(bottom=0.3)
+    # plt.ylim(bottom=0.3)
 
     for op, label in zip(o, labels):
         result_file = d + op
