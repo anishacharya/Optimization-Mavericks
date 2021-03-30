@@ -21,7 +21,7 @@
         },
 
         "training_config": {
-            "num_clients": 16, # Number of batches in distributed setting
+            "num_clients": 32, # Number of batches in distributed setting
             "client_fraction": 1, # partial device participation
             "global_epochs": 20, # epochs
             "local_epochs": 1, # local SGD
@@ -64,7 +64,7 @@
 
             "aggregation_config":
               {
-                "gar": "geo_med",
+                "gar": "mean",
 
                 "trimmed_mean_config":{"proportion": 0.3},
                 "krum_config": {"krum_frac": 0.3},
@@ -80,7 +80,7 @@
 
                 "attack_config":
                 {
-                    "attack_model": 'additive',
+                    "attack_model": None,
                     "attack_mode": "un_coordinated",
 
                     "frac_adv": 0.35,
@@ -97,7 +97,7 @@
 
                 "sparse_approximation_config":
                 {
-                    "rule": 'active_norm',
+                    "rule": None,
                     "axis": "column",
                     "frac_coordinates": 0.3,
                     "ef_server": True
