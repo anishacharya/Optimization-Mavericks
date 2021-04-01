@@ -64,7 +64,7 @@
 
             "aggregation_config":
               {
-                "gar": "mean",
+                "gar": "geo_med",
 
                 "trimmed_mean_config":{"proportion": 0.3},
                 "krum_config": {"krum_frac": 0.3},
@@ -80,10 +80,10 @@
 
                 "attack_config":
                 {
-                    "attack_model": None,
+                    "attack_model": 'additive',
                     "attack_mode": "un_coordinated",
 
-                    "frac_adv": 0.35,
+                    "frac_adv": 0.1,
 
                     "additive_attack_conf":
                       {
