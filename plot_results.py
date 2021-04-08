@@ -36,8 +36,8 @@ def plot_time(label: str, res_file: str, plt_type: str = 'epoch_loss',
 
     scores = np.array(scores)
     mean = np.mean(scores, axis=0)
-    UB = mean + 3*np.std(scores, axis=0)
-    LB = mean - 3*np.std(scores, axis=0)
+    UB = mean + 3 * np.std(scores, axis=0)
+    LB = mean - 3 * np.std(scores, axis=0)
 
     # res = result[plt_type]  # [:35]
     # res = res[0::sampling_freq]
@@ -97,15 +97,23 @@ def plot_metrics():
 
     # -------------------------------------------------------------------------------------------
     # ------------------------------- Modify Here -----------------------------------------------
-    d = 'result_dumps/fmnist/lenet/ag.10/'
+    d = 'result_dumps/fmnist/lenet/clean/'
 
     o = [
-       'gm',
-       'bgmd.10',
+        'mean',
+        'gm',
+        'bgmd.5',
+        'bgmd.10',
+        'bgmd.20',
+        'bgmd.30',
     ]
     labels = [
+        r"\textsc{SGD}",
         r"\textsc{GM-SGD}",
-        r"\textsc{BGmD}",
+        r"\textsc{BGmD(5)}",
+        r"\textsc{BGmD(10)}",
+        r"\textsc{BGmD(20)}",
+        r"\textsc{BGmD(30)}",
     ]
     plot_type = 'train_loss'
     x_ax = 'time'
@@ -120,7 +128,7 @@ def plot_metrics():
             plot_time(label=label, res_file=result_file,
                       plt_type=plot_type, optima=0, line_width=1,
                       sampling_freq=sampling_freq)
-            plt.xlabel(r'Time ($\mathcal{O}$(min))', fontsize=10)
+            plt.xlabel(r'$\mathcal{O}$(Time)', fontsize=10)
         else:
             plot_driver(label=label, res_file=result_file,
                         plt_type=plot_type, optima=0, line_width=4,
