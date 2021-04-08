@@ -103,13 +103,15 @@ def plot_metrics():
        'mean',
        'gm',
        'bgmd.5',
-       'bgmd.10'
+       'bgmd.10',
+       'bgmd.20'
     ]
     labels = [
         r"\textsc{SGD}",
         r"\textsc{GM-SGD}",
         r"\textsc{BGmD(5)}",
-        r"\textsc{BGmD(10)}"
+        r"\textsc{BGmD(10)}",
+        r"\textsc{BGmD(20)}",
     ]
     plot_type = 'train_loss'
     x_ax = 'time'
