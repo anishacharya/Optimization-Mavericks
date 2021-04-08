@@ -97,21 +97,15 @@ def plot_metrics():
 
     # -------------------------------------------------------------------------------------------
     # ------------------------------- Modify Here -----------------------------------------------
-    d = 'result_dumps/fmnist/lenet/clean/'
+    d = 'result_dumps/fmnist/lenet/ag.10/'
 
     o = [
-       'mean',
        'gm',
-       'bgmd.5',
        'bgmd.10',
-       'bgmd.20'
     ]
     labels = [
-        r"\textsc{SGD}",
         r"\textsc{GM-SGD}",
-        r"\textsc{BGmD(5)}",
-        r"\textsc{BGmD(10)}",
-        r"\textsc{BGmD(20)}",
+        r"\textsc{BGmD}",
     ]
     plot_type = 'train_loss'
     x_ax = 'time'
