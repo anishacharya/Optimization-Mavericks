@@ -4,27 +4,11 @@ from matplotlib.ticker import MaxNLocator
 from matplotlib import rc
 from matplotlib.pyplot import figure
 import json
-import pylab
 
 
-def plot_driver(label: str, res_file: str, plt_type: str = 'epoch_loss',
-                line_width=2, marker=None, line_style=None, optima: float = 0.0,
-                sampling_freq: int = 1):
-    with open(res_file, 'rb') as f:
-        result = json.load(f)
+def plot_(label: str, res_file: str, plt_type: str = 'epoch_loss', x_ax='time',
+          line_width=4, marker=None, line_style=None, optima: float = 0.0):
 
-    res = result[plt_type]
-    # res = res[0::sampling_freq]
-    res -= optima * np.ones(len(res))
-
-    x = np.arange(len(res)) + np.ones(len(res))
-    x *= sampling_freq  # * sampling_freq
-    plt.plot(x, res, label=label, linewidth=line_width, marker=marker, linestyle=line_style)
-
-
-def plot_time(label: str, res_file: str, plt_type: str = 'epoch_loss',
-              line_width=4, marker=None, line_style=None, optima: float = 0.0,
-              sampling_freq: int = 1):
     with open(res_file, 'rb') as f:
         result = json.load(f)
 
@@ -39,14 +23,14 @@ def plot_time(label: str, res_file: str, plt_type: str = 'epoch_loss',
     UB = mean + 3 * np.std(scores, axis=0)
     LB = mean - 3 * np.std(scores, axis=0)
 
-    # res = result[plt_type]  # [:35]
-    # res = res[0::sampling_freq]
-    # res -= optima * np.ones(len(res))
+    if x_ax is 'time':
+        x_freq = int(result[0]["total_cost"] / len(result[0][plt_type]))
+        x = np.arange(len(result[0][plt_type])) * x_freq
+    elif x_ax is 'epoch':
+        x = np.arange(len(result[0][plt_type]))
+    else:
+        raise NotImplementedError
 
-    x_freq = int(result[0]["total_cost"] / len(result[0][plt_type]))
-    x = np.arange(len(result[0][plt_type])) * x_freq
-    # x = np.arange(len(res)) + np.ones(len(res))
-    # x *= sampling_freq # * sampling_freq
     plt.plot(x, mean, label=label, linewidth=line_width, marker=marker, linestyle=line_style)
     plt.fill_between(x, LB, UB, alpha=0.5, linewidth=3)
 
@@ -89,7 +73,7 @@ def plot_mass(masses):
               borderaxespad=0, frameon=False, fontsize=11)
 
 
-def plot_metrics():
+if __name__ == '__main__':
     ax = plt.figure().gca()
     ax.xaxis.set_major_locator(MaxNLocator(integer=True))
     # activate latex text rendering
@@ -100,40 +84,35 @@ def plot_metrics():
     d = 'result_dumps/fmnist/lenet/clean/'
 
     o = [
-        'mean',
+        # 'mean',
         'gm',
         'bgmd.5',
         'bgmd.10',
         'bgmd.20',
-        'bgmd.30',
 
     ]
     labels = [
-        r"\textsc{SGD}",
+        # r"\textsc{SGD}",
         r"\textsc{GM-SGD}",
         r"\textsc{BGmD($\beta$ = 0.05)}",
         r"\textsc{BGmD($\beta$ = 0.1)}",
         r"\textsc{BGmD($\beta$ = 0.2)}",
-        r"\textsc{BGmD($\beta$ = 0.3)}",
+        # r"\textsc{BGmD($\beta$ = 0.3)}",
     ]
     plot_type = 'train_loss'
-    x_ax = 'time'
+    x_ax = 'epoch'
     sampling_freq = 1
-
-    # plt.ylim(bottom=0.3)
 
     for op, label in zip(o, labels):
         result_file = d + op
 
+        plot_(label=label, res_file=result_file, plt_type=plot_type, x_ax=x_ax,
+              optima=0, line_width=2)
+
+        # Fix the X Labels
         if x_ax is 'time':
-            plot_time(label=label, res_file=result_file,
-                      plt_type=plot_type, optima=0, line_width=2,
-                      sampling_freq=sampling_freq)
             plt.xlabel(r'$\mathcal{O}$(Time)', fontsize=10)
         else:
-            plot_driver(label=label, res_file=result_file,
-                        plt_type=plot_type, optima=0, line_width=4,
-                        sampling_freq=sampling_freq)
             plt.xlabel('Epochs (Full Pass over Data)', fontsize=10)
 
     if plot_type is 'test_error':
@@ -156,6 +135,3 @@ def plot_metrics():
     figure(figsize=(1, 1))
     plt.show()
 
-
-if __name__ == '__main__':
-    plot_metrics()
