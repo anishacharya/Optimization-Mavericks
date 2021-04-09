@@ -363,7 +363,7 @@
         "min_norm": 1000000.0,
         "batch_grad_cost": 0.005299858495076497,
         "batch_agg_cost": 3.0459812960131414,
-        "total_cost": 9330.207492351532,
+        "total_cost": 4728.287192583084,
         "total_iter": 93750,
         "total_agg": 2900
     },
@@ -731,7 +731,7 @@
         "min_norm": 1000000.0,
         "batch_grad_cost": 0.005216312304178874,
         "batch_agg_cost": 3.0819934116560836,
-        "total_cost": 9426.810172319412,
+        "total_cost": 4728.287192583084,
         "total_iter": 93750,
         "total_agg": 2900
     },
@@ -1099,7 +1099,7 @@
         "min_norm": 1000000.0,
         "batch_grad_cost": 0.005410304982503255,
         "batch_agg_cost": 3.0984298005597344,
-        "total_cost": 9492.66251373291,
+        "total_cost": 4728.287192583084,
         "total_iter": 93750,
         "total_agg": 2900
     }

@@ -23,7 +23,7 @@ def plot_driver(label: str, res_file: str, plt_type: str = 'epoch_loss',
 
 
 def plot_time(label: str, res_file: str, plt_type: str = 'epoch_loss',
-              line_width=2, marker=None, line_style=None, optima: float = 0.0,
+              line_width=4, marker=None, line_style=None, optima: float = 0.0,
               sampling_freq: int = 1):
     with open(res_file, 'rb') as f:
         result = json.load(f)
@@ -106,14 +106,15 @@ def plot_metrics():
         'bgmd.10',
         'bgmd.20',
         'bgmd.30',
+
     ]
     labels = [
         r"\textsc{SGD}",
         r"\textsc{GM-SGD}",
-        r"\textsc{BGmD(5)}",
-        r"\textsc{BGmD(10)}",
-        r"\textsc{BGmD(20)}",
-        r"\textsc{BGmD(30)}",
+        r"\textsc{BGmD($\beta$ = 0.05)}",
+        r"\textsc{BGmD($\beta$ = 0.1)}",
+        r"\textsc{BGmD($\beta$ = 0.2)}",
+        r"\textsc{BGmD($\beta$ = 0.3)}",
     ]
     plot_type = 'train_loss'
     x_ax = 'time'
@@ -126,7 +127,7 @@ def plot_metrics():
 
         if x_ax is 'time':
             plot_time(label=label, res_file=result_file,
-                      plt_type=plot_type, optima=0, line_width=1,
+                      plt_type=plot_type, optima=0, line_width=2,
                       sampling_freq=sampling_freq)
             plt.xlabel(r'$\mathcal{O}$(Time)', fontsize=10)
         else:
