@@ -68,9 +68,8 @@ class SparseApproxMatrix:
             # print('EF')
             # update residual error
             self.residual_error = G - G_sparse
-            G_sparse /= lr
 
-        return G_sparse, I_k
+        return G_sparse/lr, I_k
 
     # Implementation of different "Matrix Sparse Approximation" strategies
     def _random_sampling(self, d) -> np.ndarray:
