@@ -81,23 +81,24 @@ if __name__ == '__main__':
 
     # -------------------------------------------------------------------------------------------
     # ------------------------------- Modify Here -----------------------------------------------
-    d = 'result_dumps/fmnist/lenet/clean/'
+    d = 'result_dumps/fmnist/lenet/ag.10/'
 
     o = [
-        'mean',
+        #'mean',
         'gm',
-        'bmd.5',
-        'bmd.10',
-        'bmd.20',
+        'bgmd.5',
+        'bgmd.10',
+        'bgmd.20',
+        'bgmd.30',
 
     ]
     labels = [
-        r"\textsc{SGD}",
+        #r"\textsc{SGD}",
         r"\textsc{GM-SGD}",
         r"\textsc{BGmD($\beta$ = 0.05)}",
         r"\textsc{BGmD($\beta$ = 0.1)}",
         r"\textsc{BGmD($\beta$ = 0.2)}",
-        # r"\textsc{BGmD($\beta$ = 0.3)}",
+        r"\textsc{BGmD($\beta$ = 0.3)}",
     ]
     plot_type = 'train_loss'
     x_ax = 'epoch'
@@ -122,6 +123,7 @@ if __name__ == '__main__':
     elif plot_type is 'train_acc':
         plt.ylabel('Train Accuracy', fontsize=10)
     elif plot_type is 'train_loss':
+        plt.yscale('log')
         plt.ylabel('Training Loss', fontsize=10)
     elif plot_type is 'train_error':
         plt.ylabel('Train Error', fontsize=10)
