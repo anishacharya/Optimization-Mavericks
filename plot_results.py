@@ -84,15 +84,15 @@ if __name__ == '__main__':
     d = 'result_dumps/fmnist/lenet/clean/'
 
     o = [
-        # 'mean',
+        'mean',
         'gm',
-        'bgmd.5',
-        'bgmd.10',
-        'bgmd.20',
+        'bmd.5',
+        'bmd.10',
+        'bmd.20',
 
     ]
     labels = [
-        # r"\textsc{SGD}",
+        r"\textsc{SGD}",
         r"\textsc{GM-SGD}",
         r"\textsc{BGmD($\beta$ = 0.05)}",
         r"\textsc{BGmD($\beta$ = 0.1)}",
