@@ -81,27 +81,30 @@ if __name__ == '__main__':
 
     # -------------------------------------------------------------------------------------------
     # ------------------------------- Modify Here -----------------------------------------------
-    d = 'result_dumps/fmnist/lenet/ag.10/'
+    d = 'result_dumps/fmnist/lenet/clean/'
 
     o = [
-        #'mean',
-        'gm',
-        'bgmd.5',
-        'bgmd.10',
-        'bgmd.20',
-        'bgmd.30',
+        'mean',
+        'bmd.5.nm',
+        'bmd.10.nm',
+        'bmd.25.nm',
+        'bmd.50.nm',
+        'bmd.75.nm',
+        'bmd.5',
 
     ]
     labels = [
-        #r"\textsc{SGD}",
-        r"\textsc{GM-SGD}",
-        r"\textsc{BGmD($\beta$ = 0.05)}",
-        r"\textsc{BGmD($\beta$ = 0.1)}",
-        r"\textsc{BGmD($\beta$ = 0.2)}",
-        r"\textsc{BGmD($\beta$ = 0.3)}",
+        r"\textsc{SGD}",
+        r"\textsc{B-SGD($\beta$ = 0.05)}",
+        r"\textsc{B-SGD($\beta$ = 0.1)}",
+        r"\textsc{B-SGD($\beta$ = 0.25)}",
+        r"\textsc{B-SGD($\beta$ = 0.5)}",
+        r"\textsc{B-SGD($\beta$ = 0.75)}",
+        r"\textsc{B-SGD + M($\beta$ = 0.05)}",
     ]
     plot_type = 'train_loss'
     x_ax = 'epoch'
+
     sampling_freq = 1
 
     for op, label in zip(o, labels):
