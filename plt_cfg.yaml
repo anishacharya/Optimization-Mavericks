@@ -1,36 +1,49 @@
 {
     "plot_type": 'train_loss',
-    "x_ax": 'epoch',
+    "x_ax": 'time',
     "sampling_freq": 1,
-    "dir": 'result_dumps/fmnist/lenet/clean/',
+    "dir": 'result_dumps/fmnist/lenet/ag.10/',
     "plots":
       [
         {
-          'file': 'mean', 'label': "\\textsc{SGD}", 'line_width': 4, 'marker': None, 'line_style': None
+          'file': 'gm',
+          'label': "\\textsc{Gm-SGD}",
+          'line_width': 2,
+          'marker': None,
+          'line_style': 'solid',
+          "clr": 'b',
         },
         {
-            'file': 'bmd.5.nm', 'label': "\\textsc{B-SGD($\\beta$ = 0.05)}",
-            'line_width': 4, 'marker': None, 'line_style': None
+          'file': 'bgmd.5',
+          'label': "\\textsc{BGmD}($\\beta=0.05$)",
+          'line_width': 2,
+          'marker': None,
+          'line_style': 'solid',
+          "clr": 'g',
         },
         {
-            'file': 'bmd.5', 'label': "\\textsc{B-SGD + M($\\beta$ = 0.05)}",
-            'line_width': 4, 'marker': None, 'line_style': None
+          'file': 'bgmd.10',
+          'label': "\\textsc{BGmD}($\\beta=0.1$)",
+          'line_width': 2,
+          'marker': None,
+          'line_style': 'solid',
+          "clr": 'r',
         },
         {
-            'file': 'bmd.10.nm', 'label': "\\textsc{B-SGD($\\beta$ = 0.1)}",
-            'line_width': 4, 'marker': None, 'line_style': None
+          'file': 'bgmd.20',
+          'label': "\\textsc{BGmD}($\\beta=0.2$)",
+          'line_width': 2,
+          'marker': None,
+          'line_style': 'solid',
+          "clr": 'k',
         },
         {
-            'file': 'bmd.10', 'label': "\\textsc{B-SGD + M($\\beta$ = 0.1)}",
-            'line_width': 4, 'marker': None, 'line_style': None
+            'file': 'bgmd.30',
+            'label': "\\textsc{BGmD}($\\beta=0.3$)",
+            'line_width': 2,
+            'marker': None,
+            'line_style': 'solid',
+            "clr": 'c',
         },
-        {
-            'file': 'bmd.25.nm', 'label': "\\textsc{B-SGD($\\beta$ = 0.25)}",
-            'line_width': 4, 'marker': None, 'line_style': None
-        },
-        {
-            'file': 'bmd.50.nm', 'label': "\\textsc{B-SGD($\\beta$ = 0.5)}",
-            'line_width': 4, 'marker': None, 'line_style': None
-        }
       ]
 }

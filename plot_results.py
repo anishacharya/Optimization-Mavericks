@@ -8,7 +8,7 @@ import yaml
 
 
 def plot_(lbl: str, res_file: str, plt_type: str = 'epoch_loss', x_axis='time',
-          line_width=4, marker=None, line_style=None, optima: float = 0.0):
+          line_width=4, marker=None, line_style=None, optima: float = 0.0, color=None):
     with open(res_file, 'rb') as f:
         result = json.load(f)
 
@@ -20,8 +20,8 @@ def plot_(lbl: str, res_file: str, plt_type: str = 'epoch_loss', x_axis='time',
 
     scores = np.array(scores)
     mean = np.mean(scores, axis=0)
-    UB = mean + 1.5 * np.std(scores, axis=0)
-    LB = mean - 1.5 * np.std(scores, axis=0)
+    UB = mean + 3 * np.std(scores, axis=0)
+    LB = mean - 3 * np.std(scores, axis=0)
 
     if x_axis == 'time':
         x_freq = int(result[0]["total_cost"] / len(result[0][plt_type]))
@@ -30,7 +30,7 @@ def plot_(lbl: str, res_file: str, plt_type: str = 'epoch_loss', x_axis='time',
         x = np.arange(len(result[0][plt_type]))
     else:
         raise NotImplementedError
-    plt.plot(x, mean, label=lbl, linewidth=line_width, marker=marker, linestyle=line_style)
+    plt.plot(x, mean, label=lbl, linewidth=line_width, marker=marker, linestyle=line_style, color=color)
     plt.fill_between(x, LB, UB, alpha=0.5, linewidth=3)
 
 
@@ -61,6 +61,7 @@ if __name__ == '__main__':
         lw = pl['line_width']
         ls = pl["line_style"]
         mk = pl["marker"]
+        clr = pl["clr"]
 
         plot_(lbl=lbl,
               res_file=result_file,
@@ -69,13 +70,16 @@ if __name__ == '__main__':
               optima=0,
               line_width=lw,
               marker=mk,
-              line_style=ls)
+              line_style=ls,
+              color=clr)
 
         # Fix the X Labels
-        if x_ax is 'time':
+        if x_ax == 'time':
             plt.xlabel(r'$\mathcal{O}$(Time)', fontsize=10)
-        else:
+        elif x_ax == 'epoch':
             plt.xlabel('Epochs (Full Pass over Data)', fontsize=10)
+        else:
+            raise NotImplementedError
 
     if plot_type == 'test_error':
         plt.ylabel('Test Error', fontsize=10)
@@ -97,7 +101,6 @@ if __name__ == '__main__':
 
     figure(figsize=(1, 1))
     plt.show()
-
 
 # def plot_mass(masses):
 #     # x_labels = ['0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '1']
