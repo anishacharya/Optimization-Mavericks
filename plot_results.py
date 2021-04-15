@@ -31,7 +31,7 @@ def plot_(lbl: str, res_file: str, plt_type: str = 'epoch_loss', x_axis='time',
     else:
         raise NotImplementedError
     plt.plot(x, mean, label=lbl, linewidth=line_width, marker=marker, linestyle=line_style, color=color)
-    plt.fill_between(x, LB, UB, alpha=0.5, linewidth=3)
+    plt.fill_between(x, LB, UB, alpha=0.3, linewidth=0.5, color=color)
 
 
 def smooth(y, box_pts):
