@@ -85,26 +85,22 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                     for ix, g_i in enumerate(G):
                         G[ix, :] = C.compress(g_i, lr=lr)
 
+                # --- Gradient Aggregation Step -------- ###
                 t_aggregation = time.time()
-
                 # Sparse Approximation of G
-
                 I_k = None
                 if sparse_selection is not None:
                     G, I_k = sparse_selection.sparse_approx(G=G, lr=lr)
-
                 # Gradient aggregation
                 agg_g = gar.aggregate(G=G, ix=I_k)
-
+                aggregation_time = time.time() - t_aggregation
+                metrics["batch_agg_cost"] += aggregation_time
                 # Update Model Grads with aggregated g : i.e. compute \tilde(g)
                 optimizer.zero_grad()
                 dist_grads_to_model(grads=agg_g, learner=model)
                 model.to(device)
                 # Now Do an optimizer step with x_t+1 = x_t - \eta \tilde(g)
                 optimizer.step()
-
-                aggregation_time = time.time() - t_aggregation
-                metrics["batch_agg_cost"] += aggregation_time
                 total_agg += 1
                 comm_rounds += 1
 
