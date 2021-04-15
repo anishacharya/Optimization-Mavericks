@@ -125,7 +125,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
             epoch = num_epochs
 
         epoch += 1
-        # print('Training Time Progress: {}'.format(metrics["batch_grad_cost"] + metrics["batch_agg_cost"]))
+        print('Training Time Progress: {}'.format(metrics["batch_grad_cost"] + metrics["batch_agg_cost"]))
 
     # Update Time Complexities
     metrics["total_cost"] = metrics["batch_grad_cost"] + metrics["batch_agg_cost"]
