@@ -87,17 +87,17 @@ class Additive(ByzAttack):
     def __init__(self, attack_config: Dict):
         ByzAttack.__init__(self, attack_config=attack_config)
 
-        self.additive_attack_conf = attack_config.get("additive_attack_conf", {})
-        print(' Additive Noise Attack {} '.format(self.additive_attack_conf))
+        self.rand_additive_attack_conf = attack_config.get("additive_attack_conf", {})
+        print(' Additive Noise Attack {} '.format(self.rand_additive_attack_conf))
 
-        self.noise_dist = self.additive_attack_conf["noise_dist"]
+        self.noise_dist = self.rand_additive_attack_conf["noise_dist"]
 
         # Gaussian Noise Model Configs
-        self.attack_std = self.additive_attack_conf.get("attack_std", 1)
-        self.mean_shift = self.additive_attack_conf.get("mean_shift", 1)
+        self.attack_std = self.rand_additive_attack_conf.get("attack_std", 1)
+        self.mean_shift = self.rand_additive_attack_conf.get("mean_shift", 1)
 
         # Uniform Noise Model Config
-        self.noise_range = self.additive_attack_conf.get("noise_range", [0, 1])
+        self.noise_range = self.rand_additive_attack_conf.get("noise_range", [0, 1])
 
     def attack(self, g):
         if self.noise_dist == 'gaussian':
@@ -127,12 +127,17 @@ class Random(ByzAttack):
 
     def __init__(self, attack_config: Dict):
         ByzAttack.__init__(self, attack_config=attack_config)
-        self.noise_dist = attack_config["noise_dist"]
+        self.rand_additive_attack_conf = attack_config.get("additive_attack_conf", {})
+        print(' Additive Noise Attack {} '.format(self.rand_additive_attack_conf))
 
-        self.attack_std = attack_config["attack_std"]
-        self.mean_shift = self.attack_config.get("mean_shift", 1)
+        self.noise_dist = self.rand_additive_attack_conf["noise_dist"]
 
-        self.noise_range = attack_config["noise_range"]
+        # Gaussian Noise Model Configs
+        self.attack_std = self.rand_additive_attack_conf.get("attack_std", 1)
+        self.mean_shift = self.rand_additive_attack_conf.get("mean_shift", 1)
+
+        # Uniform Noise Model Config
+        self.noise_range = self.rand_additive_attack_conf.get("noise_range", [0, 1])
 
     def attack(self, g):
         # apply gaussian noise (scaled appropriately)

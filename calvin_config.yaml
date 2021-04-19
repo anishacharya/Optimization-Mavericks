@@ -85,7 +85,7 @@
 
             "frac_adv": 0.3,
 
-            "additive_attack_conf":
+            "rand_additive_attack_conf":
               {
                 "noise_dist": "gaussian",
                 "mean_shift": 100, "attack_std": 1,   # Gaussian noise
