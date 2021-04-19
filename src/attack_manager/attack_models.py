@@ -87,7 +87,7 @@ class Additive(ByzAttack):
     def __init__(self, attack_config: Dict):
         ByzAttack.__init__(self, attack_config=attack_config)
 
-        self.rand_additive_attack_conf = attack_config.get("additive_attack_conf", {})
+        self.rand_additive_attack_conf = attack_config.get("rand_additive_attack_conf", {})
         print(' Additive Noise Attack {} '.format(self.rand_additive_attack_conf))
 
         self.noise_dist = self.rand_additive_attack_conf["noise_dist"]
@@ -127,7 +127,7 @@ class Random(ByzAttack):
 
     def __init__(self, attack_config: Dict):
         ByzAttack.__init__(self, attack_config=attack_config)
-        self.rand_additive_attack_conf = attack_config.get("additive_attack_conf", {})
+        self.rand_additive_attack_conf = attack_config.get("rand_additive_attack_conf", {})
         print(' Additive Noise Attack {} '.format(self.rand_additive_attack_conf))
 
         self.noise_dist = self.rand_additive_attack_conf["noise_dist"]
