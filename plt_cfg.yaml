@@ -1,8 +1,8 @@
 {
-    "plot_type": 'test_acc',
+    "plot_type": 'train_loss',
     "x_ax": 'time',
     "sampling_freq": 1,
-    "dir": 'result_dumps/fmnist/lenet/ag.25/',
+    "dir": 'result_dumps/fmnist/lenet/rg.3/',
     "plots":
       [
         {
@@ -13,22 +13,22 @@
           'line_style': 'solid',
           "clr": 'b',
         },
-        {
-          'file': 'bgmd.15',
-          'label': "\\textsc{BGmD}($\\beta=0.15$)",
-          'line_width': 2,
-          'marker': None,
-          'line_style': 'solid',
-          "clr": 'r',
-        },
-        {
-          'file': 'bgmd.20',
-          'label': "\\textsc{BGmD}($\\beta=0.2$)",
-          'line_width': 2,
-          'marker': None,
-          'line_style': 'solid',
-          "clr": 'g',
-        },
+#        {
+#          'file': 'bgmd.15',
+#          'label': "\\textsc{BGmD}($\\beta=0.15$)",
+#          'line_width': 2,
+#          'marker': None,
+#          'line_style': 'solid',
+#          "clr": 'r',
+#        },
+#        {
+#          'file': 'bgmd.20',
+#          'label': "\\textsc{BGmD}($\\beta=0.2$)",
+#          'line_width': 2,
+#          'marker': None,
+#          'line_style': 'solid',
+#          "clr": 'g',
+#        },
         {
             'file': 'bgmd.30',
             'label': "\\textsc{BGmD}($\\beta=0.3$)",
@@ -37,13 +37,13 @@
             'line_style': 'solid',
             "clr": 'c',
         },
-        {
-          'file': 'bgmd.50',
-          'label': "\\textsc{BGmD}($\\beta=0.5$)",
-          'line_width': 2,
-          'marker': None,
-          'line_style': 'solid',
-          "clr": 'k',
-        },
+#        {
+#          'file': 'bgmd.50',
+#          'label': "\\textsc{BGmD}($\\beta=0.5$)",
+#          'line_width': 2,
+#          'marker': None,
+#          'line_style': 'solid',
+#          "clr": 'k',
+#        },
       ]
 }

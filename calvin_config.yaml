@@ -80,10 +80,10 @@
 
         "attack_config":
           {
-            "attack_model": 'random',
+            "attack_model": 'additive',
             "attack_mode": "un_coordinated",
 
-            "frac_adv": 0.3,
+            "frac_adv": 0.2,
 
             "rand_additive_attack_conf":
               {
@@ -97,10 +97,10 @@
 
         "sparse_approximation_config":
           {
-            "rule": None,
+            "rule": 'active_norm',
             "axis": "column",
-            "frac_coordinates": 0.2,
-            "ef_server":True
+            "frac_coordinates": 0.1,
+            "ef_server": True
           }
       }
   }

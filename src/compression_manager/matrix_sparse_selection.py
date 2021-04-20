@@ -65,7 +65,7 @@ class SparseApproxMatrix:
         G_sparse[:, I_k] = G[:, I_k]
 
         if self.ef is True:
-            # print('EF')
+            print('Error Feedback is Added')
             # update residual error
             self.residual_error = G - G_sparse
 
@@ -92,15 +92,15 @@ class SparseApproxMatrix:
 
         """
         # Exact Implementation ~ O(d log d)
-        # norm_dist = G.sum(axis=self.axis)
-        # norm_dist = np.square(norm_dist)
-        # sorted_ix = np.argsort(norm_dist)[::-1]
-        # I_k = sorted_ix[:self.k]
+        norm_dist = G.sum(axis=self.axis)
+        norm_dist = np.square(norm_dist)
+        sorted_ix = np.argsort(norm_dist)[::-1]
+        I_k = sorted_ix[:self.k]
 
         # Probabilistic Implementation ~ O(d)
-        norm_dist = np.linalg.norm(G, axis=self.axis)
-        norm_dist /= norm_dist.sum()
-        all_ix = np.arange(G.shape[1])
-        I_k = np.random.choice(a=all_ix, size=self.k, replace=False, p=norm_dist)
+        # norm_dist = np.linalg.norm(G, axis=self.axis)
+        # norm_dist /= norm_dist.sum()
+        # all_ix = np.arange(G.shape[1])
+        # I_k = np.random.choice(a=all_ix, size=self.k, replace=False, p=norm_dist)
 
         return I_k
