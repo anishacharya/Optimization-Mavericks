@@ -36,7 +36,7 @@
             "loss": "ce",
             "lr0": 0.1,
             "momentum": 0.9,
-            "reg": 0.0001,
+            "reg": 0.001,
             "nesterov": True,
             "amsgrad": false
           },
@@ -64,7 +64,7 @@
 
     "aggregation_config":
       {
-        "gar": "mean",
+        "gar": "geo_med",
 
         "trimmed_mean_config":{"proportion": 0.3},
         "krum_config": {"krum_frac": 0.3},
