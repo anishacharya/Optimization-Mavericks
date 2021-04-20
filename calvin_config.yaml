@@ -46,7 +46,7 @@
             "lrs": "step",
             "milestones": [1,5,10],
             "step_size": 1,
-            "gamma": 0.99
+            "gamma": 0.9
           },
 
         "server_optimizer_config":
