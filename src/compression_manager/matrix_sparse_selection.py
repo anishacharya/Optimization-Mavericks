@@ -25,6 +25,7 @@ class SparseApproxMatrix:
 
         # error feedback
         self.ef = conf.get('ef_server', False)
+        print('Error Feedback is: {}'.format(self.ef))
         self.residual_error = 0
 
     def sparse_approx(self, G: np.ndarray, lr=1) -> [np.ndarray, np.ndarray]:
@@ -65,7 +66,6 @@ class SparseApproxMatrix:
         G_sparse[:, I_k] = G[:, I_k]
 
         if self.ef is True:
-            print('Error Feedback is Added')
             # update residual error
             self.residual_error = G - G_sparse
 
