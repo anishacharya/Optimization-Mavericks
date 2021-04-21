@@ -45,8 +45,8 @@
           {
             "lrs": "step",
             "milestones": [1,5,10],
-            "step_size": 1,
-            "gamma": 0.99
+            "step_size": 10,
+            "gamma": 0.1
           },
 
         "server_optimizer_config":
@@ -80,12 +80,12 @@
 
         "attack_config":
           {
-            "attack_model": 'additive',
+            "attack_model": 'random',
             "attack_mode": "un_coordinated",
 
-            "frac_adv": 0.4,
+            "frac_adv": 0.3,
 
-            "additive_attack_conf":
+            "rand_additive_attack_conf":
               {
                 "noise_dist": "gaussian",
                 "mean_shift": 100, "attack_std": 1,   # Gaussian noise
@@ -99,8 +99,8 @@
           {
             "rule": 'active_norm',
             "axis": "column",
-            "frac_coordinates": 0.45,
-            "ef_server":True
+            "frac_coordinates": 0.4,
+            "ef_server": True
           }
       }
   }
