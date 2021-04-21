@@ -37,13 +37,13 @@
             'line_style': 'solid',
             "clr": 'c',
         },
-#        {
-#          'file': 'bgmd.50',
-#          'label': "\\textsc{BGmD}($\\beta=0.5$)",
-#          'line_width': 2,
-#          'marker': None,
-#          'line_style': 'solid',
-#          "clr": 'k',
-#        },
+        {
+          'file': 'bgmd.40',
+          'label': "\\textsc{BGmD}($\\beta=0.4$)",
+          'line_width': 2,
+          'marker': None,
+          'line_style': 'solid',
+          "clr": 'k',
+        },
       ]
 }
