@@ -86,14 +86,15 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                         G[ix, :] = C.compress(g_i, lr=lr)
 
                 # --- Gradient Aggregation Step -------- ###
-                t_aggregation = time.time()
                 # Sparse Approximation of G
                 I_k = None
                 if sparse_selection is not None:
                     G, I_k = sparse_selection.sparse_approx(G=G, lr=lr)
                 # Gradient aggregation
+                t_aggregation = time.time()
                 agg_g = gar.aggregate(G=G, ix=I_k)
                 aggregation_time = time.time() - t_aggregation
+                print('Aggregation Time {} s'.format(aggregation_time))
                 metrics["batch_agg_cost"] += aggregation_time
                 # Update Model Grads with aggregated g : i.e. compute \tilde(g)
                 optimizer.zero_grad()
