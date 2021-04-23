@@ -361,9 +361,9 @@
         "mass_bins": null,
         "max_norm": 0,
         "min_norm": 1000000.0,
-        "batch_grad_cost": 0.0070686266472609624,
-        "batch_agg_cost": 1.1705606530110042,
-        "total_cost": 3361.758739709854,
+        "batch_grad_cost": 0.006614516911717157,
+        "batch_agg_cost": 0.5055653482675553,
+        "total_cost": 1730.2813324928284,
         "total_iter": 78150,
         "total_agg": 2400
     },
@@ -729,9 +729,9 @@
         "mass_bins": null,
         "max_norm": 0,
         "min_norm": 1000000.0,
-        "batch_grad_cost": 0.007042964031051079,
-        "batch_agg_cost": 1.1752423877517382,
-        "total_cost": 3370.9893696308136,
+        "batch_grad_cost": 0.006497198276922479,
+        "batch_agg_cost": 0.5023416084051132,
+        "total_cost": 1713.3759055137634,
         "total_iter": 78150,
         "total_agg": 2400
     }
