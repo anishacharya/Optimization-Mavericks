@@ -49,9 +49,6 @@ def vardi(X, eps=1e-5, max_iter=10) -> np.ndarray:
     Yehuda Vardi and Cun-Hui Zhang; PNAS'2000"
     """
     # Assume each data point is arranged in a row
-    import time
-    t0 = time.time()
-
     mu = np.mean(X, 0)
     num_iter = 0
     while True:
@@ -75,7 +72,7 @@ def vardi(X, eps=1e-5, max_iter=10) -> np.ndarray:
 
         if euclidean(mu, mu1) < eps or num_iter == max_iter:
             # print('Time Taken For GM {}'.format(time.time() - t0))
-            print('Num iter for GM {}'.format(num_iter))
+            # print('Num iter for GM {}'.format(num_iter))
             return mu1
         mu = mu1
         num_iter += 1
