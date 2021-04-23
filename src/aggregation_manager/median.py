@@ -53,6 +53,7 @@ def vardi(X, eps=1e-5) -> np.ndarray:
     t0 = time.time()
 
     mu = np.mean(X, 0)
+    num_iter = 0
     while True:
         # noinspection PyTypeChecker
         D = cdist(X, [mu]).astype(mu.dtype)
@@ -75,6 +76,8 @@ def vardi(X, eps=1e-5) -> np.ndarray:
             # print('Time Taken For GM {}'.format(time.time() - t0))
             return mu1
         mu = mu1
+        num_iter += 1
+        print('Num iter for GM {}'.format(num_iter))
 
 
 if __name__ == '__main__':
