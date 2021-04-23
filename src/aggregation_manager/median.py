@@ -40,7 +40,7 @@ class GeometricMedian(GAR):
             return vardi(X=G)
 
 
-def vardi(X, eps=1e-5) -> np.ndarray:
+def vardi(X, eps=1e-5, max_iter=15) -> np.ndarray:
     # Copyright (c) Orson Peters
     # Licensed under zlib License
     # Reference: https://stackoverflow.com/questions/30299267/geometric-median-of-multidimensional-points
@@ -54,7 +54,7 @@ def vardi(X, eps=1e-5) -> np.ndarray:
 
     mu = np.mean(X, 0)
     num_iter = 0
-    while num_iter < 15:
+    while True:
         # noinspection PyTypeChecker
         D = cdist(X, [mu]).astype(mu.dtype)
         non_zeros = (D != 0)[:, 0]
@@ -73,7 +73,7 @@ def vardi(X, eps=1e-5) -> np.ndarray:
             r_inv = 0 if r == 0 else num_zeros / r
             mu1 = max(0, 1 - r_inv) * T + min(1, r_inv) * mu
 
-        if euclidean(mu, mu1) < eps:
+        if euclidean(mu, mu1) < eps or num_iter == max_iter:
             # print('Time Taken For GM {}'.format(time.time() - t0))
             # print('Num iter for GM {}'.format(num_iter))
             return mu1
