@@ -75,11 +75,10 @@ def vardi(X, eps=1e-5, max_iter=10) -> np.ndarray:
 
         if euclidean(mu, mu1) < eps or num_iter == max_iter:
             # print('Time Taken For GM {}'.format(time.time() - t0))
-            # print('Num iter for GM {}'.format(num_iter))
+            print('Num iter for GM {}'.format(num_iter))
             return mu1
         mu = mu1
         num_iter += 1
-
 
 
 if __name__ == '__main__':
