@@ -66,6 +66,7 @@ def vardi(X, eps=1e-5) -> np.ndarray:
             mu1 = T
         elif num_zeros == len(X):
             # print('Time Taken For GM ={}'.format(time.time() - t0))
+            print('Num iter for GM {}'.format(num_iter))
             return mu
         else:
             r = np.linalg.norm((T - mu) * sum(D_inv))
@@ -74,10 +75,11 @@ def vardi(X, eps=1e-5) -> np.ndarray:
 
         if euclidean(mu, mu1) < eps:
             # print('Time Taken For GM {}'.format(time.time() - t0))
+            print('Num iter for GM {}'.format(num_iter))
             return mu1
         mu = mu1
         num_iter += 1
-        print('Num iter for GM {}'.format(num_iter))
+
 
 
 if __name__ == '__main__':
