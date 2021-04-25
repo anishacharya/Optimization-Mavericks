@@ -4,7 +4,7 @@ import numpy as np
 from .base import GAR
 from typing import List, Dict
 from scipy.spatial.distance import cdist, euclidean
-import math
+from scipy.optimize import minimize
 from src.compression_manager import SparseApproxMatrix
 
 
@@ -35,6 +35,8 @@ class GeometricMedian(GAR):
             return vardi(X=X)
         elif self.geo_med_alg == 'weiszfeld':
             return weiszfeld(X=X)
+        elif self.geo_med_alg == 'cvx_opt':
+            return cvx_opt(X=X)
         else:
             raise NotImplementedError
 
@@ -48,6 +50,16 @@ class GeometricMedian(GAR):
             return g_agg
         else:
             return self.get_gm(X=G)
+
+
+def cvx_opt(X, eps=1e-5, max_iter=1000):
+    def aggregate_distance(x):
+        # noinspection PyTypeChecker
+        return cdist([x], X).sum()
+
+    mu = np.mean(X, 0)
+    opt_res = minimize(fun=aggregate_distance, x0=mu, method='Nelder-Mead', tol=eps)
+    return opt_res.x
 
 
 def weiszfeld(X, eps=1e-5, max_iter=1000):
@@ -100,10 +112,13 @@ def vardi(X, eps=1e-5, max_iter=25) -> np.ndarray:
         W = np.divide(D_inv, sum(D_inv))
         T = np.sum(W * X[non_zeros], 0)
         num_zeros = len(X) - np.sum(non_zeros)
+
         if num_zeros == 0:
             mu1 = T
+
         elif num_zeros == len(X):
             return mu
+
         else:
             r = np.linalg.norm((T - mu) * sum(D_inv))
             r_inv = 0 if r == 0 else num_zeros / r
