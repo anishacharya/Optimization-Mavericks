@@ -4,6 +4,7 @@ import numpy as np
 from .base import GAR
 from typing import List, Dict
 from scipy.spatial.distance import cdist, euclidean
+import math
 from src.compression_manager import SparseApproxMatrix
 
 
@@ -84,9 +85,11 @@ def vardi(X, eps=1e-5, max_iter=25) -> np.ndarray:
     """
     # Assume each data point is arranged in a row
     # mu = np.mean(X, 0)
-    mu = np.zeros_like(X[0, :])
+    mu0 = np.zeros_like(X[0, :])
+    mu = np.mean(X, 0)
+
     num_iter = 0
-    while True:
+    while num_iter < max_iter:
         # noinspection PyTypeChecker
         D = cdist(X, [mu]).astype(mu.dtype)
         # Handle divide by zero
@@ -100,20 +103,20 @@ def vardi(X, eps=1e-5, max_iter=25) -> np.ndarray:
         if num_zeros == 0:
             mu1 = T
         elif num_zeros == len(X):
-            # print('Time Taken For GM ={}'.format(time.time() - t0))
-            # print('Num iter for GM {}'.format(num_iter))
             return mu
         else:
             r = np.linalg.norm((T - mu) * sum(D_inv))
             r_inv = 0 if r == 0 else num_zeros / r
             mu1 = max(0, 1 - r_inv) * T + min(1, r_inv) * mu
 
-        if euclidean(mu, mu1) < eps or num_iter == max_iter:
-            # print('Time Taken For GM {}'.format(time.time() - t0))
-            # print('Num iter for GM {}'.format(num_iter))
-            return mu1
         mu = mu1
+        if euclidean(mu, mu1) < eps:
+            break
         num_iter += 1
+
+    if math.isinf(mu) or math.isnan(mu):
+        return mu0
+    return mu
 
 
 if __name__ == '__main__':
