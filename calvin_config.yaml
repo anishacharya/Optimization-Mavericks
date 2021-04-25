@@ -66,7 +66,7 @@
       {
         "gar": "geo_med",
 
-        "geo_med_config": {}
+        "geo_med_config": {},
         "trimmed_mean_config":{"proportion": 0.3},
         "krum_config": {"krum_frac": 0.3},
         "norm_clip_config": { "alpha": 0.5},
