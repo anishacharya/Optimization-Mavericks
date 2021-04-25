@@ -86,7 +86,7 @@ def vardi(X, eps=1e-5, max_iter=25) -> np.ndarray:
     # Assume each data point is arranged in a row
     # mu = np.mean(X, 0)
     mu0 = np.zeros_like(X[0, :])
-    mu = np.mean(X, 0)
+    mu = mu0
 
     num_iter = 0
     while num_iter < max_iter:
