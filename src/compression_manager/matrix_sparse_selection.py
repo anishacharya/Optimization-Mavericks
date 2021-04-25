@@ -11,7 +11,6 @@ corresponds to g_i i.e. gradient vector computed on batch / client i
 """
 
 import numpy as np
-from scipy import stats
 
 
 class SparseApproxMatrix:
@@ -22,8 +21,6 @@ class SparseApproxMatrix:
         self.axis = 0 if axis == 'column' else 1
         self.frac = conf.get('frac_coordinates', 1)  # number of coordinates to sample
         self.k = None
-
-        # error feedback
         self.ef = conf.get('ef_server', False)
         print('Error Feedback is: {}'.format(self.ef))
         self.residual_error = 0
@@ -32,9 +29,6 @@ class SparseApproxMatrix:
         if self.sampling_rule not in ['active_norm', 'random']:
             raise NotImplementedError
 
-        #####################################################
-        # Otherwise do Block Selection with memory feedback #
-        #####################################################
         n, d = G.shape
         G_sparse = np.zeros_like(G)
 
@@ -47,15 +41,12 @@ class SparseApproxMatrix:
                 self.k = 1
             else:
                 raise ValueError
-
             print('Sampling {} coordinates out of {}'.format(self.k, d))
 
         # Error Compensation (if ef is False, residual error = 0 as its not updated
         G = (lr * G) + self.residual_error
 
-        # --------------------------------- #
-        # Invoke Sampling algorithm here
-        # --------------------------------- #
+        # Invoke Sampling algorithm
         if self.sampling_rule == 'active_norm':
             I_k = self._active_norm_sampling(G=G)
         elif self.sampling_rule == 'random':
@@ -86,14 +77,13 @@ class SparseApproxMatrix:
     def _active_norm_sampling(self, G: np.ndarray) -> np.ndarray:
         """
         Implements Gaussian Southwell Subset Selection / Active norm sampling
-
         Ref: Drineas, P., Kannan, R., and Mahoney, M. W.  Fast monte carlo algorithms for matrices:
         Approximating matrix multiplication. SIAM Journal on Computing, 36(1):132–157, 2006
-
         """
         # Exact Implementation ~ O(d log d)
-        norm_dist = G.sum(axis=self.axis)
-        norm_dist = np.square(norm_dist)
+        # norm_dist = G.sum(axis=self.axis)
+        # norm_dist = np.square(norm_dist)
+        norm_dist = np.linalg.norm(G, axis=self.axis)
         sorted_ix = np.argsort(norm_dist)[::-1]
         I_k = sorted_ix[:self.k]
 

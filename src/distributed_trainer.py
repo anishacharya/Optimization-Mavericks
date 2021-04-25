@@ -8,7 +8,7 @@ from src.model_manager import (get_model,
                                flatten_grads,
                                get_loss,
                                evaluate_classifier)
-from src.data_manager import process_data, PrototypicalBatchSampler
+from src.data_manager import process_data
 from src.aggregation_manager import get_gar, compute_grad_stats
 from src.compression_manager import SparseApproxMatrix, get_compression_operator
 from src.attack_manager import get_attack
@@ -18,9 +18,6 @@ from torch.utils.data import DataLoader
 import numpy as np
 import time
 from tqdm import tqdm
-
-torch.manual_seed(1)
-
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
@@ -95,10 +92,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                     metrics["sparse_selection_cost"] += sparse_selection_time
 
                 # Gradient aggregation
-                # t_aggregation = time.time()
                 agg_g = gar.aggregate(G=G, ix=I_k)
-                # aggregation_time = time.time() - t_aggregation
-                # print('Aggregation Time {} s'.format(aggregation_time))
                 metrics["batch_agg_cost"] += gar.agg_time
                 gar.agg_time = 0
                 # Update Model Grads with aggregated g : i.e. compute \tilde(g)
@@ -115,15 +109,15 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
             lrs.step()
 
         # Compute gradient statistics
-        if compute_grad_stat_flag is True and epoch % 5 == 0:
-            print("Computing Additional Stats on G")
-            compute_grad_stats(G=G, metrics=metrics)
+        # if compute_grad_stat_flag is True:
+        #     print("Computing Additional Stats on G")
+        #     compute_grad_stats(G=G, metrics=metrics)
 
         train_loss = evaluate_classifier(model=model, train_loader=train_loader, test_loader=test_loader,
                                          metrics=metrics, criterion=criterion, device=device,
                                          epoch=epoch, num_epochs=num_epochs)
         # Stop if diverging
-        if train_loss > 1e3 and epoch > 5:
+        if (train_loss > 1e3) | np.isnan(train_loss) | np.isinf(train_loss):
             epoch = num_epochs
 
         epoch += 1
