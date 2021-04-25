@@ -92,7 +92,6 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                     t0 = time.time()
                     G, I_k = sparse_selection.sparse_approx(G=G, lr=lr)
                     sparse_selection_time = time.time() - t0
-                    print('Sparse Selection time {}'.format(sparse_selection_time))
                     metrics["sparse_selection_cost"] += sparse_selection_time
 
                 # Gradient aggregation
@@ -129,6 +128,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
 
         epoch += 1
         print('Training Time Progress: {}'.format(metrics["batch_grad_cost"] + metrics["batch_agg_cost"]))
+        print('sparse selection takes: {}'.format(metrics["sparse_selection_cost"]))
 
     # Update Time Complexities
     metrics["total_cost"] = metrics["batch_grad_cost"] + metrics["batch_agg_cost"]
