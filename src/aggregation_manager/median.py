@@ -88,7 +88,7 @@ def weiszfeld(X, eps=1e-5, max_iter=25):
     return np.zeros_like(X[0, :])
 
 
-def vardi(X, eps=1e-5, max_iter=50) -> np.ndarray:
+def vardi(X, eps=1e-5, max_iter=500) -> np.ndarray:
     # Copyright (c) Orson Peters
     # Licensed under zlib License
     # Reference: https://stackoverflow.com/questions/30299267/geometric-median-of-multidimensional-points
