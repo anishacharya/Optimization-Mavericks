@@ -74,7 +74,8 @@ def get_model(learner_config: Dict, data_config: Dict, seed=1):
         mlp_config = learner_config.get('mlp_config', {})
         h1 = mlp_config.get('h1', 300)
         h2 = mlp_config.get('h2', 300)
-        model = MLP(dim_in=dim_in, dim_out=data_config["num_labels"], hidden1=h1, hidden2=h2)
+        model = MLP(dim_in=dim_in, dim_out=data_config["num_labels"], hidden1=h1, hidden2=h2,
+                    seed=seed)
 
     elif net in ['VGG11', 'VGG13', 'VGG16', 'VGG19']:
         print('Building {}'.format(net))

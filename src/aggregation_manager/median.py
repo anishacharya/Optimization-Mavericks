@@ -29,16 +29,19 @@ class GeometricMedian(GAR):
         GAR.__init__(self, aggregation_config=aggregation_config)
         self.geo_med_config = aggregation_config.get('geo_med_config', {})
         self.geo_med_alg = self.geo_med_config.get('alg', 'weiszfeld')
+        self.eps = self.geo_med_config.get('eps', 1e-5)
+        self.max_iter = self.geo_med_config.get('max_iter', 500)
+
         print("GM Algorithm: {}".format(self.geo_med_alg))
 
     def get_gm(self, X: np.ndarray):
         t0 = time.time()
         if self.geo_med_alg == 'vardi':
-            gm = vardi(X=X)
+            gm = vardi(X=X, eps=self.eps, max_iter=self.max_iter)
         elif self.geo_med_alg == 'wzfld':
-            gm = weiszfeld(X=X)
+            gm = weiszfeld(X=X, eps=self.eps, max_iter=self.max_iter)
         elif self.geo_med_alg == 'cvx_opt':
-            gm = cvx_opt(X=X)
+            gm = cvx_opt(X=X, eps=self.eps, max_iter=self.max_iter)
         else:
             raise NotImplementedError
 
@@ -58,6 +61,8 @@ class GeometricMedian(GAR):
             return self.get_gm(X=G)
 
 
+# Different GM Algorithms implemented  #
+# ------------------------------------ #
 def cvx_opt(X, eps=1e-5, max_iter=1000):
     raise NotImplementedError
 
@@ -79,13 +84,11 @@ def weiszfeld(X, eps=1e-5, max_iter=25):
         guess_movement = np.sqrt(((mu - mu1) ** 2).sum())
 
         mu = mu1
-
         if guess_movement <= eps:
-            # print('Num iterations to find GM {}'.format(num_iter))
             return mu
         num_iter += 1
-    print('Ran out of Max iter for GM - returning all zeros')
-    return np.zeros_like(X[0, :])
+    print('Ran out of Max iter for GM - returning sub optimal answer')
+    return mu
 
 
 def vardi(X, eps=1e-5, max_iter=500) -> np.ndarray:
@@ -96,7 +99,7 @@ def vardi(X, eps=1e-5, max_iter=500) -> np.ndarray:
     Implementation of "The multivariate L1-median and associated data depth;
     Yehuda Vardi and Cun-Hui Zhang; PNAS'2000"
     """
-    # Assume each data point is arranged in a row
+    # initial guess
     mu = np.mean(X, 0)
 
     num_iter = 0
@@ -111,23 +114,20 @@ def vardi(X, eps=1e-5, max_iter=500) -> np.ndarray:
 
         if num_zeros == 0:
             mu1 = T
-
         elif num_zeros == len(X):
             return mu
-
         else:
             r = np.linalg.norm((T - mu) * sum(D_inv))
             r_inv = 0 if r == 0 else num_zeros / r
             mu1 = max(0, 1 - r_inv) * T + min(1, r_inv) * mu
 
-        # mu1 = np.where((np.isnan(mu1)) | (np.isinf(mu1)), 0, mu1)
         mu = mu1
         if euclidean(mu, mu1) < eps:
             return mu
         num_iter += 1
 
-    print('Ran out of Max iter for GM - returning all zeros')
-    return np.zeros_like(mu, dtype=mu.dtype)
+    print('Ran out of Max iter for GM - returning sub-optimal answer')
+    return mu
 
 
 if __name__ == '__main__':
