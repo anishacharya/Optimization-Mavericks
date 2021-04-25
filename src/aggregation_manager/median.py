@@ -4,8 +4,8 @@ import numpy as np
 from .base import GAR
 from typing import List, Dict
 from scipy.spatial.distance import cdist, euclidean
-from scipy.optimize import minimize
-from src.compression_manager import SparseApproxMatrix
+import torch.optim as opt
+import torch.nn as nn
 
 
 class CoordinateWiseMedian(GAR):
@@ -57,9 +57,10 @@ def cvx_opt(X, eps=1e-5, max_iter=1000):
         # noinspection PyTypeChecker
         return cdist([x], X).sum()
 
-    mu = np.mean(X, 0)
-    opt_res = minimize(fun=aggregate_distance, x0=mu, method='COBYLA', tol=eps)
-    return opt_res.x
+    # initial guess - All zero
+    mu = np.zeros_like(X[0, :])
+
+    # Now we will do GD
 
 
 def weiszfeld(X, eps=1e-5, max_iter=1000):
@@ -81,10 +82,10 @@ def weiszfeld(X, eps=1e-5, max_iter=1000):
         mu = mu1
 
         if guess_movement <= eps:
-            break
+            return mu
         num_iter += 1
-
-    return mu
+    print('Ran out of Max iter for GM - returning all zeros')
+    return np.zeros_like(X[0, :])
 
 
 def vardi(X, eps=1e-5, max_iter=25) -> np.ndarray:
@@ -96,16 +97,14 @@ def vardi(X, eps=1e-5, max_iter=25) -> np.ndarray:
     Yehuda Vardi and Cun-Hui Zhang; PNAS'2000"
     """
     # Assume each data point is arranged in a row
-    # mu = np.mean(X, 0)
-    mu0 = np.zeros_like(X[0, :])
-    mu = mu0
+    mu = np.mean(X, 0)
 
     num_iter = 0
     while num_iter < max_iter:
         # noinspection PyTypeChecker
         D = cdist(X, [mu]).astype(mu.dtype)
         # Handle divide by zero
-        D = np.where((D == 0) | (D == np.inf) | (D == np.nan), 1, D)
+        # D = np.where((D == 0) | (D == np.inf) | (D == np.nan), 1, D)
 
         non_zeros = (D != 0)[:, 0]
         D_inv = 1 / D[non_zeros]
@@ -126,12 +125,11 @@ def vardi(X, eps=1e-5, max_iter=25) -> np.ndarray:
 
         mu = mu1
         if euclidean(mu, mu1) < eps:
-            break
+            return mu
         num_iter += 1
 
-    # if math.isinf(mu) or math.isnan(mu):
-    #    return mu0
-    return mu
+    print('Ran out of Max iter for GM - returning all zeros')
+    return np.zeros_like(X[0, :])
 
 
 if __name__ == '__main__':
