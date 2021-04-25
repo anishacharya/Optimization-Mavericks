@@ -91,11 +91,12 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                 if sparse_selection is not None:
                     G, I_k = sparse_selection.sparse_approx(G=G, lr=lr)
                 # Gradient aggregation
-                t_aggregation = time.time()
+                # t_aggregation = time.time()
                 agg_g = gar.aggregate(G=G, ix=I_k)
-                aggregation_time = time.time() - t_aggregation
+                # aggregation_time = time.time() - t_aggregation
                 # print('Aggregation Time {} s'.format(aggregation_time))
-                metrics["batch_agg_cost"] += aggregation_time
+                metrics["batch_agg_cost"] += gar.agg_time
+                gar.agg_time = 0
                 # Update Model Grads with aggregated g : i.e. compute \tilde(g)
                 optimizer.zero_grad()
                 dist_grads_to_model(grads=agg_g, learner=model)

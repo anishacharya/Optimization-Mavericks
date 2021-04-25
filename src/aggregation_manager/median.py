@@ -6,6 +6,7 @@ from typing import List, Dict
 from scipy.spatial.distance import cdist, euclidean
 import torch.optim as opt
 import torch.nn as nn
+import time
 
 
 class CoordinateWiseMedian(GAR):
@@ -31,14 +32,19 @@ class GeometricMedian(GAR):
         print("GM Algorithm: {}".format(self.geo_med_alg))
 
     def get_gm(self, X: np.ndarray):
+        t0 = time.time()
         if self.geo_med_alg == 'vardi':
-            return vardi(X=X)
+            gm = vardi(X=X)
         elif self.geo_med_alg == 'weiszfeld':
-            return weiszfeld(X=X)
+            gm = weiszfeld(X=X)
         elif self.geo_med_alg == 'cvx_opt':
-            return cvx_opt(X=X)
+            gm = cvx_opt(X=X)
         else:
             raise NotImplementedError
+
+        self.agg_time = time.time() - t0
+
+        return gm
 
     def aggregate(self, G: np.ndarray, ix: List[int] = None) -> np.ndarray:
         # if ix given only aggregate along the indexes ignoring the rest of the ix
@@ -53,14 +59,7 @@ class GeometricMedian(GAR):
 
 
 def cvx_opt(X, eps=1e-5, max_iter=1000):
-    def aggregate_distance(x):
-        # noinspection PyTypeChecker
-        return cdist([x], X).sum()
-
-    # initial guess - All zero
-    mu = np.zeros_like(X[0, :])
-
-    # Now we will do GD
+    raise NotImplementedError
 
 
 def weiszfeld(X, eps=1e-5, max_iter=1000):

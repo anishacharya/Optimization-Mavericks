@@ -7,6 +7,7 @@ g = mean(g_i) Regular Mini-Batch SGD
 from .base import GAR
 import numpy as np
 from typing import List
+import time
 
 
 class Mean(GAR):
@@ -19,8 +20,10 @@ class Mean(GAR):
         if ix is not None:
             g_agg = np.zeros_like(G[0, :])
             G = G[:, ix]
+            t0 = time.time()
             low_rank_mean = self.weighted_average(stacked_grad=G)
             g_agg[ix] = low_rank_mean
+            self.agg_time = time.time() - t0
             return g_agg
         else:
             return self.weighted_average(stacked_grad=G)
