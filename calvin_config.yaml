@@ -63,7 +63,7 @@
 
     "aggregation_config":
       {
-        "gar": "geo_med",
+        "gar": "mean",
 
         "geo_med_config": {"alg": 'vardi'},
         "trimmed_mean_config":{"proportion": 0.3},
