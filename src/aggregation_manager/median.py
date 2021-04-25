@@ -93,7 +93,7 @@ def vardi(X, eps=1e-5, max_iter=25) -> np.ndarray:
         # noinspection PyTypeChecker
         D = cdist(X, [mu]).astype(mu.dtype)
         # Handle divide by zero
-        D = np.where(D == 0, 1, D)
+        D = np.where(D == 0 or np.inf or np.nan, 1, D)
 
         non_zeros = (D != 0)[:, 0]
         D_inv = 1 / D[non_zeros]
@@ -114,8 +114,8 @@ def vardi(X, eps=1e-5, max_iter=25) -> np.ndarray:
             break
         num_iter += 1
 
-    if math.isinf(mu) or math.isnan(mu):
-        return mu0
+    # if math.isinf(mu) or math.isnan(mu):
+    #    return mu0
     return mu
 
 
