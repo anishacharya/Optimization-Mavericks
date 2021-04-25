@@ -105,9 +105,6 @@ def vardi(X, eps=1e-5, max_iter=25) -> np.ndarray:
     while num_iter < max_iter:
         # noinspection PyTypeChecker
         D = cdist(X, [mu]).astype(mu.dtype)
-        # Handle divide by zero
-        # D = np.where((D == 0) | (D == np.inf) | (D == np.nan), 1, D)
-
         non_zeros = (D != 0)[:, 0]
         D_inv = 1 / D[non_zeros]
         W = np.divide(D_inv, sum(D_inv))
@@ -132,7 +129,7 @@ def vardi(X, eps=1e-5, max_iter=25) -> np.ndarray:
         num_iter += 1
 
     print('Ran out of Max iter for GM - returning all zeros')
-    return np.zeros_like(X[0, :])
+    return np.zeros_like(mu, dtype=mu.dtype)
 
 
 if __name__ == '__main__':
