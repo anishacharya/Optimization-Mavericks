@@ -89,7 +89,12 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                 # Sparse Approximation of G
                 I_k = None
                 if sparse_selection is not None:
+                    t0 = time.time()
                     G, I_k = sparse_selection.sparse_approx(G=G, lr=lr)
+                    sparse_selection_time = time.time() - t0
+                    print('Sparse Selection time {}'.format(sparse_selection_time))
+                    metrics["sparse_selection_cost"] += sparse_selection_time
+
                 # Gradient aggregation
                 # t_aggregation = time.time()
                 agg_g = gar.aggregate(G=G, ix=I_k)

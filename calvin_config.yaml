@@ -17,7 +17,7 @@
     "data_sampling_strategy": "iid",
     "num_shards": 80,
 
-    "batch_size": 32,
+    "batch_size": 64,
   },
 
   "training_config": {
@@ -35,7 +35,7 @@
             "loss": "ce",
             "lr0": 0.1,
             "momentum": 0.99,
-            "reg": 0.01,
+            "reg": 0.001,
             "nesterov": True,
             "amsgrad": false
           },

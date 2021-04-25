@@ -39,6 +39,7 @@ def init_metric(config):
                "min_norm": 1e6,
 
                # compute Time
+               "sparse_selection_cost": 0,
                "batch_grad_cost": 0,
                "batch_agg_cost": 0,
                "total_cost": 0,
