@@ -171,7 +171,7 @@ class BitFlipAttack(ByzAttack):
         ByzAttack.__init__(self, attack_config=attack_config)
 
     def attack(self, g):
-        return - g
+        return - 10 * g
 
 
 class RandomSignFlipAttack(ByzAttack):
