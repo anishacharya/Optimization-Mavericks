@@ -63,7 +63,7 @@
 
     "aggregation_config":
       {
-        "gar": "mean",
+        "gar": "geo_med",
 
         "geo_med_config": {"alg": 'vardi'},
         "trimmed_mean_config":{"proportion": 0.3},
@@ -80,15 +80,15 @@
 
         "attack_config":
           {
-            "attack_model": None,
+            "attack_model": 'bit_flip',
             "attack_mode": "un_coordinated",
 
-            "frac_adv": 0.3,
+            "frac_adv": 0.1,
 
             "rand_additive_attack_conf":
               {
                 "noise_dist": "gaussian",
-                "mean_shift": 10, "attack_std": 1,   # Gaussian noise
+                "mean_shift": 50, "attack_std": 1,   # Gaussian noise
                 "noise_range": [ -1, 0 ],             # Uniform noise
               },
 
