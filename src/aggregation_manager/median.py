@@ -35,7 +35,7 @@ class GeometricMedian(GAR):
         t0 = time.time()
         if self.geo_med_alg == 'vardi':
             gm = vardi(X=X)
-        elif self.geo_med_alg == 'weiszfeld':
+        elif self.geo_med_alg == 'wzfld':
             gm = weiszfeld(X=X)
         elif self.geo_med_alg == 'cvx_opt':
             gm = cvx_opt(X=X)
@@ -62,7 +62,7 @@ def cvx_opt(X, eps=1e-5, max_iter=1000):
     raise NotImplementedError
 
 
-def weiszfeld(X, eps=1e-5, max_iter=1000):
+def weiszfeld(X, eps=1e-5, max_iter=50):
     # inspired by: https://github.com/mrwojo
     """
     Implements: On the point for which the sum of the distances to n given points is minimum
