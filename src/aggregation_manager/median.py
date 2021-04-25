@@ -40,6 +40,21 @@ class GeometricMedian(GAR):
             return vardi(X=G)
 
 
+def weiszfeld(X, eps=1e-5, max_iter=1000):
+    # inspired by: https://github.com/mrwojo
+    """
+    Implements: On the point for which the sum of the distances to n given points is minimum
+    E Weiszfeld, F Plastria: Annals of Operations Research
+    """
+    # initial Guess : centroid / empirical mean
+    mu = np.mean(X, 0)
+    num_iter = 0
+    while num_iter < max_iter:
+        # noinspection PyTypeChecker
+        D = cdist(X, [mu]).astype(mu.dtype)
+    pass
+
+
 def vardi(X, eps=1e-5, max_iter=15) -> np.ndarray:
     # Copyright (c) Orson Peters
     # Licensed under zlib License
@@ -54,6 +69,9 @@ def vardi(X, eps=1e-5, max_iter=15) -> np.ndarray:
     while True:
         # noinspection PyTypeChecker
         D = cdist(X, [mu]).astype(mu.dtype)
+        # Handle divide by zero
+        D = np.where(D == 0, 1, D)
+
         non_zeros = (D != 0)[:, 0]
         D_inv = 1 / D[non_zeros]
         W = np.divide(D_inv, sum(D_inv))
@@ -84,8 +102,3 @@ if __name__ == '__main__':
                   [58., 3., 4.],
                   [34., 2., 43.]])
     print('vardi geo median: {}'.format(vardi(X=a)))
-
-
-
-
-
