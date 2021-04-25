@@ -26,7 +26,7 @@ class GeometricMedian(GAR):
     def __init__(self, aggregation_config):
         GAR.__init__(self, aggregation_config=aggregation_config)
         self.geo_med_config = aggregation_config.get('geo_med_config', {})
-        self.geo_med_alg = self.geo_med_config.get('geo_med_alg', 'weiszfeld')
+        self.geo_med_alg = self.geo_med_config.get('alg', 'weiszfeld')
         print("GM Algorithm: {}".format(self.geo_med_alg))
 
     def get_gm(self, X: np.ndarray):
@@ -74,7 +74,7 @@ def weiszfeld(X, eps=1e-5, max_iter=1000):
     return mu
 
 
-def vardi(X, eps=1e-5, max_iter=15) -> np.ndarray:
+def vardi(X, eps=1e-5, max_iter=25) -> np.ndarray:
     # Copyright (c) Orson Peters
     # Licensed under zlib License
     # Reference: https://stackoverflow.com/questions/30299267/geometric-median-of-multidimensional-points
@@ -83,7 +83,8 @@ def vardi(X, eps=1e-5, max_iter=15) -> np.ndarray:
     Yehuda Vardi and Cun-Hui Zhang; PNAS'2000"
     """
     # Assume each data point is arranged in a row
-    mu = np.mean(X, 0)
+    # mu = np.mean(X, 0)
+    mu = np.zeros_like(X[0, :])
     num_iter = 0
     while True:
         # noinspection PyTypeChecker
