@@ -62,7 +62,7 @@ def cvx_opt(X, eps=1e-5, max_iter=1000):
     raise NotImplementedError
 
 
-def weiszfeld(X, eps=1e-5, max_iter=50):
+def weiszfeld(X, eps=1e-5, max_iter=25):
     # inspired by: https://github.com/mrwojo
     """
     Implements: On the point for which the sum of the distances to n given points is minimum
