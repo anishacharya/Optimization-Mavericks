@@ -27,6 +27,7 @@ class GeometricMedian(GAR):
         GAR.__init__(self, aggregation_config=aggregation_config)
         self.geo_med_config = aggregation_config.get('geo_med_config', {})
         self.geo_med_alg = self.geo_med_config.get('geo_med_alg', 'weiszfeld')
+        print("GM Algorithm: {}".format(self.geo_med_alg))
 
     def get_gm(self, X: np.ndarray):
         if self.geo_med_alg == 'vardi':
