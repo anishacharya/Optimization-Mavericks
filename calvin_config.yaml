@@ -81,7 +81,7 @@
 
         "attack_config":
           {
-            "attack_model": None,
+            "attack_model": 'additive',
             "attack_mode": "un_coordinated",
 
             "frac_adv": 0.3,
