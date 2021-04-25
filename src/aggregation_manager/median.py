@@ -81,7 +81,7 @@ def weiszfeld(X, eps=1e-5, max_iter=25):
         mu = mu1
 
         if guess_movement <= eps:
-            print('Num iterations to find GM {}'.format(num_iter))
+            # print('Num iterations to find GM {}'.format(num_iter))
             return mu
         num_iter += 1
     print('Ran out of Max iter for GM - returning all zeros')
