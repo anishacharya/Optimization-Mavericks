@@ -58,7 +58,7 @@ def cvx_opt(X, eps=1e-5, max_iter=1000):
         return cdist([x], X).sum()
 
     mu = np.mean(X, 0)
-    opt_res = minimize(fun=aggregate_distance, x0=mu, method='Nelder-Mead', tol=eps)
+    opt_res = minimize(fun=aggregate_distance, x0=mu, method='COBYLA', tol=eps)
     return opt_res.x
 
 
