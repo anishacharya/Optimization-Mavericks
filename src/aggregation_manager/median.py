@@ -98,6 +98,8 @@ def vardi(X, eps=1e-5, max_iter=25) -> np.ndarray:
     """
     # Assume each data point is arranged in a row
     mu = np.mean(X, 0)
+    # if mu has inf or nans handle
+    mu = np.where((mu == np.inf) | (mu == np.nan), 0, mu)
 
     num_iter = 0
     while num_iter < max_iter:
@@ -123,6 +125,7 @@ def vardi(X, eps=1e-5, max_iter=25) -> np.ndarray:
             r_inv = 0 if r == 0 else num_zeros / r
             mu1 = max(0, 1 - r_inv) * T + min(1, r_inv) * mu
 
+        mu1 = np.where((mu1 == np.inf) | (mu1 == np.nan), 0, mu1)
         mu = mu1
         if euclidean(mu, mu1) < eps:
             return mu
