@@ -31,6 +31,8 @@ class GeometricMedian(GAR):
         self.geo_med_alg = self.geo_med_config.get('alg', 'weiszfeld')
         self.eps = self.geo_med_config.get('eps', 1e-5)
         self.max_iter = self.geo_med_config.get('max_iter', 500)
+        print('Max GM iter = {}'.format(self.max_iter))
+        print(self.geo_med_config)
 
         print("GM Algorithm: {}".format(self.geo_med_alg))
 
@@ -44,7 +46,6 @@ class GeometricMedian(GAR):
             gm = cvx_opt(X=X, eps=self.eps, max_iter=self.max_iter)
         else:
             raise NotImplementedError
-
         self.agg_time = time.time() - t0
 
         return gm
