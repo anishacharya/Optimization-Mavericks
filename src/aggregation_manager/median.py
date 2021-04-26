@@ -100,11 +100,8 @@ def vardi(X, eps, max_iter) -> np.ndarray:
     Implementation of "The multivariate L1-median and associated data depth;
     Yehuda Vardi and Cun-Hui Zhang; PNAS'2000"
     """
-    # initial guess
     mu = np.mean(X, 0)
-    # mu = np.nan_to_num(mu, copy=False, nan=0, posinf=0, neginf=0)
-    num_iter = 0
-    while num_iter < max_iter:
+    while True:
         # noinspection PyTypeChecker
         D = cdist(X, [mu]).astype(mu.dtype)
         non_zeros = (D != 0)[:, 0]
@@ -112,24 +109,19 @@ def vardi(X, eps, max_iter) -> np.ndarray:
         W = np.divide(D_inv, sum(D_inv))
         T = np.sum(W * X[non_zeros], 0)
         num_zeros = len(X) - np.sum(non_zeros)
-
         if num_zeros == 0:
             mu1 = T
         elif num_zeros == len(X):
+            # print('Time Taken For GM ={}'.format(time.time() - t0))
             return mu
         else:
             r = np.linalg.norm((T - mu) * sum(D_inv))
             r_inv = 0 if r == 0 else num_zeros / r
             mu1 = max(0, 1 - r_inv) * T + min(1, r_inv) * mu
-
-        # mu1 = np.nan_to_num(mu1, copy=False, nan=0, posinf=0, neginf=0)
-        mu = mu1
         if euclidean(mu, mu1) < eps:
-            return mu
-        num_iter += 1
-
-    print('Ran out of Max iter for GM - returning sub-optimal answer')
-    return mu
+            # print('Time Taken For GM {}'.format(time.time() - t0))
+            return mu1
+        mu = mu1
 
 
 if __name__ == '__main__':
