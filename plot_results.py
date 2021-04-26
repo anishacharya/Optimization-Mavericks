@@ -88,7 +88,7 @@ if __name__ == '__main__':
     elif plot_type == 'train_acc':
         plt.ylabel('Train Accuracy', fontsize=10)
     elif plot_type == 'train_loss':
-        plt.ylim(0.1)
+        # plt.ylim(0.1)
         plt.yscale('log')
         plt.ylabel('Training Loss', fontsize=10)
     elif plot_type == 'train_error':
