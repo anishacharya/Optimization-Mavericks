@@ -185,11 +185,11 @@ class RandomSignFlipAttack(ByzAttack):
     def __init__(self, attack_config: Dict):
         ByzAttack.__init__(self, attack_config=attack_config)
         self.sign_flip_conf = self.attack_config.get("sign_flip_conf", {})
-        self.flip_prob = self.sign_flip_conf.get("flip")
+        self.flip_prob = self.sign_flip_conf.get("flip_prob", 0.5)
 
     def attack(self, g):
         faulty_grad = np.zeros_like(g)
         for i in range(0, len(g)):
-            faulty_grad[i] = g[i] if np.random.random() < 0.5 else -g[i]
+            faulty_grad[i] = g[i] if np.random.random() > self.flip_prob else -g[i]
 
         return faulty_grad
