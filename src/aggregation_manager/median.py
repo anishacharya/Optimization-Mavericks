@@ -68,7 +68,7 @@ def cvx_opt(X, eps=1e-5, max_iter=1000):
     raise NotImplementedError
 
 
-def weiszfeld(X, eps=1e-5, max_iter=25):
+def weiszfeld(X, eps, max_iter):
     # inspired by: https://github.com/mrwojo
     """
     Implements: On the point for which the sum of the distances to n given points is minimum
@@ -92,7 +92,7 @@ def weiszfeld(X, eps=1e-5, max_iter=25):
     return mu
 
 
-def vardi(X, eps=1e-5, max_iter=500) -> np.ndarray:
+def vardi(X, eps, max_iter) -> np.ndarray:
     # Copyright (c) Orson Peters
     # Licensed under zlib License
     # Reference: https://stackoverflow.com/questions/30299267/geometric-median-of-multidimensional-points
