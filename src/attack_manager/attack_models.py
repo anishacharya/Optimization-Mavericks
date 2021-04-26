@@ -184,6 +184,8 @@ class RandomSignFlipAttack(ByzAttack):
 
     def __init__(self, attack_config: Dict):
         ByzAttack.__init__(self, attack_config=attack_config)
+        self.sign_flip_conf = self.attack_config.get("sign_flip_conf", {})
+        self.flip_prob = self.sign_flip_conf.get("flip")
 
     def attack(self, g):
         faulty_grad = np.zeros_like(g)
