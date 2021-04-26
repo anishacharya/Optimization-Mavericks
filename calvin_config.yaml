@@ -5,7 +5,7 @@
   "train_mode": "distributed",
 
   "data_config": {
-    "data_set": "fashion_mnist",
+    "data_set": "cifar10",
     "shape": [
         28,
         28
@@ -33,8 +33,8 @@
           {
             "optimizer": "SGD",
             "loss": "ce",
-            "lr0": 0.1,
-            "momentum": 0.99,
+            "lr0": 0.01,
+            "momentum": 0.9,
             "reg": 0.001,
             "nesterov": True,
             "amsgrad": false
@@ -58,7 +58,7 @@
     "learner_config":
       {
         "net": "mlp",
-        "mlp_config": { "h1": 600, "h2": 600 }
+        "mlp_config": { "h1": 500, "h2": 500 }
       },
 
     "aggregation_config":
