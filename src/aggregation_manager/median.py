@@ -102,7 +102,7 @@ def vardi(X, eps, max_iter) -> np.ndarray:
     """
     # initial guess
     mu = np.mean(X, 0)
-    np.nan_to_num(mu)
+    np.nan_to_num(mu, copy=False)
     num_iter = 0
     while num_iter < max_iter:
         # noinspection PyTypeChecker
@@ -122,7 +122,7 @@ def vardi(X, eps, max_iter) -> np.ndarray:
             r_inv = 0 if r == 0 else num_zeros / r
             mu1 = max(0, 1 - r_inv) * T + min(1, r_inv) * mu
 
-        np.nan_to_num(mu1)
+        np.nan_to_num(mu1, copy=False)
         mu = mu1
         if euclidean(mu, mu1) < eps:
             return mu
