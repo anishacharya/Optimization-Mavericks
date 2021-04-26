@@ -17,7 +17,7 @@
     "data_sampling_strategy": "iid",
     "num_shards": 80,
 
-    "batch_size": 64,
+    "batch_size": 16,
   },
 
   "training_config": {
@@ -65,7 +65,7 @@
       {
         "gar": "geo_med",
 
-        "geo_med_config": {"alg": 'vardi', 'eps': 0.00001, 'max_iter': 10},
+        "geo_med_config": {"alg": 'vardi', 'eps': 0.0001, 'max_iter': 10},
         "trimmed_mean_config":{"proportion": 0.3},
         "krum_config": {"krum_frac": 0.3},
         "norm_clip_config": { "alpha": 0.5},
@@ -83,7 +83,7 @@
             "attack_model": 'bit_flip',
             "attack_mode": "un_coordinated",
 
-            "frac_adv": 0.1,
+            "frac_adv": 0.3,
 
             "rand_additive_attack_conf":
               {
@@ -97,7 +97,7 @@
 
         "sparse_approximation_config":
           {
-            "rule": 'active_norm',
+            "rule": None,
             "axis": "column",
             "frac_coordinates": 0.2,
             "ef_server": True

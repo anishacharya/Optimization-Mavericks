@@ -24,7 +24,12 @@ def plot_(lbl: str, res_file: str, plt_type: str = 'epoch_loss', x_axis='time',
     LB = mean - 3 * np.std(scores, axis=0)
 
     if x_axis == 'time':
-        x_freq = int(result[0]["total_cost"] / len(result[0][plt_type]))
+        tot_cost = 0
+        for res_i in result:
+            print(res_i["total_cost"])
+            tot_cost += res_i["total_cost"]
+        tot_cost /= len(result)
+        x_freq = int(tot_cost / len(result[0][plt_type]))
         x = np.arange(len(result[0][plt_type])) * x_freq
     elif x_axis == 'epoch':
         x = np.arange(len(result[0][plt_type]))
