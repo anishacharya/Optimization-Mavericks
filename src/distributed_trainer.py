@@ -119,6 +119,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
         # Stop if diverging
         if (train_loss > 1e3) | np.isnan(train_loss) | np.isinf(train_loss):
             epoch = num_epochs
+            print(" *** Training is Diverging - Stopping !!! *** ")
 
         epoch += 1
         print('Training Time Progress: {}'.format(metrics["batch_grad_cost"] + metrics["batch_agg_cost"]))
