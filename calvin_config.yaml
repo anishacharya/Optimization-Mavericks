@@ -5,14 +5,14 @@
   "train_mode": "distributed",
 
   "data_config": {
-    "data_set": "cifar10",
+    "data_set": "fashion_mnist",
     "shape": [
-        32,
-        32
+        28,
+        28
     ],
 
     "num_labels": 10,
-    "num_channels": 3,
+    "num_channels": 1,
 
     "data_sampling_strategy": "iid",
     "num_shards": 80,
