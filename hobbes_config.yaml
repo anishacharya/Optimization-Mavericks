@@ -17,26 +17,25 @@
     "data_sampling_strategy": "iid",
     "num_shards": 80,
 
-    "batch_size": 32,
+    "batch_size": 64,
   },
 
   "training_config": {
     "num_clients": 32, # Number of batches in distributed setting
-    "client_fraction": 1, # partial device participation
+    "client_fraction": 1, # partial device participation - For FL
     "global_epochs": 50, # epochs
-    "local_epochs": 1, # local SGD
+    "local_epochs": 1, # local SGD # For FL
     "compute_grad_stats": false,
 
     "optimizer_config":
       {
-
         "client_optimizer_config":
           {
             "optimizer": "SGD",
             "loss": "ce",
-            "lr0": 0.1,
+            "lr0": 0.05,
             "momentum": 0.9,
-            "reg": 0.001,
+            "reg": 0.0001,
             "nesterov": True,
             "amsgrad": false
           },
@@ -45,7 +44,7 @@
           {
             "lrs": "step",
             "milestones": [1,5,10],
-            "step_size": 1,
+            "step_size": 5,
             "gamma": 0.9
           },
 
@@ -66,6 +65,7 @@
       {
         "gar": "geo_med",
 
+        "geo_med_config": {"alg": 'vardi', 'eps': 0.0001, 'max_iter': 20},
         "trimmed_mean_config":{"proportion": 0.3},
         "krum_config": {"krum_frac": 0.3},
         "norm_clip_config": { "alpha": 0.5},
@@ -82,16 +82,14 @@
           {
             "attack_model": 'additive',
             "attack_mode": "un_coordinated",
-
-            "frac_adv": 0.45,
-
+            "frac_adv": 0.3,
             "rand_additive_attack_conf":
               {
                 "noise_dist": "gaussian",
                 "mean_shift": 100, "attack_std": 1,   # Gaussian noise
                 "noise_range": [ -1, 0 ],             # Uniform noise
               },
-
+            "sign_flip_conf": {"flip_prob": 0.7},
             "attack_n_std": 1
           },
 
@@ -99,7 +97,7 @@
           {
             "rule": 'active_norm',
             "axis": "column",
-            "frac_coordinates": 0.5,
+            "frac_coordinates": 0.2,
             "ef_server": True
           }
       }
