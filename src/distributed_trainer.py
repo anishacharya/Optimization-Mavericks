@@ -18,8 +18,8 @@ from torch.utils.data import DataLoader
 import time
 from tqdm import tqdm
 import numpy as np
-np.random.seed(1)
 
+# Reproducibility Checks
 torch.backends.cudnn.deterministic = True
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -144,6 +144,10 @@ def run_batch_train(config, metrics):
     # ------------------------ Fetch configs ----------------------- #
     print('---- Fetching configs -----')
     seed = config["seed"]
+
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+
     data_config = config["data_config"]
     training_config = config["training_config"]
 
