@@ -37,16 +37,15 @@ class GeometricMedian(GAR):
         print("GM Algorithm: {}".format(self.geo_med_alg))
 
     def get_gm(self, X: np.ndarray):
-        t0 = time.time()
+
         if self.geo_med_alg == 'vardi':
-            gm = vardi(X=X, eps=self.eps, max_iter=self.max_iter)
+            gm = self.vardi(X=X, eps=self.eps, max_iter=self.max_iter)
         elif self.geo_med_alg == 'wzfld':
             gm = weiszfeld(X=X, eps=self.eps, max_iter=self.max_iter)
         elif self.geo_med_alg == 'cvx_opt':
             gm = cvx_opt(X=X, eps=self.eps, max_iter=self.max_iter)
         else:
             raise NotImplementedError
-        self.agg_time = time.time() - t0
 
         return gm
 
@@ -60,6 +59,50 @@ class GeometricMedian(GAR):
             return g_agg
         else:
             return self.get_gm(X=G)
+
+    def vardi(self, X, eps, max_iter) -> np.ndarray:
+        # Copyright (c) Orson Peters
+        # Licensed under zlib License
+        # Reference: https://stackoverflow.com/questions/30299267/geometric-median-of-multidimensional-points
+        """
+        Implementation of "The multivariate L1-median and associated data depth;
+        Yehuda Vardi and Cun-Hui Zhang; PNAS'2000"
+        """
+        # initial guess
+        t0 = time.time()
+        mu = np.mean(X, 0)
+        mu = np.nan_to_num(mu, copy=False, nan=0, posinf=0, neginf=0)
+        num_iter = 0
+        while num_iter < max_iter:
+            # noinspection PyTypeChecker
+            D = cdist(X, [mu]).astype(mu.dtype)
+            non_zeros = (D != 0)[:, 0]
+            D_inv = 1 / D[non_zeros]
+            W = np.divide(D_inv, sum(D_inv))
+            T = np.sum(W * X[non_zeros], 0)
+            num_zeros = len(X) - np.sum(non_zeros)
+
+            if num_zeros == 0:
+                mu1 = T
+            elif num_zeros == len(X):
+                self.agg_time = time.time() - t0
+                return mu
+            else:
+                r = np.linalg.norm((T - mu) * sum(D_inv))
+                r_inv = 0 if r == 0 else num_zeros / r
+                mu1 = max(0, 1 - r_inv) * T + min(1, r_inv) * mu
+
+            mu1 = np.nan_to_num(mu1, copy=False, nan=0, posinf=0, neginf=0)
+            mu = mu1
+            if euclidean(mu, mu1) < eps:
+                self.agg_time = time.time() - t0
+                return mu
+
+            num_iter += 1
+
+        self.agg_time = time.time() - t0
+        print('Ran out of Max iter for GM - returning sub-optimal answer')
+        return mu
 
 
 # Different GM Algorithms implemented  #
@@ -92,44 +135,7 @@ def weiszfeld(X, eps, max_iter):
     return mu
 
 
-def vardi(X, eps, max_iter) -> np.ndarray:
-    # Copyright (c) Orson Peters
-    # Licensed under zlib License
-    # Reference: https://stackoverflow.com/questions/30299267/geometric-median-of-multidimensional-points
-    """
-    Implementation of "The multivariate L1-median and associated data depth;
-    Yehuda Vardi and Cun-Hui Zhang; PNAS'2000"
-    """
-    # initial guess
-    mu = np.mean(X, 0)
-    mu = np.nan_to_num(mu, copy=False, nan=0, posinf=0, neginf=0)
-    num_iter = 0
-    while num_iter < max_iter:
-        # noinspection PyTypeChecker
-        D = cdist(X, [mu]).astype(mu.dtype)
-        non_zeros = (D != 0)[:, 0]
-        D_inv = 1 / D[non_zeros]
-        W = np.divide(D_inv, sum(D_inv))
-        T = np.sum(W * X[non_zeros], 0)
-        num_zeros = len(X) - np.sum(non_zeros)
 
-        if num_zeros == 0:
-            mu1 = T
-        elif num_zeros == len(X):
-            return mu
-        else:
-            r = np.linalg.norm((T - mu) * sum(D_inv))
-            r_inv = 0 if r == 0 else num_zeros / r
-            mu1 = max(0, 1 - r_inv) * T + min(1, r_inv) * mu
-
-        mu1 = np.nan_to_num(mu1, copy=False, nan=0, posinf=0, neginf=0)
-        mu = mu1
-        if euclidean(mu, mu1) < eps:
-            return mu
-        num_iter += 1
-
-    print('Ran out of Max iter for GM - returning sub-optimal answer')
-    return mu
 
 
 if __name__ == '__main__':
