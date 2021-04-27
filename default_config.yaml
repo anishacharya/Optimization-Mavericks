@@ -5,25 +5,25 @@
   "train_mode": "distributed",
 
   "data_config": {
-    "data_set": "cifar10",
+    "data_set": "mnist",
     "shape": [
-        32,
-        32
+        28,
+        28
     ],
 
     "num_labels": 10,
-    "num_channels": 3,
+    "num_channels": 1,
 
     "data_sampling_strategy": "iid",
     "num_shards": 80,
 
-    "batch_size": 32,
+    "batch_size": 64,
   },
 
   "training_config": {
     "num_clients": 32, # Number of batches in distributed setting
     "client_fraction": 1, # partial device participation - For FL
-    "global_epochs": 50, # epochs
+    "global_epochs": 2, # epochs
     "local_epochs": 1, # local SGD # For FL
     "compute_grad_stats": false,
 
@@ -33,9 +33,9 @@
           {
             "optimizer": "SGD",
             "loss": "ce",
-            "lr0": 0.01,
+            "lr0": 0.1,
             "momentum": 0.9,
-            "reg": 0.001,
+            "reg": 0.0001,
             "nesterov": True,
             "amsgrad": false
           },
@@ -44,7 +44,7 @@
           {
             "lrs": "step",
             "milestones": [1,5,10],
-            "step_size": 5,
+            "step_size": 1,
             "gamma": 0.9
           },
 
@@ -57,15 +57,15 @@
 
     "learner_config":
       {
-        "net": "mlp",
-        "mlp_config": { "h1": 500, "h2": 500 }
+        "net": "lenet",
+        "mlp_config": { "h1": 300, "h2": 300 }
       },
 
     "aggregation_config":
       {
         "gar": "geo_med",
 
-        "geo_med_config": {"alg": 'vardi', 'eps': 0.00001, 'max_iter': 10},
+        "geo_med_config": {"alg": 'vardi', 'eps': 0.0001, 'max_iter': 20},
         "trimmed_mean_config":{"proportion": 0.3},
         "krum_config": {"krum_frac": 0.3},
         "norm_clip_config": { "alpha": 0.5},
@@ -86,7 +86,7 @@
             "rand_additive_attack_conf":
               {
                 "noise_dist": "gaussian",
-                "mean_shift": 50, "attack_std": 1,   # Gaussian noise
+                "mean_shift": 100, "attack_std": 1,   # Gaussian noise
                 "noise_range": [ -1, 0 ],             # Uniform noise
               },
             "sign_flip_conf": {"flip_prob": 0.7},
