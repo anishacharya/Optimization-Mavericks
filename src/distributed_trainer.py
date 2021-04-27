@@ -99,6 +99,8 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                 # Gradient aggregation
                 agg_g = gar.aggregate(G=G, ix=I_k)
                 metrics["batch_agg_cost"] += gar.agg_time
+                metrics["gm_iter"] += gar.num_iter
+
                 gar.agg_time = 0
                 # Update Model Grads with aggregated g : i.e. compute \tilde(g)
                 optimizer.zero_grad()
@@ -131,13 +133,14 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
         print('Batch Grad Cost: {}'.format(metrics["batch_grad_cost"]))
         print('Aggregation Cost: {}'.format(metrics["batch_agg_cost"]))
         print('sparse selection takes: {}'.format(metrics["sparse_selection_cost"]))
+        print('Number of GM iterations: {}'.format(metrics['gm_iter']))
 
     # Update Time Complexities
     metrics["total_cost"] = metrics["batch_grad_cost"] + metrics["batch_agg_cost"]
     metrics["total_iter"] = total_iter
     metrics["total_agg"] = total_agg
-    metrics["batch_grad_cost"] /= total_iter
-    metrics["batch_agg_cost"] /= total_agg
+    # metrics["batch_grad_cost"] /= total_iter
+    # metrics["batch_agg_cost"] /= total_agg
 
 
 def run_batch_train(config, metrics):

@@ -31,6 +31,7 @@ class GeometricMedian(GAR):
         self.geo_med_alg = self.geo_med_config.get('alg', 'weiszfeld')
         self.eps = self.geo_med_config.get('eps', 1e-5)
         self.max_iter = self.geo_med_config.get('max_iter', 500)
+
         print('Max GM iter = {}'.format(self.max_iter))
         print(self.geo_med_config)
 
@@ -90,6 +91,7 @@ class GeometricMedian(GAR):
                 mu1 = T
             elif num_zeros == len(X):
                 self.agg_time = time.time() - t0
+                self.num_iter = num_iter
                 return mu
             else:
                 r = np.linalg.norm((T - mu) * sum(D_inv))
@@ -100,11 +102,13 @@ class GeometricMedian(GAR):
             mu = mu1
             if euclidean(mu, mu1) < eps:
                 self.agg_time = time.time() - t0
+                self.num_iter = num_iter
                 return mu
 
             num_iter += 1
 
         self.agg_time = time.time() - t0
+        self.num_iter = num_iter
         print('Ran out of Max iter for GM - returning sub-optimal answer')
         return mu
 

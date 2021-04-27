@@ -19,6 +19,7 @@ class GAR:
         self.aggregation_config = aggregation_config
         self.current_losses = []
         self.agg_time = 0
+        self.num_iter = 0  # usually if SUb routine has iters ex - GM
 
     def aggregate(self, G: np.ndarray, ix: List[int] = None) -> np.ndarray:
         """

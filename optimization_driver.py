@@ -47,6 +47,7 @@ def init_metric(config):
                # Count steps
                "total_iter": 0,
                "total_agg": 0,
+               "gm_iter": 0,
                }
     return metrics
 
