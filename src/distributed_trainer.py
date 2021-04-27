@@ -15,9 +15,12 @@ from src.attack_manager import get_attack
 
 import torch
 from torch.utils.data import DataLoader
-import numpy as np
 import time
 from tqdm import tqdm
+import numpy as np
+np.random.seed(1)
+
+torch.backends.cudnn.deterministic = True
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
