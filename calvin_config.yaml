@@ -5,14 +5,14 @@
   "train_mode": "distributed",
 
   "data_config": {
-    "data_set": "cifar10",
+    "data_set": "mnist",
     "shape": [
-        32,
-        32
+        28,
+        28
     ],
 
     "num_labels": 10,
-    "num_channels": 3,
+    "num_channels": 1,
 
     "data_sampling_strategy": "iid",
     "num_shards": 80,
@@ -23,7 +23,7 @@
   "training_config": {
     "num_clients": 32, # Number of batches in distributed setting
     "client_fraction": 1, # partial device participation - For FL
-    "global_epochs": 50, # epochs
+    "global_epochs": 2, # epochs
     "local_epochs": 1, # local SGD # For FL
     "compute_grad_stats": false,
 
@@ -33,7 +33,7 @@
           {
             "optimizer": "SGD",
             "loss": "ce",
-            "lr0": 0.05,
+            "lr0": 0.1,
             "momentum": 0.9,
             "reg": 0.0001,
             "nesterov": True,
@@ -57,8 +57,8 @@
 
     "learner_config":
       {
-        "net": "mlp",
-        "mlp_config": { "h1": 500, "h2": 500 }
+        "net": "lenet",
+        "mlp_config": { "h1": 300, "h2": 300 }
       },
 
     "aggregation_config":

@@ -34,17 +34,17 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
     compute_grad_stat_flag = train_config.get('compute_grad_stats', False)
 
     epoch = 0
-    total_iter = 0
-    total_agg = 0
 
     while epoch < num_epochs:
         model.to(device)
         model.train()
         G = None
-        comm_rounds = 0
-        print('epoch {}/{} || learning rate: {}'.format(epoch, num_epochs, optimizer.param_groups[0]['lr']))
+        epoch_grad_cost = 0
+        epoch_agg_cost = 0
+        epoch_gm_iter = 0
 
         # ------- Training Phase --------- #
+        print('epoch {}/{} || learning rate: {}'.format(epoch, num_epochs, optimizer.param_groups[0]['lr']))
         p_bar = tqdm(total=len(train_loader))
         p_bar.set_description("Epoch Progress: ")
 
@@ -69,9 +69,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
             G[ix, :] = g_i
 
             iteration_time = time.time() - t_iter
-
-            metrics["batch_grad_cost"] += iteration_time
-            total_iter += 1
+            epoch_grad_cost += iteration_time
             p_bar.update()
 
             if agg_ix == 0 and batch_ix is not 0:
@@ -98,18 +96,17 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
 
                 # Gradient aggregation
                 agg_g = gar.aggregate(G=G, ix=I_k)
-                metrics["batch_agg_cost"] += gar.agg_time
-                metrics["gm_iter"] += gar.num_iter
-
+                epoch_gm_iter += gar.num_iter
+                epoch_agg_cost += gar.agg_time
+                # Reset Agg time
                 gar.agg_time = 0
+
                 # Update Model Grads with aggregated g : i.e. compute \tilde(g)
                 optimizer.zero_grad()
                 dist_grads_to_model(grads=agg_g, learner=model)
                 model.to(device)
                 # Now Do an optimizer step with x_t+1 = x_t - \eta \tilde(g)
                 optimizer.step()
-                total_agg += 1
-                comm_rounds += 1
 
         p_bar.close()
         if lrs is not None:
@@ -129,18 +126,17 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
             print(" *** Training is Diverging - Stopping !!! *** ")
 
         epoch += 1
-        print('Training Time Progress: {}'.format(metrics["batch_grad_cost"] + metrics["batch_agg_cost"]))
-        print('Batch Grad Cost: {}'.format(metrics["batch_grad_cost"]))
-        print('Aggregation Cost: {}'.format(metrics["batch_agg_cost"]))
-        print('sparse selection takes: {}'.format(metrics["sparse_selection_cost"]))
-        print('Number of GM iterations: {}'.format(metrics['gm_iter']))
+        # update Epoch Complexity metrics
+        print("Epoch Grad Cost: {}".format(epoch_grad_cost))
+        metrics["epoch_grad_cost"].append(epoch_grad_cost)
+        print("Epoch Aggregation Cost: {}".format(epoch_agg_cost))
+        metrics["epoch_agg_cost"].append(epoch_agg_cost)
+        print("Epoch GM iterations: {}".format(epoch_gm_iter))
+        metrics["epoch_gm_iter"].append(epoch_gm_iter)
 
-    # Update Time Complexities
-    metrics["total_cost"] = metrics["batch_grad_cost"] + metrics["batch_agg_cost"]
-    metrics["total_iter"] = total_iter
-    metrics["total_agg"] = total_agg
-    # metrics["batch_grad_cost"] /= total_iter
-    # metrics["batch_agg_cost"] /= total_agg
+    # Update Total Complexities
+    metrics["total_cost"] = sum(metrics["epoch_grad_cost"]) + sum(metrics["epoch_agg_cost"])
+    metrics["avg_gm_cost"] = sum(metrics["epoch_agg_cost"]) / sum(metrics["epoch_gm_iter"])
 
 
 def run_batch_train(config, metrics):

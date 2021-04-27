@@ -30,24 +30,24 @@ def init_metric(config):
                "train_loss": [],
                "train_acc": [],
 
-               # Grad Matrix Stats
-               "frac_mass_retained": [],
-               "grad_norm_dist": [],
-               "norm_bins": None,
-               "mass_bins": None,
-               "max_norm": 0,
-               "min_norm": 1e6,
+               # # Grad Matrix Stats
+               # "frac_mass_retained": [],
+               # "grad_norm_dist": [],
+               # "norm_bins": None,
+               # "mass_bins": None,
+               # "max_norm": 0,
+               # "min_norm": 1e6,
 
-               # compute Time
-               "sparse_selection_cost": 0,
-               "batch_grad_cost": 0,
-               "batch_agg_cost": 0,
+               # compute Time stats per epoch
+               "sparse_selection_cost": [],
+               "epoch_grad_cost": [],
+               "epoch_agg_cost": [],
+               "epoch_gm_iter": [],
+
+
+               # Total Costs
                "total_cost": 0,
-
-               # Count steps
-               "total_iter": 0,
-               "total_agg": 0,
-               "gm_iter": 0,
+               "avg_gm_cost": 0,
                }
     return metrics
 
