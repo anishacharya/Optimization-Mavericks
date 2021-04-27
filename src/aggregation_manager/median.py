@@ -91,6 +91,7 @@ class GeometricMedian(GAR):
                 mu1 = T
             elif num_zeros == len(X):
                 self.agg_time = time.time() - t0
+                print('GM iter {}'.format(num_iter))
                 self.num_iter = num_iter
                 return mu
             else:
@@ -102,6 +103,7 @@ class GeometricMedian(GAR):
             mu = mu1
             if euclidean(mu, mu1) < eps:
                 self.agg_time = time.time() - t0
+                print('GM iter {}'.format(num_iter))
                 self.num_iter = num_iter
                 return mu
 
