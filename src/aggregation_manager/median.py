@@ -76,8 +76,8 @@ class GeometricMedian(GAR):
         # initial guess
         t0 = time.time()
         mu = np.mean(X, 0)
-        # mu = np.nan_to_num(mu, copy=False, nan=0, posinf=0, neginf=0)
-        num_iter = 0
+        mu = np.nan_to_num(mu, copy=False, nan=0, posinf=0, neginf=0)
+        num_iter = 1
         while num_iter < max_iter:
             # noinspection PyTypeChecker
             D = cdist(X, [mu]).astype(mu.dtype)
@@ -99,14 +99,15 @@ class GeometricMedian(GAR):
                 r_inv = 0 if r == 0 else num_zeros / r
                 mu1 = max(0, 1 - r_inv) * T + min(1, r_inv) * mu
 
-            # mu1 = np.nan_to_num(mu1, copy=False, nan=0, posinf=0, neginf=0)
-            mu = mu1
+            mu1 = np.nan_to_num(mu1, copy=False, nan=0, posinf=0, neginf=0)
+
             if euclidean(mu, mu1) < eps:
                 self.agg_time = time.time() - t0
                 print('GM iter {}'.format(num_iter))
                 self.num_iter = num_iter
                 return mu
 
+            mu = mu1
             num_iter += 1
 
         self.agg_time = time.time() - t0

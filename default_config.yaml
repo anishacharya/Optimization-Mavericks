@@ -1,106 +1,105 @@
 # Copyright (c) Anish Acharya.
 # Licensed under the MIT License
 {
-        "seed": 1,
-        "train_mode": "distributed",
+  "seed": 1,
+  "train_mode": "distributed",
 
-        "data_config": {
-            "data_set": "mnist",
-            "shape": [
-                28,
-                28
-            ],
+  "data_config": {
+    "data_set": "cifar10",
+    "shape": [
+        32,
+        32
+    ],
 
-            "num_labels": 10,
-            "num_channels": 1,
+    "num_labels": 10,
+    "num_channels": 3,
 
-            "data_sampling_strategy": "iid",
-            "num_shards": 80,
+    "data_sampling_strategy": "iid",
+    "num_shards": 80,
 
-            "batch_size": 32,
-        },
+    "batch_size": 32,
+  },
 
-        "training_config": {
-            "num_clients": 16, # Number of batches in distributed setting
-            "client_fraction": 1, # partial device participation
-            "global_epochs": 5, # epochs
-            "local_epochs": 1, # local SGD
-            "compute_grad_stats": false,
+  "training_config": {
+    "num_clients": 32, # Number of batches in distributed setting
+    "client_fraction": 1, # partial device participation - For FL
+    "global_epochs": 50, # epochs
+    "local_epochs": 1, # local SGD # For FL
+    "compute_grad_stats": false,
 
-            "optimizer_config":
+    "optimizer_config":
+      {
+        "client_optimizer_config":
+          {
+            "optimizer": "SGD",
+            "loss": "ce",
+            "lr0": 0.01,
+            "momentum": 0.9,
+            "reg": 0.001,
+            "nesterov": True,
+            "amsgrad": false
+          },
+
+        "client_lrs_config":
+          {
+            "lrs": "step",
+            "milestones": [1,5,10],
+            "step_size": 5,
+            "gamma": 0.9
+          },
+
+        "server_optimizer_config":
+          {
+            "optimizer": "SGD",
+            "lr0": 1
+          }
+      },
+
+    "learner_config":
+      {
+        "net": "mlp",
+        "mlp_config": { "h1": 500, "h2": 500 }
+      },
+
+    "aggregation_config":
+      {
+        "gar": "geo_med",
+
+        "geo_med_config": {"alg": 'vardi', 'eps': 0.00001, 'max_iter': 10},
+        "trimmed_mean_config":{"proportion": 0.3},
+        "krum_config": {"krum_frac": 0.3},
+        "norm_clip_config": { "alpha": 0.5},
+
+        "compression_config":
+          {
+            "compression_operator": None,
+            "frac_coordinates_to_keep": 0.5,
+            "bits": 2,
+            "ef_client": False
+          },
+
+        "attack_config":
+          {
+            "attack_model": 'additive',
+            "attack_mode": "un_coordinated",
+            "frac_adv": 0.3,
+            "rand_additive_attack_conf":
               {
+                "noise_dist": "gaussian",
+                "mean_shift": 50, "attack_std": 1,   # Gaussian noise
+                "noise_range": [ -1, 0 ],             # Uniform noise
+              },
+            "sign_flip_conf": {"flip_prob": 0.7},
+            "attack_n_std": 1
+          },
 
-                "client_optimizer_config":
-                {
-                    "optimizer": "SGD",
-                    "loss": "ce",
-                    "lr0": 0.01,
-                    "momentum": 0.9,
-                    "reg": 0.0001,
-                    "nesterov": false,
-                    "amsgrad": false
-                },
-
-                "client_lrs_config":
-                {
-                    "lrs": "step",
-                    "milestones": [1,5,10],
-                    "step_size": 1,
-                    "gamma": 0.99
-                },
-
-                "server_optimizer_config":
-                {
-                    "optimizer": "SGD",
-                    "lr0": 1
-                }
-            },
-
-            "learner_config":
-            {
-                "net": "lenet",
-                "mlp_config": { "h1": 300, "h2": 300 }
-            },
-
-            "aggregation_config":
-              {
-                "gar": "mean",
-
-                "trimmed_mean_config":{"proportion": 0.3},
-                "krum_config": {"krum_frac": 0.3},
-                "norm_clip_config": { "alpha": 0.5},
-
-                "compression_config":
-                {
-                    "compression_operator": None,
-                    "frac_coordinates_to_keep": 0.5,
-                    "bits": 2,
-                    "ef_client": False
-                },
-
-                "attack_config":
-                {
-                    "attack_model": None,
-                    "attack_mode": "un_coordinated",
-
-                    "frac_adv": 0.3,
-
-                    "additive_attack_conf":
-                      { "noise_dist": None,
-                        "mean_shift": 100, "attack_std": 1,   # Gaussian noise
-                        "noise_range": [ -1, 0 ],             # Uniform noise
-                      },
-
-                    "attack_n_std": 1
-                },
-
-                "sparse_approximation_config":
-                {
-                    "rule": None,
-                    "axis": "column",
-                    "frac_coordinates": 0.1,
-                    "ef_server": True
-                }
-            }
-        }
-    }
+        "sparse_approximation_config":
+          {
+            "rule": None,
+            "axis": "column",
+            "frac_coordinates": 1,
+            "ef_server": True
+          }
+      }
+  }
+}
