@@ -41,9 +41,9 @@ class GeometricMedian(GAR):
         if self.geo_med_alg == 'vardi':
             gm = self.vardi(X=X, eps=self.eps, max_iter=self.max_iter)
         elif self.geo_med_alg == 'wzfld':
-            gm = weiszfeld(X=X, eps=self.eps, max_iter=self.max_iter)
+            gm = self.weiszfeld(X=X, eps=self.eps, max_iter=self.max_iter)
         elif self.geo_med_alg == 'cvx_opt':
-            gm = cvx_opt(X=X, eps=self.eps, max_iter=self.max_iter)
+            gm = self.cvx_opt(X=X, eps=self.eps, max_iter=self.max_iter)
         else:
             raise NotImplementedError
 
