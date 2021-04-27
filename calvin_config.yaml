@@ -5,7 +5,7 @@
   "train_mode": "distributed",
 
   "data_config": {
-    "data_set": "mnist",
+    "data_set": "fashion_mnist",
     "shape": [
         28,
         28
@@ -57,7 +57,7 @@
 
     "learner_config":
       {
-        "net": "mlp",
+        "net": "lenet",
         "mlp_config": { "h1": 300, "h2": 300 }
       },
 
