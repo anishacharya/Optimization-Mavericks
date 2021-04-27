@@ -11,6 +11,7 @@ corresponds to g_i i.e. gradient vector computed on batch / client i
 """
 
 import numpy as np
+np.random.seed(1)
 
 
 class SparseApproxMatrix:

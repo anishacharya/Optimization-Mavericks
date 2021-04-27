@@ -18,6 +18,7 @@ from torch.utils.data import DataLoader
 import numpy as np
 import time
 from tqdm import tqdm
+
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
