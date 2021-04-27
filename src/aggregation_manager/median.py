@@ -60,6 +60,10 @@ class GeometricMedian(GAR):
         else:
             return self.get_gm(X=G)
 
+    # ------------------------------------ #
+    # Different GM Algorithms implemented  #
+    # ------------------------------------ #
+
     def vardi(self, X, eps, max_iter) -> np.ndarray:
         # Copyright (c) Orson Peters
         # Licensed under zlib License
@@ -104,43 +108,32 @@ class GeometricMedian(GAR):
         print('Ran out of Max iter for GM - returning sub-optimal answer')
         return mu
 
+    def weiszfeld(self, X, eps, max_iter):
+        # inspired by: https://github.com/mrwojo
+        """
+        Implements: On the point for which the sum of the distances to n given points is minimum
+        E Weiszfeld, F Plastria: Annals of Operations Research
+        """
+        # initial Guess : centroid / empirical mean
+        t0 = time.time()
+        mu = np.mean(X, 0)
+        num_iter = 0
+        while num_iter < max_iter:
+            # noinspection PyTypeChecker
+            distances = cdist(X, [mu]).astype(mu.dtype)
+            distances = np.where(distances == 0, 1, distances)
+            mu1 = (X / distances).sum(axis=0) / (1. / distances).sum(axis=0)
+            guess_movement = np.sqrt(((mu - mu1) ** 2).sum())
 
-# Different GM Algorithms implemented  #
-# ------------------------------------ #
-def cvx_opt(X, eps=1e-5, max_iter=1000):
-    raise NotImplementedError
+            mu = mu1
+            if guess_movement <= eps:
+                self.agg_time = time.time() - t0
+                return mu
+            num_iter += 1
 
+        self.agg_time = time.time() - t0
+        print('Ran out of Max iter for GM - returning sub optimal answer')
+        return mu
 
-def weiszfeld(X, eps, max_iter):
-    # inspired by: https://github.com/mrwojo
-    """
-    Implements: On the point for which the sum of the distances to n given points is minimum
-    E Weiszfeld, F Plastria: Annals of Operations Research
-    """
-    # initial Guess : centroid / empirical mean
-    mu = np.mean(X, 0)
-    num_iter = 0
-    while num_iter < max_iter:
-        # noinspection PyTypeChecker
-        distances = cdist(X, [mu]).astype(mu.dtype)
-        distances = np.where(distances == 0, 1, distances)
-        mu1 = (X / distances).sum(axis=0) / (1. / distances).sum(axis=0)
-        guess_movement = np.sqrt(((mu - mu1) ** 2).sum())
-
-        mu = mu1
-        if guess_movement <= eps:
-            return mu
-        num_iter += 1
-    print('Ran out of Max iter for GM - returning sub optimal answer')
-    return mu
-
-
-
-
-
-if __name__ == '__main__':
-    a = np.array([[2., 3., 8.],
-                  [10., 4., 3.],
-                  [58., 3., 4.],
-                  [34., 2., 43.]])
-    print('vardi geo median: {}'.format(vardi(X=a)))
+    def cvx_opt(self, X, eps=1e-5, max_iter=1000):
+        raise NotImplementedError

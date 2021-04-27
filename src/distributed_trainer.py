@@ -65,6 +65,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
             G[ix, :] = g_i
 
             iteration_time = time.time() - t_iter
+
             metrics["batch_grad_cost"] += iteration_time
             total_iter += 1
             p_bar.update()
@@ -123,6 +124,8 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
 
         epoch += 1
         print('Training Time Progress: {}'.format(metrics["batch_grad_cost"] + metrics["batch_agg_cost"]))
+        print('Batch Grad Cost: {}'.format(metrics["batch_grad_cost"]))
+        print('Aggregation Cost: {}'.format(metrics["batch_agg_cost"]))
         print('sparse selection takes: {}'.format(metrics["sparse_selection_cost"]))
 
     # Update Time Complexities
