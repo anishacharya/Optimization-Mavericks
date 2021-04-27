@@ -33,7 +33,7 @@
           {
             "optimizer": "SGD",
             "loss": "ce",
-            "lr0": 0.01,
+            "lr0": 0.05,
             "momentum": 0.9,
             "reg": 0.001,
             "nesterov": True,
