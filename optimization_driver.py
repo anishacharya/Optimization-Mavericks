@@ -39,7 +39,7 @@ def init_metric(config):
                # "min_norm": 1e6,
 
                # compute Time stats per epoch
-               "sparse_selection_cost": [],
+               "epoch_sparse_approx_cost": [],
                "epoch_grad_cost": [],
                "epoch_agg_cost": [],
                "epoch_gm_iter": [],

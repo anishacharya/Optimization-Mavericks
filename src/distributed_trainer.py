@@ -42,6 +42,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
         epoch_grad_cost = 0
         epoch_agg_cost = 0
         epoch_gm_iter = 0
+        epoch_sparse_cost = 0
 
         # ------- Training Phase --------- #
         print('epoch {}/{} || learning rate: {}'.format(epoch, num_epochs, optimizer.param_groups[0]['lr']))
@@ -91,8 +92,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                 if sparse_selection is not None:
                     t0 = time.time()
                     G, I_k = sparse_selection.sparse_approx(G=G, lr=lr)
-                    sparse_selection_time = time.time() - t0
-                    metrics["sparse_selection_cost"] += sparse_selection_time
+                    epoch_sparse_cost += time.time() - t0
 
                 # Gradient aggregation
                 agg_g = gar.aggregate(G=G, ix=I_k)
@@ -133,6 +133,8 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
         metrics["epoch_agg_cost"].append(epoch_agg_cost)
         print("Epoch GM iterations: {}".format(epoch_gm_iter))
         metrics["epoch_gm_iter"].append(epoch_gm_iter)
+        print("Epoch Sparse Approx Cost: {}".format(epoch_sparse_cost))
+        metrics["epoch_sparse_approx_cost"].append(epoch_sparse_cost)
 
     # Update Total Complexities
     metrics["total_cost"] = sum(metrics["epoch_grad_cost"]) + sum(metrics["epoch_agg_cost"])
