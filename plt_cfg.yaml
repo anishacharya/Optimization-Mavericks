@@ -2,24 +2,32 @@
     "plot_type": 'train_loss',
     "x_ax": 'time',
     "sampling_freq": 1,
-    "dir": 'result_dumps/cifar10/mlp/ag.30/',
+    "dir": 'result_dumps/fmnist/lenet/clean/',
     "plots":
       [
         {
-          'file': 'gm',
-          'label': "\\textsc{Gm-SGD}",
+          'file': 'mean',
+          'label': "\\textsc{SGD}",
           'line_width': 2,
           'marker': None,
           'line_style': 'solid',
           "clr": 'b',
         },
         {
-          'file': 'bgmd.30',
-          'label': "\\textsc{BGmD}",
+          'file': 'gm',
+          'label': "\\textsc{Gm-SGD}",
           'line_width': 2,
           'marker': None,
           'line_style': 'solid',
           "clr": 'r',
+        },
+        {
+          'file': 'bgmd.10',
+          'label': "\\textsc{BGmD}",
+          'line_width': 2,
+          'marker': None,
+          'line_style': 'solid',
+          "clr": 'k',
         },
 #        {
 #          'file': 'bgmd.20',

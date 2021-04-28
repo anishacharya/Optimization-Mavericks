@@ -391,10 +391,10 @@
             152,
             153
         ],
-        "total_cost": 2078.98198223114,
+        "total_cost": 561.5476372584749,
         "total_grad_cost": 195.41842126846313,
         "total_agg_cost": 129.7220886096406,
-        "total_sparse_cost": 771.6950943470001,
+        "total_sparse_cost": 236.4071273803711,
         "total_gm_iter": 4452,
         "avg_gm_cost": 0.029137935446909385
     },
@@ -790,11 +790,11 @@
             150,
             148
         ],
-        "total_cost": 2019.6746971607208,
-        "total_grad_cost": 910.2992641925812,
-        "total_agg_cost": 351.35010409355164,
-        "total_sparse_cost": 758.025328874588,
+        "total_cost": 548.0024942718394,
+        "total_grad_cost": 191.42744779586792,
+        "total_agg_cost": 118.12603562697248,
+        "total_sparse_cost": 238.44901084899902,
         "total_gm_iter": 4394,
-        "avg_gm_cost": 0.07996133456840046
+        "avg_gm_cost": 0.02688348557737198
     }
 ]
