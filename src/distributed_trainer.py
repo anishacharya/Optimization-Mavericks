@@ -151,7 +151,9 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
     metrics["total_sparse_cost"] = sum(metrics["epoch_sparse_approx_cost"])
 
     metrics["total_cost"] = metrics["total_grad_cost"] + metrics["total_agg_cost"] + metrics["total_sparse_cost"]
-    metrics["avg_gm_cost"] = metrics["total_agg_cost"] / metrics["total_gm_iter"]
+    if metrics["total_gm_iter"] != 0:
+        # Handle Non GM GARs
+        metrics["avg_gm_cost"] = metrics["total_agg_cost"] / metrics["total_gm_iter"]
 
 
 def run_batch_train(config, metrics):
