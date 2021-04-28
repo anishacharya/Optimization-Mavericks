@@ -26,4 +26,7 @@ class Mean(GAR):
             self.agg_time = time.time() - t0
             return g_agg
         else:
-            return self.weighted_average(stacked_grad=G)
+            t0 = time.time()
+            g_agg = self.weighted_average(stacked_grad=G)
+            self.agg_time = time.time() - t0
+            return g_agg
