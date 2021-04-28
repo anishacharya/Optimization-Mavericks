@@ -71,7 +71,6 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
 
             iteration_time = time.time() - t_iter
             epoch_grad_cost += iteration_time
-            metrics["num_iteration"] += 1
             p_bar.update()
 
             if agg_ix == 0 and batch_ix is not 0:
@@ -97,11 +96,13 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
 
                 # Gradient aggregation
                 agg_g = gar.aggregate(G=G, ix=I_k)
-                metrics["num_agg_steps"] += 1
+
                 epoch_gm_iter += gar.num_iter
                 epoch_agg_cost += gar.agg_time
-                # Reset Agg time
+
+                # Reset GAR stats
                 gar.agg_time = 0
+                gar.num_iter = 0
 
                 # Update Model Grads with aggregated g : i.e. compute \tilde(g)
                 optimizer.zero_grad()
@@ -131,16 +132,24 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
         # update Epoch Complexity metrics
         print("Epoch Grad Cost: {}".format(epoch_grad_cost))
         metrics["epoch_grad_cost"].append(epoch_grad_cost)
+
         print("Epoch Aggregation Cost: {}".format(epoch_agg_cost))
         metrics["epoch_agg_cost"].append(epoch_agg_cost)
+
         print("Epoch GM iterations: {}".format(epoch_gm_iter))
         metrics["epoch_gm_iter"].append(epoch_gm_iter)
+
         print("Epoch Sparse Approx Cost: {}".format(epoch_sparse_cost))
         metrics["epoch_sparse_approx_cost"].append(epoch_sparse_cost)
 
     # Update Total Complexities
-    metrics["total_cost"] = sum(metrics["epoch_grad_cost"]) + sum(metrics["epoch_agg_cost"])
-    metrics["avg_gm_cost"] = sum(metrics["epoch_agg_cost"]) / sum(metrics["epoch_gm_iter"])
+    metrics["total_grad_cost"] = sum(metrics["epoch_grad_cost"])
+    metrics["total_agg_cost"] = sum(metrics["epoch_agg_cost"])
+    metrics["total_gm_iter"] = sum(metrics["epoch_gm_iter"])
+    metrics["total_sparse_cost"] = sum(metrics["epoch_sparse_approx_cost"])
+
+    metrics["total_cost"] = metrics["total_grad_cost"] + metrics["total_agg_cost"] + metrics["total_sparse_cost"]
+    metrics["avg_gm_cost"] = metrics["total_agg_cost"] / metrics["total_gm_iter"]
 
 
 def run_batch_train(config, metrics):
