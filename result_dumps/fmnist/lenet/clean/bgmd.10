@@ -392,11 +392,11 @@
             153
         ],
         "total_cost": 2078.98198223114,
-        "total_grad_cost": 931.7606320381165,
-        "total_agg_cost": 375.52625584602356,
+        "total_grad_cost": 195.41842126846313,
+        "total_agg_cost": 129.7220886096406,
         "total_sparse_cost": 771.6950943470001,
         "total_gm_iter": 4452,
-        "avg_gm_cost": 0.08435001254403045
+        "avg_gm_cost": 0.029137935446909385
     },
     {
         "config": {

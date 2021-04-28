@@ -50,6 +50,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
         p_bar.set_description("Epoch Progress: ")
 
         for batch_ix, (images, labels) in enumerate(train_loader):
+            metrics["num_iter"] += 1
             t_iter = time.time()
 
             images = images.to(device)
@@ -110,6 +111,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                 model.to(device)
                 # Now Do an optimizer step with x_t+1 = x_t - \eta \tilde(g)
                 optimizer.step()
+                metrics["num_agg"] += 1
 
         p_bar.close()
         if lrs is not None:
