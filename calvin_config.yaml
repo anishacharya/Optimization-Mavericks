@@ -23,7 +23,7 @@
   "training_config": {
     "num_clients": 32, # Number of batches in distributed setting
     "client_fraction": 1, # partial device participation - For FL
-    "global_epochs": 50, # epochs
+    "global_epochs": 30, # epochs
     "local_epochs": 1, # local SGD # For FL
     "compute_grad_stats": false,
 
