@@ -5,6 +5,7 @@
 import numpy as np
 from typing import List, Dict
 import warnings
+np.random.seed(1)
 
 
 class ByzAttack:
