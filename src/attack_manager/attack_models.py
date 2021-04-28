@@ -5,7 +5,6 @@
 import numpy as np
 from typing import List, Dict
 import warnings
-np.random.seed(1)
 
 
 class ByzAttack:
@@ -21,6 +20,7 @@ class ByzAttack:
         pass
 
     def launch_attack(self, G: np.ndarray):
+        np.random.seed(1)
         max_adv = int(self.frac_adv * G.shape[0])
         if self.attack_mode == 'un_coordinated':
             for i in range(G.shape[0]):
