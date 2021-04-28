@@ -80,7 +80,7 @@
 
         "attack_config":
           {
-            "attack_model": None,
+            "attack_model": 'random',
             "attack_mode": "un_coordinated",
             "frac_adv": 0.3,
             "rand_additive_attack_conf":
