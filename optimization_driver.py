@@ -48,6 +48,10 @@ def init_metric(config):
                # Total Costs
                "total_cost": 0,
                "avg_gm_cost": 0,
+
+               # keep track of num of iterations etc
+               "num_iteration": 0,
+               "num_agg_steps": 0,
                }
     return metrics
 

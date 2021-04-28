@@ -71,6 +71,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
 
             iteration_time = time.time() - t_iter
             epoch_grad_cost += iteration_time
+            metrics["num_iteration"] += 1
             p_bar.update()
 
             if agg_ix == 0 and batch_ix is not 0:
@@ -96,6 +97,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
 
                 # Gradient aggregation
                 agg_g = gar.aggregate(G=G, ix=I_k)
+                metrics["num_agg_steps"] += 1
                 epoch_gm_iter += gar.num_iter
                 epoch_agg_cost += gar.agg_time
                 # Reset Agg time
