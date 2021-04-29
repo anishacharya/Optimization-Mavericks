@@ -21,8 +21,8 @@ def plot_(lbl: str, res_file: str, plt_type: str = 'epoch_loss', x_axis='time',
 
     scores = np.array(scores)
     mean = np.mean(scores, axis=0)
-    UB = mean + 1 * np.std(scores, axis=0)
-    LB = mean - 1 * np.std(scores, axis=0)
+    UB = mean + 3 * np.std(scores, axis=0)
+    LB = mean - 3 * np.std(scores, axis=0)
 
     if x_axis == 'time':
         tot_cost = 0
@@ -98,9 +98,9 @@ if __name__ == '__main__':
         # plt.ylim(0.3)
         plt.yscale('log')
         ax.yaxis.set_major_formatter(ticker.ScalarFormatter())
-        ax.yaxis.set_major_locator(ticker.FixedLocator([1]))
+        # ax.yaxis.set_major_locator(ticker.FixedLocator([1]))
         ax.yaxis.set_minor_formatter(ticker.ScalarFormatter())
-        ax.yaxis.set_minor_locator(ticker.FixedLocator([0.5, 0.3]))
+        # ax.yaxis.set_minor_locator(ticker.FixedLocator([0.5, 0.3]))
         plt.ylabel('Training Loss', fontsize=10)
     elif plot_type == 'train_error':
         plt.ylabel('Train Error', fontsize=10)

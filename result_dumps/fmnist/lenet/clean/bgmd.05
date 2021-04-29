@@ -391,12 +391,12 @@
             289,
             290
         ],
-        "total_cost": 2287.8622024059296,
-        "total_grad_cost": 986.5524926185608,
+        "total_cost": 776.9616906642914,
+        "total_grad_cost": 341.86855459213257,
         "total_agg_cost": 169.87144017219543,
-        "total_sparse_cost": 1131.4382696151733,
+        "total_sparse_cost": 265.2216958999634,
         "total_gm_iter": 8641,
-        "avg_gm_cost": 0.01965877099550925,
+        "avg_gm_cost": 0.01938214027488413,
         "num_iter": 56250,
         "num_agg": 1740
     },
@@ -792,12 +792,12 @@
             287,
             290
         ],
-        "total_cost": 2867.32848405838,
-        "total_grad_cost": 1162.9265937805176,
-        "total_agg_cost": 185.68580293655396,
-        "total_sparse_cost": 1518.7160873413086,
+        "total_cost": 706.4220028465957,
+        "total_grad_cost": 341.8037338256836,
+        "total_agg_cost": 118.86874108969876,
+        "total_sparse_cost": 245.74952793121338,
         "total_gm_iter": 8542,
-        "avg_gm_cost": 0.021737977398332234,
+        "avg_gm_cost": 0.013915797364750498,
         "num_iter": 56250,
         "num_agg": 1740
     }
