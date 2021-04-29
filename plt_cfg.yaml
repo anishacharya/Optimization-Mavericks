@@ -22,7 +22,7 @@
           "clr": 'r',
         },
         {
-          'file': 'bgmd.20',
+          'file': 'bgmd.25',
           'label': "\\textsc{BGmD}",
           'line_width': 2,
           'marker': None,

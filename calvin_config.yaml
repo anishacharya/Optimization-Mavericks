@@ -35,7 +35,7 @@
             "loss": "ce",
             "lr0": 0.1,
             "momentum": 0.9,
-            "reg": 0.0001,
+            "reg": 0.00001,
             "nesterov": True,
             "amsgrad": false
           },
