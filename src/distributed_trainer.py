@@ -113,6 +113,14 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                 optimizer.step()
                 metrics["num_agg"] += 1
 
+                train_loss = evaluate_classifier(model=model, train_loader=train_loader, test_loader=test_loader,
+                                                 metrics=metrics, criterion=criterion, device=device,
+                                                 epoch=epoch, num_epochs=num_epochs)
+                # Stop if diverging
+                if (train_loss > 1e3) | np.isnan(train_loss) | np.isinf(train_loss):
+                    epoch = num_epochs
+                    print(" *** Training is Diverging - Stopping !!! *** ")
+
         p_bar.close()
         if lrs is not None:
             lrs.step()
@@ -121,14 +129,6 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
         # if compute_grad_stat_flag is True:
         #     print("Computing Additional Stats on G")
         #     compute_grad_stats(G=G, metrics=metrics)
-
-        train_loss = evaluate_classifier(model=model, train_loader=train_loader, test_loader=test_loader,
-                                         metrics=metrics, criterion=criterion, device=device,
-                                         epoch=epoch, num_epochs=num_epochs)
-        # Stop if diverging
-        if (train_loss > 1e3) | np.isnan(train_loss) | np.isinf(train_loss):
-            epoch = num_epochs
-            print(" *** Training is Diverging - Stopping !!! *** ")
 
         epoch += 1
         # update Epoch Complexity metrics
