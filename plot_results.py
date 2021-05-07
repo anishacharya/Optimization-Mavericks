@@ -97,7 +97,7 @@ if __name__ == '__main__':
     elif plot_type == 'train_loss':
         # plt.ylim(0.3)
         plt.yscale('log')
-        ax.yaxis.set_major_formatter(ticker.ScalarFormatter())
+        # ax.yaxis.set_major_formatter(ticker.ScalarFormatter())
         # ax.yaxis.set_major_locator(ticker.FixedLocator([1]))
         ax.yaxis.set_minor_formatter(ticker.ScalarFormatter())
         # ax.yaxis.set_minor_locator(ticker.FixedLocator([0.5, 0.3]))
