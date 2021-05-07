@@ -1,6 +1,6 @@
 {
     "plot_type": 'train_loss',
-    "x_ax": 'time',
+    "x_ax": 'epoch',
     "sampling_freq": 1,
     "dir": 'result_dumps/fmnist/lenet/clean/',
     "plots":
@@ -13,14 +13,14 @@
           'line_style': 'solid',
           "clr": 'b',
         },
-#        {
-#          'file': 'gm',
-#          'label': "\\textsc{Gm-SGD}",
-#          'line_width': 2,
-#          'marker': None,
-#          'line_style': 'solid',
-#          "clr": 'r',
-#        },
+        {
+          'file': 'gm',
+          'label': "\\textsc{Gm-SGD}",
+          'line_width': 2,
+          'marker': None,
+          'line_style': 'solid',
+          "clr": 'r',
+        },
 #        {
 #          'file': 'bgmd.05',
 #          'label': "\\textsc{BGmD}",

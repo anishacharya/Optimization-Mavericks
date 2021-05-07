@@ -17,7 +17,7 @@
     "data_sampling_strategy": "iid",
     "num_shards": 80,
 
-    "batch_size": 64,
+    "batch_size": 16,
   },
 
   "training_config": {
