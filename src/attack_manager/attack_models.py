@@ -172,6 +172,7 @@ class BitFlipAttack(ByzAttack):
         ByzAttack.__init__(self, attack_config=attack_config)
         self.sign_flip_conf = self.attack_config.get("sign_flip_conf", {})
         self.flip_scale = self.sign_flip_conf.get("flip_scale", 2)
+        print(' Bit flip attack {} '.format(self.sign_flip_conf))
 
     def attack(self, g):
         return - self.flip_scale * g
