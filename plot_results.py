@@ -8,7 +8,7 @@ import yaml
 import matplotlib.ticker as ticker
 
 
-def plot_(lbl: str, res_file: str, plt_type: str = 'epoch_loss', x_axis='time',
+def plot_(lbl: str, res_file: str, plt_type: str = 'epoch_loss', x_axis='time', plot_freq=10,
           line_width=4, marker=None, line_style=None, optima: float = 0.0, color=None):
     with open(res_file, 'rb') as f:
         result = json.load(f)
@@ -17,6 +17,7 @@ def plot_(lbl: str, res_file: str, plt_type: str = 'epoch_loss', x_axis='time',
     for run in result:
         res = run[plt_type]
         res -= optima * np.ones(len(res))
+        res = res[::plot_freq]
         scores += [res]
 
     scores = np.array(scores)
@@ -30,8 +31,8 @@ def plot_(lbl: str, res_file: str, plt_type: str = 'epoch_loss', x_axis='time',
             print(res_i["total_cost"])
             tot_cost += res_i["total_cost"]
         tot_cost /= len(result)
-        x_freq = int(tot_cost / len(result[0][plt_type]))
-        x = np.arange(len(result[0][plt_type])) * x_freq
+        x_freq = int(tot_cost / len(mean))
+        x = np.arange(len(mean)) * x_freq
     elif x_axis == 'epoch':
         x = np.arange(len(result[0][plt_type]))
     else:
