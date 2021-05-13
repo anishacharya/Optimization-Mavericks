@@ -51,3 +51,32 @@ class LeNet(nn.Module):
         z = self.fc2(x)
         return z
 
+
+class SmallCNN(nn.Module):
+    # noinspection PyTypeChecker
+    def __init__(self, nc, nh, hw, num_classes, seed=1):
+        super(SmallCNN, self).__init__()
+        torch.manual_seed(seed)
+        input_shape = (nc, nh, hw)
+        self.conv1 = nn.Conv2d(1,  nc, kernel_size=3, stride=2, padding=1)
+        self.conv2 = nn.Conv2d(nc, nc, kernel_size=3, stride=2, padding=1)
+        self.conv3 = nn.Conv2d(nc, nc, kernel_size=3, stride=2, padding=1)
+        self.flat_shape = self.get_flat_shape(input_shape)
+        self.fc_out = nn.Linear(self.flat_shape, num_classes)
+
+    # noinspection PyArgumentList,PyTypeChecker
+    def get_flat_shape(self, input_shape):
+        dummy = Variable(torch.zeros(1, *input_shape))
+        dummy = self.conv1(dummy)
+        dummy = self.conv2(dummy)
+        dummy = self.conv3(dummy)
+        return dummy.data.view(1, -1).size(1)
+
+    def forward(self, x):
+        x = F.gelu(self.conv1(x))
+        x = F.gelu(self.conv2(x))
+        x = F.gelu(self.conv3(x))
+        x = x.view(-1, self.flat_shape)
+        y = self.fc_out(x)
+        return y
+
