@@ -65,6 +65,9 @@ def get_model(learner_config: Dict, data_config: Dict, seed=1):
     if net == 'lenet':
         model = LeNet(nc=nc, nh=shape[0], hw=shape[1], num_classes=data_config["num_labels"], seed=seed)
 
+    elif net == 'small_cnn':
+        model = SmallCNN(nc=nc, nh=shape[0], hw=shape[1], num_classes=data_config["num_labels"], seed=seed)
+
     elif net == 'log_reg':
         dim_in = np.prod(data_config["shape"]) * data_config["num_channels"]
         model = LogisticRegression(dim_in=dim_in,
