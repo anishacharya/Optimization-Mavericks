@@ -97,7 +97,7 @@
           {
             "noise_model": 'impulse',
             "frac_adv": 0.1,
-          }
+          },
 
         "sparse_approximation_config":
           {
