@@ -11,7 +11,7 @@ from src.model_manager import (get_model,
 from src.data_manager import process_data
 from src.aggregation_manager import get_gar, compute_grad_stats
 from src.compression_manager import SparseApproxMatrix, get_compression_operator
-from src.attack_manager import get_attack
+from src.attack_manager import get_grad_attack
 
 import torch
 from torch.utils.data import DataLoader
@@ -27,7 +27,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 def train_and_test_model(model, criterion, optimizer, lrs, gar,
                          train_loader, test_loader, train_config, metrics,
-                         sparse_selection=None, attack_model=None, C=None):
+                         sparse_selection=None, grad_attack_model=None, C=None):
 
     num_batches = train_config.get('num_clients', 1)
     num_epochs = train_config.get('global_epochs', 10)
@@ -79,8 +79,8 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                 lr = optimizer.param_groups[0]['lr']
 
                 # Adversarial Attack
-                if attack_model is not None:
-                    G = attack_model.launch_attack(G=G)
+                if grad_attack_model is not None:
+                    G = grad_attack_model.launch_attack(G=G)
 
                 # Compress each vector before aggregation
                 if C is not None:
@@ -176,7 +176,7 @@ def run_batch_train(config, metrics):
     aggregation_config = training_config["aggregation_config"]
     sparse_approx_config = aggregation_config.get("sparse_approximation_config", {})
     compression_config = aggregation_config.get("compression_config", {})
-    attack_config = aggregation_config.get("attack_config", {})
+    grad_attack_config = aggregation_config.get("grad_attack_config", {})
 
     # ------------------------- get data --------------------- #
     batch_size = data_config.get('batch_size', 1)
@@ -200,13 +200,13 @@ def run_batch_train(config, metrics):
     sparse_selection = SparseApproxMatrix(conf=sparse_approx_config) if sparse_rule in ['active_norm', 'random'] \
         else None
     # for adversarial - get attack model
-    attack_model = get_attack(attack_config=attack_config)
+    grad_attack_model = get_grad_attack(attack_config=grad_attack_config)
     # gradient compression object
     C = get_compression_operator(compression_config=compression_config)
 
     # ------------------------- Run Training --------------------- #
     train_and_test_model(model=client_model, criterion=criterion, optimizer=client_optimizer, lrs=client_lrs,
-                         gar=gar, sparse_selection=sparse_selection, attack_model=attack_model, C=C,
+                         gar=gar, sparse_selection=sparse_selection, grad_attack_model=grad_attack_model, C=C,
                          train_loader=train_loader, test_loader=test_loader,
                          metrics=metrics, train_config=training_config)
 

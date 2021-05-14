@@ -78,7 +78,7 @@
             "ef_client": False
           },
 
-        "attack_config":
+        "grad_attack_config":
           {
             "attack_model": 'additive',
             "attack_mode": "un_coordinated",
@@ -92,6 +92,12 @@
             "sign_flip_conf": {"flip_prob": 0.7, "flip_scale": 5},
             "attack_n_std": 1
           },
+
+        "feature_attack_config":
+          {
+            "noise_model": 'impulse',
+            "frac_adv": 0.1,
+          }
 
         "sparse_approximation_config":
           {

@@ -1,12 +1,12 @@
 # Copyright (c) Anish Acharya.
 # Copyright (c) Microsoft Corporation.
 # Licensed under the MIT License
-from .attack_models import (DriftAttack, Additive, Random,
-                            BitFlipAttack, RandomSignFlipAttack)
+from .grad_attack_models import (DriftAttack, Additive, Random,
+                                 BitFlipAttack, RandomSignFlipAttack)
 from typing import Dict
 
 
-def get_attack(attack_config: Dict):
+def get_grad_attack(attack_config: Dict):
     if attack_config["attack_model"] == 'drift':
         return DriftAttack(attack_config=attack_config)
     elif attack_config["attack_model"] == 'additive':
@@ -19,3 +19,7 @@ def get_attack(attack_config: Dict):
         return RandomSignFlipAttack(attack_config=attack_config)
     else:
         return None
+
+
+def get_feature_attack(attack_config: Dict):
+    pass

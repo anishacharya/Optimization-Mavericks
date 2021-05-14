@@ -3,7 +3,7 @@
 # Licensed under the MIT License
 
 import numpy as np
-from typing import List, Dict
+from typing import Dict
 import warnings
 
 
@@ -13,7 +13,7 @@ class ByzAttack:
     def __init__(self, attack_config: Dict):
         self.attack_config = attack_config
         self.attack_mode = self.attack_config.get('attack_mode', 'un_coordinated')
-        self.attack_algorithm = self.attack_config.get('attack_model')
+        self.attack_algorithm = self.attack_config.get('attack_model', None)
         self.frac_adv = self.attack_config.get('frac_adv', 0)
 
     def attack(self, g: np.array):
@@ -197,3 +197,5 @@ class RandomSignFlipAttack(ByzAttack):
             faulty_grad[i] = g[i] if np.random.random() > self.flip_prob else -g[i]
 
         return faulty_grad
+
+
