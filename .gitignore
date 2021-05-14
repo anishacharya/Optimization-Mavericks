@@ -11,7 +11,7 @@ embedding/*
 glove.*/
 glove.*.zip*
 lexsub/data/
-data/*
+data/
 .idea/
 *.DS_Store
 **/__pycache__/**

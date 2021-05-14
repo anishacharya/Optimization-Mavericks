@@ -10,8 +10,9 @@ import warnings
 class ByzAttack:
     """ This is the Base Class for Byzantine attack. """
 
-    def __init__(self, attack_config: Dict):
+    def __init__(self, attack_config: Dict, seed=1):
         self.attack_config = attack_config
+        self.seed = seed
         self.attack_mode = self.attack_config.get('attack_mode', 'un_coordinated')
         self.attack_algorithm = self.attack_config.get('attack_model', None)
         self.frac_adv = self.attack_config.get('frac_adv', 0)
@@ -20,7 +21,7 @@ class ByzAttack:
         pass
 
     def launch_attack(self, G: np.ndarray):
-        np.random.seed(1)
+        np.random.seed(self.seed)
         max_adv = int(self.frac_adv * G.shape[0])
         if self.attack_mode == 'un_coordinated':
             for i in range(G.shape[0]):
