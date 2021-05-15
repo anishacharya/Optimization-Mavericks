@@ -29,9 +29,9 @@ if __name__ == '__main__':
     # noinspection PyArgumentEqualDefault
     # sample_im = random_noise(image=sample_im, mode='gaussian', var=0.2)
     # sample_im = random_noise(image=sample_im, mode='poisson')
-    sample_im = random_noise(image=sample_im, mode='pepper', amount=0.8)
+    # sample_im = random_noise(image=sample_im, mode='pepper', amount=0.8)
     # sample_im = random_noise(image=sample_im, mode='s&p', amount=0.5)
-    # sample_im = cv2.GaussianBlur(sample_im, (5, 5), 50)
+    sample_im = cv2.GaussianBlur(sample_im, (15, 15), 100)
 
     plt.imshow(sample_im)
     plt.axis('off')
