@@ -29,10 +29,10 @@ def plot_(lbl: str, res_file: str, plt_type: str = 'epoch_loss', x_axis='time', 
 
     if plt_type == 'test_acc':
         max_acc = max(mean)
-        print("Test Accuracy : {} +- {}".format(max_acc, 3 * std))
+        print("{} Test Accuracy : {} +- {}".format(lbl, max_acc, min(3 * std)))
     elif plt_type == 'train_loss':
         min_loss = min(mean)
-        print("Train Loss : {} +- {}".format(min_loss, 3 * std))
+        print("{} Train Loss : {} +- {}".format(lbl, min_loss, min(3 * std)))
 
     if x_axis == 'time':
         tot_cost = 0
