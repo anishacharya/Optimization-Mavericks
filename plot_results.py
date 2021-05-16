@@ -21,9 +21,18 @@ def plot_(lbl: str, res_file: str, plt_type: str = 'epoch_loss', x_axis='time', 
         scores += [res]
 
     scores = np.array(scores)
+
     mean = np.mean(scores, axis=0)
-    UB = mean + 3 * np.std(scores, axis=0)
-    LB = mean - 3 * np.std(scores, axis=0)
+    std = np.std(scores, axis=0)
+    UB = mean + 3 * std
+    LB = mean - 3 * std
+
+    if plt_type == 'test_acc':
+        max_acc = max(mean)
+        print("Test Accuracy : {} +- {}".format(max_acc, 3 * std))
+    elif plt_type == 'train_loss':
+        min_loss = min(mean)
+        print("Train Loss : {} +- {}".format(min_loss, 3 * std))
 
     if x_axis == 'time':
         tot_cost = 0
