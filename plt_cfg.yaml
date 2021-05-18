@@ -2,7 +2,7 @@
     "plot_type": 'test_acc',
     "x_ax": 'time',
     "sampling_freq": 1,
-    "dir": 'result_dumps/fmnist/lenet/bf.40/',
+    "dir": 'result_dumps/fmnist/lenet/ag.40/',
     "plots":
       [
 #        {
@@ -15,28 +15,28 @@
 #        },
         {
           'file': 'gm',
-          'label': "\\textsc{Gm-SGD}",
+          'label': "\\textsc{GmD}",
           'line_width': 2,
           'marker': 'o',
           'line_style': 'solid',
           "clr": 'r',
         },
         {
-          'file': 'bgmd.10',
+          'file': 'bgmd.20',
           'label': "\\textsc{BGmD}",
           'line_width': 2,
           'marker': 'o',
           'line_style': 'solid',
           "clr": 'k',
         },
-#        {
-#          'file': 'bgmd.20',
-#          'label': "\\textsc{BGmD}($\\beta=0.2$)",
-#          'line_width': 2,
-#          'marker': None,
-#          'line_style': 'solid',
-#          "clr": 'g',
-#        },
+        {
+          'file': 'cm',
+          'label': "\\textsc{CmD}",
+          'line_width': 2,
+          'marker': 'o',
+          'line_style': 'solid',
+          "clr": 'g',
+        },
 #        {
 #            'file': 'bgmd.10',
 #            'label': "\\textsc{BGmD}",
