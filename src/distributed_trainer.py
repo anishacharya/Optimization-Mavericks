@@ -70,22 +70,27 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
             agg_ix = (batch_ix + 1) % num_batches
             G[ix, :] = g_i
 
+            # Compress each vector before aggregation
+            lr = optimizer.param_groups[0]['lr']  # Need this for Error Feedback
+            if C is not None:
+                residual = 0
+                for ix, g_i in enumerate(G):
+                    compressed_grad = C.compress(g_i, lr=lr)
+                    # Track SE
+                    residual += np.linalg.norm(g_i - compressed_grad)
+                    G[ix, :] = compressed_grad
+                # Compute MSE
+                residual /= len(G)
+
             iteration_time = time.time() - t_iter
             epoch_grad_cost += iteration_time
             p_bar.update()
 
             if agg_ix == 0 and batch_ix is not 0:
                 # -------  Server / Aggregation Step ------- #
-                lr = optimizer.param_groups[0]['lr']
-
                 # Adversarial Attack
                 if grad_attack_model is not None:
                     G = grad_attack_model.launch_attack(G=G)
-
-                # Compress each vector before aggregation
-                if C is not None:
-                    for ix, g_i in enumerate(G):
-                        G[ix, :] = C.compress(g_i, lr=lr)
 
                 # --- Gradient Aggregation Step -------- ###
                 # Sparse Approximation of G
