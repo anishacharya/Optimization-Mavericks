@@ -2,7 +2,7 @@
     "plot_type": 'test_acc',
     "x_ax": 'time',
     "sampling_freq": 1,
-    "dir": 'result_dumps/fmnist/lenet/ag.40/',
+    "dir": 'result_dumps/fmnist/lenet/ag.20/',
     "plots":
       [
 #        {
@@ -22,7 +22,7 @@
           "clr": 'r',
         },
         {
-          'file': 'bgmd.20',
+          'file': 'bgmd.10',
           'label': "\\textsc{BGmD}",
           'line_width': 2,
           'marker': 'o',
