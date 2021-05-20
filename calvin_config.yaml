@@ -4,9 +4,11 @@
   "seed": 1,
   "train_mode": "distributed",
 
-  "data_config": {
+  "data_config":
+  {
     "data_set": "fashion_mnist",
-    "shape": [
+    "shape":
+    [
         28,
         28
     ],
@@ -18,6 +20,12 @@
     "num_shards": 80,
 
     "batch_size": 16,
+
+    "feature_attack_config":
+      {
+        "noise_model": 'impulse',
+        "frac_adv": 0.1,
+      },
   },
 
   "training_config": {
@@ -92,13 +100,6 @@
             "sign_flip_conf": {"flip_prob": 0.7, "flip_scale": 5},
             "attack_n_std": 1
           },
-
-        "feature_attack_config":
-          {
-            "noise_model": 'impulse',
-            "frac_adv": 0.1,
-          },
-
         "sparse_approximation_config":
           {
             "rule": None,

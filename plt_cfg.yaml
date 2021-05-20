@@ -2,17 +2,17 @@
     "plot_type": 'test_acc',
     "x_ax": 'time',
     "sampling_freq": 1,
-    "dir": 'result_dumps/fmnist/lenet/bf.10/',
+    "dir": 'result_dumps/fmnist/lenet/bf.40/',
     "plots":
       [
-        {
-          'file': 'mean',
-          'label': "\\textsc{SGD}",
-          'line_width': 2,
-          'marker': 'o',
-          'line_style': 'solid',
-          "clr": 'b',
-        },
+#        {
+#          'file': 'mean',
+#          'label': "\\textsc{SGD}",
+#          'line_width': 2,
+#          'marker': 'o',
+#          'line_style': 'solid',
+#          "clr": 'b',
+#        },
         {
           'file': 'gm',
           'label': "\\textsc{GmD}",

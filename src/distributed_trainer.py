@@ -11,7 +11,7 @@ from src.model_manager import (get_model,
 from src.data_manager import process_data
 from src.aggregation_manager import get_gar, compute_grad_stats
 from src.compression_manager import SparseApproxMatrix, get_compression_operator
-from src.attack_manager import get_grad_attack
+from src.attack_manager import get_grad_attack, get_feature_attack
 
 import torch
 from torch.utils.data import DataLoader
@@ -181,7 +181,9 @@ def run_batch_train(config, metrics):
     aggregation_config = training_config["aggregation_config"]
     sparse_approx_config = aggregation_config.get("sparse_approximation_config", {})
     compression_config = aggregation_config.get("compression_config", {})
+
     grad_attack_config = aggregation_config.get("grad_attack_config", {})
+    feature_attack_config = data_config.get("feature_attack_config", {})
 
     # ------------------------- get data --------------------- #
     batch_size = data_config.get('batch_size', 1)
@@ -190,6 +192,10 @@ def run_batch_train(config, metrics):
 
     train_loader = DataLoader(dataset=train_dataset, batch_size=batch_size, shuffle=True)
     test_loader = DataLoader(dataset=test_dataset, batch_size=batch_size)
+
+    # Apply Data Corruption to train data
+    feature_attack_model = get_feature_attack(attack_config=feature_attack_config)
+    feature_attack_model.launch_attack(data_loader=train_loader)
 
     # ------------------------- Initializations --------------------- #
     client_model = get_model(learner_config=learner_config, data_config=data_config, seed=seed)

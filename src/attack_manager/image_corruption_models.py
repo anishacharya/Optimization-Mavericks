@@ -19,6 +19,22 @@ class ImageCorruption:
     def launch_attack(self, data_loader: DataLoader):
         np.random.seed(self.seed)
 
+        # sample ix of corrupt batches
+        # TODO: Implement This
+        pass
+
+
+class ImageAdditive(ImageCorruption):
+    pass
+
+
+class ImageSaltPepper(ImageCorruption):
+    pass
+
+
+class ImageGaussianBlur(ImageCorruption):
+    pass
+
 
 if __name__ == '__main__':
     # Test some noise and visualize
