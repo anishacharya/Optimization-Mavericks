@@ -24,7 +24,7 @@
     "feature_attack_config":
       {
         "noise_model": 'impulse',
-        "frac_adv": 0.4,
+        "frac_adv": 0.1,
 
         "sev": 5,
       },
