@@ -27,7 +27,8 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 def train_and_test_model(model, criterion, optimizer, lrs, gar,
                          train_loader, test_loader, train_config, metrics,
-                         sparse_selection=None, grad_attack_model=None, C=None):
+                         sparse_selection=None, C=None,
+                         grad_attack_model=None, feature_attack_model=None):
 
     num_batches = train_config.get('num_clients', 1)
     num_epochs = train_config.get('global_epochs', 10)
@@ -52,6 +53,10 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
         for batch_ix, (images, labels) in enumerate(train_loader):
             metrics["num_iter"] += 1
             t_iter = time.time()
+
+            # Apply Feature Attack
+            if feature_attack_model is not None:
+                images = feature_attack_model.attack(X=images)
 
             images = images.to(device)
             labels = labels.to(device)
@@ -195,7 +200,7 @@ def run_batch_train(config, metrics):
 
     # Apply Data Corruption to train data
     feature_attack_model = get_feature_attack(attack_config=feature_attack_config)
-    feature_attack_model.launch_attack(data_loader=train_loader)
+    # feature_attack_model.launch_attack(data_loader=train_loader)
 
     # ------------------------- Initializations --------------------- #
     client_model = get_model(learner_config=learner_config, data_config=data_config, seed=seed)
@@ -217,7 +222,8 @@ def run_batch_train(config, metrics):
 
     # ------------------------- Run Training --------------------- #
     train_and_test_model(model=client_model, criterion=criterion, optimizer=client_optimizer, lrs=client_lrs,
-                         gar=gar, sparse_selection=sparse_selection, grad_attack_model=grad_attack_model, C=C,
+                         gar=gar, sparse_selection=sparse_selection, C=C,
+                         grad_attack_model=grad_attack_model, feature_attack_model=feature_attack_model,
                          train_loader=train_loader, test_loader=test_loader,
                          metrics=metrics, train_config=training_config)
 

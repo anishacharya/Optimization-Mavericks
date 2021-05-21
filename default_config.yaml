@@ -4,9 +4,11 @@
   "seed": 1,
   "train_mode": "distributed",
 
-  "data_config": {
+  "data_config":
+  {
     "data_set": "mnist",
-    "shape": [
+    "shape":
+    [
         28,
         28
     ],
@@ -18,6 +20,18 @@
     "num_shards": 80,
 
     "batch_size": 16,
+
+    "feature_attack_config":
+      {
+        "noise_model": 'additive',
+        "frac_adv": 0.1,
+
+        "var": 1,    # Additive Gaussian
+        "amount": 0.8, # Salt, Pepper and S&P
+        "ksize": (15, 15), # Gaussian Blur Kernel Size
+        "sigmaX": 100, # sigmaX Gaussian Blur
+        "sigmaY": 100, # sigmaY Gaussian Blur
+      },
   },
 
   "training_config": {
@@ -57,13 +71,13 @@
 
     "learner_config":
       {
-        "net": "small_cnn",
+        "net": "lenet",
         "mlp_config": { "h1": 300, "h2": 300 }
       },
 
     "aggregation_config":
       {
-        "gar": "mean",
+        "gar": "co_med",
 
         "geo_med_config": {"alg": 'vardi', 'eps': 0.00001, 'max_iter': 50},
         "trimmed_mean_config":{"proportion": 0.3},
@@ -78,11 +92,11 @@
             "ef_client": False
           },
 
-        "attack_config":
+        "grad_attack_config":
           {
-            "attack_model": 'additive',
+            "attack_model": None',
             "attack_mode": "un_coordinated",
-            "frac_adv": 0.2,
+            "frac_adv": 0.4,
             "rand_additive_attack_conf":
               {
                 "noise_dist": "gaussian",
@@ -92,12 +106,11 @@
             "sign_flip_conf": {"flip_prob": 0.7, "flip_scale": 5},
             "attack_n_std": 1
           },
-
         "sparse_approximation_config":
           {
             "rule": None,
             "axis": "column",
-            "frac_coordinates": 0.1,
+            "frac_coordinates": 0.2,
             "ef_server": True
           }
       }
