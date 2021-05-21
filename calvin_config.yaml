@@ -23,7 +23,7 @@
 
     "feature_attack_config":
       {
-        "noise_model": 'pepper',
+        "noise_model": 'additive',
         "frac_adv": 0.4,
 
         "var": 100,    # Additive Gaussian

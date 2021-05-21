@@ -40,11 +40,11 @@ class ImageAdditive(ImageCorruption):
     """
     def __init__(self, attack_config: Dict):
         ImageCorruption.__init__(self, attack_config=attack_config)
-        self.var = self.attack_config.get("var", 1)
+        self.var = [.08, .12, 0.18, 0.26, 0.38][4]
         print(" Additive Image Noise {}".format(self.attack_config))
 
     def corrupt(self, img):
-        return torch.tensor(random_noise(image=img, var=self.var))
+        return torch.tensor(np.clip(random_noise(image=img/255., var=self.var), 0, 1) * 255)
 
 
 class ImagePepper(ImageCorruption):
