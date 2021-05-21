@@ -24,9 +24,9 @@
     "feature_attack_config":
       {
         "noise_model": 'additive',
-        "frac_adv": 0.2,
+        "frac_adv": 0.1,
 
-        "var": 10,    # Additive Gaussian
+        "var": 100,    # Additive Gaussian
         "amount": 0.8, # Salt, Pepper and S&P
         "ksize": (15, 15), # Gaussian Blur Kernel Size
         "sigmaX": 100, # sigmaX Gaussian Blur
