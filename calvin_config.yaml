@@ -23,7 +23,7 @@
 
     "feature_attack_config":
       {
-        "noise_model": 'additive',
+        "noise_model": 'impulse',
         "frac_adv": 0.1,
 
         "sev": 5,
