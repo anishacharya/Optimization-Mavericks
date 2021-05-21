@@ -57,6 +57,15 @@ class ImagePepper(ImageCorruption):
         return torch.tensor(random_noise(image=img/255., mode='pepper', amount=self.amount))
 
 
+class ImageImpulse(ImageCorruption):
+    def __init__(self, attack_config: Dict):
+        ImageCorruption.__init__(self, attack_config=attack_config)
+        self.amount = [.03, .06, .09, 0.17, 0.27][4]
+
+    def corrupt(self, img: torch.tensor):
+        return torch.tensor(np.clip(random_noise(image=img/255., mode='s&p', amount=self.amount), 0, 1) * 255)
+
+
 class ImageGaussianBlur(ImageCorruption):
     pass
 
@@ -71,10 +80,11 @@ if __name__ == '__main__':
     # sample_im = random_noise(image=sample_im, mode='gaussian', var=0.2)
     # sample_im = random_noise(image=sample_im, mode='poisson')
     # sample_im = random_noise(image=sample_im, mode='pepper', amount=0.8)
-    c = [.01, .02, .03, .05, .07][severity - 1]
-    sample_im = random_noise(sample_im / 255., mode='pepper', amount=c)
+    c = [.03, .06, .09, 0.17, 0.27][severity - 1]
+    sample_im = random_noise(sample_im / 255., mode='s&p', amount=c)
+    sample_im = np.clip(sample_im, 0, 1) * 255
     # sample_im = random_noise(image=sample_im, mode='s&p', amount=0.5)
-    sample_im = cv2.GaussianBlur(sample_im, (15, 15), 100)
+    # sample_im = cv2.GaussianBlur(sample_im, (15, 15), 100)
 
     plt.imshow(sample_im)
     plt.axis('off')

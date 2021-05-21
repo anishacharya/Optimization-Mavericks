@@ -29,5 +29,7 @@ def get_feature_attack(attack_config: Dict):
         return ImagePepper(attack_config=attack_config)
     elif attack_config["noise_model"] == 'blur':
         return ImageGaussianBlur(attack_config=attack_config)
+    elif attack_config["noise_model"] == 'impulse':
+        return ImageImpulse(attack_config=attack_config)
     else:
         return None
