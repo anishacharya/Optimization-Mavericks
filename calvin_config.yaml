@@ -24,7 +24,7 @@
     "feature_attack_config":
       {
         "noise_model": 'pepper',
-        "frac_adv": 0.1,
+        "frac_adv": 0.2,
 
         "var": 100,    # Additive Gaussian
         "amount": 0.8, # Salt, Pepper and S&P
