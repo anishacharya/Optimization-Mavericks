@@ -13,6 +13,7 @@ class ImageCorruption:
         self.attack_config = attack_config
         self.noise_model = self.attack_config.get("noise_model", None)
         self.frac_adv = self.attack_config.get('frac_adv', 0)
+        self.num_
 
     def attack(self, X):
         # Toss a coin

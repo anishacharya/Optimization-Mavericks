@@ -19,7 +19,7 @@
     "data_sampling_strategy": "iid",
     "num_shards": 80,
 
-    "batch_size": 32,
+    "batch_size": 16,
 
     "feature_attack_config":
       {
@@ -27,7 +27,7 @@
         "frac_adv": 0.1,
 
         "var": 100,    # Additive Gaussian
-        "amount": 1, # Salt, Pepper and S&P
+        "amount": 0.9, # Salt, Pepper and S&P
         "ksize": (15, 15), # Gaussian Blur Kernel Size
         "sigmaX": 100, # sigmaX Gaussian Blur
         "sigmaY": 100, # sigmaY Gaussian Blur
