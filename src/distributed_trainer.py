@@ -31,6 +31,10 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                          grad_attack_model=None, feature_attack_model=None):
 
     num_batches = train_config.get('num_clients', 1)
+    if feature_attack_model is not None:
+        feature_attack_model.num_corrupt = int(feature_attack_model.frac_adv * num_batches)
+        feature_attack_model.curr_corr = feature_attack_model.num_corrupt
+
     num_epochs = train_config.get('global_epochs', 10)
     compute_grad_stat_flag = train_config.get('compute_grad_stats', False)
 
@@ -57,6 +61,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
             # Apply Feature Attack
             if feature_attack_model is not None:
                 images = feature_attack_model.attack(X=images)
+                feature_attack_model.curr_corr -= 1
 
             images = images.to(device)
             labels = labels.to(device)
@@ -96,7 +101,9 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                 # Adversarial Attack
                 if grad_attack_model is not None:
                     G = grad_attack_model.launch_attack(G=G)
-
+                if feature_attack_model is not None:
+                    # Reset For next set of batches
+                    feature_attack_model.curr_corr = feature_attack_model.num_corrupt
                 # --- Gradient Aggregation Step -------- ###
                 # Sparse Approximation of G
                 I_k = None

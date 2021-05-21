@@ -13,12 +13,14 @@ class ImageCorruption:
         self.attack_config = attack_config
         self.noise_model = self.attack_config.get("noise_model", None)
         self.frac_adv = self.attack_config.get('frac_adv', 0)
-        self.num_
+        self.num_corrupt = 0
+        self.curr_corr = 0
 
     def attack(self, X):
         # Toss a coin
-        p = np.random.random()
-        if p < self.frac_adv:
+        # p = np.random.random()
+        # if p < self.frac_adv:
+        if self.curr_corr > 0:
             # apply attack
             for ix, sample in enumerate(X):
                 noisy_img = self.corrupt(img=sample)
