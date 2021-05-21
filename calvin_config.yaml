@@ -26,7 +26,7 @@
         "noise_model": 'additive',
         "frac_adv": 0.1,
 
-        "var": 0.2,    # Additive Gaussian
+        "var": 10,    # Additive Gaussian
         "amount": 0.8, # Salt, Pepper and S&P
         "ksize": (15, 15), # Gaussian Blur Kernel Size
         "sigmaX": 100, # sigmaX Gaussian Blur
