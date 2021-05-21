@@ -51,7 +51,7 @@ class ImagePepper(ImageCorruption):
         print(" Pepper Noise Added {}".format(self.attack_config))
 
     def corrupt(self, img):
-        return torch.tensor(random_noise(image=img, mode='pepper', amount=self.amount))
+        return torch.tensor(random_noise(image=img/255., mode='pepper', amount=self.amount))
 
 
 class ImageGaussianBlur(ImageCorruption):
@@ -62,12 +62,14 @@ if __name__ == '__main__':
     # Test some noise and visualize
     # Download .png cifar10 command >>"cifar2png cifar10 data"
     sample_im = io.imread('/Users/aa56927-admin/Desktop/BGMD/NeuRips/image_sample.jpeg')
-
+    severity = 5
     # Test and plot noises
     # noinspection PyArgumentEqualDefault
     # sample_im = random_noise(image=sample_im, mode='gaussian', var=0.2)
     # sample_im = random_noise(image=sample_im, mode='poisson')
-    sample_im = random_noise(image=sample_im, mode='pepper', amount=0.8)
+    # sample_im = random_noise(image=sample_im, mode='pepper', amount=0.8)
+    c = [.01, .02, .03, .05, .07][severity - 1]
+    sample_im = random_noise(sample_im / 255., mode='pepper', amount=c)
     # sample_im = random_noise(image=sample_im, mode='s&p', amount=0.5)
     sample_im = cv2.GaussianBlur(sample_im, (15, 15), 100)
 
