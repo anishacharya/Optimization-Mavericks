@@ -14,6 +14,18 @@ class ImageCorruption:
         self.noise_model = self.attack_config.get("noise_model", None)
         self.frac_adv = self.attack_config.get('frac_adv', 0)
 
+    def attack(self, X):
+        # Toss a coin
+        p = np.random.random()
+        if p < self.frac_adv:
+            # apply attack
+            for ix, sample in enumerate(X):
+                noisy_img = self.corrupt(img=sample)
+                X[ix] = noisy_img
+        return X
+
+    def corrupt(self, img: torch.tensor) -> torch.tensor:
+        raise NotImplementedError
     # def launch_attack(self, data_loader: DataLoader):
     #     # TODO: Can we apply Transforms to Batches directly ? Then we can do this only once after DataLoader
     #     raise NotImplementedError
@@ -28,22 +40,18 @@ class ImageAdditive(ImageCorruption):
         self.var = self.attack_config.get("var", 1)
         print(" Additive Image Noise {}".format(self.attack_config))
 
-    def attack(self, X):
-        # Toss a coin
-        p = np.random.random()
-        if p < self.frac_adv:
-            # apply attack
-            for ix, sample in enumerate(X):
-                noisy_img = self.corrupt(img=sample)
-                X[ix] = noisy_img
-        return X
-
     def corrupt(self, img):
         return torch.tensor(random_noise(image=img, var=self.var))
 
 
-class ImageSaltPepper(ImageCorruption):
-    pass
+class ImagePepper(ImageCorruption):
+    def __init__(self, attack_config: Dict):
+        ImageCorruption.__init__(self, attack_config=attack_config)
+        self.amount = self.attack_config.get('amount', 0.5)
+        print(" Pepper Noise Added {}".format(self.attack_config))
+
+    def corrupt(self, img):
+        return torch.tensor(random_noise(image=img, mode='pepper', amount=self.amount))
 
 
 class ImageGaussianBlur(ImageCorruption):

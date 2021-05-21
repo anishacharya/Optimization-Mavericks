@@ -25,8 +25,8 @@ def get_grad_attack(attack_config: Dict):
 def get_feature_attack(attack_config: Dict):
     if attack_config["noise_model"] == 'additive':
         return ImageAdditive(attack_config=attack_config)
-    elif attack_config["noise_model"] == 'sp':
-        return ImageSaltPepper(attack_config=attack_config)
+    elif attack_config["noise_model"] == 'pepper':
+        return ImagePepper(attack_config=attack_config)
     elif attack_config["noise_model"] == 'blur':
         return ImageGaussianBlur(attack_config=attack_config)
     else:
