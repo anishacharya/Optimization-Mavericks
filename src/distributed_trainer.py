@@ -32,7 +32,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
 
     num_batches = train_config.get('num_clients', 1)
     if feature_attack_model is not None:
-        feature_attack_model.num_corrupt = int(feature_attack_model.frac_adv * num_batches)
+        feature_attack_model.num_corrupt = np.ceil(feature_attack_model.frac_adv * num_batches)
         feature_attack_model.curr_corr = feature_attack_model.num_corrupt
 
     num_epochs = train_config.get('global_epochs', 10)
