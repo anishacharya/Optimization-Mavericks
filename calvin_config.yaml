@@ -23,8 +23,14 @@
 
     "feature_attack_config":
       {
-        "noise_model": 'impulse',
+        "noise_model": 'additive',
         "frac_adv": 0.1,
+
+        "var": 1,    # Additive Gaussian
+        "amount": 0.8, # Salt, Pepper and S&P
+        "ksize": (15, 15), # Gaussian Blur Kernel Size
+        "sigmaX": 100, # sigmaX Gaussian Blur
+        "sigmaY": 100, # sigmaY Gaussian Blur
       },
   },
 
@@ -71,7 +77,7 @@
 
     "aggregation_config":
       {
-        "gar": "co_med",
+        "gar": "mean",
 
         "geo_med_config": {"alg": 'vardi', 'eps': 0.00001, 'max_iter': 50},
         "trimmed_mean_config":{"proportion": 0.3},
@@ -88,7 +94,7 @@
 
         "grad_attack_config":
           {
-            "attack_model": 'bit_flip',
+            "attack_model": None,
             "attack_mode": "un_coordinated",
             "frac_adv": 0.4,
             "rand_additive_attack_conf":
