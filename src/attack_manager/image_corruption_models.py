@@ -38,7 +38,8 @@ class ImageCorruption:
 class ImageAdditive(ImageCorruption):
     def __init__(self, attack_config: Dict):
         ImageCorruption.__init__(self, attack_config=attack_config)
-        self.var = [.08, .12, 0.18, 0.26, 0.38][self.sev - 1]
+        # self.var = [.08, .12, 0.18, 0.26, 0.38][self.sev - 1]
+        self.var = [.1, .25, 0.5, 0.75, 1][self.sev - 1]
         print(" Additive Image Noise {}".format(self.attack_config))
 
     def corrupt(self, img):
@@ -48,7 +49,8 @@ class ImageAdditive(ImageCorruption):
 class ImageImpulse(ImageCorruption):
     def __init__(self, attack_config: Dict):
         ImageCorruption.__init__(self, attack_config=attack_config)
-        self.amount = [.03, .06, .09, 0.17, 0.27][self.sev - 1]
+        # self.amount = [.03, .06, .09, 0.17, 0.27, ][self.sev - 1]
+        self.amount = [0.1, 0.3, 0.5, 0.7, 0.9][self.sev - 1]
 
     def corrupt(self, img: torch.tensor):
         return torch.tensor(np.clip(random_noise(image=img/255., mode='s&p', amount=self.amount), 0, 1) * 255)
