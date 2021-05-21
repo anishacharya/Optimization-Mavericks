@@ -27,7 +27,7 @@
         "frac_adv": 0.2,
 
         "var": 100,    # Additive Gaussian
-        "amount": 0.8, # Salt, Pepper and S&P
+        "amount": 1, # Salt, Pepper and S&P
         "ksize": (15, 15), # Gaussian Blur Kernel Size
         "sigmaX": 100, # sigmaX Gaussian Blur
         "sigmaY": 100, # sigmaY Gaussian Blur
