@@ -24,7 +24,7 @@
     "feature_attack_config":
       {
         "noise_model": 'impulse',
-        "frac_adv": 0.2,
+        "frac_adv": 0.1,
 
         "sev": 5,
       },
@@ -73,7 +73,7 @@
 
     "aggregation_config":
       {
-        "gar": "mean",
+        "gar": "geo_med",
 
         "geo_med_config": {"alg": 'vardi', 'eps': 0.00001, 'max_iter': 50},
         "trimmed_mean_config":{"proportion": 0.3},
@@ -104,9 +104,9 @@
           },
         "sparse_approximation_config":
           {
-            "rule": None,
+            "rule": 'active_norm',
             "axis": "column",
-            "frac_coordinates": 0.2,
+            "frac_coordinates": 0.1,
             "ef_server": True
           }
       }
