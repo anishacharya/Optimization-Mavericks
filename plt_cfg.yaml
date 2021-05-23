@@ -2,7 +2,7 @@
     "plot_type": 'test_acc',
     "x_ax": 'time',
     "sampling_freq": 1,
-    "dir": 'result_dumps/fmnist/lenet/f.ip.40/',
+    "dir": 'result_dumps/fmnist/lenet/f.ip.10/',
     "plots":
       [
         {
