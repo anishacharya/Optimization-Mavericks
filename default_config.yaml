@@ -40,7 +40,7 @@
     "compute_grad_stats": false,
 
     "log_freq": "iter",
-    "max_num_iters": 1000,
+    "max_num_iters": 10000,
 
     "optimizer_config":
       {
@@ -57,9 +57,9 @@
 
         "client_lrs_config":
           {
-            "lrs": "step",
+            "lrs": None,
             "milestones": [1,5,10],
-            "step_size": 1,
+            "step_size": 10,
             "gamma": 0.9
           },
 
@@ -72,13 +72,13 @@
 
     "learner_config":
       {
-        "net": "lenet",
+        "net": "small_cnn",
         "mlp_config": { "h1": 300, "h2": 300 }
       },
 
     "aggregation_config":
       {
-        "gar": "co_med",
+        "gar": "mean",
 
         "geo_med_config": {"alg": 'vardi', 'eps': 0.00001, 'max_iter': 50},
         "trimmed_mean_config":{"proportion": 0.3},

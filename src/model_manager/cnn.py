@@ -61,6 +61,7 @@ class SmallCNN(nn.Module):
         self.conv1 = nn.Conv2d(1,  nc, kernel_size=3, stride=2, padding=1)
         self.conv2 = nn.Conv2d(nc, nc, kernel_size=3, stride=2, padding=1)
         self.conv3 = nn.Conv2d(nc, nc, kernel_size=3, stride=2, padding=1)
+        self.conv4 = nn.Conv2d(nc, nc, kernel_size=3, stride=2, padding=1)
         self.flat_shape = self.get_flat_shape(input_shape)
         self.fc_out = nn.Linear(self.flat_shape, num_classes)
 
@@ -70,12 +71,14 @@ class SmallCNN(nn.Module):
         dummy = self.conv1(dummy)
         dummy = self.conv2(dummy)
         dummy = self.conv3(dummy)
+        dummy = self.conv4(dummy)
         return dummy.data.view(1, -1).size(1)
 
     def forward(self, x):
         x = F.gelu(self.conv1(x))
         x = F.gelu(self.conv2(x))
         x = F.gelu(self.conv3(x))
+        x = F.gelu(self.conv4(x))
         x = x.view(-1, self.flat_shape)
         y = self.fc_out(x)
         return y

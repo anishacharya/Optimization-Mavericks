@@ -76,6 +76,8 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
             g_i = flatten_grads(learner=model)
             if G is None:
                 d = len(g_i)
+                print("Num of Parameters {}".format(d))
+                metrics["num_param"] = d
                 G = np.zeros((num_batches, d), dtype=g_i.dtype)
 
             ix = batch_ix % num_batches

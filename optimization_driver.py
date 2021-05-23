@@ -22,6 +22,7 @@ def _parse_args():
 def init_metric(config):
     metrics = {"config": config,
 
+               "num_param": 0,
                # Train and Test Performance
                "test_error": [],
                "test_loss": [],
