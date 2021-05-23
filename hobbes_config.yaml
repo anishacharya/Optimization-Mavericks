@@ -13,6 +13,7 @@
         28
     ],
 
+    "val_frac": 0,
     "num_labels": 10,
     "num_channels": 1,
 
@@ -36,6 +37,8 @@
     "global_epochs": 50, # epochs
     "local_epochs": 1, # local SGD # For FL
     "compute_grad_stats": false,
+
+    "log_freq": "epoch",
 
     "optimizer_config":
       {

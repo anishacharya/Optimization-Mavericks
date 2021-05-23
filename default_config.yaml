@@ -13,33 +13,33 @@
         28
     ],
 
+    "val_frac": 0.5,
+
     "num_labels": 10,
     "num_channels": 1,
 
     "data_sampling_strategy": "iid",
     "num_shards": 80,
 
-    "batch_size": 16,
+    "batch_size": 3000,
 
     "feature_attack_config":
       {
-        "noise_model": 'additive',
-        "frac_adv": 0.1,
+        "noise_model": None,
+        "frac_adv": 0.2,
 
-        "var": 1,    # Additive Gaussian
-        "amount": 0.8, # Salt, Pepper and S&P
-        "ksize": (15, 15), # Gaussian Blur Kernel Size
-        "sigmaX": 100, # sigmaX Gaussian Blur
-        "sigmaY": 100, # sigmaY Gaussian Blur
+        "sev": 5,
       },
   },
 
   "training_config": {
-    "num_clients": 32, # Number of batches in distributed setting
+    "num_clients": 2, # Number of batches in distributed setting
     "client_fraction": 1, # partial device participation - For FL
     "global_epochs": 50, # epochs
     "local_epochs": 1, # local SGD # For FL
     "compute_grad_stats": false,
+
+    "log_freq": "iter",
 
     "optimizer_config":
       {

@@ -13,6 +13,7 @@
         28
     ],
 
+    "val_frac": 0,
     "num_labels": 10,
     "num_channels": 1,
 

@@ -1,6 +1,7 @@
 # Copyright (c) Anish Acharya.
 # Copyright (c) Microsoft Corporation.
 # Licensed under the MIT License
+import torch.utils.data
 
 from .data_manager import DataManager
 from torchvision import datasets, transforms
@@ -24,7 +25,10 @@ class MNIST(DataManager):
         _train_dataset = datasets.MNIST(root=root, download=True, transform=train_trans)
         _test_dataset = datasets.MNIST(root=root, download=True, train=False, transform=test_trans)
 
-        return _train_dataset, _test_dataset
+        num_val = int(len(_train_dataset) * self.data_config.get('val_frac', 0))
+        num_train = len(_train_dataset) - num_val
+        _train_dataset, _val_dataset = torch.utils.data.random_split(_train_dataset, [num_train, num_val])
+        return _train_dataset, _val_dataset, _test_dataset
 
 
 class FashionMNIST(DataManager):
@@ -40,7 +44,10 @@ class FashionMNIST(DataManager):
         _train_dataset = datasets.FashionMNIST(root=root, download=True, transform=train_trans)
         _test_dataset = datasets.FashionMNIST(root=root, download=True, train=False, transform=test_trans)
 
-        return _train_dataset, _test_dataset
+        num_val = int(len(_train_dataset) * self.data_config.get('val_frac', 0))
+        num_train = len(_train_dataset) - num_val
+        _train_dataset, _val_dataset = torch.utils.data.random_split(_train_dataset, [num_train, num_val])
+        return _train_dataset, _val_dataset, _test_dataset
 
 
 class ExtendedMNIST(DataManager):
@@ -56,7 +63,10 @@ class ExtendedMNIST(DataManager):
         _train_dataset = datasets.EMNIST(root=root, download=True, transform=train_trans, split='balanced')
         _test_dataset = datasets.EMNIST(root=root, download=True, train=False, transform=test_trans, split='balanced')
 
-        return _train_dataset, _test_dataset
+        num_val = int(len(_train_dataset) * self.data_config.get('val_frac', 0))
+        num_train = len(_train_dataset) - num_val
+        _train_dataset, _val_dataset = torch.utils.data.random_split(_train_dataset, [num_train, num_val])
+        return _train_dataset, _val_dataset, _test_dataset
 
 
 class CIFAR10(DataManager):
@@ -72,7 +82,10 @@ class CIFAR10(DataManager):
         _train_dataset = datasets.CIFAR10(root=root, download=True, transform=train_trans)
         _test_dataset = datasets.CIFAR10(root=root, download=True, train=False, transform=test_trans)
 
-        return _train_dataset, _test_dataset
+        num_val = int(len(_train_dataset) * self.data_config.get('val_frac', 0))
+        num_train = len(_train_dataset) - num_val
+        _train_dataset, _val_dataset = torch.utils.data.random_split(_train_dataset, [num_train, num_val])
+        return _train_dataset, _val_dataset, _test_dataset
 
 
 class ImageNet(DataManager):
@@ -89,4 +102,7 @@ class ImageNet(DataManager):
         _train_dataset = datasets.ImageNet(root=root, download=True, transform=train_trans)
         _test_dataset = datasets.ImageNet(root=root, download=True, train=False, transform=test_trans)
 
-        return _train_dataset, _test_dataset
+        num_val = int(len(_train_dataset) * self.data_config.get('val_frac', 0))
+        num_train = len(_train_dataset) - num_val
+        _train_dataset, _val_dataset = torch.utils.data.random_split(_train_dataset, [num_train, num_val])
+        return _train_dataset, _val_dataset, _test_dataset
