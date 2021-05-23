@@ -2,7 +2,7 @@
     "plot_type": 'test_acc',
     "x_ax": 'time',
     "sampling_freq": 1,
-    "dir": 'result_dumps/fmnist/lenet/f.ip.20/',
+    "dir": 'result_dumps/fmnist/lenet/f.ip.10/',
     "plots":
       [
         {
@@ -29,14 +29,14 @@
           'line_style': 'solid',
           "clr": 'k',
         },
-#        {
-#          'file': 'cm',
-#          'label': "\\textsc{CmD}",
-#          'line_width': 2,
-#          'marker': 'o',
-#          'line_style': 'solid',
-#          "clr": 'g',
-#        },
+        {
+          'file': 'cm',
+          'label': "\\textsc{CmD}",
+          'line_width': 2,
+          'marker': 'o',
+          'line_style': 'solid',
+          "clr": 'g',
+        },
 #        {
 #            'file': 'bgmd.10',
 #            'label': "\\textsc{BGmD}",
