@@ -40,6 +40,7 @@
     "compute_grad_stats": false,
 
     "log_freq": "iter",
+    "max_num_iters": 1000,
 
     "optimizer_config":
       {

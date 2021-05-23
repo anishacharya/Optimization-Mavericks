@@ -36,6 +36,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
 
     num_epochs = train_config.get('global_epochs', 10)
     log_freq = train_config.get('log_freq', 'epoch')
+    max_steps = train_config.get('max_num_iters', 0)
 
     compute_grad_stat_flag = train_config.get('compute_grad_stats', False)
 
@@ -139,6 +140,9 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                     if (train_loss > 1e3) | np.isnan(train_loss) | np.isinf(train_loss):
                         epoch = num_epochs
                         print(" *** Training is Diverging - Stopping !!! *** ")
+
+                    if metrics["num_agg"] == max_steps:
+                        epoch = num_epochs
 
         p_bar.close()
         if lrs is not None:
