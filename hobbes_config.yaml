@@ -35,7 +35,7 @@
   {
     "num_clients": 16, # Number of batches in distributed setting
     "client_fraction": 1, # partial device participation - For FL
-    "global_epochs": 30, # epochs
+    "global_epochs": 50, # epochs
     "local_epochs": 1, # local SGD # For FL
     "compute_grad_stats": false,
 
@@ -57,7 +57,7 @@
         "client_lrs_config":
           {
             "lrs": "multi_step",
-            "milestones": [15,25],
+            "milestones": [20, 40],
             "step_size": 1,
             "gamma": 0.1
           },
