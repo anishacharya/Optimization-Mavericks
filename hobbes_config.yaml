@@ -59,7 +59,7 @@
             "lrs": "multi_step",
             "milestones": [10,15],
             "step_size": 1,
-            "gamma": 0.9
+            "gamma": 0.1
           },
 
         "server_optimizer_config":
