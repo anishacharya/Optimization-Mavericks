@@ -135,6 +135,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                 metrics["num_agg"] += 1
 
                 if log_freq == 'iter':
+                    num_epochs = 9999
                     train_loss = evaluate_classifier(model=model, train_loader=train_loader, test_loader=test_loader,
                                                      metrics=metrics, criterion=criterion, device=device,
                                                      epoch=metrics["num_agg"], num_epochs=max_steps)
@@ -219,6 +220,7 @@ def run_batch_train(config, metrics):
     train_dataset, val_dataset, test_dataset = data_manager.download_data()
 
     train_loader = DataLoader(dataset=train_dataset, batch_size=batch_size, shuffle=True)
+    print('Num of Batches in Train Loader = {}'.format(len(train_loader)))
     test_loader = DataLoader(dataset=test_dataset, batch_size=batch_size)
 
     # Apply Data Corruption to train data
