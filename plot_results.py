@@ -8,7 +8,7 @@ import yaml
 import matplotlib.ticker as ticker
 
 
-def plot_(lbl: str, res_file: str, plt_type: str = 'epoch_loss', x_axis='time', plot_freq=5,
+def plot_(lbl: str, res_file: str, plt_type: str = 'epoch_loss', x_axis='time', plot_freq=1,
           line_width=4, marker=None, line_style=None, optima: float = 0.0, color=None):
     with open(res_file, 'rb') as f:
         result = json.load(f)
