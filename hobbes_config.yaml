@@ -6,11 +6,11 @@
 
   "data_config":
   {
-    "data_set": "fashion_mnist",
+    "data_set": "cifar10",
     "shape":
     [
-        28,
-        28
+        32,
+        32
     ],
 
     "val_frac": 0,
@@ -20,11 +20,11 @@
     "data_sampling_strategy": "iid",
     "num_shards": 80,
 
-    "batch_size": 16,
+    "batch_size": 64,
 
     "feature_attack_config":
       {
-        "noise_model": 'additive',
+        "noise_model": None,
         "frac_adv": 0.4,
 
         "sev": 5,
@@ -71,7 +71,7 @@
 
     "learner_config":
       {
-        "net": "lenet",
+        "net": "resnet",
         "mlp_config": { "h1": 300, "h2": 300 }
       },
 
