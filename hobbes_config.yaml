@@ -20,7 +20,7 @@
     "data_sampling_strategy": "iid",
     "num_shards": 80,
 
-    "batch_size": 64,
+    "batch_size": 128,
 
     "feature_attack_config":
       {
@@ -33,7 +33,7 @@
 
   "training_config":
   {
-    "num_clients": 32, # Number of batches in distributed setting
+    "num_clients": 10, # Number of batches in distributed setting
     "client_fraction": 1, # partial device participation - For FL
     "global_epochs": 50, # epochs
     "local_epochs": 1, # local SGD # For FL
@@ -47,7 +47,7 @@
           {
             "optimizer": "SGD",
             "loss": "ce",
-            "lr0": 0.01,
+            "lr0": 0.1,
             "momentum": 0.9,
             "reg": 0.00001,
             "nesterov": True,
@@ -56,8 +56,8 @@
 
         "client_lrs_config":
           {
-            "lrs": "step",
-            "milestones": [1,5,10],
+            "lrs": "multi_step",
+            "milestones": [10,15],
             "step_size": 1,
             "gamma": 0.9
           },
