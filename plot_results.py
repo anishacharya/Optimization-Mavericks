@@ -101,14 +101,19 @@ if __name__ == '__main__':
             raise NotImplementedError
 
     if plot_type == 'test_error':
+        plt.yscale("log")
+        ax.yaxis.set_minor_formatter(ticker.ScalarFormatter())
         plt.ylabel('Test Error', fontsize=10)
     elif plot_type == 'test_acc':
+        # plt.yscale("log")
+        # plt.ylim(75)
+        # ax.yaxis.set_minor_formatter(ticker.ScalarFormatter())
         plt.ylabel('Test Accuracy', fontsize=10)
     elif plot_type == 'train_acc':
         plt.ylabel('Train Accuracy', fontsize=10)
     elif plot_type == 'train_loss':
-        # plt.ylim(0.3)
-        plt.yscale('log')
+        # plt.ylim(0)
+        plt.yscale("log")
         # ax.yaxis.set_major_formatter(ticker.ScalarFormatter())
         # ax.yaxis.set_major_locator(ticker.FixedLocator([1]))
         ax.yaxis.set_minor_formatter(ticker.ScalarFormatter())
