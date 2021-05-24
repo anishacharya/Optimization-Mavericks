@@ -31,6 +31,7 @@ def init_metric(config):
                "train_loss": [],
                "train_acc": [],
 
+               "communication_residual": [],
                # # Grad Matrix Stats
                # "frac_mass_retained": [],
                # "grad_norm_dist": [],

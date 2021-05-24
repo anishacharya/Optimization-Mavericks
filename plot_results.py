@@ -9,7 +9,7 @@ import matplotlib.ticker as ticker
 
 
 def plot_(lbl: str, res_file: str, plt_type: str = 'epoch_loss', x_axis='time', plot_freq=1,
-          line_width=4, marker=None, line_style=None, optima: float = 0.0, color=None):
+          line_width=4, marker=None, line_style=None, optima: float = 0.0, color=None, smoothen=False):
     with open(res_file, 'rb') as f:
         result = json.load(f)
 
@@ -18,12 +18,16 @@ def plot_(lbl: str, res_file: str, plt_type: str = 'epoch_loss', x_axis='time', 
         res = run[plt_type]
         res -= optima * np.ones(len(res))
         res = res[::plot_freq]
+
+        if smoothen:
+            res = smooth(res, 3)
         scores += [res]
 
     scores = np.array(scores)
 
     mean = np.mean(scores, axis=0)
     std = np.std(scores, axis=0)
+
     UB = mean + 3 * std
     LB = mean - 3 * std
 
@@ -45,7 +49,7 @@ def plot_(lbl: str, res_file: str, plt_type: str = 'epoch_loss', x_axis='time', 
         x_freq = int(tot_cost / len(mean))
         x = np.arange(len(mean)) * x_freq
     elif x_axis == 'epoch':
-        x = np.arange(len(result[0][plt_type]))
+        x = np.arange(len(result[0][plt_type]))[::plot_freq]
     else:
         raise NotImplementedError
     plt.plot(x, mean, label=lbl, linewidth=line_width, marker=marker, linestyle=line_style, color=color)
@@ -73,6 +77,8 @@ if __name__ == '__main__':
     pl_type = plt_cfg["plot_type"]
     x_ax = plt_cfg["x_ax"]
     plot_type = plt_cfg["plot_type"]
+    plt_freq = plt_cfg["plot_freq"]
+    smoothen = plt_cfg["smoothen"]
 
     for pl in plt_cfg["plots"]:
         result_file = d + pl["file"]
@@ -90,7 +96,9 @@ if __name__ == '__main__':
               line_width=lw,
               marker=mk,
               line_style=ls,
-              color=clr)
+              color=clr,
+              plot_freq=plt_freq,
+              smoothen=smoothen)
 
         # Fix the X Labels
         if x_ax == 'time':

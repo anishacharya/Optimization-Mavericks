@@ -1,7 +1,8 @@
 {
-    "plot_type": 'test_acc',
+    "plot_type": 'train_loss',
     "x_ax": 'epoch',
-    "sampling_freq": 1,
+    "plot_freq": 10,
+    "smoothen": False,
     # "dir": 'result_dumps/fmnist/lenet/f.ip.40/',
     "dir": 'result_dumps/dsc/',
     "plots":
@@ -40,11 +41,11 @@
 #        },
         {
             'file': 'baseline',
-            'label': "\\textsc{BGmD}",
+            'label': "\\textsc{Full}",
             'line_width': 2,
-            'marker': 'o',
+            'marker': None,
             'line_style': 'solid',
-            "clr": 'k',
+            "clr": 'b',
         },
 #        {
 #          'file': 'bgmd.40',
