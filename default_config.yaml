@@ -45,7 +45,7 @@
           {
             "optimizer": "SGD",
             "loss": "ce",
-            "lr0": 0.1,
+            "lr0": 1,
             "momentum": 0,
             "reg": 0.0005,
             "nesterov": false,
@@ -54,8 +54,8 @@
 
         "client_lrs_config":
           {
-            "lrs": 'step',
-            "milestones": [100, 250],
+            "lrs": 'multi_step',
+            "milestones": [10, 100, 250],
             "step_size": 1,
             "gamma": 0.1
           },
