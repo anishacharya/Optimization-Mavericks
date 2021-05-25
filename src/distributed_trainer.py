@@ -176,11 +176,9 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
         metrics["avg_gm_cost"] = metrics["total_agg_cost"] / metrics["total_gm_iter"]
 
 
-def run_batch_train(config, metrics):
+def run_batch_train(config, metrics, seed):
     # ------------------------ Fetch configs ----------------------- #
     print('---- Fetching configs -----')
-    seed = config["seed"]
-
     np.random.seed(seed)
     torch.manual_seed(seed)
 

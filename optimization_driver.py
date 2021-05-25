@@ -71,15 +71,14 @@ def run_main():
 
     # Train
     results = []
-    for seed in np.arange(1, args.n_repeat+1):
-        config["seed"] = seed
+    for seed in np.random.randint(0, 100*args.n_repeat+1, args.n_repeat+1):
         train_mode = config.get("train_mode", 'distributed')
         metrics = init_metric(config=config)
         if train_mode == 'fed':
             run_fed_train(config=config, metrics=metrics)
             results.append(metrics)
         elif train_mode == 'distributed':
-            run_batch_train(config=config, metrics=metrics)
+            run_batch_train(config=config, metrics=metrics, seed=seed)
             results.append(metrics)
         else:
             raise NotImplementedError
