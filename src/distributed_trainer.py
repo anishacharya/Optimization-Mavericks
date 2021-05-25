@@ -35,9 +35,6 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
         feature_attack_model.curr_corr = feature_attack_model.num_corrupt
 
     num_epochs = train_config.get('global_epochs', 10)
-    log_freq = train_config.get('log_freq', 'epoch')
-    max_steps = train_config.get('max_num_iters', 0)
-
     compute_grad_stat_flag = train_config.get('compute_grad_stats', False)
 
     epoch = 0
@@ -137,19 +134,6 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                 optimizer.step()
                 metrics["num_agg"] += 1
 
-                if log_freq == 'iter':
-                    num_epochs = 9999
-                    train_loss = evaluate_classifier(model=model, train_loader=train_loader, test_loader=test_loader,
-                                                     metrics=metrics, criterion=criterion, device=device,
-                                                     epoch=metrics["num_agg"], num_epochs=max_steps)
-                    # Stop if diverging
-                    if (train_loss > 1e3) | np.isnan(train_loss) | np.isinf(train_loss):
-                        epoch = num_epochs
-                        print(" *** Training is Diverging - Stopping !!! *** ")
-
-                    if metrics["num_agg"] == max_steps:
-                        epoch = num_epochs
-
         p_bar.close()
         if lrs is not None:
             lrs.step()
@@ -158,14 +142,13 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
         # if compute_grad_stat_flag is True:
         #     print("Computing Additional Stats on G")
         #     compute_grad_stats(G=G, metrics=metrics)
-        if log_freq == 'epoch':
-            train_loss = evaluate_classifier(model=model, train_loader=train_loader, test_loader=test_loader,
-                                             metrics=metrics, criterion=criterion, device=device,
-                                             epoch=epoch, num_epochs=num_epochs)
-            # Stop if diverging
-            if (train_loss > 1e3) | np.isnan(train_loss) | np.isinf(train_loss):
-                epoch = num_epochs
-                print(" *** Training is Diverging - Stopping !!! *** ")
+        train_loss = evaluate_classifier(model=model, train_loader=train_loader, test_loader=test_loader,
+                                         metrics=metrics, criterion=criterion, device=device,
+                                         epoch=epoch, num_epochs=num_epochs)
+        # Stop if diverging
+        if (train_loss > 1e3) | np.isnan(train_loss) | np.isinf(train_loss):
+            epoch = num_epochs
+            print(" *** Training is Diverging - Stopping !!! *** ")
 
         epoch += 1
         # update Epoch Complexity metrics
