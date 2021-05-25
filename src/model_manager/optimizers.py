@@ -57,7 +57,7 @@ def get_scheduler(optimizer, lrs_config: Dict = None):
         return opt.lr_scheduler.ExponentialLR(optimizer=optimizer,
                                               gamma=lrs_config.get('gamma', 0.5))
     elif lrs == 'cosine':
-        return opt.lr_scheduler.CosineAnnealingLR(optimizer=optimizer, T_max=200)
+        return opt.lr_scheduler.CosineAnnealingLR(optimizer=optimizer, T_max=100)
     elif lrs == 'cyclic':
         max_lr = lrs_config.get('lr0', 0.001)
         base_lr = 0.1*max_lr
