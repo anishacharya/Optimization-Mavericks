@@ -45,9 +45,9 @@
           {
             "optimizer": "SGD",
             "loss": "ce",
-            "lr0": 0.5,
+            "lr0": 0.1,
             "momentum": 0,
-            "reg": 0.00001,
+            "reg": 0.0005,
             "nesterov": false,
             "amsgrad": false
           },
@@ -57,7 +57,7 @@
             "lrs": 'step',
             "milestones": [100, 250],
             "step_size": 1,
-            "gamma": 0.99
+            "gamma": 0.1
           },
 
         "server_optimizer_config":
@@ -84,7 +84,7 @@
 
         "compression_config":
           {
-            "compression_operator": 'top_k',
+            "compression_operator": None,
             "frac_coordinates_to_keep": 0.5,
             "bits": 2,
             "ef_client": False
