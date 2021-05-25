@@ -54,7 +54,7 @@
 
         "client_lrs_config":
           {
-            "lrs": 'multi_step',
+            "lrs": 'cosine',
             "milestones": [10, 100, 250],
             "step_size": 10,
             "gamma": 0.1
