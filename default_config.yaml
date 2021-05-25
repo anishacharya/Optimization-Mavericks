@@ -46,7 +46,7 @@
             "optimizer": "SGD",
             "loss": "ce",
             "lr0": 1,
-            "momentum": 0.9,
+            "momentum": 0,
             "reg": 0.0001,
             "nesterov": false,
             "amsgrad": false
