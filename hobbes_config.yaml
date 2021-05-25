@@ -35,7 +35,7 @@
   {
     "num_clients": 10, # Number of batches in distributed setting
     "client_fraction": 1, # partial device participation - For FL
-    "global_epochs": 200, # epochs
+    "global_epochs": 100, # epochs
     "local_epochs": 1, # local SGD # For FL
     "compute_grad_stats": false,
 
