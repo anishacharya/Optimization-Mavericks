@@ -23,13 +23,13 @@ class ImageCorruption:
         self.num_corrupt = 0
         self.curr_corr = 0
 
-    def attack(self, X):
+    def attack(self, X, Y):
         if self.curr_corr > 0:
             # apply attack
             for ix, sample in enumerate(X):
                 noisy_img = self.corrupt(img=sample)
                 X[ix] = noisy_img
-        return X
+        return X, Y
 
     def corrupt(self, img: torch.tensor) -> torch.tensor:
         raise NotImplementedError

@@ -17,12 +17,12 @@ class LabelCorruption:
         self.num_corrupt = 0
         self.curr_corr = 0
 
-    def attack(self, Y):
+    def attack(self, X, Y):
         if self.curr_corr > 0:
             # apply attack
             for ix, sample in enumerate(Y):
                 Y[ix] = self.corrupt()
-        return Y
+        return X, Y
 
     def corrupt(self):
         raise NotImplementedError('You need to Implement this method for each attack class')

@@ -59,7 +59,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
 
             # Apply Feature Attack
             if feature_attack_model is not None:
-                images = feature_attack_model.attack(X=images)
+                images = feature_attack_model.attack(X=images, Y=labels)
                 feature_attack_model.curr_corr -= 1
 
             images = images.to(device)
