@@ -15,13 +15,18 @@ class CoordinateWiseMedian(GAR):
 
     def aggregate(self, G: np.ndarray, ix: List[int] = None) -> np.ndarray:
         if ix is not None:
+            t0 = time.time()
             g_agg = np.zeros_like(G[0, :])
             G = G[:, ix]
             low_rank_med = np.median(G, axis=0)
             g_agg[ix] = low_rank_med
+            self.agg_time = time.time() - t0
             return g_agg
         else:
-            return np.median(G, axis=0)
+            t0 = time.time()
+            g_agg = np.median(G, axis=0)
+            self.agg_time = time.time() - t0
+            return g_agg
 
 
 class GeometricMedian(GAR):
