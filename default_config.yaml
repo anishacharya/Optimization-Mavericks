@@ -45,7 +45,7 @@
           {
             "optimizer": "Adam",
             "loss": "ce",
-            "lr0": 0.01,
+            "lr0": 0.1,
             "momentum": 0,
             "reg": 0.0005,
             "nesterov": false,
