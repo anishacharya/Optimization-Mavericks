@@ -24,10 +24,12 @@
 
     "feature_attack_config":
       {
-        "noise_model": None,
+        "noise_model": 'impulse',
         "frac_adv": 0.4,
-
         "sev": 5,
+
+        # backdoor Attack
+        "target_label": 8,
       },
   },
 
