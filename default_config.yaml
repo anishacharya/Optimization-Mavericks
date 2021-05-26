@@ -47,7 +47,7 @@
             "loss": "ce",
             "lr0": 0.01,
             "momentum": 0,
-            "reg": 0.0005,
+            "reg": 0.00001,
             "nesterov": false,
             "amsgrad": false
           },
@@ -84,7 +84,7 @@
 
         "compression_config":
           {
-            "compression_operator": 'top_k',
+            "compression_operator": None,
             "frac_coordinates_to_keep": 0.5,
             "bits": 2,
             "ef_client": False
