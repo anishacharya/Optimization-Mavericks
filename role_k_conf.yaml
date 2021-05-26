@@ -47,9 +47,9 @@
       {
         "client_optimizer_config":
           {
-            "optimizer": "Adam",
+            "optimizer": "SGD",
             "loss": "ce",
-            "lr0": 0.01,
+            "lr0": 1,
             "momentum": 0.9,
             "reg": 0.00001,
             "nesterov": True,
@@ -58,7 +58,7 @@
 
         "client_lrs_config":
           {
-            "lrs": None,
+            "lrs": "step",
             "milestones": [1,5,10],
             "step_size": 1,
             "gamma": 0.9
