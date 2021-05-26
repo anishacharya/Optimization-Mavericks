@@ -15,7 +15,8 @@ class MNIST(DataManager):
     def __init__(self, data_config: Dict):
         DataManager.__init__(self, data_config=data_config)
 
-    def download_data(self):
+    def download_data(self, seed=1):
+        torch.manual_seed(seed)
         _train_dataset = datasets.MNIST(root=root, download=True)
 
         mean, std = self._get_common_data_trans(_train_dataset)
@@ -35,7 +36,8 @@ class FashionMNIST(DataManager):
     def __init__(self, data_config: Dict):
         DataManager.__init__(self, data_config=data_config)
 
-    def download_data(self):
+    def download_data(self, seed=1):
+        torch.manual_seed(seed)
         _train_dataset = datasets.FashionMNIST(root=root, download=True)
         mean, std = self._get_common_data_trans(_train_dataset)
         train_trans = transforms.Compose([transforms.ToTensor(), transforms.Normalize(mean=mean, std=std)])
@@ -54,7 +56,8 @@ class ExtendedMNIST(DataManager):
     def __init__(self, data_config: Dict):
         DataManager.__init__(self, data_config=data_config)
 
-    def download_data(self):
+    def download_data(self, seed=1):
+        torch.manual_seed(seed)
         _train_dataset = datasets.EMNIST(root=root, download=True, split='balanced')
         mean, std = self._get_common_data_trans(_train_dataset)
         train_trans = transforms.Compose([transforms.ToTensor(), transforms.Normalize(mean=mean, std=std)])
