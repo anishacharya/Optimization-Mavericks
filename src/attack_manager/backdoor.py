@@ -30,7 +30,7 @@ class LabelCorruption:
 
 class Backdoor(LabelCorruption):
     def __init__(self, attack_config: Dict):
-        LabelCorruption.__init__(attack_config=attack_config)
+        LabelCorruption.__init__(self, attack_config=attack_config)
 
     def corrupt(self):
         return self.target_class
