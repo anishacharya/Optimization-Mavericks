@@ -40,20 +40,20 @@
 #          "clr": 'g',
 #        },
         {
-            'file': 'baseline',
+            'file': 'baseline.adam',
             'label': "\\textsc{Full}",
             'line_width': 2,
             'marker': None,
             'line_style': 'solid',
             "clr": 'b',
         },
-#        {
-#          'file': 'bgmd.40',
-#          'label': "\\textsc{BGmD}($\\beta=0.4$)",
-#          'line_width': 2,
-#          'marker': None,
-#          'line_style': 'solid',
-#          "clr": 'k',
-#        },
+        {
+          'file': 'top_k.51.adam',
+          'label': "\\textsc{Top k}",
+          'line_width': 2,
+          'marker': None,
+          'line_style': 'solid',
+          "clr": 'g',
+        },
       ]
 }

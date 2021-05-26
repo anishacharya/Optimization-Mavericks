@@ -25,7 +25,7 @@
     "feature_attack_config":
       {
         "noise_model": 'additive',
-        "frac_adv": 0.1,
+        "frac_adv": 0.4,
 
         "sev": 5,
       },
