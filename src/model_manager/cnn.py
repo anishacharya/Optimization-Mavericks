@@ -99,6 +99,14 @@ class MnistClassifierCnn(nn.Module):
             nn.GELU(),
         )
         self.fc_out = nn.Linear(4*nc, 10)
+        torch.nn.init.zeros_(self.fc_out.weight)
+        self.net.apply(self.init_weights)
+
+    @staticmethod
+    def init_weights(m):
+        if type(m) == nn.Conv2d:
+            torch.nn.init.zeros_(m.weight)
+            m.bias.data.fill_(0.01)
 
     def forward(self, x):
         assert x.ndim == 4 and x.shape[1:] == (1, 28, 28)
