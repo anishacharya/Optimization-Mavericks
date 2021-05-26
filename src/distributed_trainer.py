@@ -207,7 +207,8 @@ def run_batch_train(config, metrics, seed):
     print('Num of Batches in Train Loader = {}'.format(len(train_loader)))
     test_loader = DataLoader(dataset=test_dataset, batch_size=batch_size)
 
-    # Apply Data Corruption to train data
+    # Apply Data Corruption to train data -
+    # Both corruption to X and Label
     feature_attack_model = get_feature_attack(attack_config=feature_attack_config)
     # feature_attack_model.launch_attack(data_loader=train_loader)
 

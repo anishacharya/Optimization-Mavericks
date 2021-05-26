@@ -4,6 +4,7 @@
 from .grad_attack_models import (DriftAttack, Additive, Random,
                                  BitFlipAttack, RandomSignFlipAttack)
 from .image_corruption_models import *
+from .backdoor import *
 from typing import Dict
 
 
@@ -27,5 +28,7 @@ def get_feature_attack(attack_config: Dict):
         return ImageAdditive(attack_config=attack_config)
     elif attack_config["noise_model"] == 'impulse':
         return ImageImpulse(attack_config=attack_config)
+    elif attack_config["noise_model"] == 'backdoor':
+        return Backdoor(attack_config=attack_config)
     else:
         return None
