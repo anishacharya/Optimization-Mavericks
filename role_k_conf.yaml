@@ -58,10 +58,10 @@
 
         "client_lrs_config":
           {
-            "lrs": None,
-            "milestones": [1,5,10],
+            "lrs": 'multi_step',
+            "milestones": [10],
             "step_size": 1,
-            "gamma": 0.9
+            "gamma": 0.1
           },
 
         "server_optimizer_config":
