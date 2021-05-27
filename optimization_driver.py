@@ -58,7 +58,7 @@ def init_metric(config):
                "avg_gm_cost": 0,
 
                "num_iter": 0,
-               "num_agg": 0,
+               "num_steps": 0,
                }
     return metrics
 

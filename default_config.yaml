@@ -39,6 +39,8 @@
     "local_epochs": 1, # local SGD # For FL
     "compute_grad_stats": false,
 
+    "log_freq": "step",
+
     "optimizer_config":
       {
         "client_optimizer_config":
@@ -84,8 +86,8 @@
 
         "compression_config":
           {
-            "compression_operator": None,
-            "frac_coordinates_to_keep": 0.2,
+            "compression_operator": 'top_k',
+            "frac_coordinates_to_keep": 0.3,
             "bits": 2,
             "ef_client": False
           },
@@ -106,7 +108,7 @@
           },
         "sparse_approximation_config":
           {
-            "rule": 'active_norm',
+            "rule": None,
             "axis": "column",
             "frac_coordinates": 0.5,
             "ef_server": True
