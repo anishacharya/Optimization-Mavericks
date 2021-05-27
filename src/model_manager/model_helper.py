@@ -109,7 +109,7 @@ def evaluate_classifier(epoch, num_epochs, model, train_loader, test_loader, met
 
     if train_metric is True:
         train_error, train_acc, train_loss = _evaluate(model=model, data_loader=train_loader,
-                                                       criterion=criterion, device=device)
+                                                       criterion=criterion, device=device, compute_acc=False)
         print('Epoch progress: {}/{}, train loss = {}, train acc = {}'.format(epoch, num_epochs, train_loss, train_acc))
         metrics["train_error"].append(train_error)
         metrics["train_loss"].append(train_loss)
@@ -120,13 +120,14 @@ def evaluate_classifier(epoch, num_epochs, model, train_loader, test_loader, met
     return 0
 
 
-def _evaluate(model, data_loader, verbose=False, criterion=None, device="cpu"):
+def _evaluate(model, data_loader, verbose=False, criterion=None, compute_acc=True, device="cpu"):
     model.to(device)
     with torch.no_grad():
         correct = 0
         total = 0
         total_loss = 0
         batches = 0
+        acc = 0
 
         for images, labels in data_loader:
             images = images.to(device)
@@ -137,12 +138,15 @@ def _evaluate(model, data_loader, verbose=False, criterion=None, device="cpu"):
                 total_loss += criterion(outputs, labels).item()
 
             batches += 1
-            _, predicted = torch.max(outputs.data, 1)
-            total += labels.size(0)
-            correct += (predicted == labels).sum().item()
+            if compute_acc:
+                _, predicted = torch.max(outputs.data, 1)
+                total += labels.size(0)
+                correct += (predicted == labels).sum().item()
 
-        acc = 100 * correct / total
-        total_loss /= batches
-        if verbose:
-            print('Accuracy: {} %'.format(acc))
+        if compute_acc:
+            acc = 100 * correct / total
+            total_loss /= batches
+            if verbose:
+                print('Accuracy: {} %'.format(acc))
+
         return 100 - acc, acc, total_loss
