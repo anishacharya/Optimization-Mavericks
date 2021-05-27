@@ -73,7 +73,7 @@ def run_main():
     # Train
     results = []
     # for seed in np.random.randint(0, 100*args.n_repeat+1, args.n_repeat):
-    for seed in np.arange(args.n_repeat + 1):
+    for seed in np.arange(args.n_repeat):
         train_mode = config.get("train_mode", 'distributed')
         metrics = init_metric(config=config)
         if train_mode == 'fed':
