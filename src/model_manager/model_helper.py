@@ -99,21 +99,25 @@ def cycle(iterable):
 
 
 def evaluate_classifier(epoch, num_epochs, model, train_loader, test_loader, metrics,
-                        criterion=None, device="cpu") -> float:
+                        criterion=None, device="cpu", train_metric=True, test_metric=True) -> float:
 
-    test_error, test_acc, _ = _evaluate(model=model, data_loader=test_loader, device=device)
-    train_error, train_acc, train_loss = _evaluate(model=model, data_loader=train_loader,
-                                                   criterion=criterion, device=device)
-    print('Epoch progress: {}/{}, train loss = {}, train acc = {}, test acc = {}'.
-          format(epoch, num_epochs, train_loss, train_acc, test_acc))
-    metrics["train_error"].append(train_error)
-    metrics["train_loss"].append(train_loss)
-    metrics["train_acc"].append(train_acc)
+    if test_metric is True:
+        test_error, test_acc, _ = _evaluate(model=model, data_loader=test_loader, device=device)
+        print('test acc = {}'.format(test_acc))
+        metrics["test_error"].append(test_error)
+        metrics["test_acc"].append(test_acc)
 
-    metrics["test_error"].append(test_error)
-    metrics["test_acc"].append(test_acc)
+    if train_metric is True:
+        train_error, train_acc, train_loss = _evaluate(model=model, data_loader=train_loader,
+                                                       criterion=criterion, device=device)
+        print('Epoch progress: {}/{}, train loss = {}, train acc = {}'.format(epoch, num_epochs, train_loss, train_acc))
+        metrics["train_error"].append(train_error)
+        metrics["train_loss"].append(train_loss)
+        metrics["train_acc"].append(train_acc)
 
-    return train_loss
+        return train_loss
+
+    return 0
 
 
 def _evaluate(model, data_loader, verbose=False, criterion=None, device="cpu"):
