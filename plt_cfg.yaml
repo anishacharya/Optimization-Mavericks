@@ -1,12 +1,29 @@
 {
     "plot_type": 'train_loss',
     "x_ax": 'epoch',
-    "plot_freq": 10,
+    "plot_freq": 1,
     "smoothen": False,
     # "dir": 'result_dumps/fmnist/lenet/f.ip.40/',
-    "dir": 'result_dumps/dsc/',
+    "dir": 'result_dumps/dsc/adam',
     "plots":
       [
+        {
+            'file': 'baseline',
+            'label': "\\textsc{SGD}",
+            'line_width': 2,
+            'marker': 'o',
+            'line_style': 'solid',
+            "clr": 'b',
+        },
+        {
+          'file': 'baseline',
+          'label': "\\textsc{SGD}",
+          'line_width': 2,
+          'marker': 'o',
+          'line_style': 'solid',
+          "clr": 'b',
+        },
+
 #        {
 #          'file': 'mean',
 #          'label': "\\textsc{SGD}",
@@ -39,21 +56,21 @@
 #          'line_style': 'solid',
 #          "clr": 'g',
 #        },
-        {
-            'file': 'baseline.adam',
-            'label': "\\textsc{Full}",
-            'line_width': 2,
-            'marker': None,
-            'line_style': 'solid',
-            "clr": 'b',
-        },
-        {
-          'file': 'top_k.51.adam',
-          'label': "\\textsc{Top k}",
-          'line_width': 2,
-          'marker': None,
-          'line_style': 'solid',
-          "clr": 'g',
-        },
+#        {
+#            'file': 'baseline.adam',
+#            'label': "\\textsc{Full}",
+#            'line_width': 2,
+#            'marker': None,
+#            'line_style': 'solid',
+#            "clr": 'b',
+#        },
+#        {
+#          'file': 'top_k.51.adam',
+#          'label': "\\textsc{Top k}",
+#          'line_width': 2,
+#          'marker': None,
+#          'line_style': 'solid',
+#          "clr": 'g',
+#        },
       ]
 }
