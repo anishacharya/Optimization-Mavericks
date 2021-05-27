@@ -84,7 +84,7 @@
 
         "compression_config":
           {
-            "compression_operator": 'top_k',
+            "compression_operator": 'rand_k',
             "frac_coordinates_to_keep": 0.5,
             "bits": 2,
             "ef_client": False
