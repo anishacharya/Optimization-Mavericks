@@ -167,8 +167,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
         # else:
         train_loss = evaluate_classifier(model=model, train_loader=train_loader, test_loader=test_loader,
                                          metrics=metrics, criterion=criterion, device=device,
-                                         epoch=epoch, num_epochs=num_epochs, train_metric=True,
-                                         test_metric=True)
+                                         epoch=epoch, num_epochs=num_epochs)
         # Stop if diverging
         if (train_loss > 1e3) | np.isnan(train_loss) | np.isinf(train_loss):
             epoch = num_epochs
