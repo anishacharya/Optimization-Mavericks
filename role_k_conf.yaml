@@ -88,7 +88,7 @@
 
         "compression_config":
           {
-            "compression_operator": 'top_k',
+            "compression_operator": None,
             "frac_coordinates_to_keep": 0.1,
             "bits": 2,
             "ef_client": False
@@ -110,10 +110,10 @@
           },
         "sparse_approximation_config":
           {
-            "rule": None,
+            "rule": 'active_norm',
             "axis": "column",
             "frac_coordinates": 0.1,
-            "ef_server": True
+            "ef_server": False
           }
       }
   }
