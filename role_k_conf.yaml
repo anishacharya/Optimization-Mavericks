@@ -88,8 +88,8 @@
 
         "compression_config":
           {
-            "compression_operator": None,
-            "frac_coordinates_to_keep": 0.5,
+            "compression_operator": 'top_k',
+            "frac_coordinates_to_keep": 0.1,
             "bits": 2,
             "ef_client": False
           },
