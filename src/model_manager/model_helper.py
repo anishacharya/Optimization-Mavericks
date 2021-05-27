@@ -145,8 +145,8 @@ def _evaluate(model, data_loader, verbose=False, criterion=None, compute_acc=Tru
 
         if compute_acc:
             acc = 100 * correct / total
-            total_loss /= batches
             if verbose:
                 print('Accuracy: {} %'.format(acc))
 
+        total_loss /= batches
         return 100 - acc, acc, total_loss
