@@ -100,7 +100,7 @@ class MnistClassifierCnn(nn.Module):
         )
         self.fc_out = nn.Linear(4*nc, 10)
         torch.nn.init.zeros_(self.fc_out.weight)
-        #self.net.apply(self.init_weights)
+        # self.net.apply(self.init_weights)
 
     @staticmethod
     def init_weights(m):
