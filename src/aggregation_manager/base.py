@@ -26,7 +26,7 @@ class GAR:
         G: Gradient Matrix where each row is a gradient vector (g_i)
         ix: Columns specified to be aggregated on (if None done on full dimension)
         """
-        pass
+        raise NotImplementedError
 
     def block_descent_aggregate(self, sparse_approx_config: Dict, G: np.ndarray):
         sparse_rule = sparse_approx_config.get('rule', None)
