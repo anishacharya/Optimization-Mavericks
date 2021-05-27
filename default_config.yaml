@@ -33,7 +33,7 @@
   },
 
   "training_config": {
-    "num_clients": 2, # Number of batches in distributed setting
+    "num_clients": 10, # Number of batches in distributed setting
     "client_fraction": 1, # partial device participation - For FL
     "global_epochs": 20, # epochs
     "local_epochs": 1, # local SGD # For FL
@@ -84,8 +84,8 @@
 
         "compression_config":
           {
-            "compression_operator": 'top_k',
-            "frac_coordinates_to_keep": 0.3,
+            "compression_operator": 'qsgd',
+            "frac_coordinates_to_keep": 0.2,
             "bits": 2,
             "ef_client": False
           },
@@ -106,7 +106,7 @@
           },
         "sparse_approximation_config":
           {
-            "rule": 'active_norm',
+            "rule": None,
             "axis": "column",
             "frac_coordinates": 0.2,
             "ef_server": True

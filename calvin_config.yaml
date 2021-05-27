@@ -108,6 +108,7 @@
             "sign_flip_conf": {"flip_prob": 0.7, "flip_scale": 5},
             "attack_n_std": 1
           },
+
         "sparse_approximation_config":
           {
             "rule": None,
