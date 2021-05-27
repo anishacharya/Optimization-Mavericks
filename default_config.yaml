@@ -39,7 +39,7 @@
     "local_epochs": 1, # local SGD # For FL
     "compute_grad_stats": false,
 
-    "log_freq": "step",
+    "log_freq": "epoch",
 
     "optimizer_config":
       {
