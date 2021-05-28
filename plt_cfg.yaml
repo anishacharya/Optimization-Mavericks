@@ -3,17 +3,17 @@
     "x_ax": 'time',
     "plot_freq": 3,
     "smoothen": False,
-    "dir": 'result_dumps/fmnist/lenet/bf.10/',
+    "dir": 'result_dumps/fmnist/lenet/f.ip.10/',
     "plots":
       [
-#        {
-#            'file': 'mean',
-#            'label': "\\textsc{SGD}",
-#            'line_width': 2,
-#            'marker': 'o',
-#            'line_style': 'solid',
-#            "clr": 'b',
-#        },
+        {
+            'file': 'mean',
+            'label': "\\textsc{SGD}",
+            'line_width': 2,
+            'marker': 'o',
+            'line_style': 'solid',
+            "clr": 'b',
+        },
         {
           'file': 'cm',
           'label': "\\textsc{CmD}", # $\beta=0.1$,
