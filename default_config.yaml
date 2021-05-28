@@ -39,7 +39,7 @@
     "local_epochs": 1, # local SGD # For FL
     "compute_grad_stats": false,
 
-    "log_freq": "step",
+    "log_freq": "epoch",
 
     "optimizer_config":
       {
@@ -86,7 +86,7 @@
 
         "compression_config":
           {
-            "compression_operator": 'top_k',
+            "compression_operator": 'qsgd',
             "frac_coordinates_to_keep": 0.3,
             "bits": 2,
             "ef_client": False
