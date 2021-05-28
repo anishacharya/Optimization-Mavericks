@@ -112,8 +112,8 @@
           {
             "rule": 'active_norm',
             "axis": "column",
-            "frac_coordinates": 0.1,
-            "ef_server": false
+            "frac_coordinates": 0.2,
+            "ef_server": true
           }
       }
   }
