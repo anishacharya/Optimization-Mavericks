@@ -28,8 +28,8 @@ def plot_(lbl: str, res_file: str, plt_type: str = 'epoch_loss', x_axis='time', 
     mean = np.mean(scores, axis=0)
     std = np.std(scores, axis=0)
 
-    UB = mean + 3 * std
-    LB = mean - 3 * std
+    UB = mean + 1 * std
+    LB = mean - 1 * std
 
     if plt_type == 'test_acc':
         max_acc = max(mean)
@@ -53,7 +53,7 @@ def plot_(lbl: str, res_file: str, plt_type: str = 'epoch_loss', x_axis='time', 
     else:
         raise NotImplementedError
     plt.plot(x, mean, label=lbl, linewidth=line_width, marker=marker, linestyle=line_style, color=color)
-    plt.fill_between(x, LB, UB, alpha=0.3, linewidth=0.5, color=color)
+    # plt.fill_between(x, LB, UB, alpha=0.3, linewidth=0.5, color=color)
 
 
 def smooth(y, box_pts):
@@ -114,8 +114,9 @@ if __name__ == '__main__':
         plt.ylabel('Test Error', fontsize=10)
     elif plot_type == 'test_acc':
         # plt.yscale("log")
-        # plt.ylim(75)
-        # ax.yaxis.set_minor_formatter(ticker.ScalarFormatter())
+        plt.ylim(70, 90)
+        plt.xlim(0, 3000)
+        ax.yaxis.set_minor_formatter(ticker.ScalarFormatter())
         plt.ylabel('Test Accuracy', fontsize=10)
     elif plot_type == 'train_acc':
         plt.ylabel('Train Accuracy', fontsize=10)
