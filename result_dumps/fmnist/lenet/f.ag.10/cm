@@ -581,7 +581,7 @@
             0,
             0
         ],
-        "total_cost": 1010.8836946487427,
+        "total_cost": 1668.5146147177725,
         "total_grad_cost": 1010.8836946487427,
         "total_agg_cost": 0,
         "total_sparse_cost": 0,
@@ -1172,7 +1172,7 @@
             0,
             0
         ],
-        "total_cost": 1037.575944185257,
+        "total_cost": 1695.2068642542868,
         "total_grad_cost": 1037.575944185257,
         "total_agg_cost": 0,
         "total_sparse_cost": 0,
