@@ -86,7 +86,7 @@
 
         "compression_config":
           {
-            "compression_operator": 'qsgd',
+            "compression_operator": None,
             "frac_coordinates_to_keep": 0.3,
             "bits": 2,
             "ef_client": False
@@ -108,10 +108,10 @@
           },
         "sparse_approximation_config":
           {
-            "rule": None,
+            "rule": 'active_norm',
             "axis": "column",
-            "frac_coordinates": 0.5,
-            "ef_server": True
+            "frac_coordinates": 0.3,
+            "ef_server": False
           }
       }
   }
