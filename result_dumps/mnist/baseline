@@ -15,7 +15,8 @@
                 "data_sampling_strategy": "iid",
                 "num_shards": 80,
                 "batch_size": 64,
-                "feature_attack_config": {
+                "feature_attack_config":
+                {
                     "noise_model": "None",
                     "frac_adv": 0.4,
                     "sev": 5,

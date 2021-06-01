@@ -3,7 +3,7 @@
     "x_ax": 'time',
     "plot_freq": 3,
     "smoothen": False,
-    "dir": 'result_dumps/fmnist/lenet/backdoor.20/',
+    "dir": 'result_dumps/cifar/resnet/clean/',
     "plots":
       [
           {
@@ -23,7 +23,7 @@
               "clr": 'r',
           },
           {
-              'file': 'bgmd',
+              'file': 'bgmd.10',
               'label':"\\textsc{BGmD}",
               'line_width': 2,
               'marker': 'o',
@@ -56,16 +56,16 @@
 #          "clr": 'r',
 #        },
 #        {
-#          'file': 'k.20', # 'bgmd.10',
-#          'label': $\beta=0.2$, # "\\textsc{BGmD}", #,
+#          'file': 'k.30', # 'bgmd.10',
+#          'label': $\beta=0.3$, # "\\textsc{BGmD}", #,
 #          'line_width': 2,
 #          'marker': 'o',
 #          'line_style': 'solid',
 #          "clr": 'k',
 #        },
 #        {
-#          'file': 'k.30', # 'gm',
-#          'label': $\beta=0.3$, # "\\textsc{GmD}", #$\beta=0.3$,
+#          'file': 'k.50', # 'gm',
+#          'label': $\beta=0.5$, # "\\textsc{GmD}", #$\beta=0.3$,
 #          'line_width': 2,
 #          'marker': 'o',
 #          'line_style': 'solid',
@@ -80,8 +80,8 @@
 #            "clr": 'm',
 #        },
 #        {
-#          'file': 'k.30.ef',
-#          'label': $\beta=0.10$ + M,
+#          'file': 'k.50.ef',
+#          'label': $\beta=0.15$ + M,
 #          'line_width': 2,
 #          'marker': 'o',
 #          'line_style': 'solid',
