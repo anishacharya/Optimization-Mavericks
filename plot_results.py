@@ -130,6 +130,8 @@ if __name__ == '__main__':
         plt.ylabel('Training Loss', fontsize=10)
     elif plot_type == 'train_error':
         plt.ylabel('Train Error', fontsize=10)
+    elif plot_type == 'sparse_approx_residual':
+        plt.ylabel("Fraction of Mass Retained ")
     else:
         raise NotImplementedError
 
