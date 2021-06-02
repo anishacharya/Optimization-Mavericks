@@ -20,7 +20,7 @@
     "data_sampling_strategy": "iid",
     "num_shards": 80,
 
-    "batch_size": 128,
+    "batch_size": 512,
 
     "feature_attack_config":
       {
@@ -35,7 +35,7 @@
 
   "training_config":
   {
-    "num_clients": 10, # Number of batches in distributed setting
+    "num_clients": 32, # Number of batches in distributed setting
     "client_fraction": 1, # partial device participation - For FL
 
     "global_epochs": 100, # epochs
@@ -81,7 +81,7 @@
 
     "aggregation_config":
       {
-        "gar": "co_med",
+        "gar": "mean",
 
         "geo_med_config": {"alg": 'vardi', 'eps': 0.00001, 'max_iter': 50},
         "trimmed_mean_config":{"proportion": 0.3},
@@ -98,7 +98,7 @@
 
         "grad_attack_config":
           {
-            "attack_model": 'bit_flip',
+            "attack_model": None,
             "attack_mode": "un_coordinated",
             "frac_adv": 0.1,
             "rand_additive_attack_conf":

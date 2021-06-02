@@ -1,6 +1,6 @@
 {
-    "plot_type": 'test_acc',
-    "x_ax": 'time',
+    "plot_type": 'residual',
+    "x_ax": 'epoch',
     "plot_freq": 3,
     "smoothen": False,
     "dir": 'result_dumps/cifar/resnet/clean/',
