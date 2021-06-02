@@ -85,9 +85,12 @@ class SparseApproxMatrix:
         # norm_dist = G.sum(axis=self.axis)
         # norm_dist = np.square(norm_dist)
         norm_dist = np.linalg.norm(G, axis=self.axis)
+        norm_dist /= norm_dist.sum()
         sorted_ix = np.argsort(norm_dist)[::-1]
         I_k = sorted_ix[:self.k]
 
+        mass_explained = np.sum(norm_dist[I_k])
+        print("Mass Explained : {}".format(mass_explained))
         # Probabilistic Implementation ~ O(d)
         # norm_dist = np.linalg.norm(G, axis=self.axis)
         # norm_dist /= norm_dist.sum()
