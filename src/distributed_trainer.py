@@ -117,9 +117,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                     t0 = time.time()
                     G, I_k = sparse_selection.sparse_approx(G=G, lr=lr)
                     epoch_sparse_cost += time.time() - t0
-
-                    avg_residual = np.mean(sparse_selection.residual_error, axis=0)
-                    metrics["sparse_approx_residual"].append(np.linalg.norm(avg_residual))
+                    metrics["sparse_approx_residual"].append(sparse_selection.normalized_residual)
 
                 # Gradient aggregation
                 agg_g = gar.aggregate(G=G, ix=I_k)

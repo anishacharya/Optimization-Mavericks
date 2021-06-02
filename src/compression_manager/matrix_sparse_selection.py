@@ -25,6 +25,7 @@ class SparseApproxMatrix:
         self.ef = conf.get('ef_server', False)
         print('Error Feedback is: {}'.format(self.ef))
         self.residual_error = 0
+        self.normalized_residual = 0
 
     def sparse_approx(self, G: np.ndarray, lr=1) -> [np.ndarray, np.ndarray]:
         if self.sampling_rule not in ['active_norm', 'random']:
@@ -90,7 +91,8 @@ class SparseApproxMatrix:
         I_k = sorted_ix[:self.k]
 
         mass_explained = np.sum(norm_dist[I_k])
-        print("Mass Explained : {}".format(mass_explained))
+        self.normalized_residual = mass_explained
+        # print("Mass Explained : {}".format(mass_explained))
         # Probabilistic Implementation ~ O(d)
         # norm_dist = np.linalg.norm(G, axis=self.axis)
         # norm_dist /= norm_dist.sum()
