@@ -47,7 +47,7 @@
       {
         "client_optimizer_config":
           {
-            "optimizer": "SGD",
+            "optimizer": "Adam",
             "loss": "ce",
             "lr0": 0.01,
             "momentum": 0.9,
