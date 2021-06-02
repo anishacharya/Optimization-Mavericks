@@ -20,7 +20,7 @@
     "data_sampling_strategy": "iid",
     "num_shards": 80,
 
-    "batch_size": 512,
+    "batch_size": 128,
 
     "feature_attack_config":
       {
