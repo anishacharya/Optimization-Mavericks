@@ -3,7 +3,7 @@
     "x_ax": 'epoch',
     "plot_freq": 3,
     "smoothen": False,
-    "dir": 'result_dumps/mnist/f.ip.40/',
+    "dir": 'result_dumps/mnist/clean/',
     "plots":
       [
           {
