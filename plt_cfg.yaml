@@ -3,7 +3,7 @@
     "x_ax": 'epoch',
     "plot_freq": 10,
     "smoothen": False,
-    "dir": 'result_dumps/mnist/clean/',
+    "dir": 'result_dumps/mnist/f.ip.40/',
     "plots":
       [
 #          {
@@ -23,7 +23,7 @@
 #              "clr": 'r',
 #          },
           {
-              'file': 'bgmd.40',
+              'file': 'bgmd.10',
               'label':"\\textsc{BGmD}",
               'line_width': 2,
               'marker': 'o',

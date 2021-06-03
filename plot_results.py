@@ -132,6 +132,7 @@ if __name__ == '__main__':
         plt.ylabel('Train Error', fontsize=10)
     elif plot_type == 'sparse_approx_residual':
         plt.ylabel("Fraction of Mass Retained ")
+        plt.xlabel(r'$\mathcal{O}$(Epochs)', fontsize=10)
     else:
         raise NotImplementedError
 

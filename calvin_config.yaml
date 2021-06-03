@@ -24,8 +24,8 @@
 
     "feature_attack_config":
       {
-        "noise_model": None,
-        "frac_adv": 0.2,
+        "noise_model": 'impulse',
+        "frac_adv": 0.4,
         "sev": 5,
 
         # backdoor Attack
@@ -35,7 +35,7 @@
 
   "training_config":
   {
-    "num_clients": 5, # Number of batches in distributed setting
+    "num_clients": 10, # Number of batches in distributed setting
     "client_fraction": 1, # partial device participation - For FL
     "global_epochs": 25, # epochs
     "local_epochs": 1, # local SGD # For FL
@@ -58,7 +58,7 @@
 
         "client_lrs_config":
           {
-            "lrs": None,
+            "lrs": 'cosine',
             "milestones": [1,5,10],
             "step_size": 1,
             "gamma": 0.9
@@ -79,7 +79,7 @@
 
     "aggregation_config":
       {
-        "gar": "mean",
+        "gar": "co_med",
 
         "geo_med_config": {"alg": 'vardi', 'eps': 0.00001, 'max_iter': 50},
         "trimmed_mean_config":{"proportion": 0.3},
@@ -113,7 +113,7 @@
           {
             "rule": 'active_norm',
             "axis": "column",
-            "frac_coordinates": 0.1,
+            "frac_coordinates": 0.2,
             "ef_server": True
           }
       }
