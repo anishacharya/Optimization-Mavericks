@@ -110,7 +110,7 @@ class GeometricMedian(GAR):
             except:
                 print(mu1)
 
-            if euclidean(mu, mu1) < eps:
+            if improvement < eps:
                 self.agg_time = time.time() - t0
                 self.num_iter = num_iter
                 return mu
