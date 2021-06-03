@@ -105,7 +105,7 @@ class GeometricMedian(GAR):
 
             mu1 = np.nan_to_num(mu1, copy=False, nan=0, posinf=0, neginf=0)
 
-            if improvement < eps:
+            if euclidean(mu, mu1) < eps:
                 self.agg_time = time.time() - t0
                 self.num_iter = num_iter
                 return mu
