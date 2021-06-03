@@ -96,7 +96,7 @@
 
         "grad_attack_config":
           {
-            "attack_model": None,
+            "attack_model": 'active_norm',
             "attack_mode": "un_coordinated",
             "frac_adv": 0.4,
             "rand_additive_attack_conf":
