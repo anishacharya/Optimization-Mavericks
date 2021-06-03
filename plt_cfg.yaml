@@ -1,43 +1,43 @@
 {
-    "plot_type": 'sparse_approx_residual',
+    "plot_type": 'test_acc', # Options: 'sparse_approx_residual' 'test_acc'
     "x_ax": 'epoch',
-    "plot_freq": 10,
+    "plot_freq": 3,
     "smoothen": False,
     "dir": 'result_dumps/mnist/f.ip.40/',
     "plots":
       [
-#          {
-#              'file': 'mean',
-#              'label': "\\textsc{SGD}",
-#              'line_width': 2,
-#              'marker': 'o',
-#              'line_style': 'solid',
-#              "clr": 'b',
-#          },
-#          {
-#              'file': 'cm',
-#              'label': "\\textsc{CmD}",
-#              'line_width': 2,
-#              'marker': 'o',
-#              'line_style': 'solid',
-#              "clr": 'r',
-#          },
           {
-              'file': 'bgmd.10',
+              'file': 'mean',
+              'label': "\\textsc{SGD}",
+              'line_width': 2,
+              'marker': 'o',
+              'line_style': 'solid',
+              "clr": 'b',
+          },
+          {
+              'file': 'cm',
+              'label': "\\textsc{CmD}",
+              'line_width': 2,
+              'marker': 'o',
+              'line_style': 'solid',
+              "clr": 'r',
+          },
+          {
+              'file': 'bgmd.20',
               'label':"\\textsc{BGmD}",
               'line_width': 2,
               'marker': 'o',
               'line_style': 'solid',
               "clr": 'k',
           },
-#          {
-#              'file': 'gm',
-#              'label': "\\textsc{GmD}",
-#              'line_width': 2,
-#              'marker': 'o',
-#              'line_style': 'solid',
-#              "clr": 'g',
-#          },
+          {
+              'file': 'gm',
+              'label': "\\textsc{GmD}",
+              'line_width': 2,
+              'marker': 'o',
+              'line_style': 'solid',
+              "clr": 'g',
+          },
           ##### Plot Role K
 #        {
 #            'file': 'baseline', # 'mean',
