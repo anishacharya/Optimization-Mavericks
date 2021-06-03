@@ -23,7 +23,7 @@
             "training_config": {
                 "num_clients": 10,
                 "client_fraction": 1,
-                "global_epochs": 100,
+                "global_epochs": 20,
                 "local_epochs": 1,
                 "compute_grad_stats": false,
                 "log_freq": "epoch",
