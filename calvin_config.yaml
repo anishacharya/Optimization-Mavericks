@@ -79,7 +79,7 @@
 
     "aggregation_config":
       {
-        "gar": "co_med",
+        "gar": "geo_med",
 
         "geo_med_config": {"alg": 'vardi', 'eps': 0.00001, 'max_iter': 50},
         "trimmed_mean_config":{"proportion": 0.3},
@@ -111,7 +111,7 @@
 
         "sparse_approximation_config":
           {
-            "rule": None,
+            "rule": 'active_norm',
             "axis": "column",
             "frac_coordinates": 0.1,
             "ef_server": True
