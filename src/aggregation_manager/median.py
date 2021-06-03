@@ -105,10 +105,9 @@ class GeometricMedian(GAR):
 
             mu1 = np.nan_to_num(mu1, copy=False, nan=0, posinf=0, neginf=0)
 
-            try:
-                improvement = euclidean(mu, mu1)
-            except:
-                print(mu1)
+            improvement = euclidean(mu, mu1)
+            if improvement.dtype is not float:
+                print(improvement)
 
             if improvement < eps:
                 self.agg_time = time.time() - t0
