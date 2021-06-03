@@ -61,7 +61,7 @@
                     }
                 },
                 "aggregation_config": {
-                    "gar": "co_med",
+                    "gar": "geo_med",
                     "geo_med_config": {
                         "alg": "vardi",
                         "eps": 1e-05,
