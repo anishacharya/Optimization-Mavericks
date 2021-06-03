@@ -24,7 +24,7 @@
 
     "feature_attack_config":
       {
-        "noise_model": 'impulse',
+        "noise_model": None,
         "frac_adv": 0.2,
         "sev": 5,
 
@@ -79,7 +79,7 @@
 
     "aggregation_config":
       {
-        "gar": "co_med",
+        "gar": "geo_med",
 
         "geo_med_config": {"alg": 'vardi', 'eps': 0.00001, 'max_iter': 50},
         "trimmed_mean_config":{"proportion": 0.3},
