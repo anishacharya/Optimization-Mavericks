@@ -24,8 +24,8 @@
 
     "feature_attack_config":
       {
-        "noise_model": None,
-        "frac_adv": 0.4,
+        "noise_model": 'impulse',
+        "frac_adv": 0.2,
         "sev": 5,
 
         # backdoor Attack
@@ -81,7 +81,7 @@
 
     "aggregation_config":
       {
-        "gar": "co_med",
+        "gar": "mean",
 
         "geo_med_config": {"alg": 'vardi', 'eps': 0.00001, 'max_iter': 100},
         "trimmed_mean_config":{"proportion": 0.3},
