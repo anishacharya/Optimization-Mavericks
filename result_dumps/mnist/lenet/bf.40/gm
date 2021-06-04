@@ -1,0 +1,468 @@
+[
+    {
+        "config": {
+            "seed": 1,
+            "train_mode": "distributed",
+            "data_config": {
+                "data_set": "mnist",
+                "shape": [
+                    28,
+                    28
+                ],
+                "val_frac": 0,
+                "num_labels": 10,
+                "num_channels": 1,
+                "data_sampling_strategy": "iid",
+                "num_shards": 80,
+                "batch_size": 64,
+                "feature_attack_config": {
+                    "noise_model": "None",
+                    "frac_adv": 0.2,
+                    "sev": 5,
+                    "target_label": 8
+                }
+            },
+            "training_config": {
+                "num_clients": 10,
+                "client_fraction": 1,
+                "global_epochs": 10,
+                "local_epochs": 1,
+                "compute_grad_stats": false,
+                "log_freq": "epoch",
+                "optimizer_config": {
+                    "client_optimizer_config": {
+                        "optimizer": "Adam",
+                        "loss": "ce",
+                        "lr0": 0.001,
+                        "momentum": 0.9,
+                        "reg": 1e-05,
+                        "nesterov": false,
+                        "amsgrad": false
+                    },
+                    "client_lrs_config": {
+                        "lrs": "cosine",
+                        "milestones": [
+                            1,
+                            5,
+                            10
+                        ],
+                        "step_size": 1,
+                        "gamma": 0.9
+                    },
+                    "server_optimizer_config": {
+                        "optimizer": "SGD",
+                        "lr0": 1
+                    }
+                },
+                "learner_config": {
+                    "net": "lenet",
+                    "mlp_config": {
+                        "h1": 300,
+                        "h2": 300
+                    }
+                },
+                "aggregation_config": {
+                    "gar": "geo_med",
+                    "geo_med_config": {
+                        "alg": "vardi",
+                        "eps": 1e-05,
+                        "max_iter": 100
+                    },
+                    "trimmed_mean_config": {
+                        "proportion": 0.3
+                    },
+                    "krum_config": {
+                        "krum_frac": 0.3
+                    },
+                    "norm_clip_config": {
+                        "alpha": 0.5
+                    },
+                    "compression_config": {
+                        "compression_operator": "None",
+                        "frac_coordinates_to_keep": 0.5,
+                        "bits": 2,
+                        "ef_client": false
+                    },
+                    "grad_attack_config": {
+                        "attack_model": "bit_flip",
+                        "attack_mode": "un_coordinated",
+                        "frac_adv": 0.4,
+                        "rand_additive_attack_conf": {
+                            "noise_dist": "gaussian",
+                            "mean_shift": 0,
+                            "attack_std": 10,
+                            "noise_range": [
+                                -1,
+                                0
+                            ]
+                        },
+                        "sign_flip_conf": {
+                            "flip_prob": 0.7,
+                            "flip_scale": 5
+                        },
+                        "attack_n_std": 1
+                    },
+                    "sparse_approximation_config": {
+                        "rule": "None",
+                        "axis": "column",
+                        "frac_coordinates": 0.1,
+                        "ef_server": true
+                    }
+                }
+            }
+        },
+        "num_param": 1163978,
+        "test_error": [
+            6.680000000000007,
+            5.1299999999999955,
+            3.719999999999999,
+            3.6599999999999966,
+            3.0600000000000023,
+            3.4000000000000057,
+            2.4399999999999977,
+            2.480000000000004,
+            2.6299999999999955,
+            1.9500000000000028
+        ],
+        "test_loss": [],
+        "test_acc": [
+            93.32,
+            94.87,
+            96.28,
+            96.34,
+            96.94,
+            96.6,
+            97.56,
+            97.52,
+            97.37,
+            98.05
+        ],
+        "train_error": [
+            7.201666666666668,
+            5.368333333333339,
+            3.5133333333333354,
+            4.073333333333338,
+            3.2866666666666617,
+            3.403333333333336,
+            2.586666666666673,
+            2.4150000000000063,
+            2.818333333333328,
+            2.046666666666667
+        ],
+        "train_loss": [
+            0.22799038349279463,
+            0.17914347020762245,
+            0.11667157482526609,
+            0.1352453029521906,
+            0.10611297782145139,
+            0.11007649078865898,
+            0.0857450827953221,
+            0.07816729503797927,
+            0.09125817571031943,
+            0.06879692018401426
+        ],
+        "train_acc": [
+            92.79833333333333,
+            94.63166666666666,
+            96.48666666666666,
+            95.92666666666666,
+            96.71333333333334,
+            96.59666666666666,
+            97.41333333333333,
+            97.585,
+            97.18166666666667,
+            97.95333333333333
+        ],
+        "communication_residual": [],
+        "sparse_approx_residual": [],
+        "epoch_sparse_approx_cost": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+        ],
+        "epoch_grad_cost": [
+            6.661973476409912,
+            6.145195245742798,
+            6.118130683898926,
+            6.292680263519287,
+            6.0728209018707275,
+            6.350122690200806,
+            6.294801235198975,
+            6.204298734664917,
+            6.303344249725342,
+            5.713079929351807
+        ],
+        "epoch_agg_cost": [
+            86.17229294776917,
+            76.97403287887573,
+            73.17494988441467,
+            74.19810175895691,
+            73.56615114212036,
+            78.0084900856018,
+            76.04216980934143,
+            74.44623637199402,
+            77.64529323577881,
+            72.87265539169312
+        ],
+        "epoch_gm_iter": [
+            1042,
+            956,
+            907,
+            921,
+            916,
+            954,
+            940,
+            896,
+            957,
+            927
+        ],
+        "total_cost": 825.2568209171295,
+        "total_grad_cost": 62.156447410583496,
+        "total_agg_cost": 763.100373506546,
+        "total_sparse_cost": 0,
+        "total_gm_iter": 9416,
+        "avg_gm_cost": 0.08104294535965867,
+        "num_iter": 9380,
+        "num_steps": 930
+    },
+    {
+        "config": {
+            "seed": 1,
+            "train_mode": "distributed",
+            "data_config": {
+                "data_set": "mnist",
+                "shape": [
+                    28,
+                    28
+                ],
+                "val_frac": 0,
+                "num_labels": 10,
+                "num_channels": 1,
+                "data_sampling_strategy": "iid",
+                "num_shards": 80,
+                "batch_size": 64,
+                "feature_attack_config": {
+                    "noise_model": "None",
+                    "frac_adv": 0.2,
+                    "sev": 5,
+                    "target_label": 8
+                }
+            },
+            "training_config": {
+                "num_clients": 10,
+                "client_fraction": 1,
+                "global_epochs": 10,
+                "local_epochs": 1,
+                "compute_grad_stats": false,
+                "log_freq": "epoch",
+                "optimizer_config": {
+                    "client_optimizer_config": {
+                        "optimizer": "Adam",
+                        "loss": "ce",
+                        "lr0": 0.001,
+                        "momentum": 0.9,
+                        "reg": 1e-05,
+                        "nesterov": false,
+                        "amsgrad": false
+                    },
+                    "client_lrs_config": {
+                        "lrs": "cosine",
+                        "milestones": [
+                            1,
+                            5,
+                            10
+                        ],
+                        "step_size": 1,
+                        "gamma": 0.9
+                    },
+                    "server_optimizer_config": {
+                        "optimizer": "SGD",
+                        "lr0": 1
+                    }
+                },
+                "learner_config": {
+                    "net": "lenet",
+                    "mlp_config": {
+                        "h1": 300,
+                        "h2": 300
+                    }
+                },
+                "aggregation_config": {
+                    "gar": "geo_med",
+                    "geo_med_config": {
+                        "alg": "vardi",
+                        "eps": 1e-05,
+                        "max_iter": 100
+                    },
+                    "trimmed_mean_config": {
+                        "proportion": 0.3
+                    },
+                    "krum_config": {
+                        "krum_frac": 0.3
+                    },
+                    "norm_clip_config": {
+                        "alpha": 0.5
+                    },
+                    "compression_config": {
+                        "compression_operator": "None",
+                        "frac_coordinates_to_keep": 0.5,
+                        "bits": 2,
+                        "ef_client": false
+                    },
+                    "grad_attack_config": {
+                        "attack_model": "bit_flip",
+                        "attack_mode": "un_coordinated",
+                        "frac_adv": 0.4,
+                        "rand_additive_attack_conf": {
+                            "noise_dist": "gaussian",
+                            "mean_shift": 0,
+                            "attack_std": 10,
+                            "noise_range": [
+                                -1,
+                                0
+                            ]
+                        },
+                        "sign_flip_conf": {
+                            "flip_prob": 0.7,
+                            "flip_scale": 5
+                        },
+                        "attack_n_std": 1
+                    },
+                    "sparse_approximation_config": {
+                        "rule": "None",
+                        "axis": "column",
+                        "frac_coordinates": 0.1,
+                        "ef_server": true
+                    }
+                }
+            }
+        },
+        "num_param": 1163978,
+        "test_error": [
+            5.75,
+            4.650000000000006,
+            4.0,
+            3.5799999999999983,
+            2.799999999999997,
+            2.799999999999997,
+            2.3400000000000034,
+            2.010000000000005,
+            2.0,
+            1.8299999999999983
+        ],
+        "test_loss": [],
+        "test_acc": [
+            94.25,
+            95.35,
+            96.0,
+            96.42,
+            97.2,
+            97.2,
+            97.66,
+            97.99,
+            98.0,
+            98.17
+        ],
+        "train_error": [
+            5.983333333333334,
+            4.74166666666666,
+            4.586666666666673,
+            3.7049999999999983,
+            2.8866666666666703,
+            2.9366666666666674,
+            2.296666666666667,
+            2.3316666666666634,
+            2.318333333333328,
+            1.7683333333333309
+        ],
+        "train_loss": [
+            0.21310508044670895,
+            0.1562278188947739,
+            0.14392203697537595,
+            0.12439966822630846,
+            0.09357792589722126,
+            0.09461412808424961,
+            0.07454562691801878,
+            0.07533779594541362,
+            0.07851658304440859,
+            0.05901028714410818
+        ],
+        "train_acc": [
+            94.01666666666667,
+            95.25833333333334,
+            95.41333333333333,
+            96.295,
+            97.11333333333333,
+            97.06333333333333,
+            97.70333333333333,
+            97.66833333333334,
+            97.68166666666667,
+            98.23166666666667
+        ],
+        "communication_residual": [],
+        "sparse_approx_residual": [],
+        "epoch_sparse_approx_cost": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+        ],
+        "epoch_grad_cost": [
+            5.69492769241333,
+            5.822253465652466,
+            5.609976291656494,
+            5.595880746841431,
+            5.703343629837036,
+            5.6215879917144775,
+            5.6497063636779785,
+            5.60532546043396,
+            5.603827714920044,
+            5.602884769439697
+        ],
+        "epoch_agg_cost": [
+            83.3589015007019,
+            74.85474300384521,
+            76.35632109642029,
+            76.09035420417786,
+            77.01140332221985,
+            75.4701795578003,
+            77.04450035095215,
+            76.33376145362854,
+            76.59001541137695,
+            75.26084113121033
+        ],
+        "epoch_gm_iter": [
+            1059,
+            936,
+            957,
+            955,
+            961,
+            944,
+            963,
+            957,
+            959,
+            945
+        ],
+        "total_cost": 824.8807351589203,
+        "total_grad_cost": 56.509714126586914,
+        "total_agg_cost": 768.3710210323334,
+        "total_sparse_cost": 0,
+        "total_gm_iter": 9636,
+        "avg_gm_cost": 0.07973962443257922,
+        "num_iter": 9380,
+        "num_steps": 930
+    }
+]
