@@ -23,7 +23,7 @@
             "training_config": {
                 "num_clients": 10,
                 "client_fraction": 1,
-                "global_epochs": 20,
+                "global_epochs": 50,
                 "local_epochs": 1,
                 "compute_grad_stats": false,
                 "log_freq": "epoch",
@@ -61,7 +61,7 @@
                     }
                 },
                 "aggregation_config": {
-                    "gar": "co_med",
+                    "gar": "geo_med",
                     "geo_med_config": {"alg": 'vardi', 'eps': 0.00001, 'max_iter': 50},
                     "trimmed_mean_config": {
                         "proportion": 0.3
