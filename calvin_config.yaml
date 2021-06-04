@@ -24,7 +24,7 @@
 
     "feature_attack_config":
       {
-        "noise_model": 'impulse',
+        "noise_model": None,
         "frac_adv": 0.2,
         "sev": 5,
 
@@ -98,13 +98,13 @@
 
         "grad_attack_config":
           {
-            "attack_model": None,
+            "attack_model": 'additive',
             "attack_mode": "un_coordinated",
             "frac_adv": 0.2,
             "rand_additive_attack_conf":
               {
                 "noise_dist": "gaussian",
-                "mean_shift": 0, "attack_std": 100,   # Gaussian noise
+                "mean_shift": 0, "attack_std": 10,   # Gaussian noise
                 "noise_range": [ -1, 0 ],             # Uniform noise
               },
             "sign_flip_conf": {"flip_prob": 0.7, "flip_scale": 5},
