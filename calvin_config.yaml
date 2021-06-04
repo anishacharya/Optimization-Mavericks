@@ -24,7 +24,7 @@
 
     "feature_attack_config":
       {
-        "noise_model": 'additive',
+        "noise_model": None,
         "frac_adv": 0.4,
         "sev": 5,
 
@@ -96,9 +96,9 @@
 
         "grad_attack_config":
           {
-            "attack_model": 'active_norm',
+            "attack_model": 'additive',
             "attack_mode": "un_coordinated",
-            "frac_adv": 0.4,
+            "frac_adv": 0.2,
             "rand_additive_attack_conf":
               {
                 "noise_dist": "gaussian",
