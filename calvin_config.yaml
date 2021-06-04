@@ -81,7 +81,7 @@
       {
         "gar": "geo_med",
 
-        "geo_med_config": {"alg": 'vardi', 'eps': 0.00001, 'max_iter': 50},
+        "geo_med_config": {"alg": 'vardi', 'eps': 0.001, 'max_iter': 100},
         "trimmed_mean_config":{"proportion": 0.3},
         "krum_config": {"krum_frac": 0.3},
         "norm_clip_config": { "alpha": 0.5},
