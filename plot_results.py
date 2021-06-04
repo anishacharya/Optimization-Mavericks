@@ -114,25 +114,25 @@ if __name__ == '__main__':
         plt.ylabel('Test Error', fontsize=10)
     elif plot_type == 'test_acc':
         # plt.yscale("log")
-        plt.ylim(70, 87.5)
-        plt.xlim(0, 7500)
+        # plt.ylim(70, 97)
+        # plt.xlim(0, 7500)
         ax.yaxis.set_minor_formatter(ticker.ScalarFormatter())
-        plt.ylabel('Test Accuracy', fontsize=10)
+        plt.ylabel('Test Accuracy (%)', fontsize=10)
     elif plot_type == 'train_acc':
         plt.ylabel('Train Accuracy', fontsize=10)
     elif plot_type == 'train_loss':
         # plt.ylim(0)
         plt.yscale("log")
-        # ax.yaxis.set_major_formatter(ticker.ScalarFormatter())
-        # ax.yaxis.set_major_locator(ticker.FixedLocator([1]))
+        ax.yaxis.set_major_formatter(ticker.ScalarFormatter())
+        ax.yaxis.set_major_locator(ticker.FixedLocator([1]))
         ax.yaxis.set_minor_formatter(ticker.ScalarFormatter())
         # ax.yaxis.set_minor_locator(ticker.FixedLocator([0.5, 0.3]))
         plt.ylabel('Training Loss', fontsize=10)
     elif plot_type == 'train_error':
         plt.ylabel('Train Error', fontsize=10)
     elif plot_type == 'sparse_approx_residual':
-        plt.ylabel("Fraction of Mass Retained ")
-        plt.xlabel(r'$\mathcal{O}$(Epochs)', fontsize=10)
+        plt.ylabel(r'$1 - \xi$')
+        plt.xlabel("Iterations", fontsize=10)
     else:
         raise NotImplementedError
 
