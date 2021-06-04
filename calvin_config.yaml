@@ -102,7 +102,7 @@
             "rand_additive_attack_conf":
               {
                 "noise_dist": "gaussian",
-                "mean_shift": 0, "attack_std": 10,   # Gaussian noise
+                "mean_shift": 0, "attack_std": 100,   # Gaussian noise
                 "noise_range": [ -1, 0 ],             # Uniform noise
               },
             "sign_flip_conf": {"flip_prob": 0.7, "flip_scale": 5},
