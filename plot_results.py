@@ -17,6 +17,9 @@ def plot_(lbl: str, res_file: str, plt_type: str = 'epoch_loss', x_axis='time', 
     for run in result:
         res = run[plt_type]
         res -= optima * np.ones(len(res))
+        if plt_type == 'sparse_approx_residual':
+            res = np.ones(len(res)) - res
+            res = np.square(res)
         res = res[::plot_freq]
 
         if smoothen:
@@ -131,7 +134,7 @@ if __name__ == '__main__':
     elif plot_type == 'train_error':
         plt.ylabel('Train Error', fontsize=10)
     elif plot_type == 'sparse_approx_residual':
-        plt.ylabel(r'$1 - \xi$')
+        plt.ylabel(r'1 - $\xi$')
         plt.xlabel("Iterations", fontsize=10)
     else:
         raise NotImplementedError
