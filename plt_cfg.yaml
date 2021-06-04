@@ -1,7 +1,7 @@
 {
     "plot_type": 'sparse_approx_residual', # Options: 'sparse_approx_residual' 'test_acc'
     "x_ax": 'epoch',
-    "plot_freq": 50,
+    "plot_freq": 25,
     "smoothen": False,
     "dir": 'result_dumps/mnist/small_cnn/clean/',
     "plots":
