@@ -18,8 +18,13 @@ class SparseApproxMatrix:
     def __init__(self, conf):
         self.conf = conf
         self.sampling_rule = self.conf.get('rule', None)  # sampling algo
-        axis = self.conf.get('axis', 'column')  # 0: column sampling, 1: row sampling
-        self.axis = 0 if axis == 'column' else 1
+        axis = self.conf.get('axis', 'dim')  # 0: column sampling / dimension , 1: row sampling / clients
+        if axis == 'dim':
+            self.axis = 0
+        elif axis == 'client':
+            self.axis = 1 
+        else:
+            raise ValueError
         self.frac = conf.get('frac_coordinates', 1)  # number of coordinates to sample
         self.k = None
         self.ef = conf.get('ef_server', False)
@@ -92,11 +97,5 @@ class SparseApproxMatrix:
 
         mass_explained = np.sum(norm_dist[I_k])
         self.normalized_residual = mass_explained
-        # print("Mass Explained : {}".format(mass_explained))
-        # Probabilistic Implementation ~ O(d)
-        # norm_dist = np.linalg.norm(G, axis=self.axis)
-        # norm_dist /= norm_dist.sum()
-        # all_ix = np.arange(G.shape[1])
-        # I_k = np.random.choice(a=all_ix, size=self.k, replace=False, p=norm_dist)
 
         return I_k

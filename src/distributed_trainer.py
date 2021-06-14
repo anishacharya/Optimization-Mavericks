@@ -37,7 +37,6 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
         feature_attack_model.curr_corr = feature_attack_model.num_corrupt
 
     num_epochs = train_config.get('global_epochs', 10)
-    compute_grad_stat_flag = train_config.get('compute_grad_stats', False)
 
     epoch = 0
 
@@ -110,6 +109,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                     residual /= len(G)
                     # print("Residual Due to Communication Compression {}".format(residual))
                     metrics["communication_residual"].append(residual)
+                
                 # --- Gradient Aggregation Step -------- ###
                 # Sparse Approximation of G
                 I_k = None
@@ -152,17 +152,6 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
         if lrs is not None:
             lrs.step()
 
-        # Compute gradient statistics
-        # if compute_grad_stat_flag is True:
-        #     print("Computing Additional Stats on G")
-        #     compute_grad_stats(G=G, metrics=metrics)
-        # if log_freq == 'step':
-        #     train_loss = evaluate_classifier(model=model, train_loader=train_loader, test_loader=test_loader,
-        #                                      metrics=metrics, criterion=criterion, device=device,
-        #                                      epoch=epoch, num_epochs=num_epochs, train_metric=False,
-        #                                      test_metric=True)
-
-        # else:
         train_loss = evaluate_classifier(model=model, train_loader=train_loader, test_loader=test_loader,
                                          metrics=metrics, criterion=criterion, device=device,
                                          epoch=epoch, num_epochs=num_epochs)
