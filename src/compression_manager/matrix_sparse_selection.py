@@ -11,6 +11,7 @@ corresponds to g_i i.e. gradient vector computed on batch / client i
 """
 
 import numpy as np
+
 np.random.seed(1)
 
 
@@ -22,12 +23,12 @@ class SparseApproxMatrix:
         if axis == 'dim':
             self.axis = 0
         elif axis == 'n':
-            self.axis = 1 
+            self.axis = 1
         else:
             raise ValueError
         self.frac = conf.get('frac_coordinates', 1)  # fraction of ix to sample
-        self.k = None   # Number of ix ~ to be auto populated 
-        self.ef = conf.get('ef_server', False)  
+        self.k = None  # Number of ix ~ to be auto populated
+        self.ef = conf.get('ef_server', False)
         print('Error Feedback is: {}'.format(self.ef))
         self.residual_error = 0
         self.normalized_residual = 0
@@ -42,7 +43,7 @@ class SparseApproxMatrix:
         # for the first run compute k and residual error
         if self.k is None:
             if self.frac > 0:
-                self.k = int(self.frac * d)
+                self.k = int(self.frac * d if self.axis == 'dim' else self.frac * n)
                 self.residual_error = np.zeros((n, d), dtype=G[0, :].dtype)
             elif self.frac == 0:
                 self.k = 1
@@ -60,7 +61,7 @@ class SparseApproxMatrix:
             I_k = self._random_sampling(d=d if self.axis == 0 else n)
         else:
             raise NotImplementedError
-        
+
         if self.axis == 0:
             G_sparse[:, I_k] = G[:, I_k]
         elif self.axis == 1:
@@ -72,7 +73,7 @@ class SparseApproxMatrix:
             # update residual error
             self.residual_error = G - G_sparse
 
-        return G_sparse/lr, I_k
+        return G_sparse / lr, I_k
 
     # Implementation of different "Matrix Sparse Approximation" strategies
     def _random_sampling(self, d) -> np.ndarray:
@@ -100,7 +101,7 @@ class SparseApproxMatrix:
         sorted_ix = np.argsort(norm_dist)[::-1]
 
         I_k = sorted_ix[:self.k]
-        
+
         mass_explained = np.sum(norm_dist[I_k])
         self.normalized_residual = mass_explained
 
