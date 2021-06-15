@@ -60,8 +60,13 @@ class SparseApproxMatrix:
             I_k = self._random_sampling(d=d if self.axis == 0 else n)
         else:
             raise NotImplementedError
-
-        G_sparse[:, I_k] = G[:, I_k]
+        
+        if self.axis == 0:
+            G_sparse[:, I_k] = G[:, I_k]
+        elif self.axis == 1:
+            G_sparse[I_k, :] = G[I_k, :]
+        else:
+            raise ValueError
 
         if self.ef is True:
             # update residual error
