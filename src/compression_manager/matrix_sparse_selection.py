@@ -21,13 +21,13 @@ class SparseApproxMatrix:
         axis = self.conf.get('axis', 'dim')  # 0: column sampling / dimension , 1: row sampling / clients
         if axis == 'dim':
             self.axis = 0
-        elif axis == 'client':
+        elif axis == 'n':
             self.axis = 1 
         else:
             raise ValueError
-        self.frac = conf.get('frac_coordinates', 1)  # number of coordinates to sample
-        self.k = None
-        self.ef = conf.get('ef_server', False)
+        self.frac = conf.get('frac_coordinates', 1)  # fraction of ix to sample
+        self.k = None   # Number of ix ~ to be auto populated 
+        self.ef = conf.get('ef_server', False)  
         print('Error Feedback is: {}'.format(self.ef))
         self.residual_error = 0
         self.normalized_residual = 0
@@ -94,12 +94,13 @@ class SparseApproxMatrix:
         """
         # Exact Implementation ~ O(d log d)
         # norm_dist = G.sum(axis=self.axis)
-        # norm_dist = np.square(norm_dist)
+        # norm_dist = np.square(norm_dist)i
         norm_dist = np.linalg.norm(G, axis=self.axis)
         norm_dist /= norm_dist.sum()
         sorted_ix = np.argsort(norm_dist)[::-1]
-        I_k = sorted_ix[:self.k]
 
+        I_k = sorted_ix[:self.k]
+        
         mass_explained = np.sum(norm_dist[I_k])
         self.normalized_residual = mass_explained
 
