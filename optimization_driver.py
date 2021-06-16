@@ -11,6 +11,8 @@ from src import run_fed_train, run_batch_train
 
 def _parse_args():
     parser = argparse.ArgumentParser(description='federated/decentralized/distributed training experiment template')
+    parser.add_argument('--train_mode', type=str, default='distributed', help='Options: distributed/fed')
+    parser.add_argument('--pipeline', type=str, default=None, help='Options: distributed/fed')  # TBD 
     parser.add_argument('--conf', type=str, default=None, help='Pass Config file path')
     parser.add_argument('--o', type=str, default='output', help='Pass result file path')
     parser.add_argument('--dir', type=str, default=None, help='Pass result file dir')
@@ -70,11 +72,12 @@ def run_main():
     config_path = args.conf if args.conf else root + '/configs/default_config.yaml'
     config = yaml.load(open(config_path), Loader=yaml.FullLoader)
 
-    # Train
+    # Training - Repeat over the random seeds #
+    # ----------------------------------------
     results = []
-    # for seed in np.random.randint(0, 100*args.n_repeat+1, args.n_repeat):
     for seed in np.arange(args.n_repeat):
-        train_mode = config.get("train_mode", 'distributed')
+        
+        train_mode = args.train_mode
         metrics = init_metric(config=config)
         if train_mode == 'fed':
             run_fed_train(config=config, metrics=metrics)
@@ -86,6 +89,7 @@ def run_main():
             raise NotImplementedError
 
     # Write Results
+    # ----------------
     directory = args.dir if args.dir else "result_dumps/"
     if not os.path.exists(directory):
         os.makedirs(directory)

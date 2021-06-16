@@ -3,17 +3,17 @@
     "x_ax": 'time',
     "plot_freq": 1,
     "smoothen": False,
-    "dir": 'result_dumps/fmnist/lenet/backdoor.10/',
+    "dir": 'result_dumps/EF_SGD/fmnist/lenet/ag.20/',
     "plots":
       [
-        {
-          'file': 'mean',
-          'label': "\\textsc{SGD}",
-          'line_width': 2,
-          'marker': 'o',
-          'line_style': 'solid',
-          "clr": 'b',
-        },
+#        {
+#          'file': 'mean',
+#          'label': "\\textsc{SGD}",
+#          'line_width': 2,
+#          'marker': 'o',
+#          'line_style': 'solid',
+#          "clr": 'b',
+#        },
           {
               'file': 'cm',
               'label': "\\textsc{CmD}",
@@ -23,7 +23,7 @@
               "clr": 'r',
           },
           {
-              'file': 'bgmd',
+              'file': 'bgmd.10',
               'label': "\\textsc{BGmD}",
               'line_width': 2,
               'marker': 'o',
