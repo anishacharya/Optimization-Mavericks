@@ -42,60 +42,12 @@ def _parse_args():
     return args
 
 
-def init_metric(config):
-    metrics = {"config": config,
-
-               "num_param": 0,
-               # Train and Test Performance
-               "test_error": [],
-               "test_loss": [],
-               "test_acc": [],
-               "train_error": [],
-               "train_loss": [],
-               "train_acc": [],
-
-               "communication_residual": [],
-               "sparse_approx_residual": [],
-               # # Grad Matrix Stats
-               # "frac_mass_retained": [],
-               # "grad_norm_dist": [],
-               # "norm_bins": None,
-               # "mass_bins": None,
-               # "max_norm": 0,
-               # "min_norm": 1e6,
-
-               # compute Time stats per epoch
-               "epoch_sparse_approx_cost": [],
-               "epoch_grad_cost": [],
-               "epoch_agg_cost": [],
-               "epoch_gm_iter": [],
-
-               # Total Costs
-               "total_cost": 0,
-               "total_grad_cost": 0,
-               "total_agg_cost": 0,
-               "total_sparse_cost": 0,
-
-               "total_gm_iter": 0,
-               "avg_gm_cost": 0,
-
-               "num_iter": 0,
-               "num_steps": 0,
-               }
-    return metrics
-
-
 def run_main():
     args = _parse_args()
     print(args)
     root = os.getcwd()
 
     pipeline = args.pipeline
-
-    if pipeline == 'sampling':
-        trainer = SamplingPipeline()
-    else:
-        raise NotImplementedError
 
     config_path = args.conf if args.conf else root + '/configs/default_config.yaml'
     config = yaml.load(open(config_path), Loader=yaml.FullLoader)
@@ -106,18 +58,21 @@ def run_main():
 
     for seed in np.arange(args.n_repeat):
         train_mode = args.train_mode
-        metrics = init_metric(config=config)
-
-        # Launch Federated Training
-        if train_mode == 'fed':
-            trainer.run_fed_train(config=config, metrics=metrics, seed=seed)
-            results.append(metrics)
-        # Launch Regular / Distributed Training
-        elif train_mode == 'distributed':
-            trainer.run_batch_train(config=config, metrics=metrics, seed=seed)
-            results.append(metrics)
+        # metrics = init_metric(config=config)
+        if pipeline == 'sampling':
+            trainer = SamplingPipeline(config=config, seed=seed)
         else:
             raise NotImplementedError
+        # # Launch Federated Training
+        # if train_mode == 'fed':
+        #     trainer.run_fed_train(config=config, metrics=metrics, seed=seed)
+        #     results.append(metrics)
+        # # Launch Regular / Distributed Training
+        # elif train_mode == 'distributed':
+        #     trainer.run_batch_train(config=config, metrics=metrics, seed=seed)
+        #     results.append(metrics)
+        # else:
+        #     raise NotImplementedError
 
     # Write Results
     # ----------------

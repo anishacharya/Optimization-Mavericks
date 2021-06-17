@@ -10,8 +10,8 @@ This file deals with training procedure for different batch sampling strategies
 
 
 class SamplingPipeline(TrainPipeline):
-    def __init__(self, config, metrics, seed):
-        TrainPipeline.__init__(self, config=config, metrics=metrics, seed=seed)
+    def __init__(self, config, seed):
+        TrainPipeline.__init__(self, config=config, seed=seed)
 
     def run_batch_train(self, config: Dict, metrics: Dict, seed):
         # ------------------------ Fetch configs ----------------------- #

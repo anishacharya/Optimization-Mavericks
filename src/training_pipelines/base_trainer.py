@@ -9,7 +9,7 @@ from src.model_manager import (get_model,
 
 
 class TrainPipeline:
-    def __init__(self, config, metrics, seed):
+    def __init__(self, config, seed):
         self.config = config
         self.data_config = config["data_config"]
         self.training_config = config["training_config"]
@@ -27,7 +27,7 @@ class TrainPipeline:
         self.grad_attack_config = self.aggregation_config.get("grad_attack_config", {})
         self.feature_attack_config = self.data_config.get("feature_attack_config", {})
 
-        self.metrics = metrics
+        self.metrics = self.init_metric()
 
         self.seed = seed
 
@@ -43,6 +43,48 @@ class TrainPipeline:
         self.client_lrs = get_scheduler(optimizer=self.client_optimizer,
                                         lrs_config=self.client_lrs_config)
         self.criterion = get_loss(loss=self.client_optimizer_config.get('loss', 'ce'))
+
+    def init_metric(self):
+        metrics = {"config": self.config,
+
+                   "num_param": 0,
+                   # Train and Test Performance
+                   "test_error": [],
+                   "test_loss": [],
+                   "test_acc": [],
+                   "train_error": [],
+                   "train_loss": [],
+                   "train_acc": [],
+
+                   "communication_residual": [],
+                   "sparse_approx_residual": [],
+                   # # Grad Matrix Stats
+                   # "frac_mass_retained": [],
+                   # "grad_norm_dist": [],
+                   # "norm_bins": None,
+                   # "mass_bins": None,
+                   # "max_norm": 0,
+                   # "min_norm": 1e6,
+
+                   # compute Time stats per epoch
+                   "epoch_sparse_approx_cost": [],
+                   "epoch_grad_cost": [],
+                   "epoch_agg_cost": [],
+                   "epoch_gm_iter": [],
+
+                   # Total Costs
+                   "total_cost": 0,
+                   "total_grad_cost": 0,
+                   "total_agg_cost": 0,
+                   "total_sparse_cost": 0,
+
+                   "total_gm_iter": 0,
+                   "avg_gm_cost": 0,
+
+                   "num_iter": 0,
+                   "num_steps": 0,
+                   }
+        return metrics
 
     def run_batch_train(self, config: Dict, metrics: Dict, seed):
         raise NotImplementedError("This method needs to be implemented for each pipeline")
