@@ -141,8 +141,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                 if log_freq == 'step':
                     train_loss = evaluate_classifier(model=model, train_loader=train_loader, test_loader=test_loader,
                                                      metrics=metrics, criterion=criterion, device=device,
-                                                     epoch=epoch, num_epochs=num_epochs, train_metric=True,
-                                                     test_metric=False)
+                                                     epoch=epoch, num_epochs=num_epochs)
                     # Stop if diverging
                     if (train_loss > 1e3) | np.isnan(train_loss) | np.isinf(train_loss):
                         epoch = num_epochs
@@ -217,12 +216,11 @@ def run_batch_train(config, metrics, seed):
     print('Num of Batches in Train Loader = {}'.format(len(train_loader)))
     test_loader = DataLoader(dataset=test_dataset, batch_size=batch_size)
 
+    # ------------------------- Initializations --------------------- #
     # Apply Data Corruption to train data -
     # Both corruption to X and Label
     feature_attack_model = get_feature_attack(attack_config=feature_attack_config)
     # feature_attack_model.launch_attack(data_loader=train_loader)
-
-    # ------------------------- Initializations --------------------- #
     client_model = get_model(learner_config=learner_config, data_config=data_config, seed=seed)
     client_optimizer = get_optimizer(params=client_model.parameters(), optimizer_config=client_optimizer_config)
     client_lrs = get_scheduler(optimizer=client_optimizer, lrs_config=client_lrs_config)

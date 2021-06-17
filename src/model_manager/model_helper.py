@@ -115,8 +115,6 @@ def evaluate_classifier(epoch, num_epochs, model, train_loader, test_loader, met
 
     return train_loss
 
-    return 0
-
 
 def _evaluate(model, data_loader, verbose=False, criterion=None, device="cpu"):
     model.to(device)
