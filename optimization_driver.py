@@ -7,16 +7,37 @@ import numpy as np
 from numpyencoder import NumpyEncoder
 
 from src import run_fed_train, run_batch_train
+from src.training_pipelines import *
 
 
 def _parse_args():
     parser = argparse.ArgumentParser(description='federated/decentralized/distributed training experiment template')
-    parser.add_argument('--train_mode', type=str, default='distributed', help='Options: distributed/fed')
-    parser.add_argument('--pipeline', type=str, default=None, help='Options: distributed/fed')  # TBD 
-    parser.add_argument('--conf', type=str, default=None, help='Pass Config file path')
-    parser.add_argument('--o', type=str, default='output', help='Pass result file path')
-    parser.add_argument('--dir', type=str, default=None, help='Pass result file dir')
-    parser.add_argument('--n_repeat', type=int, default=1, help='Specify number of repeat runs')
+    parser.add_argument('--train_mode',
+                        type=str,
+                        default='distributed',
+                        help='distributed: launch distributed Training '
+                             'fed: launch federated training')
+    parser.add_argument('--pipeline',
+                        type=str,
+                        default='sampling',
+                        help='sampling: exp with sampling data during training'
+                             'agg: exp with GAR')
+    parser.add_argument('--conf',
+                        type=str,
+                        default=None,
+                        help='Pass Config file path')
+    parser.add_argument('--o',
+                        type=str,
+                        default='output',
+                        help='Pass result file path')
+    parser.add_argument('--dir',
+                        type=str,
+                        default=None,
+                        help='Pass result file dir')
+    parser.add_argument('--n_repeat',
+                        type=int,
+                        default=1,
+                        help='Specify number of repeat runs')
     args = parser.parse_args()
     return args
 
@@ -49,7 +70,6 @@ def init_metric(config):
                "epoch_agg_cost": [],
                "epoch_gm_iter": [],
 
-
                # Total Costs
                "total_cost": 0,
                "total_grad_cost": 0,
@@ -69,21 +89,32 @@ def run_main():
     args = _parse_args()
     print(args)
     root = os.getcwd()
+
+    pipeline = args.pipeline
+
+    if pipeline == 'sampling':
+        trainer = SamplingPipeline()
+    else:
+        raise NotImplementedError
+
     config_path = args.conf if args.conf else root + '/configs/default_config.yaml'
     config = yaml.load(open(config_path), Loader=yaml.FullLoader)
 
     # Training - Repeat over the random seeds #
     # ----------------------------------------
     results = []
+
     for seed in np.arange(args.n_repeat):
-        
         train_mode = args.train_mode
         metrics = init_metric(config=config)
+
+        # Launch Federated Training
         if train_mode == 'fed':
-            run_fed_train(config=config, metrics=metrics)
+            trainer.run_fed_train(config=config, metrics=metrics, seed=seed)
             results.append(metrics)
+        # Launch Regular / Distributed Training
         elif train_mode == 'distributed':
-            run_batch_train(config=config, metrics=metrics, seed=seed)
+            trainer.run_batch_train(config=config, metrics=metrics, seed=seed)
             results.append(metrics)
         else:
             raise NotImplementedError
