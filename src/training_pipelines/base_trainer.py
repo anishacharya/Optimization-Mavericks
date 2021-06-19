@@ -6,13 +6,21 @@ from src.model_manager import (get_model,
                                get_optimizer,
                                get_scheduler,
                                get_loss)
+from src.aggregation_manager import get_gar
+from src.compression_manager import (SparseApproxMatrix,
+                                     get_compression_operator)
 
 
 class TrainPipeline:
     def __init__(self, config, seed):
+        # ------------------------ Fetch configs ----------------------- #
+        print('---- Fetching configs and Initializing stuff -----')
         self.config = config
         self.data_config = config["data_config"]
         self.training_config = config["training_config"]
+
+        self.num_batches = self.training_config.get('num_clients', 1)
+        self.num_epochs = self.training_config.get('global_epochs', 10)
 
         self.learner_config = self.training_config["learner_config"]
         self.optimizer_config = self.training_config.get("optimizer_config", {})
@@ -35,14 +43,26 @@ class TrainPipeline:
         torch.manual_seed(seed)
 
         self.feature_attack_model = get_feature_attack(attack_config=self.feature_attack_config)
-        self.client_model = get_model(learner_config=self.learner_config,
-                                      data_config=self.data_config,
-                                      seed=seed)
-        self.client_optimizer = get_optimizer(params=self.client_model.parameters(),
+        self.model = get_model(learner_config=self.learner_config,
+                               data_config=self.data_config,
+                               seed=seed)
+        self.client_optimizer = get_optimizer(params=self.model.parameters(),
                                               optimizer_config=self.client_optimizer_config)
         self.client_lrs = get_scheduler(optimizer=self.client_optimizer,
                                         lrs_config=self.client_lrs_config)
         self.criterion = get_loss(loss=self.client_optimizer_config.get('loss', 'ce'))
+
+        self.gar = get_gar(aggregation_config=self.aggregation_config)
+        # sparse approximation of the gradients before aggregating
+        self.sparse_rule = self.sparse_approx_config.get('rule', None)
+        sparse_selection = SparseApproxMatrix(conf=sparse_approx_config) if sparse_rule in ['active_norm', 'random'] \
+            else None
+        # for adversarial - get attack model
+        grad_attack_model = get_grad_attack(attack_config=grad_attack_config)
+        # gradient compression object
+        C = get_compression_operator(compression_config=compression_config)
+
+        self.G = None
 
     def init_metric(self):
         metrics = {"config": self.config,
