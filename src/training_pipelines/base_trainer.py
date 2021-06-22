@@ -1,7 +1,7 @@
 from typing import Dict
 import numpy as np
 import torch
-from src.attack_manager import get_feature_attack
+from src.attack_manager import get_feature_attack, get_grad_attack
 from src.model_manager import (get_model,
                                get_optimizer,
                                get_scheduler,
@@ -42,7 +42,6 @@ class TrainPipeline:
         np.random.seed(seed)
         torch.manual_seed(seed)
 
-        self.feature_attack_model = get_feature_attack(attack_config=self.feature_attack_config)
         self.model = get_model(learner_config=self.learner_config,
                                data_config=self.data_config,
                                seed=seed)
@@ -51,18 +50,20 @@ class TrainPipeline:
         self.client_lrs = get_scheduler(optimizer=self.client_optimizer,
                                         lrs_config=self.client_lrs_config)
         self.criterion = get_loss(loss=self.client_optimizer_config.get('loss', 'ce'))
-
         self.gar = get_gar(aggregation_config=self.aggregation_config)
+
         # sparse approximation of the gradients before aggregating
         self.sparse_rule = self.sparse_approx_config.get('rule', None)
-        sparse_selection = SparseApproxMatrix(conf=sparse_approx_config) if sparse_rule in ['active_norm', 'random'] \
-            else None
-        # for adversarial - get attack model
-        grad_attack_model = get_grad_attack(attack_config=grad_attack_config)
-        # gradient compression object
-        C = get_compression_operator(compression_config=compression_config)
-
+        self.sparse_selection = SparseApproxMatrix(conf=self.sparse_approx_config) \
+            if self.sparse_rule else None
         self.G = None
+
+        # gradient standard vector compression object
+        self.C = get_compression_operator(compression_config=self.compression_config)
+
+        # for adversarial - get attack model
+        self.feature_attack_model = get_feature_attack(attack_config=self.feature_attack_config)
+        self.grad_attack_model = get_grad_attack(attack_config=self.grad_attack_config)
 
     def init_metric(self):
         metrics = {"config": self.config,
@@ -106,8 +107,8 @@ class TrainPipeline:
                    }
         return metrics
 
-    def run_batch_train(self, config: Dict, metrics: Dict, seed):
+    def run_batch_train(self, config: Dict, seed):
         raise NotImplementedError("This method needs to be implemented for each pipeline")
 
-    def run_fed_train(self, config: Dict, metrics: Dict, seed):
+    def run_fed_train(self, config: Dict, seed):
         raise NotImplementedError("This method needs to be implemented for each pipeline")
