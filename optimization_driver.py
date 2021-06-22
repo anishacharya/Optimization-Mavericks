@@ -59,8 +59,8 @@ def run_main():
     for seed in np.arange(args.n_repeat):
         train_mode = args.train_mode
         # metrics = init_metric(config=config)
-        if pipeline == 'sampling':
-            trainer = SamplingPipeline(config=config, seed=seed)
+        if pipeline == 'jacobian':
+            trainer = JacobianPipeline(config=config, seed=seed)
         else:
             raise NotImplementedError
         # # Launch Federated Training

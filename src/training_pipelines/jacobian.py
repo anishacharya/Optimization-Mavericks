@@ -15,7 +15,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 torch.use_deterministic_algorithms(True)
 
 
-class GARPipeline(TrainPipeline):
+class JacobianPipeline(TrainPipeline):
     def __init__(self, config, seed):
         TrainPipeline.__init__(self, config=config, seed=seed)
         self.epoch = 0
