@@ -35,7 +35,7 @@
 
   "training_config":
   {
-    "num_clients": 64, # Number of batches in distributed setting
+    "num_clients": 32, # Number of batches in distributed setting
     "client_fraction": 1, # partial device participation - For FL
 
     "global_epochs": 10, # epochs
@@ -113,8 +113,8 @@
 
         "sparse_approximation_config":
           {
-            "rule": 'active_norm',
-            "axis": "dim", # n = client/ sample/ batch selection ; dim = dimension selection
+            "rule": None,
+            "axis": "n", # n = client/ sample/ batch selection ; dim = dimension selection
             "frac_coordinates": 0.1,
             "ef_server": False
           }
