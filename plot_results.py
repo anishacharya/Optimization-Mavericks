@@ -117,8 +117,8 @@ if __name__ == '__main__':
         plt.ylabel('Test Error', fontsize=10)
     elif plot_type == 'test_acc':
         # plt.yscale("log")
-        plt.ylim(60)
-        plt.xlim(-5, 3000)
+        # plt.ylim(60)
+        # plt.xlim(-5, 3000)
         ax.yaxis.set_minor_formatter(ticker.ScalarFormatter())
         plt.ylabel('Test Accuracy (%)', fontsize=10)
     elif plot_type == 'train_acc':

@@ -1,43 +1,43 @@
 {
     "plot_type": 'test_acc', # Options: 'sparse_approx_residual' 'test_acc'
-    "x_ax": 'time',
+    "x_ax": 'epoch',
     "plot_freq": 1,
     "smoothen": False,
-    "dir": 'result_dumps/EF_SGD/fmnist/lenet/ag.20/',
+    "dir": 'result_dumps/CEA/mnist/',
     "plots":
       [
-#        {
-#          'file': 'mean',
-#          'label': "\\textsc{SGD}",
-#          'line_width': 2,
-#          'marker': 'o',
-#          'line_style': 'solid',
-#          "clr": 'b',
-#        },
+        {
+          'file': 'baseline',
+          'label': "\\textsc{SGD}",
+          'line_width': 2,
+          'marker': 'o',
+          'line_style': 'solid',
+          "clr": 'b',
+        },
           {
-              'file': 'cm',
-              'label': "\\textsc{CmD}",
+              'file': 'top_samples.10',
+              'label': $\beta=0.1$,
               'line_width': 2,
               'marker': 'o',
               'line_style': 'solid',
               "clr": 'r',
           },
-          {
-              'file': 'bgmd.10',
-              'label': "\\textsc{BGmD}",
-              'line_width': 2,
-              'marker': 'o',
-              'line_style': 'solid',
-              "clr": 'k',
-          },
-          {
-              'file': 'gm',
-              'label': "\\textsc{GmD}",
-              'line_width': 2,
-              'marker': 'o',
-              'line_style': 'solid',
-              "clr": 'g',
-          },
+#          {
+#              'file': 'top_samples.10.ef',
+#              'label': $\beta=0.1$ + M,
+#              'line_width': 2,
+#              'marker': 'o',
+#              'line_style': 'solid',
+#              "clr": 'k',
+#          },
+#          {
+#              'file': 'gm',
+#              'label': "\\textsc{GmD}",
+#              'line_width': 2,
+#              'marker': 'o',
+#              'line_style': 'solid',
+#              "clr": 'g',
+#          },
           ##### Plot Role K
 #        {
 #            'file': 'baseline', # 'mean',
