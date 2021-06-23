@@ -35,7 +35,7 @@
 
   "training_config":
   {
-    "num_clients": 64, # Number of batches in distributed setting
+    "num_clients": 32, # Number of batches in distributed setting
     "client_fraction": 1, # partial device participation - For FL
 
     "global_epochs": 10, # epochs
@@ -75,7 +75,7 @@
 
     "learner_config":
       {
-        "net": "lenet",
+        "net": "mlp",
         "mlp_config": { "h1": 300, "h2": 300 }
       },
 
