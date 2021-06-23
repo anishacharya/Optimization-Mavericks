@@ -54,7 +54,7 @@ class TrainPipeline:
         # sparse approximation of the gradients before aggregating
         self.sparse_rule = self.sparse_approx_config.get('rule', None)
         if self.sparse_rule is not None:
-            self.sparse_selection = SparseApproxMatrix(conf=self.sparse_approx_config) \
+            self.sparse_selection = SparseApproxMatrix(conf=self.sparse_approx_config)
         else:
             self.sparse_selection = None
         self.G = None
