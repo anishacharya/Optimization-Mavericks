@@ -12,7 +12,7 @@ from src.model_manager import flatten_grads, dist_grads_to_model, evaluate_class
 
 # Reproducibility Checks
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-torch.use_deterministic_algorithms(True)
+# torch.use_deterministic_algorithms(True)
 
 
 class JacobianPipeline(TrainPipeline):
