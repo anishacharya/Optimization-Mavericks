@@ -6,7 +6,6 @@ import torch
 from typing import List, Dict
 from src.compression_manager import SparseApproxMatrix
 
-
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
@@ -19,9 +18,9 @@ class GAR:
         self.aggregation_config = aggregation_config
         self.current_losses = []
         self.agg_time = 0
-        self.num_iter = 0  # usually if SUb routine has iters ex - GM
+        self.num_iter = 0  # usually if Sub routine has iters ex - GM
 
-    def aggregate(self, G: np.ndarray, ix: List[int] = None) -> np.ndarray:
+    def aggregate(self, G: np.ndarray, ix: List[int] = None, axis=0) -> np.ndarray:
         """
         G: Gradient Matrix where each row is a gradient vector (g_i)
         ix: Columns specified to be aggregated on (if None done on full dimension)

@@ -43,13 +43,20 @@ class SparseApproxMatrix:
         # for the first run compute k and residual error
         if self.k is None:
             if self.frac > 0:
-                self.k = int(self.frac * d if self.axis == 'dim' else self.frac * n)
+                if self.axis == 0:
+                    self.k = int(self.frac * d)
+                    print('Sampling {} coordinates out of {}'.format(self.k, d))
+                elif self.axis == 1:
+                    self.k = int(self.frac * n)
+                    print('Sampling {} samples out of {}'.format(self.k, n))
+
                 self.residual_error = np.zeros((n, d), dtype=G[0, :].dtype)
+
             elif self.frac == 0:
                 self.k = 1
+
             else:
                 raise ValueError
-            print('Sampling {} coordinates out of {}'.format(self.k, d))
 
         # Error Compensation (if ef is False, residual error = 0 as its not updated
         G = (lr * G) + self.residual_error

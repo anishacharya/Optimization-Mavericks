@@ -29,20 +29,3 @@ def get_gar(aggregation_config: Dict):
         return TrimmedMean(aggregation_config=aggregation_config)
     else:
         raise NotImplementedError
-
-
-def compute_grad_stats(G: np.ndarray, metrics: Dict):
-    norm_dist = np.linalg.norm(G, axis=0)
-    # metrics["grad_norm_dist"].append(norm_dist)
-
-    # compute cdf / mass retained
-    sorted_dist = np.sort(norm_dist)[::-1]
-    # sorted_dist /= sum(sorted_dist)
-
-    frac_mass_retained = np.cumsum(sorted_dist)
-    frac_mass_retained /= frac_mass_retained[-1]
-
-    ix = np.linspace(0, len(norm_dist)-1, 11)
-    ix = np.floor(ix)
-    ix = ix.astype(int)
-    metrics["frac_mass_retained"].append(frac_mass_retained[ix])

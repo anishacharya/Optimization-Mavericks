@@ -2,7 +2,7 @@
 # Licensed under the MIT License
 
 import numpy as np
-from .base import GAR
+from .base_gar import GAR
 
 
 class Krum(GAR):

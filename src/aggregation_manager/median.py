@@ -1,7 +1,7 @@
 # Copyright (c) Anish Acharya.
 # Licensed under the MIT License
 import numpy as np
-from .base import GAR
+from .base_gar import GAR
 from typing import List, Dict
 from scipy.spatial.distance import cdist, euclidean
 import torch.optim as opt
@@ -13,11 +13,16 @@ class CoordinateWiseMedian(GAR):
     def __init__(self, aggregation_config):
         GAR.__init__(self, aggregation_config=aggregation_config)
 
-    def aggregate(self, G: np.ndarray, ix: List[int] = None) -> np.ndarray:
+    def aggregate(self, G: np.ndarray, ix: List[int] = None, axis=0) -> np.ndarray:
         if ix is not None:
             t0 = time.time()
             g_agg = np.zeros_like(G[0, :])
-            G = G[:, ix]
+            if axis == 0:
+                G = G[:, ix]
+            elif axis == 1:
+                G = G[ix, :]
+            else:
+                raise ValueError("Wrong Axis")
             low_rank_med = np.median(G, axis=0)
             g_agg[ix] = low_rank_med
             self.agg_time = time.time() - t0

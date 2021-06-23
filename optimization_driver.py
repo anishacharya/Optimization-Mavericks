@@ -5,8 +5,6 @@ import yaml
 import numpy as np
 
 from numpyencoder import NumpyEncoder
-
-from src import run_fed_train, run_batch_train
 from src.training_pipelines import *
 
 
@@ -19,7 +17,7 @@ def _parse_args():
                              'fed: launch federated training')
     parser.add_argument('--pipeline',
                         type=str,
-                        default='sampling',
+                        default='jacobian',
                         help='sampling: exp with sampling data during training'
                              'agg: exp with GAR')
     parser.add_argument('--conf',
@@ -28,7 +26,7 @@ def _parse_args():
                         help='Pass Config file path')
     parser.add_argument('--o',
                         type=str,
-                        default='output',
+                        default='default_output',
                         help='Pass result file path')
     parser.add_argument('--dir',
                         type=str,
@@ -58,21 +56,21 @@ def run_main():
 
     for seed in np.arange(args.n_repeat):
         train_mode = args.train_mode
-        # metrics = init_metric(config=config)
+
         if pipeline == 'jacobian':
             trainer = JacobianPipeline(config=config, seed=seed)
         else:
             raise NotImplementedError
-        # # Launch Federated Training
-        # if train_mode == 'fed':
-        #     trainer.run_fed_train(config=config, metrics=metrics, seed=seed)
-        #     results.append(metrics)
-        # # Launch Regular / Distributed Training
-        # elif train_mode == 'distributed':
-        #     trainer.run_batch_train(config=config, metrics=metrics, seed=seed)
-        #     results.append(metrics)
-        # else:
-        #     raise NotImplementedError
+        # Launch Federated Training
+        if train_mode == 'fed':
+            trainer.run_fed_train(config=config, seed=seed)
+            results.append(trainer.metrics)
+        # Launch Regular / Distributed Training
+        elif train_mode == 'distributed':
+            trainer.run_batch_train(config=config, seed=seed)
+            results.append(trainer.metrics)
+        else:
+            raise NotImplementedError
 
     # Write Results
     # ----------------

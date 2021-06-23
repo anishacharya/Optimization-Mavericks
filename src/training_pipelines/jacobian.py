@@ -6,7 +6,7 @@ import torch
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 
-from base_trainer import TrainPipeline
+from src.training_pipelines import TrainPipeline
 from src.data_manager import process_data
 from src.model_manager import flatten_grads, dist_grads_to_model, evaluate_classifier
 
@@ -90,8 +90,8 @@ class JacobianPipeline(TrainPipeline):
                         # epoch_sparse_cost += time.time() - t0
                         self.metrics["sparse_approx_residual"].append(self.sparse_selection.normalized_residual)
 
-                    # Gradient aggregation
-                    agg_g = self.gar.aggregate(G=self.G, ix=I_k)
+                    # Gradient aggregation - get aggregated gradient vector
+                    agg_g = self.gar.aggregate(G=self.G, ix=I_k, axis=self.sparse_selection.axis)
                     epoch_gm_iter += self.gar.num_iter
                     epoch_agg_cost += self.gar.agg_time
                     # Reset GAR stats

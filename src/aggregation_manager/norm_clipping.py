@@ -2,7 +2,7 @@
 # Licensed under the MIT License
 
 import numpy as np
-from .base import GAR
+from .base_gar import GAR
 from typing import List
 
 """
@@ -18,7 +18,7 @@ class NormClipping(GAR):
         self.alpha = self.aggregation_config.get("norm_clip_config", {}).get("alpha", 0.1)
         self.k = None
 
-    def aggregate(self, G: np.ndarray, ix: List[int] = None) -> np.ndarray:
+    def aggregate(self, G: np.ndarray, ix: List[int] = None, axis=0) -> np.ndarray:
         # Compute norms of each gradient vector
         # norm_dist = np.linalg.norm(G, axis=1)
 

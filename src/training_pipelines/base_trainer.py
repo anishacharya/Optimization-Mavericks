@@ -50,7 +50,6 @@ class TrainPipeline:
         self.client_lrs = get_scheduler(optimizer=self.client_optimizer,
                                         lrs_config=self.client_lrs_config)
         self.criterion = get_loss(loss=self.client_optimizer_config.get('loss', 'ce'))
-        self.gar = get_gar(aggregation_config=self.aggregation_config)
 
         # sparse approximation of the gradients before aggregating
         self.sparse_rule = self.sparse_approx_config.get('rule', None)
@@ -64,6 +63,8 @@ class TrainPipeline:
         # for adversarial - get attack model
         self.feature_attack_model = get_feature_attack(attack_config=self.feature_attack_config)
         self.grad_attack_model = get_grad_attack(attack_config=self.grad_attack_config)
+
+        self.gar = get_gar(aggregation_config=self.aggregation_config)
 
     def init_metric(self):
         metrics = {"config": self.config,
