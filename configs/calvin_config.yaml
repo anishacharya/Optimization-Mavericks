@@ -20,7 +20,7 @@
     "data_sampling_strategy": "iid",
     "num_shards": 80,
 
-    "batch_size": 64,
+    "batch_size": 32,
 
     "feature_attack_config":
       {
@@ -35,10 +35,10 @@
 
   "training_config":
   {
-    "num_clients": 10, # Number of batches in distributed setting
+    "num_clients": 32, # Number of batches in distributed setting
     "client_fraction": 1, # partial device participation - For FL
 
-    "global_epochs": 20, # epochs
+    "global_epochs": 10, # epochs
 
     "local_epochs": 1, # local SGD # For FL
     "compute_grad_stats": false,
@@ -115,7 +115,7 @@
           {
             "rule": 'active_norm',
             "axis": "n", # n = client/ sample/ batch selection ; dim = dimension selection
-            "frac_coordinates": 0.5,
+            "frac_coordinates": 0.1,
             "ef_server": False
           }
       }
