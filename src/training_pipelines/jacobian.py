@@ -91,7 +91,8 @@ class JacobianPipeline(TrainPipeline):
                         self.metrics["sparse_approx_residual"].append(self.sparse_selection.normalized_residual)
 
                     # Gradient aggregation - get aggregated gradient vector
-                    agg_g = self.gar.aggregate(G=self.G, ix=I_k, axis=self.sparse_selection.axis)
+                    agg_g = self.gar.aggregate(G=self.G, ix=I_k,
+                                               axis=self.sparse_selection.axis if self.sparse_selection else 0)
                     epoch_gm_iter += self.gar.num_iter
                     epoch_agg_cost += self.gar.agg_time
                     # Reset GAR stats

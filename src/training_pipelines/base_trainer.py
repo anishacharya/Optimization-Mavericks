@@ -53,11 +53,10 @@ class TrainPipeline:
 
         # sparse approximation of the gradients before aggregating
         self.sparse_rule = self.sparse_approx_config.get('rule', None)
-        if self.sparse_rule in ['active_norm', 'random']:
-            self.sparse_selection = SparseApproxMatrix(conf=self.sparse_approx_config)
-        else:
-            print("~ Provided algorithm for Jacobian Compression is not Implemented ~ ")
+        if self.sparse_rule not in ['active_norm', 'random']:
             self.sparse_selection = None
+        else:
+            self.sparse_selection = SparseApproxMatrix(conf=self.sparse_approx_config)
         self.G = None
 
         # gradient standard vector compression object
