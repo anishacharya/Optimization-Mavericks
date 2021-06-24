@@ -14,14 +14,14 @@
           'line_style': 'solid',
           "clr": 'b',
         },
-#          {
-#              'file': 'top_n.0',
-#              'label': 'k=1',
-#              'line_width': 2,
-#              'marker': 'o',
-#              'line_style': 'solid',
-#              "clr": 'g',
-#          },
+        {
+          'file': 'top_n.0',
+          'label': 'k=1',
+          'line_width': 2,
+          'marker': 'o',
+          'line_style': 'solid',
+          "clr": 'g',
+        },
         {
           'file': 'top_n.10',
           'label': $\beta=0.1$,
