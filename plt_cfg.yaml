@@ -3,7 +3,7 @@
     "x_ax": 'epoch',
     "plot_freq": 1,
     "smoothen": False,
-    "dir": 'result_dumps/CEA/mnist/',
+    "dir": 'result_dumps/CEA/fmnist/',
     "plots":
       [
         {
@@ -14,14 +14,14 @@
           'line_style': 'solid',
           "clr": 'b',
         },
-        {
-          'file': 'top_n.0',
-          'label': 'k=1',
-          'line_width': 2,
-          'marker': 'o',
-          'line_style': 'solid',
-          "clr": 'g',
-        },
+#        {
+#          'file': 'top_n.0',
+#          'label': 'k=1',
+#          'line_width': 2,
+#          'marker': 'o',
+#          'line_style': 'solid',
+#          "clr": 'g',
+#        },
         {
           'file': 'top_n.10',
           'label': $\beta=0.1$,
@@ -30,14 +30,14 @@
           'line_style': 'solid',
           "clr": 'r',
         },
-        {
-          'file': 'top_n.20',
-          'label': $\beta=0.2$,
-          'line_width': 2,
-          'marker': 'o',
-          'line_style': 'solid',
-          "clr": 'k',
-        },
+#        {
+#          'file': 'top_n.20',
+#          'label': $\beta=0.2$,
+#          'line_width': 2,
+#          'marker': 'o',
+#          'line_style': 'solid',
+#          "clr": 'k',
+#        },
 #          {
 #              'file': 'top_n.10.ef',
 #              'label': $\beta=0.1$ + M,
