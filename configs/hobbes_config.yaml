@@ -20,7 +20,7 @@
     "data_sampling_strategy": "iid",
     "num_shards": 80,
 
-    "batch_size": 32,
+    "batch_size": 16,
 
     "feature_attack_config":
       {
@@ -49,18 +49,18 @@
       {
         "client_optimizer_config":
           {
-            "optimizer": "Adam",
+            "optimizer": "SGD",
             "loss": "ce",
             "lr0": 0.01,
             "momentum": 0.9,
             "reg": 0.00001,
-            "nesterov": false,
+            "nesterov": true,
             "amsgrad": false
           },
 
         "client_lrs_config":
           {
-            "lrs": 'cosine',
+            "lrs": 'step',
             "milestones": [1,5,10],
             "step_size": 1,
             "gamma": 0.9
