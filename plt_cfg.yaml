@@ -30,14 +30,14 @@
           'line_style': 'solid',
           "clr": 'r',
         },
-#        {
-#          'file': 'top_n.20',
-#          'label': $\beta=0.2$,
-#          'line_width': 2,
-#          'marker': 'o',
-#          'line_style': 'solid',
-#          "clr": 'k',
-#        },
+        {
+          'file': 'top_n.20',
+          'label': $\beta=0.2$,
+          'line_width': 2,
+          'marker': 'o',
+          'line_style': 'solid',
+          "clr": 'k',
+        },
 #          {
 #              'file': 'top_n.10.ef',
 #              'label': $\beta=0.1$ + M,
