@@ -73,7 +73,10 @@ class SparseApproxMatrix:
 
         if self.ef is True:
             # update residual error
-            self.residual_error = G - G_sparse
+            delta = G - G_sparse
+            memory = np.mean(delta, axis=0)
+            self.residual_error = np.tile(memory, (G.shape[0], 1))
+            # self.residual_error = G - G_sparse
 
         return G_sparse / lr, I_k
 

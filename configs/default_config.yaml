@@ -113,10 +113,10 @@
 
         "sparse_approximation_config":
           {
-            "rule": None,
+            "rule": 'active_norm',
             "axis": "n", # n = client/ sample/ batch selection ; dim = dimension selection
             "frac_coordinates": 0.1,
-            "ef_server": False
+            "ef_server": true
           }
       }
   }

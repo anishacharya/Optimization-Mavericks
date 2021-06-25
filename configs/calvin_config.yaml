@@ -115,8 +115,8 @@
           {
             "rule": 'active_norm',
             "axis": "n", # n = client/ sample/ batch selection ; dim = dimension selection
-            "frac_coordinates": 0.3,
-            "ef_server": False
+            "frac_coordinates": 0.1,
+            "ef_server": true
           }
       }
   }
