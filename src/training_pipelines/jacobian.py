@@ -62,8 +62,9 @@ class JacobianPipeline(TrainPipeline):
                 loss = self.criterion(outputs, labels)
                 loss.backward()
                 # Note: No Optimizer Step yet.
-
                 g_i = flatten_grads(learner=self.model)
+
+                # Construct the Jacobian
                 if self.G is None:
                     d = len(g_i)
                     print("Num of Parameters {}".format(d))
@@ -122,26 +123,21 @@ class JacobianPipeline(TrainPipeline):
             self.epoch += 1
 
             # update Epoch Complexity metrics
-            print("Epoch Grad Cost: {}".format(epoch_grad_cost))
+            # print("Epoch Grad Cost: {}".format(epoch_grad_cost))
             self.metrics["epoch_grad_cost"].append(epoch_grad_cost)
-
-            print("Epoch Aggregation Cost: {}".format(epoch_agg_cost))
+            # print("Epoch Aggregation Cost: {}".format(epoch_agg_cost))
             self.metrics["epoch_agg_cost"].append(epoch_agg_cost)
-
-            print("Epoch GM iterations: {}".format(epoch_gm_iter))
+            # print("Epoch GM iterations: {}".format(epoch_gm_iter))
             self.metrics["epoch_gm_iter"].append(epoch_gm_iter)
-
-            print("Epoch Sparse Approx Cost: {}".format(epoch_sparse_cost))
+            # print("Epoch Sparse Approx Cost: {}".format(epoch_sparse_cost))
             self.metrics["epoch_sparse_approx_cost"].append(epoch_sparse_cost)
-
         # Update Total Complexities
         self.metrics["total_grad_cost"] = sum(self.metrics["epoch_grad_cost"])
         self.metrics["total_agg_cost"] = sum(self.metrics["epoch_agg_cost"])
         self.metrics["total_gm_iter"] = sum(self.metrics["epoch_gm_iter"])
         self.metrics["total_sparse_cost"] = sum(self.metrics["epoch_sparse_approx_cost"])
-
-        self.metrics["total_cost"] = self.metrics["total_grad_cost"] + self.metrics["total_agg_cost"] + \
-                                     self.metrics["total_sparse_cost"]
+        self.metrics["total_cost"] = self.metrics["total_grad_cost"] + self.metrics["total_agg_cost"] + self.metrics[
+            "total_sparse_cost"]
         if self.metrics["total_gm_iter"] != 0:
             # Handle Non GM GARs
             self.metrics["avg_gm_cost"] = self.metrics["total_agg_cost"] / self.metrics["total_gm_iter"]
