@@ -47,7 +47,7 @@
           "clr": 'm',
         },
         {
-          'file': 'top_n.10.m',
+          'file': 'top_n.10_m',
           'label': $\beta=0.1 + M$,
           'line_width': 2,
           'marker': None, #'o',
