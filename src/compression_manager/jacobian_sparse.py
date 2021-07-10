@@ -11,30 +11,19 @@ corresponds to g_i i.e. gradient vector computed on batch / client i
 """
 
 import numpy as np
+from src.compression_manager.compression_base import JacobianCompression
 
 np.random.seed(1)
 
 
-class SparseApproxMatrix:
+class SparseApproxMatrix(JacobianCompression):
     def __init__(self, conf):
-        self.conf = conf
-        self.sampling_rule = self.conf.get('rule', None)  # sampling algo
-        axis = self.conf.get('axis', 'dim')  # 0: column sampling / dimension , 1: row sampling / clients
-        if axis == 'dim':
-            self.axis = 0
-        elif axis == 'n':
-            self.axis = 1
-        else:
-            raise ValueError
-        self.frac = conf.get('frac_coordinates', 1)  # fraction of ix to sample
+        JacobianCompression.__init__(self, conf=conf)
+        self.frac = conf.get('sampling_fraction', 1)  # fraction of ix to sample
         self.k = None  # Number of ix ~ to be auto populated
-        self.ef = conf.get('ef_server', False)
-        print('Error Feedback is: {}'.format(self.ef))
-        self.residual_error = 0
-        self.normalized_residual = 0
 
     def compress(self, G: np.ndarray, lr=1) -> [np.ndarray, np.ndarray]:
-        if self.sampling_rule not in ['active_norm', 'random']:
+        if self.compression_rule not in ['active_norm_sampling', 'random_sampling']:
             raise NotImplementedError
 
         n, d = G.shape
@@ -57,9 +46,9 @@ class SparseApproxMatrix:
         G = (lr * G) + self.residual_error
 
         # Invoke Sampling algorithm
-        if self.sampling_rule == 'active_norm':
+        if self.compression_rule == 'active_norm_sampling':
             I_k = self._active_norm_sampling(G=G)
-        elif self.sampling_rule == 'random':
+        elif self.compression_rule == 'random_sampling':
             I_k = self._random_sampling(d=d if self.axis == 0 else n)
         else:
             raise NotImplementedError

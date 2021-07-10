@@ -3,7 +3,7 @@
     "x_ax": 'epoch',
     "plot_freq": 1,
     "smoothen": False,
-    "dir": 'result_dumps/CEA/fmnist/',
+    "dir": 'result_dumps/client_sampling/fmnist/',
     "plots":
       [
         {
