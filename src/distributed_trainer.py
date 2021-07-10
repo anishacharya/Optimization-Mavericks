@@ -115,7 +115,7 @@ def train_and_test_model(model, criterion, optimizer, lrs, gar,
                 I_k = None
                 if sparse_selection is not None:
                     t0 = time.time()
-                    G, I_k = sparse_selection.sparse_approx(G=G, lr=lr)
+                    G, I_k = sparse_selection.compress(G=G, lr=lr)
                     epoch_sparse_cost += time.time() - t0
                     metrics["sparse_approx_residual"].append(sparse_selection.normalized_residual)
 

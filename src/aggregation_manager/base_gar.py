@@ -33,7 +33,7 @@ class GAR:
             else None
         I_k = None
         if sparse_selection is not None:
-            G, I_k = sparse_selection.sparse_approx(G=G, lr=1)
+            G, I_k = sparse_selection.compress(G=G, lr=1)
         agg_g = self.aggregate(G=G, ix=I_k)
         return agg_g
 

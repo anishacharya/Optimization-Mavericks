@@ -85,9 +85,10 @@ class JacobianPipeline(TrainPipeline):
                     lr = self.client_optimizer.param_groups[0]['lr']  # Need this for Error Feedback
                     # noinspection PyPep8Naming
                     I_k = None
+
                     if self.sparse_selection is not None:
                         t0 = time.time()
-                        self.G, I_k = self.sparse_selection.sparse_approx(G=self.G, lr=lr)
+                        self.G, I_k = self.sparse_selection.compress(G=self.G, lr=lr)
                         epoch_sparse_cost += time.time() - t0
                         # epoch_sparse_cost += time.time() - t0
                         self.metrics["sparse_approx_residual"].append(self.sparse_selection.normalized_residual)

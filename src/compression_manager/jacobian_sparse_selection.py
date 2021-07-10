@@ -33,7 +33,7 @@ class SparseApproxMatrix:
         self.residual_error = 0
         self.normalized_residual = 0
 
-    def sparse_approx(self, G: np.ndarray, lr=1) -> [np.ndarray, np.ndarray]:
+    def compress(self, G: np.ndarray, lr=1) -> [np.ndarray, np.ndarray]:
         if self.sampling_rule not in ['active_norm', 'random']:
             raise NotImplementedError
 
