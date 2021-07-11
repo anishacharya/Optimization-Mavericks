@@ -1,13 +1,13 @@
-from jacobian_sparse import SparseApproxMatrix
-from vector_compression import (Full,
-                                Top,
-                                Rand,
-                                Q)
+from .jacobian_sparse import SparseApproxMatrix
+from .vector_compression import (Full,
+                                 Top,
+                                 Rand,
+                                 Q)
 from typing import Dict
 
 
 def get_compression_operator(compression_config: Dict):
-    compression_function = compression_config.get("compression_operator", 'full')
+    compression_function = compression_config.get("rule", 'full')
     if compression_function == 'full':
         return Full(conf=compression_config)
     elif compression_function == 'top_k':

@@ -14,6 +14,8 @@ class JacobianCompression:
     def __init__(self, conf):
         self.conf = conf
         self.compression_rule = self.conf.get('rule', None)
+
+        # Get Row / Column
         axis = self.conf.get('axis', 'dim')  # 0: column / dimension , 1: row / samples(clients)
         if axis == 'dim':
             self.axis = 0
@@ -21,8 +23,12 @@ class JacobianCompression:
             self.axis = 1
         else:
             raise ValueError
-        self.ef = conf.get('ef_server', False)
-        print('Error Feedback is: {}'.format(self.ef))
+
+        # Memory
+        self.mG = conf.get('mG', False)
+        print('Jacobian Error Feedback is: {}'.format(self.mG))
+        self.mg = conf.get('mg', False)
+        print('Gradient Error Feedback is: {}'.format(self.mg))
         self.residual_error = 0
         self.normalized_residual = 0
 

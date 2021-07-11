@@ -23,7 +23,8 @@ class SparseApproxMatrix(JacobianCompression):
         self.k = None  # Number of ix ~ to be auto populated
 
     def compress(self, G: np.ndarray, lr=1) -> [np.ndarray, np.ndarray]:
-        if self.compression_rule not in ['active_norm_sampling', 'random_sampling']:
+        if self.compression_rule not in ['active_norm_sampling',
+                                         'random_sampling']:
             raise NotImplementedError
 
         n, d = G.shape
