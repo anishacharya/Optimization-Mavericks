@@ -36,6 +36,7 @@
     "client_fraction": 1,         # partial device participation - For FL
     "global_epochs": 50,          # epochs
     "local_epochs": 1,            # local SGD # For FL
+    "eval_freq": 10,              # Specify number of steps between train/test/val evaluation
 
     "optimizer_config":
       {

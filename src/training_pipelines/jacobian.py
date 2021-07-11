@@ -34,6 +34,8 @@ class JacobianPipeline(TrainPipeline):
         print('Num of Batches in Train Loader = {}'.format(len(train_loader)))
         test_loader = DataLoader(dataset=test_dataset, batch_size=batch_size)
 
+        grad_steps = 0
+
         while self.epoch < self.num_epochs:
             self.model.to(device)
             self.model.train()
@@ -60,7 +62,9 @@ class JacobianPipeline(TrainPipeline):
                 outputs = self.model(images)
                 self.client_optimizer.zero_grad()
                 loss = self.criterion(outputs, labels)
+                # compute grad
                 loss.backward()
+                grad_steps += 1
                 # Note: No Optimizer Step yet.
                 g_i = flatten_grads(learner=self.model)
 
@@ -111,15 +115,18 @@ class JacobianPipeline(TrainPipeline):
 
                     self.metrics["num_steps"] += 1
 
-            if self.client_lrs is not None:
-                self.client_lrs.step()
-            train_loss = evaluate_classifier(model=self.model, train_loader=train_loader, test_loader=test_loader,
-                                             metrics=self.metrics, criterion=self.criterion, device=device,
-                                             epoch=self.epoch, num_epochs=self.num_epochs)
-            # Stop if diverging
-            if (train_loss > 1e3) | np.isnan(train_loss) | np.isinf(train_loss):
-                self.epoch = self.num_epochs
-                print(" *** Training is Diverging - Stopping !!! *** ")
+                if self.client_lrs is not None:
+                    self.client_lrs.step()
+
+                if grad_steps % self.eval_freq == 0:
+                    train_loss = evaluate_classifier(model=self.model, train_loader=train_loader,
+                                                     test_loader=test_loader,
+                                                     metrics=self.metrics, criterion=self.criterion, device=device,
+                                                     epoch=self.epoch, num_epochs=self.num_epochs)
+                    # Stop if diverging
+                    if (train_loss > 1e3) | np.isnan(train_loss) | np.isinf(train_loss):
+                        self.epoch = self.num_epochs
+                        print(" *** Training is Diverging - Stopping !!! *** ")
 
             self.epoch += 1
 

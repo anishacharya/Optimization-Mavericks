@@ -21,6 +21,7 @@ class TrainPipeline:
 
         self.num_batches = self.training_config.get('num_clients', 1)
         self.num_epochs = self.training_config.get('global_epochs', 10)
+        self.eval_freq = self.training_config.get('eval_freq', 10)
 
         self.learner_config = self.training_config["learner_config"]
         self.optimizer_config = self.training_config.get("optimizer_config", {})
