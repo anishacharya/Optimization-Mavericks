@@ -7,7 +7,6 @@ from .trimmed_mean import TrimmedMean
 from .krum import Krum
 from .norm_clipping import NormClipping
 from typing import Dict
-import numpy as np
 
 
 def get_gar(aggregation_config: Dict):

@@ -29,19 +29,16 @@ class TrainPipeline:
         self.client_lrs_config = self.optimizer_config.get('client_lrs_config')
 
         self.aggregation_config = self.training_config["aggregation_config"]
-        self.sparse_approx_config = self.aggregation_config.get("sparse_approximation_config", {})
         self.compression_config = self.aggregation_config.get("compression_config", {})
 
         self.grad_attack_config = self.aggregation_config.get("grad_attack_config", {})
         self.feature_attack_config = self.data_config.get("feature_attack_config", {})
 
+        # ------------------------ initializations ----------------------- #
         self.metrics = self.init_metric()
-
         self.seed = seed
-
         np.random.seed(seed)
         torch.manual_seed(seed)
-
         self.model = get_model(learner_config=self.learner_config,
                                data_config=self.data_config,
                                seed=seed)
@@ -58,7 +55,6 @@ class TrainPipeline:
         else:
             self.sparse_selection = SparseApproxMatrix(conf=self.sparse_approx_config)
         self.G = None
-
         # gradient standard vector compression object
         self.C = get_compression_operator(compression_config=self.compression_config)
 
