@@ -7,8 +7,7 @@ from src.model_manager import (get_model,
                                get_scheduler,
                                get_loss)
 from src.aggregation_manager import get_gar
-from src.compression_manager import (SparseApproxMatrix,
-                                     get_compression_operator)
+from src.compression_manager import get_compression_operator
 
 
 class TrainPipeline:
@@ -16,6 +15,7 @@ class TrainPipeline:
         # ------------------------ Fetch configs ----------------------- #
         print('---- Fetching configs and Initializing stuff -----')
         self.config = config
+
         self.data_config = config["data_config"]
         self.training_config = config["training_config"]
 
@@ -24,7 +24,6 @@ class TrainPipeline:
 
         self.learner_config = self.training_config["learner_config"]
         self.optimizer_config = self.training_config.get("optimizer_config", {})
-
         self.client_optimizer_config = self.optimizer_config.get("client_optimizer_config", {})
         self.client_lrs_config = self.optimizer_config.get('client_lrs_config')
 
@@ -49,13 +48,13 @@ class TrainPipeline:
         self.criterion = get_loss(loss=self.client_optimizer_config.get('loss', 'ce'))
 
         # sparse approximation of the gradients before aggregating
-        self.sparse_rule = self.sparse_approx_config.get('rule', None)
-        if self.sparse_rule not in ['active_norm', 'random']:
-            self.sparse_selection = None
-        else:
-            self.sparse_selection = SparseApproxMatrix(conf=self.sparse_approx_config)
+        # self.sparse_rule = self.sparse_approx_config.get('rule', None)
+        # if self.sparse_rule not in ['active_norm', 'random']:
+        #     self.sparse_selection = None
+        # else:
+        #     self.sparse_selection = SparseApproxMatrix(conf=self.sparse_approx_config)
         self.G = None
-        # gradient standard vector compression object
+        # Compression Operator
         self.C = get_compression_operator(compression_config=self.compression_config)
 
         # for adversarial - get attack model

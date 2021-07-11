@@ -40,6 +40,16 @@ def _parse_args():
     return args
 
 
+def get_trainer(pipeline: str, config, seed):
+    # select pipeline #
+    if pipeline == 'jacobian':
+        trainer = JacobianPipeline(config=config, seed=seed)
+    else:
+        raise NotImplementedError
+
+    return trainer
+
+
 def run_main():
     args = _parse_args()
     print(args)
@@ -55,24 +65,22 @@ def run_main():
     results = []
 
     for seed in np.arange(args.n_repeat):
+        # ----- Launch Training ------ #
         train_mode = args.train_mode
+        trainer = get_trainer(pipeline=pipeline, config=config, seed=seed)
 
-        if pipeline == 'jacobian':
-            trainer = JacobianPipeline(config=config, seed=seed)
-        else:
-            raise NotImplementedError
-        # Launch Federated Training
         if train_mode == 'fed':
+            # Launch Federated Training
             trainer.run_fed_train(config=config, seed=seed)
             results.append(trainer.metrics)
-        # Launch Regular / Distributed Training
         elif train_mode == 'distributed':
+            # Launch Regular / Distributed Training
             trainer.run_batch_train(config=config, seed=seed)
             results.append(trainer.metrics)
         else:
             raise NotImplementedError
 
-    # Write Results
+    # Write Results #
     # ----------------
     directory = args.dir if args.dir else "result_dumps/"
     if not os.path.exists(directory):
