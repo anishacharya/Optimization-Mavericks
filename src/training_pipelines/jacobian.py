@@ -41,7 +41,7 @@ class JacobianPipeline(TrainPipeline):
             epoch_grad_cost = 0
             epoch_agg_cost = 0
             epoch_gm_iter = 0
-            epoch_sparse_cost = 0
+            epoch_compression_cost = 0
 
             # ------- Training Phase --------- #
             print('epoch {}/{} || learning rate: {}'.format(self.epoch,
@@ -86,16 +86,16 @@ class JacobianPipeline(TrainPipeline):
                     # noinspection PyPep8Naming
                     I_k = None
 
-                    if self.sparse_selection is not None:
+                    if self.C is not None:
                         t0 = time.time()
-                        self.G, I_k = self.sparse_selection.compress(G=self.G, lr=lr)
-                        epoch_sparse_cost += time.time() - t0
+                        self.G, I_k = self.C.compress(G=self.G, lr=lr)
+                        epoch_compression_cost += time.time() - t0
                         # epoch_sparse_cost += time.time() - t0
-                        self.metrics["sparse_approx_residual"].append(self.sparse_selection.normalized_residual)
+                        self.metrics["jacobian_residual"].append(self.C.normalized_residual)
 
                     # Gradient aggregation - get aggregated gradient vector
                     agg_g = self.gar.aggregate(G=self.G, ix=I_k,
-                                               axis=self.sparse_selection.axis if self.sparse_selection else 0)
+                                               axis=self.C.axis if self.C else 0)
                     epoch_gm_iter += self.gar.num_iter
                     epoch_agg_cost += self.gar.agg_time
                     # Reset GAR stats
@@ -131,14 +131,14 @@ class JacobianPipeline(TrainPipeline):
             # print("Epoch GM iterations: {}".format(epoch_gm_iter))
             self.metrics["epoch_gm_iter"].append(epoch_gm_iter)
             # print("Epoch Sparse Approx Cost: {}".format(epoch_sparse_cost))
-            self.metrics["epoch_sparse_approx_cost"].append(epoch_sparse_cost)
+            self.metrics["epoch_compression_cost"].append(epoch_compression_cost)
         # Update Total Complexities
         self.metrics["total_grad_cost"] = sum(self.metrics["epoch_grad_cost"])
         self.metrics["total_agg_cost"] = sum(self.metrics["epoch_agg_cost"])
         self.metrics["total_gm_iter"] = sum(self.metrics["epoch_gm_iter"])
-        self.metrics["total_sparse_cost"] = sum(self.metrics["epoch_sparse_approx_cost"])
+        self.metrics["total_compression_cost"] = sum(self.metrics["epoch_compression_cost"])
         self.metrics["total_cost"] = self.metrics["total_grad_cost"] + self.metrics["total_agg_cost"] + self.metrics[
-            "total_sparse_cost"]
+            "total_compression_cost"]
         if self.metrics["total_gm_iter"] != 0:
             # Handle Non GM GARs
             self.metrics["avg_gm_cost"] = self.metrics["total_agg_cost"] / self.metrics["total_gm_iter"]

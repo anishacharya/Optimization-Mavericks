@@ -75,8 +75,8 @@ class TrainPipeline:
                    "train_loss": [],
                    "train_acc": [],
 
-                   "communication_residual": [],
-                   "sparse_approx_residual": [],
+                   "gradient_residual": [],
+                   "jacobian_residual": [],
                    # # Grad Matrix Stats
                    # "frac_mass_retained": [],
                    # "grad_norm_dist": [],
@@ -86,7 +86,7 @@ class TrainPipeline:
                    # "min_norm": 1e6,
 
                    # compute Time stats per epoch
-                   "epoch_sparse_approx_cost": [],
+                   "epoch_compression_cost": [],
                    "epoch_grad_cost": [],
                    "epoch_agg_cost": [],
                    "epoch_gm_iter": [],
@@ -95,7 +95,7 @@ class TrainPipeline:
                    "total_cost": 0,
                    "total_grad_cost": 0,
                    "total_agg_cost": 0,
-                   "total_sparse_cost": 0,
+                   "total_compression_cost": 0,
 
                    "total_gm_iter": 0,
                    "avg_gm_cost": 0,
