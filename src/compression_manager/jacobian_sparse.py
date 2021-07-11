@@ -61,7 +61,7 @@ class SparseApproxMatrix(JacobianCompression):
         else:
             raise ValueError
 
-        if self.ef is True:
+        if self.mG is True:
             # update residual error
             delta = G - G_sparse
             memory = np.mean(delta, axis=0)
