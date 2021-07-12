@@ -6,44 +6,37 @@
 
   "data_config":
   {
-    "data_set": "fashion_mnist",
+    "data_set": "mnist",
     "shape":
     [
         28,
         28
     ],
 
-    "val_frac": 0,
-    "num_labels": 10,
-    "num_channels": 1,
+    "val_frac": 0,                    # Fraction of Train Data used for Validation
+    "num_labels": 10,                 # Num of Labels in Dataset
+    "num_channels": 1,                # Number of channels # in case of CV experiments
 
-    "data_sampling_strategy": "iid",
-    "num_shards": 80,
-
-    "batch_size": 16,
+    "data_sampling_strategy": "iid",  # iid / non_iid
+    "num_shards": 80,                 # For non-iid distribution
+    "batch_size": 1,                 # Mini Batch Size
 
     "feature_attack_config":
       {
-        "noise_model": None,
-        "frac_adv": 0.2,
-        "sev": 5,
-
-        # backdoor Attack
-        "target_label": 8,
+        "noise_model": None, #
+        "frac_adv": 0.2,     # Fraction of corrupt samples
+        "sev": 5,            # severity of attack
+        "target_label": 8,   # backdoor Attack
       },
   },
 
   "training_config":
   {
-    "num_clients": 32, # Number of batches in distributed setting
-    "client_fraction": 1, # partial device participation - For FL
-
-    "global_epochs": 50, # epochs
-
-    "local_epochs": 1, # local SGD # For FL
-    "compute_grad_stats": false,
-
-    "log_freq": "epoch",
+    "num_clients": 64,            # Number of batches in distributed setting
+    "client_fraction": 1,         # partial device participation - For FL
+    "global_epochs": 20,          # epochs
+    "local_epochs": 1,            # local SGD # For FL
+    "eval_freq": 50,             # Specify number of steps between train/test/val evaluation
 
     "optimizer_config":
       {
@@ -88,14 +81,6 @@
         "krum_config": {"krum_frac": 0.3},
         "norm_clip_config": { "alpha": 0.5},
 
-        "compression_config":
-          {
-            "compression_operator": None,
-            "frac_coordinates_to_keep": 0.5,
-            "bits": 2,
-            "ef_client": False
-          },
-
         "grad_attack_config":
           {
             "attack_model": None,
@@ -111,12 +96,13 @@
             "attack_n_std": 1
           },
 
-        "sparse_approximation_config":
+        "compression_config":
           {
-            "rule": 'active_norm',
-            "axis": "n", # n = client/ sample/ batch selection ; dim = dimension selection
-            "frac_coordinates": 0.1,
-            "ef_server": true
+            "rule": None,
+            "axis": "dim",                       # n = client/ sample/ batch selection ; dim = dimension selection
+            "sampling_fraction": 0.1,          # fraction to be sampled
+            "mG": False,                       # memory in Jacobian - invoked for jacobian compression rules
+            "mg": False,                       # memory in gradients - invoked for gradient compression rules
           }
       }
   }
