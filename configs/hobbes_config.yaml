@@ -19,7 +19,7 @@
 
     "data_sampling_strategy": "iid",  # iid / non_iid
     "num_shards": 80,                 # For non-iid distribution
-    "batch_size": 1,                 # Mini Batch Size
+    "batch_size": 32,                 # Mini Batch Size
 
     "feature_attack_config":
       {
@@ -32,7 +32,7 @@
 
   "training_config":
   {
-    "num_clients": 64,            # Number of batches in distributed setting
+    "num_clients": 32,            # Number of batches in distributed setting
     "client_fraction": 1,         # partial device participation - For FL
     "global_epochs": 20,          # epochs
     "local_epochs": 1,            # local SGD # For FL
@@ -75,7 +75,6 @@
     "aggregation_config":
       {
         "gar": "mean",
-
         "geo_med_config": {"alg": 'vardi', 'eps': 0.00001, 'max_iter': 100},
         "trimmed_mean_config":{"proportion": 0.3},
         "krum_config": {"krum_frac": 0.3},
