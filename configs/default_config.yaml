@@ -6,7 +6,7 @@
 
   "data_config":
   {
-    "data_set": "fashion_mnist",
+    "data_set": "mnist",
     "shape":
     [
         28,
@@ -19,7 +19,7 @@
 
     "data_sampling_strategy": "iid",  # iid / non_iid
     "num_shards": 80,                 # For non-iid distribution
-    "batch_size": 16,                 # Mini Batch Size
+    "batch_size": 1,                 # Mini Batch Size
 
     "feature_attack_config":
       {
@@ -32,11 +32,11 @@
 
   "training_config":
   {
-    "num_clients": 32,            # Number of batches in distributed setting
+    "num_clients": 64,            # Number of batches in distributed setting
     "client_fraction": 1,         # partial device participation - For FL
-    "global_epochs": 50,          # epochs
+    "global_epochs": 20,          # epochs
     "local_epochs": 1,            # local SGD # For FL
-    "eval_freq": 10,              # Specify number of steps between train/test/val evaluation
+    "eval_freq": 50,             # Specify number of steps between train/test/val evaluation
 
     "optimizer_config":
       {
@@ -98,11 +98,11 @@
 
         "compression_config":
           {
-            "rule": 'active_norm_sampling',
-            "axis": "n",                      # n = client/ sample/ batch selection ; dim = dimension selection
-            "sampling_fraction": 0.1,         # fraction to be sampled
-            "mG": true,                       # memory in Jacobian - invoked for jacobian compression rules
-            "mg": true,                       # memory in gradients - invoked for gradient compression rules
+            "rule": None,
+            "axis": "dim",                       # n = client/ sample/ batch selection ; dim = dimension selection
+            "sampling_fraction": 0.1,          # fraction to be sampled
+            "mG": False,                       # memory in Jacobian - invoked for jacobian compression rules
+            "mg": False,                       # memory in gradients - invoked for gradient compression rules
           }
       }
   }
