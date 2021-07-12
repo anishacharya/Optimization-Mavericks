@@ -34,7 +34,7 @@ class JacobianPipeline(TrainPipeline):
         print('Num of Batches in Train Loader = {}'.format(len(train_loader)))
         test_loader = DataLoader(dataset=test_dataset, batch_size=batch_size)
 
-        grad_steps = 0
+        grad_steps = -1
 
         while self.epoch < self.num_epochs:
             self.model.to(device)
@@ -115,9 +115,6 @@ class JacobianPipeline(TrainPipeline):
 
                     self.metrics["num_steps"] += 1
 
-                if self.client_lrs is not None:
-                    self.client_lrs.step()
-
                 if grad_steps % self.eval_freq == 0:
                     train_loss = evaluate_classifier(model=self.model, train_loader=train_loader,
                                                      test_loader=test_loader,
@@ -129,6 +126,8 @@ class JacobianPipeline(TrainPipeline):
                         print(" *** Training is Diverging - Stopping !!! *** ")
 
             self.epoch += 1
+            if self.client_lrs is not None:
+                self.client_lrs.step()
 
             # update Epoch Complexity metrics
             # print("Epoch Grad Cost: {}".format(epoch_grad_cost))
