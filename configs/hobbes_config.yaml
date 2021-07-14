@@ -6,7 +6,7 @@
 
   "data_config":
   {
-    "data_set": "mnist",
+    "data_set": "fashion_mnist",
     "shape":
     [
         28,
