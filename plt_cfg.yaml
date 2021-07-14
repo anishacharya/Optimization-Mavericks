@@ -1,35 +1,36 @@
 {
-    "plot_type": 'jacobian_residual', # Options: 'jacobian_residual' 'test_acc'
+    "plot_type": 'test_acc', # Options: 'jacobian_residual' 'test_acc'
     "x_ax": 'epoch',
-    "plot_freq": 1,
+    "eval_freq": 1,
+    "plot_freq": 100,
     "smoothen": False,
-    "dir": 'result_dumps/client_sampling/mnist/',
+    "dir": 'result_dumps/dim_sampling/fmnist/',
     "plots":
       [
         {
           'file': 'baseline',
           'label': "\\textsc{SGD}",
           'line_width': 2,
-          'marker': None, #'o',
+          'marker': 'o',
           'line_style': 'solid',
           "clr": 'b',
         },
         {
-          'file': 'active_norm_sampling_0.1',
+          'file': 'active_norm_sampling_0.1_m',
           'label': $\beta=0.1$,
           'line_width': 2,
-          'marker': None, #'o',
+          'marker': 'o',
           'line_style': 'solid',
           "clr": 'g',
         },
-        {
-          'file': 'active_norm_sampling_0.2',
-          'label': $\beta=0.2$,
-          'line_width': 2,
-          'marker': None, #'o',
-          'line_style': 'solid',
-          "clr": 'r',
-        },
+#        {
+#          'file': 'active_norm_sampling_0.2',
+#          'label': $\beta=0.2$,
+#          'line_width': 2,
+#          'marker': None, #'o',
+#          'line_style': 'solid',
+#          "clr": 'r',
+#        },
 #        {
 #          'file': 'active_norm_sampling_0.3_m',
 #          'label': $\beta=0.3$,

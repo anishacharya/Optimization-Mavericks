@@ -8,7 +8,7 @@ import yaml
 import matplotlib.ticker as ticker
 
 
-def plot_(lbl: str, res_file: str, plt_type: str = 'epoch_loss', x_axis='time', plot_freq=1,
+def plot_(lbl: str, res_file: str, plt_type: str = 'epoch_loss', x_axis='time', plot_freq=1, eval_freq=1,
           line_width=4, marker=None, line_style=None, optima: float = 0.0, color=None, smoothen=False):
     with open(res_file, 'rb') as f:
         result = json.load(f)
@@ -17,6 +17,7 @@ def plot_(lbl: str, res_file: str, plt_type: str = 'epoch_loss', x_axis='time', 
     for run in result:
         res = run[plt_type]
         res -= optima * np.ones(len(res))
+
         if plt_type == 'sparse_approx_residual':
             res = np.ones(len(res)) - res
             res = np.square(res)
@@ -38,6 +39,7 @@ def plot_(lbl: str, res_file: str, plt_type: str = 'epoch_loss', x_axis='time', 
         max_acc = max(mean)
         final_acc = mean[-1]
         print("{} Test Accuracy : {} +- {}".format(lbl, final_acc, min(3 * std)))
+
     elif plt_type == 'train_loss':
         min_loss = min(mean)
         final_loss = mean[-1]
@@ -51,8 +53,11 @@ def plot_(lbl: str, res_file: str, plt_type: str = 'epoch_loss', x_axis='time', 
         tot_cost /= len(result)
         x_freq = int(tot_cost / len(mean))
         x = np.arange(len(mean)) * x_freq
+
     elif x_axis == 'epoch':
         x = np.arange(len(result[0][plt_type]))[::plot_freq]
+        x *= eval_freq
+
     else:
         raise NotImplementedError
     plt.plot(x, mean, label=lbl, linewidth=line_width, marker=marker, linestyle=line_style, color=color)
@@ -81,6 +86,7 @@ if __name__ == '__main__':
     x_ax = plt_cfg["x_ax"]
     plot_type = plt_cfg["plot_type"]
     plt_freq = plt_cfg["plot_freq"]
+    eval_freq = plt_cfg["eval_freq"]
     smoothen = plt_cfg["smoothen"]
 
     for pl in plt_cfg["plots"]:
@@ -101,13 +107,14 @@ if __name__ == '__main__':
               line_style=ls,
               color=clr,
               plot_freq=plt_freq,
+              eval_freq=eval_freq,
               smoothen=smoothen)
 
         # Fix the X Labels
         if x_ax == 'time':
             plt.xlabel(r'$\mathcal{O}$(Time)', fontsize=10)
         elif x_ax == 'epoch':
-            plt.xlabel('Epochs (Full Pass over Data)', fontsize=10)
+            plt.xlabel(r'Number of Gradient Steps $\times$100', fontsize=10)
         else:
             raise NotImplementedError
 
@@ -117,7 +124,7 @@ if __name__ == '__main__':
         plt.ylabel('Test Error', fontsize=10)
     elif plot_type == 'test_acc':
         # plt.yscale("log")
-        plt.ylim(95)
+        plt.ylim(80)
         # plt.xlim(-5, 3000)
         ax.yaxis.set_minor_formatter(ticker.ScalarFormatter())
         plt.ylabel('Test Accuracy (%)', fontsize=10)

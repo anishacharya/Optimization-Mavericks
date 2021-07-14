@@ -102,7 +102,7 @@
             "rule": 'active_norm_sampling',
             "axis": "dim",                       # n = client/ sample/ batch selection ; dim = dimension selection
             "sampling_fraction": 0.1,          # fraction to be sampled
-            "mG": True,                       # memory in Jacobian - invoked for jacobian compression rules
+            "mG": False,                       # memory in Jacobian - invoked for jacobian compression rules
             "mg": False,                       # memory in gradients - invoked for gradient compression rules
           }
       }
