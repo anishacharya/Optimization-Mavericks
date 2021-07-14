@@ -99,7 +99,7 @@
 
         "compression_config":
           {
-            "rule": None,
+            "rule": 'active_norm_sampling',
             "axis": "dim",                       # n = client/ sample/ batch selection ; dim = dimension selection
             "sampling_fraction": 0.1,          # fraction to be sampled
             "mG": True,                       # memory in Jacobian - invoked for jacobian compression rules
