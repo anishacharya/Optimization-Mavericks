@@ -174,7 +174,7 @@
             99.46166666666667
         ],
         "communication_residual": [],
-        "sparse_approx_residual": [],
+        "jacobian_residual": [],
         "epoch_sparse_approx_cost": [
             0,
             0,
@@ -407,7 +407,7 @@
             99.69
         ],
         "communication_residual": [],
-        "sparse_approx_residual": [],
+        "jacobian_residual": [],
         "epoch_sparse_approx_cost": [
             0,
             0,
@@ -640,7 +640,7 @@
             99.64833333333333
         ],
         "communication_residual": [],
-        "sparse_approx_residual": [],
+        "jacobian_residual": [],
         "epoch_sparse_approx_cost": [
             0,
             0,

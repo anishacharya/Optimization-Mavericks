@@ -117,7 +117,7 @@ if __name__ == '__main__':
         plt.ylabel('Test Error', fontsize=10)
     elif plot_type == 'test_acc':
         # plt.yscale("log")
-        plt.ylim(80)
+        plt.ylim(95)
         # plt.xlim(-5, 3000)
         ax.yaxis.set_minor_formatter(ticker.ScalarFormatter())
         plt.ylabel('Test Accuracy (%)', fontsize=10)
@@ -133,9 +133,9 @@ if __name__ == '__main__':
         plt.ylabel('Training Loss', fontsize=10)
     elif plot_type == 'train_error':
         plt.ylabel('Train Error', fontsize=10)
-    elif plot_type == 'sparse_approx_residual':
+    elif plot_type == 'jacobian_residual':
         plt.ylabel(r'1 - $\xi$')
-        plt.xlabel("Iterations", fontsize=10)
+        plt.xlabel("Gradient Aggregation Steps", fontsize=10)
     else:
         raise NotImplementedError
 

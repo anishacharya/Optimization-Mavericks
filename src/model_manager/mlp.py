@@ -9,7 +9,7 @@ class LogisticRegression(nn.Module):
         self.fc = nn.Linear(dim_in, dim_out)
 
     def forward(self, x):
-        # reshape / flatten tensors (ex. MNIST 28*28 -> 784)
+        # reshape / flatten tensors (ex. mnist 28*28 -> 784)
         flatten_dim = 1
         for ix in range(1, len(x.shape)):
             flatten_dim *= x.shape[ix]

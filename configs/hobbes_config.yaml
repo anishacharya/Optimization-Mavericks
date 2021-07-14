@@ -19,7 +19,8 @@
 
     "data_sampling_strategy": "iid",  # iid / non_iid
     "num_shards": 80,                 # For non-iid distribution
-    "batch_size": 32,                 # Mini Batch Size
+    "train_batch_size": 16,                 # Mini Batch Size
+    "test_batch_size": 1024,
 
     "feature_attack_config":
       {
@@ -34,8 +35,9 @@
   {
     "num_clients": 32,            # Number of batches in distributed setting
     "client_fraction": 1,         # partial device participation - For FL
-    "global_epochs": 20,          # epochs
+    "global_epochs": 50,          # epochs
     "local_epochs": 1,            # local SGD # For FL
+
     "eval_freq": 50,             # Specify number of steps between train/test/val evaluation
 
     "optimizer_config":
@@ -97,7 +99,7 @@
 
         "compression_config":
           {
-            "rule": 'active_norm_sampling',
+            "rule": None,
             "axis": "dim",                       # n = client/ sample/ batch selection ; dim = dimension selection
             "sampling_fraction": 0.3,          # fraction to be sampled
             "mG": True,                       # memory in Jacobian - invoked for jacobian compression rules

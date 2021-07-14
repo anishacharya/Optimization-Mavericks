@@ -26,13 +26,15 @@ class JacobianPipeline(TrainPipeline):
         torch.manual_seed(seed)
 
         # ------------------------- get data --------------------- #
-        batch_size = self.data_config.get('batch_size', 1)
+        tr_batch_size = self.data_config.get('train_batch_size', 1)
+        test_batch_size = self.data_config.get('test_batch_size', 512)
         data_manager = process_data(data_config=self.data_config)
         train_dataset, val_dataset, test_dataset = data_manager.download_data()
 
-        train_loader = DataLoader(dataset=train_dataset, batch_size=batch_size, shuffle=True)
+        train_loader = DataLoader(dataset=train_dataset, batch_size=tr_batch_size, shuffle=True)
         print('Num of Batches in Train Loader = {}'.format(len(train_loader)))
-        test_loader = DataLoader(dataset=test_dataset, batch_size=batch_size)
+
+        test_loader = DataLoader(dataset=test_dataset, batch_size=test_batch_size)
 
         grad_steps = -1
 

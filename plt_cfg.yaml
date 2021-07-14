@@ -1,9 +1,9 @@
 {
-    "plot_type": 'train_loss', # Options: 'sparse_approx_residual' 'test_acc'
+    "plot_type": 'jacobian_residual', # Options: 'jacobian_residual' 'test_acc'
     "x_ax": 'epoch',
     "plot_freq": 1,
     "smoothen": False,
-    "dir": 'result_dumps/client_sampling/fmnist/',
+    "dir": 'result_dumps/client_sampling/mnist/',
     "plots":
       [
         {
@@ -15,47 +15,31 @@
           "clr": 'b',
         },
         {
-          'file': 'top_n.0',
-          'label': 'k=1',
+          'file': 'active_norm_sampling_0.1',
+          'label': $\beta=0.1$,
           'line_width': 2,
           'marker': None, #'o',
           'line_style': 'solid',
           "clr": 'g',
         },
         {
-          'file': 'top_n.10',
-          'label': $\beta=0.1$,
+          'file': 'active_norm_sampling_0.2',
+          'label': $\beta=0.2$,
           'line_width': 2,
           'marker': None, #'o',
           'line_style': 'solid',
           "clr": 'r',
         },
-        {
-          'file': 'top_n.20',
-          'label': $\beta=0.2$,
-          'line_width': 2,
-          'marker': None, #'o',
-          'line_style': 'solid',
-          "clr": 'k',
-        },
-        {
-          'file': 'top_n.30',
-          'label': $\beta=0.3$,
-          'line_width': 2,
-          'marker': None, #'o',
-          'line_style': 'solid',
-          "clr": 'm',
-        },
-        {
-          'file': 'top_n.10_m',
-          'label': $\beta=0.1 + M$,
-          'line_width': 2,
-          'marker': None, #'o',
-          'line_style': 'solid',
-          "clr": 'c',
-        },
+#        {
+#          'file': 'active_norm_sampling_0.3_m',
+#          'label': $\beta=0.3$,
+#          'line_width': 2,
+#          'marker': None, #'o',
+#          'line_style': 'solid',
+#          "clr": 'k',
+#        },
 #          {
-#              'file': 'top_n.10.ef',
+#              'file': 'active_norm_sampling_0.1.ef',
 #              'label': $\beta=0.1$ + M,
 #              'line_width': 2,
 #              'marker': 'o',

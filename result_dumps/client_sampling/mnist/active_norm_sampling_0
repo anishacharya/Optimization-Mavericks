@@ -174,7 +174,7 @@
             97.665
         ],
         "communication_residual": [],
-        "sparse_approx_residual": [
+        "jacobian_residual": [
             0.03467313572764397,
             0.044688399881124496,
             0.038171809166669846,
