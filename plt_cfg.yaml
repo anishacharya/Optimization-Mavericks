@@ -1,10 +1,10 @@
 {
-    "plot_type": 'train_loss', # Options: 'jacobian_residual' 'test_acc'
+    "plot_type": 'test_acc', # Options: 'jacobian_residual' 'test_acc'
     "x_ax": 'epoch',
     "eval_freq": 100,
     "plot_freq": 10,
     "smoothen": False,
-    "dir": 'result_dumps/dim_sampling/fmnist/lenet/',
+    "dir": 'result_dumps/client_sampling/fmnist/',
     "plots":
       [
         {
@@ -17,15 +17,23 @@
         },
         {
           'file': 'active_norm_sampling_0.1',
-          'label': $\beta=0.1$,
+          'label': $\beta=0.1+M$,
           'line_width': 2,
           'marker': 'o',
           'line_style': 'solid',
           "clr": 'r',
         },
         {
-          'file': 'active_norm_sampling_0.1_m',
-          'label': $\beta=0.1+M$,
+          'file': 'active_norm_sampling_0.2',
+          'label': $\beta=0.2+M$,
+          'line_width': 2,
+          'marker': 'o',
+          'line_style': 'solid',
+          "clr": 'g',
+        },
+        {
+          'file': 'active_norm_sampling_0.3',
+          'label': $\beta=0.3+M$,
           'line_width': 2,
           'marker': 'o',
           'line_style': 'solid',
