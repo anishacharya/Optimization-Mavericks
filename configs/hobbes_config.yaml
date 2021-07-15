@@ -101,7 +101,7 @@
           {
             "rule": 'active_norm_sampling',                     # None, 'active_norm_sampling', 'random_sampling'
             "axis": "n",                    # n = client/ sample/ batch selection ; dim = dimension selection
-            "sampling_fraction": 0.1,         # fraction to be sampled
+            "sampling_fraction": 0.2,         # fraction to be sampled
             "mG": False,                       # memory in Jacobian - invoked for jacobian compression rules
             "mg": False,                      # memory in gradients - invoked for gradient compression rules
           }
