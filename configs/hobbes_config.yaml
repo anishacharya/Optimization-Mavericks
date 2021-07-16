@@ -33,7 +33,7 @@
 
   "training_config":
   {
-    "num_clients": 32,            # Number of batches in distributed setting
+    "num_clients": 3,            # Number of batches in distributed setting
     "client_fraction": 1,         # partial device participation - For FL
     "global_epochs": 50,          # epochs
     "local_epochs": 1,            # local SGD # For FL
@@ -99,7 +99,7 @@
 
         "compression_config":
           {
-            "rule": 'active_norm_sampling',                     # None, 'active_norm_sampling', 'random_sampling'
+            "rule": None,                     # None, 'active_norm_sampling', 'random_sampling'
             "axis": "n",                    # n = client/ sample/ batch selection ; dim = dimension selection
             "sampling_fraction": 0.9,         # fraction to be sampled
             "mG": False,                       # memory in Jacobian - invoked for jacobian compression rules
