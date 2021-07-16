@@ -14,10 +14,10 @@ def plot_(lbl: str, res_file: str, plt_type: str = 'epoch_loss', x_axis='time', 
         result = json.load(f)
 
     scores = []
+
     for run in result:
         res = run[plt_type]
         res -= optima * np.ones(len(res))
-
         if plt_type == 'sparse_approx_residual':
             res = np.ones(len(res)) - res
             res = np.square(res)
@@ -38,7 +38,8 @@ def plot_(lbl: str, res_file: str, plt_type: str = 'epoch_loss', x_axis='time', 
     if plt_type == 'test_acc':
         max_acc = max(mean)
         final_acc = mean[-1]
-        print("{} Test Accuracy : {} +- {}".format(lbl, final_acc, min(3 * std)))
+        print("{} Final Test Accuracy : {}; Best Test Accuracy: {} +- {} "
+              .format(lbl, final_acc, max_acc, min(3 * std)))
 
     elif plt_type == 'train_loss':
         min_loss = min(mean)
@@ -60,6 +61,7 @@ def plot_(lbl: str, res_file: str, plt_type: str = 'epoch_loss', x_axis='time', 
 
     else:
         raise NotImplementedError
+    # mean = mean[::plot_freq]
     plt.plot(x, mean, label=lbl, linewidth=line_width, marker=marker, linestyle=line_style, color=color)
     plt.fill_between(x, LB, UB, alpha=0.3, linewidth=0.5, color=color)
 
@@ -67,6 +69,7 @@ def plot_(lbl: str, res_file: str, plt_type: str = 'epoch_loss', x_axis='time', 
 def smooth(y, box_pts):
     box = np.ones(box_pts) / box_pts
     y_smooth = np.convolve(y, box, mode='same')
+    y_smooth[-1] = y_smooth[-2]
     return y_smooth
 
 
@@ -88,6 +91,9 @@ if __name__ == '__main__':
     plt_freq = plt_cfg["plot_freq"]
     eval_freq = plt_cfg["eval_freq"]
     smoothen = plt_cfg["smoothen"]
+    ylim = plt_cfg["ylim"]
+    xlim_l = plt_cfg["xlim_l"]
+    xlim_r = plt_cfg["xlim_r"]
 
     for pl in plt_cfg["plots"]:
         result_file = d + pl["file"]
@@ -114,7 +120,7 @@ if __name__ == '__main__':
         if x_ax == 'time':
             plt.xlabel(r'$\mathcal{O}$(Time)', fontsize=10)
         elif x_ax == 'epoch':
-            plt.xlabel(r'Number of Gradient Steps $\times$100', fontsize=10)
+            plt.xlabel(r'Number of Gradient Steps', fontsize=10)
         else:
             raise NotImplementedError
 
@@ -124,8 +130,8 @@ if __name__ == '__main__':
         plt.ylabel('Test Error', fontsize=10)
     elif plot_type == 'test_acc':
         # plt.yscale("log")
-        plt.ylim(80)
-        # plt.xlim(-5, 3000)
+        plt.ylim(ylim)
+        plt.xlim(xlim_l, xlim_r)
         ax.yaxis.set_minor_formatter(ticker.ScalarFormatter())
         plt.ylabel('Test Accuracy (%)', fontsize=10)
     elif plot_type == 'train_acc':
