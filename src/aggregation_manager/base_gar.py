@@ -43,13 +43,13 @@ class GAR:
         Implements weighted average of grad vectors stacked along rows of G
         If no weights are supplied then its equivalent to simple average
         """
-        n, d = stacked_grad.shape  # n is treated as num grad vectors to aggregate, d is grad dim
+        # n, d = stacked_grad.shape  # n is treated as num grad vectors to aggregate, d is grad dim
         if alphas is None:
             # make alpha uniform
             # alphas = [1.0 / n] * n
             agg_grad = np.mean(stacked_grad, axis=0)
         else:
-            assert len(alphas) == n
+            assert len(alphas) == stacked_grad.shape[0]
             agg_grad = np.matmul(alphas, stacked_grad)
         # agg_grad = np.zeros_like(stacked_grad[0, :])
         #
