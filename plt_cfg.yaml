@@ -1,12 +1,10 @@
 {
-    "plot_type": 'test_acc', # Options: 'jacobian_residual' 'test_acc'
+    "plot_type": 'jacobian_residual', # Options: 'jacobian_residual' 'test_acc'
     "x_ax": 'epoch',
-    "eval_freq": 100,
-    "plot_freq": 1,
     "ylim": 85,
     "xlim_l": ,
     "xlim_r": , #17500,
-    "smoothen": True,
+    "smoothen": False,
     "dir": 'result_dumps/client_sampling/fmnist/lenet/',
     "plots":
       [
@@ -17,7 +15,29 @@
           'marker': None, #'o',
           'line_style': 'solid',
           "clr": 'b',
+          "eval_freq": 100,
+          "plot_freq": 1,
         },
+#        {
+#            'file': 'bs_0.1',
+#            'label': "\\textsc{SGD}+BS=0.1",
+#            'line_width': 2,
+#            'marker': None, #'o',
+#            'line_style': 'solid',
+#            "clr": 'k',
+#            "eval_freq": 1000,
+#            "plot_freq": 1,
+#        },
+#            {
+#                  'file': 'bs_0.2',
+#                  'label': "\\textsc{SGD}+BS=0.2",
+#                  'line_width': 2,
+#                  'marker': None, #'o',
+#                  'line_style': 'solid',
+#                  "clr": 'r',
+#                  "eval_freq": 500,
+#                  "plot_freq": 1,
+#            },
         {
           'file': 'active_norm_sampling_0.1',
           'label': $\beta=0.1$,
@@ -25,6 +45,8 @@
           'marker': None, #'o',
           'line_style': 'solid',
           "clr": 'r',
+          "eval_freq": 100,
+          "plot_freq": 1,
         },
         {
           'file': 'active_norm_sampling_0.2',
@@ -33,6 +55,8 @@
           'marker': None, #'o',
           'line_style': 'solid',
           "clr": 'g',
+          "eval_freq": 100,
+          "plot_freq": 1,
         },
         {
           'file': 'active_norm_sampling_0.3',
@@ -41,6 +65,8 @@
           'marker': None, #'o',
           'line_style': 'solid',
           "clr": 'c',
+          "eval_freq": 100,
+          "plot_freq": 1,
         },
         {
           'file': 'active_norm_sampling_0.4',
@@ -49,6 +75,8 @@
           'marker': None, #'o',
           'line_style': 'solid',
           "clr": 'm',
+          "eval_freq": 100,
+          "plot_freq": 1,
         },
         {
           'file': 'active_norm_sampling_0.5',
@@ -57,6 +85,8 @@
           'marker': None, #'o',
           'line_style': 'solid',
           "clr": 'y',
+          "eval_freq": 100,
+          "plot_freq": 1,
         },
         {
           'file': 'active_norm_sampling_0.6',
@@ -65,6 +95,8 @@
           'marker': None, #'o',
           'line_style': 'solid',
           "clr": 'k',
+          "eval_freq": 100,
+          "plot_freq": 1,
         },
         {
           'file': 'active_norm_sampling_0.7',
@@ -73,6 +105,8 @@
           'marker': None, #'o',
           'line_style': 'solid',
           "clr": 'skyblue',
+          "eval_freq": 100,
+          "plot_freq": 1,
         },
         {
           'file': 'active_norm_sampling_0.8',
@@ -81,6 +115,8 @@
           'marker': None, #'o',
           'line_style': 'solid',
           "clr": 'gray',
+          "eval_freq": 100,
+          "plot_freq": 1,
         },
         {
           'file': 'active_norm_sampling_0.9',
@@ -89,6 +125,8 @@
           'marker': None, #'o',
           'line_style': 'solid',
           "clr": 'peru',
+          "eval_freq": 100,
+          "plot_freq": 1,
         },
 #          {
 #              'file': 'gm',

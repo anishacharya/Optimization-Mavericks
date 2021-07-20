@@ -17,8 +17,8 @@ def plot_(lbl: str, res_file: str, plt_type: str = 'epoch_loss', x_axis='time', 
 
     for run in result:
         res = run[plt_type]
-        res -= optima * np.ones(len(res))
-        if plt_type == 'sparse_approx_residual':
+        # res -= optima * np.ones(len(res))
+        if plt_type == 'jacobian_residual':
             res = np.ones(len(res)) - res
             res = np.square(res)
         res = res[::plot_freq]
@@ -88,8 +88,7 @@ if __name__ == '__main__':
     pl_type = plt_cfg["plot_type"]
     x_ax = plt_cfg["x_ax"]
     plot_type = plt_cfg["plot_type"]
-    plt_freq = plt_cfg["plot_freq"]
-    eval_freq = plt_cfg["eval_freq"]
+
     smoothen = plt_cfg["smoothen"]
     ylim = plt_cfg["ylim"]
     xlim_l = plt_cfg["xlim_l"]
@@ -102,6 +101,9 @@ if __name__ == '__main__':
         ls = pl["line_style"]
         mk = pl["marker"]
         clr = pl["clr"]
+
+        plt_freq = pl["plot_freq"]
+        eval_freq = pl["eval_freq"]
 
         plot_(lbl=lbl,
               res_file=result_file,
@@ -120,7 +122,7 @@ if __name__ == '__main__':
         if x_ax == 'time':
             plt.xlabel(r'$\mathcal{O}$(Time)', fontsize=10)
         elif x_ax == 'epoch':
-            plt.xlabel(r'Number of Gradient Steps', fontsize=10)
+            plt.xlabel(r'Number of Optimizer Steps', fontsize=10)
         else:
             raise NotImplementedError
 

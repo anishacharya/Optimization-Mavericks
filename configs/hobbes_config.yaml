@@ -19,8 +19,8 @@
 
     "data_sampling_strategy": "iid",  # iid / non_iid
     "num_shards": 80,                 # For non-iid distribution
-    "train_batch_size": 16,                 # Mini Batch Size
-    "test_batch_size": 1024,
+    "train_batch_size": 32,                 # Mini Batch Size
+    "test_batch_size": 2048,
 
     "feature_attack_config":
       {
@@ -33,7 +33,7 @@
 
   "training_config":
   {
-    "num_clients": 3,            # Number of batches in distributed setting
+    "num_clients": 32,            # Number of batches in distributed setting
     "client_fraction": 1,         # partial device participation - For FL
     "global_epochs": 50,          # epochs
     "local_epochs": 1,            # local SGD # For FL

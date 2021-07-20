@@ -43,7 +43,7 @@ def _parse_args():
 def get_trainer(pipeline: str, config, seed):
     # select pipeline #
     if pipeline == 'jacobian':
-        trainer = JacobianPipeline(config=config, seed=seed)
+        trainer = JacobianCompressPipeline(config=config, seed=seed)
     else:
         raise NotImplementedError
 

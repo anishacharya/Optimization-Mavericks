@@ -16,7 +16,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 torch.backends.cudnn.deterministic = True
 
 
-class JacobianCompressPipeline(TrainPipeline):
+class VectorCompressionPipeline(TrainPipeline):
     def __init__(self, config, seed):
         TrainPipeline.__init__(self, config=config, seed=seed)
         self.epoch = 0
