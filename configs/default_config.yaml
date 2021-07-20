@@ -6,7 +6,7 @@
 
   "data_config":
   {
-    "data_set": "mnist",
+    "data_set": "fashion_mnist",
     "shape":
     [
         28,
@@ -19,7 +19,8 @@
 
     "data_sampling_strategy": "iid",  # iid / non_iid
     "num_shards": 80,                 # For non-iid distribution
-    "batch_size": 1,                 # Mini Batch Size
+    "train_batch_size": 32,                 # Mini Batch Size
+    "test_batch_size": 2048,
 
     "feature_attack_config":
       {
@@ -32,11 +33,12 @@
 
   "training_config":
   {
-    "num_clients": 64,            # Number of batches in distributed setting
+    "num_clients": 2,            # Number of batches in distributed setting
     "client_fraction": 1,         # partial device participation - For FL
-    "global_epochs": 20,          # epochs
+    "global_epochs": 50,          # epochs
     "local_epochs": 1,            # local SGD # For FL
-    "eval_freq": 50,             # Specify number of steps between train/test/val evaluation
+
+    "eval_freq": 1000,             # Specify number of steps between train/test/val evaluation
 
     "optimizer_config":
       {
@@ -68,14 +70,13 @@
 
     "learner_config":
       {
-        "net": "lenet",
-        "mlp_config": { "h1": 300, "h2": 300 }
+        "net": "log_reg", # Options: log_reg
+        "mlp_config": { "h1": 30, "h2": 30 }
       },
 
     "aggregation_config":
       {
         "gar": "mean",
-
         "geo_med_config": {"alg": 'vardi', 'eps': 0.00001, 'max_iter': 100},
         "trimmed_mean_config":{"proportion": 0.3},
         "krum_config": {"krum_frac": 0.3},
@@ -98,11 +99,11 @@
 
         "compression_config":
           {
-            "rule": None,
-            "axis": "dim",                       # n = client/ sample/ batch selection ; dim = dimension selection
-            "sampling_fraction": 0.1,          # fraction to be sampled
+            "rule": None,                     # None, 'active_norm_sampling', 'random_sampling'
+            "axis": "n",                    # n = client/ sample/ batch selection ; dim = dimension selection
+            "sampling_fraction": 0.9,         # fraction to be sampled
             "mG": False,                       # memory in Jacobian - invoked for jacobian compression rules
-            "mg": False,                       # memory in gradients - invoked for gradient compression rules
+            "mg": False,                      # memory in gradients - invoked for gradient compression rules
           }
       }
   }

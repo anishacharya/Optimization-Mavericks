@@ -46,12 +46,13 @@ class GAR:
         n, d = stacked_grad.shape  # n is treated as num grad vectors to aggregate, d is grad dim
         if alphas is None:
             # make alpha uniform
-            alphas = [1.0 / n] * n
+            # alphas = [1.0 / n] * n
+            agg_grad = np.mean(stacked_grad, axis=0)
         else:
             assert len(alphas) == n
-
-        agg_grad = np.zeros_like(stacked_grad[0, :])
-
-        for ix in range(0, n):
-            agg_grad += alphas[ix] * stacked_grad[ix, :]
+            agg_grad = np.matmul(alphas, stacked_grad)
+        # agg_grad = np.zeros_like(stacked_grad[0, :])
+        #
+        # for ix in range(0, n):
+        #     agg_grad += alphas[ix] * stacked_grad[ix, :]
         return agg_grad

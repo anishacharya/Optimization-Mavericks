@@ -90,7 +90,8 @@ if __name__ == '__main__':
     plot_type = plt_cfg["plot_type"]
 
     smoothen = plt_cfg["smoothen"]
-    ylim = plt_cfg["ylim"]
+    ylim_b = plt_cfg["ylim_b"]
+    ylim_t = plt_cfg["ylim_t"]
     xlim_l = plt_cfg["xlim_l"]
     xlim_r = plt_cfg["xlim_r"]
 
@@ -122,7 +123,7 @@ if __name__ == '__main__':
         if x_ax == 'time':
             plt.xlabel(r'$\mathcal{O}$(Time)', fontsize=10)
         elif x_ax == 'epoch':
-            plt.xlabel(r'Number of Optimizer Steps', fontsize=10)
+            plt.xlabel(r'Number of Gradient Steps', fontsize=10)
         else:
             raise NotImplementedError
 
@@ -132,7 +133,7 @@ if __name__ == '__main__':
         plt.ylabel('Test Error', fontsize=10)
     elif plot_type == 'test_acc':
         # plt.yscale("log")
-        plt.ylim(ylim)
+        plt.ylim(ylim_b, ylim_t)
         plt.xlim(xlim_l, xlim_r)
         ax.yaxis.set_minor_formatter(ticker.ScalarFormatter())
         plt.ylabel('Test Accuracy (%)', fontsize=10)
