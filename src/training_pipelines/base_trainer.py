@@ -78,7 +78,8 @@ class TrainPipeline:
                 # Implements : Ordered SGD: A New Stochastic Optimization Framework for Empirical Risk Minimization
                 # Kawaguchi, Kenji and Lu, Haihao; AISTATS 2020
                 k = min(int(self.loss_sampling_beta * self.train_batch_size), len(outputs))
-                loss = torch.mean(torch.topk(loss, k, sorted=False)[0])
+                sampled_ = torch.topk(loss, k, sorted=False)[0]
+                loss = torch.mean(sampled_)
             else:
                 raise NotImplementedError
 

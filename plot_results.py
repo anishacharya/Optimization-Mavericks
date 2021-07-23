@@ -69,9 +69,11 @@ def plot_(lbl: str, res_file: str, plt_type: str = 'epoch_loss',
 
 
 def smooth(y, box_pts):
+
     box = np.ones(box_pts) / box_pts
     y_smooth = np.convolve(y, box, mode='same')
     y_smooth[-1] = y_smooth[-2]
+
     return y_smooth
 
 
