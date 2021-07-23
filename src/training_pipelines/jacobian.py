@@ -141,9 +141,11 @@ class JacobianCompressPipeline(TrainPipeline):
             # print("Epoch Aggregation Cost: {}".format(epoch_agg_cost))
             self.metrics["epoch_agg_cost"].append(epoch_agg_cost)
             # print("Epoch GM iterations: {}".format(epoch_gm_iter))
-            self.metrics["epoch_gm_iter"].append(epoch_gm_iter)
-            # print("Epoch Sparse Approx Cost: {}".format(epoch_sparse_cost))
-            self.metrics["epoch_compression_cost"].append(epoch_compression_cost)
+            if epoch_gm_iter > 0:
+                self.metrics["epoch_gm_iter"].append(epoch_gm_iter)
+            if epoch_compression_cost >0:
+                # print("Epoch Sparse Approx Cost: {}".format(epoch_sparse_cost))
+                self.metrics["epoch_compression_cost"].append(epoch_compression_cost)
         # Update Total Complexities
         self.metrics["total_grad_cost"] = sum(self.metrics["epoch_grad_cost"])
         self.metrics["total_agg_cost"] = sum(self.metrics["epoch_agg_cost"])
