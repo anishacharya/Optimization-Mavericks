@@ -1,0 +1,27 @@
+Namespace(conf='configs/hobbes_config.yaml', dir='result_dumps/client_sampling/fmnist/lenet/', n_repeat=1, o='osgd_75', pipeline='jacobian', train_mode='distributed')
+---- Fetching configs and Initializing stuff -----
+Loading Model: lenet
+----------------------------
+LeNet(
+  (max_pool): MaxPool2d(kernel_size=(2, 2), stride=(2, 2), padding=0, dilation=1, ceil_mode=False)
+  (conv1): Conv2d(1, 64, kernel_size=(5, 5), stride=(1, 1))
+  (conv2): Conv2d(64, 64, kernel_size=(5, 5), stride=(1, 1))
+  (fc1): Linear(in_features=1024, out_features=1024, bias=True)
+  (fc2): Linear(in_features=1024, out_features=10, bias=True)
+)
+No compression specified or compression operator Not implemented ~ running without jacobian compression
+--------------------------------
+Initializing mean GAR
+--------------------------------
+Num of Batches in Train Loader = 1875
+epoch 0/50 || learning rate: 0.01
+Num of Parameters 1163978
+Epoch progress: 0/50, train loss = 2.3390286801656086, train acc = 9.788333333333334, test acc = 9.67
+Epoch progress: 0/50, train loss = 0.679004720600446, train acc = 81.15666666666667, test acc = 80.46
+Epoch progress: 0/50, train loss = 0.5203986377557118, train acc = 86.14166666666667, test acc = 85.14
+72, train acc = 81.735, test acc = 80.08
+Epoch progress: 1/50, train loss = 1.3293715508222579, train acc = 80.45333333333333, test acc = 77.65
+Epoch progress: 1/50, train loss = 1.2214735387007396, train acc = 82.59666666666666, test acc = 80.8
+epoch 2/50 || learning rate: 0.008100000000000001
+Epoch progress: 2/50, train loss = 1.1479425983667373, train acc = 83.34333333333333, test acc = 81.19
+Epoch progress: 2/50, train loss = 1.074945409198602, train acc = 84.02166666666666, test acc = 82.04
