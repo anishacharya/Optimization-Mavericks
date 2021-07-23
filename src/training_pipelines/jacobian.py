@@ -8,7 +8,7 @@ from tqdm import tqdm
 
 from src.training_pipelines import TrainPipeline
 from src.data_manager import process_data
-from src.model_manager import flatten_grads, dist_grads_to_model, evaluate_classifier
+from src.model_manager import flatten_grads, dist_grads_to_model
 
 # Reproducibility Checks
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -119,10 +119,10 @@ class JacobianCompressPipeline(TrainPipeline):
                     self.metrics["num_steps"] += 1
 
                 if grad_steps % self.eval_freq == 0:
-                    train_loss = evaluate_classifier(model=self.model, train_loader=train_loader,
-                                                     test_loader=test_loader,
-                                                     metrics=self.metrics, criterion=self.criterion, device=device,
-                                                     epoch=self.epoch, num_epochs=self.num_epochs)
+                    train_loss = self.evaluate_classifier(model=self.model, train_loader=train_loader,
+                                                          test_loader=test_loader,
+                                                          metrics=self.metrics, criterion=self.criterion, device=device,
+                                                          epoch=self.epoch, num_epochs=self.num_epochs)
                     # Stop if diverging
                     if (train_loss > 1e3) | np.isnan(train_loss) | np.isinf(train_loss):
                         self.epoch = self.num_epochs
