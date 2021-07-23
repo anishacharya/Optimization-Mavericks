@@ -72,7 +72,7 @@
 
     "learner_config":
       {
-        "net": "log_reg", # Options: log_reg
+        "net": "lenet", # Options: log_reg
         "mlp_config": { "h1": 30, "h2": 30 }
       },
 
