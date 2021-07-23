@@ -46,8 +46,8 @@
           {
             "optimizer": "SGD",
             "loss": "ce",
-            "loss_sampling": None,   # importance sampling on loss value: None, 'top'
-            "beta": 0.5              # fraction to sample k = beta * batch_size
+            "loss_sampling": null,   # importance sampling on loss value: None, 'top'
+            "beta": 0.5,              # fraction to sample k = beta * batch_size
             "lr0": 0.01,
             "momentum": 0.9,
             "reg": 0.00001,
@@ -86,7 +86,7 @@
 
         "grad_attack_config":
           {
-            "attack_model": None,
+            "attack_model": null,
             "attack_mode": "un_coordinated",
             "frac_adv": 0.4,
             "rand_additive_attack_conf":
@@ -101,7 +101,7 @@
 
         "compression_config":
           {
-            "rule": None,                     # None, 'active_norm_sampling', 'random_sampling'
+            "rule": null,                     # None, 'active_norm_sampling', 'random_sampling'
             "axis": "n",                    # n = client/ sample/ batch selection ; dim = dimension selection
             "sampling_fraction": 0.9,         # fraction to be sampled
             "mG": False,                       # memory in Jacobian - invoked for jacobian compression rules

@@ -20,6 +20,6 @@ def get_compression_operator(compression_config: Dict):
                                   'random_sampling']:
         return SparseApproxMatrix(conf=compression_config)
     else:
-        print('Specified Compression Operator Not '
-              'Implemented ~ Running without Jacobian Compression')
+        print('No compression specified or compression operator Not '
+              'implemented ~ running without jacobian compression')
         return None

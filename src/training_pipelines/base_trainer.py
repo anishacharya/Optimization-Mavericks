@@ -51,8 +51,8 @@ class TrainPipeline:
         self.loss_sampling = self.client_optimizer_config.get('loss_sampling', None)
         self.loss_sampling_beta = self.client_optimizer_config.get('beta', 1)
         self.criterion = get_loss(loss=self.client_optimizer_config.get('loss', 'ce'),
-                                  reduction='mean' if
-                                  (self.loss_sampling is None or self.loss_sampling_beta == 1) else 'none')
+                                  reduction='mean' if not self.loss_sampling or self.loss_sampling_beta == 1
+                                  else 'none')
 
         # sparse approximation of the gradients before aggregating
         # self.sparse_rule = self.sparse_approx_config.get('rule', None)
@@ -73,7 +73,7 @@ class TrainPipeline:
     def loss_wrapper(self, outputs, labels):
         loss = self.criterion(outputs, labels)
 
-        if self.loss_sampling is not None:
+        if self.loss_sampling:
             if self.loss_sampling == 'top':
                 # Implements : Ordered SGD: A New Stochastic Optimization Framework for Empirical Risk Minimization
                 # Kawaguchi, Kenji and Lu, Haihao; AISTATS 2020
