@@ -84,10 +84,15 @@ class TrainPipeline:
 
         return loss
 
-    def evaluate_classifier(self, epoch, num_epochs, model, train_loader, test_loader, metrics,
-                            criterion=None, device="cpu") -> float:
-        train_error, train_acc, train_loss = self._evaluate(model=model, data_loader=train_loader,
-                                                       criterion=criterion, device=device)
+    def evaluate_classifier(self,
+                            epoch: int,
+                            num_epochs: int,
+                            model,
+                            train_loader,
+                            test_loader,
+                            metrics,
+                            device="cpu") -> float:
+        train_error, train_acc, train_loss = self._evaluate(model=model, data_loader=train_loader, device=device)
         test_error, test_acc, _ = self._evaluate(model=model, data_loader=test_loader, device=device)
 
         print('Epoch progress: {}/{}, train loss = {}, train acc = {}, test acc = {}'.
@@ -101,7 +106,7 @@ class TrainPipeline:
 
         return train_loss
 
-    def _evaluate(self, model, data_loader, verbose=False, criterion=None, device="cpu"):
+    def _evaluate(self, model, data_loader, verbose=False, device="cpu"):
         model.to(device)
         with torch.no_grad():
             correct = 0
@@ -114,8 +119,8 @@ class TrainPipeline:
                 labels = labels.to(device)
                 outputs = model(images)
 
-                if criterion is not None:
-                    total_loss += criterion(outputs, labels).item()
+                # if criterion is not None:
+                total_loss += self.loss_wrapper(outputs, labels).item()
 
                 batches += 1
                 _, predicted = torch.max(outputs.data, 1)
