@@ -24,7 +24,7 @@
 
     "feature_attack_config":
       {
-        "noise_model": None, #
+        "noise_model": null, #
         "frac_adv": 0.2,     # Fraction of corrupt samples
         "sev": 5,            # severity of attack
         "target_label": 8,   # backdoor Attack
@@ -33,7 +33,7 @@
 
   "training_config":
   {
-    "num_clients": 32,            # Number of batches in distributed setting
+    "num_clients": 1,            # Number of batches in distributed setting 1 = mini batch SGD
     "client_fraction": 1,         # partial device participation - For FL
     "global_epochs": 50,          # epochs
     "local_epochs": 1,            # local SGD # For FL
@@ -46,6 +46,8 @@
           {
             "optimizer": "SGD",
             "loss": "ce",
+            "loss_sampling": null,   # importance sampling on loss value: None, 'top'
+            "beta": 0.5,              # fraction to sample k = beta * batch_size
             "lr0": 0.01,
             "momentum": 0.9,
             "reg": 0.00001,
@@ -70,8 +72,8 @@
 
     "learner_config":
       {
-        "net": "lenet",
-        "mlp_config": { "h1": 300, "h2": 300 }
+        "net": "log_reg", # Options: log_reg
+        "mlp_config": { "h1": 30, "h2": 30 }
       },
 
     "aggregation_config":
@@ -84,7 +86,7 @@
 
         "grad_attack_config":
           {
-            "attack_model": None,
+            "attack_model": null,
             "attack_mode": "un_coordinated",
             "frac_adv": 0.4,
             "rand_additive_attack_conf":
@@ -99,7 +101,7 @@
 
         "compression_config":
           {
-            "rule": None,                     # None, 'active_norm_sampling', 'random_sampling'
+            "rule": null,                     # None, 'active_norm_sampling', 'random_sampling'
             "axis": "n",                    # n = client/ sample/ batch selection ; dim = dimension selection
             "sampling_fraction": 0.9,         # fraction to be sampled
             "mG": False,                       # memory in Jacobian - invoked for jacobian compression rules
