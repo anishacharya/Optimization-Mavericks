@@ -63,7 +63,7 @@ class JacobianCompressPipeline(TrainPipeline):
                 labels = labels.to(device)
                 outputs = self.model(images)
                 self.client_optimizer.zero_grad()
-                loss = self.criterion(outputs, labels)
+                loss = self.loss_wrapper(outputs, labels)
                 # compute grad
                 loss.backward()
                 grad_steps += 1
@@ -83,6 +83,7 @@ class JacobianCompressPipeline(TrainPipeline):
 
                 iteration_time = time.time() - t_iter
                 epoch_grad_cost += iteration_time
+
                 p_bar.update()
 
                 # Gradient Aggregation

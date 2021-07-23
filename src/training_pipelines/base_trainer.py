@@ -19,6 +19,7 @@ class TrainPipeline:
         self.data_config = config["data_config"]
         self.training_config = config["training_config"]
 
+        self.train_batch_size = self.data_config.get('train_batch_size')
         self.num_batches = self.training_config.get('num_clients', 1)
         self.num_epochs = self.training_config.get('global_epochs', 10)
         self.eval_freq = self.training_config.get('eval_freq', 10)
@@ -46,7 +47,12 @@ class TrainPipeline:
                                               optimizer_config=self.client_optimizer_config)
         self.client_lrs = get_scheduler(optimizer=self.client_optimizer,
                                         lrs_config=self.client_lrs_config)
-        self.criterion = get_loss(loss=self.client_optimizer_config.get('loss', 'ce'))
+
+        self.loss_sampling = self.client_optimizer_config.get('loss_sampling', None)
+        self.loss_sampling_beta = self.client_optimizer_config.get('beta', 1)
+        self.criterion = get_loss(loss=self.client_optimizer_config.get('loss', 'ce'),
+                                  reduction='mean' if
+                                  (self.loss_sampling is None or self.loss_sampling_beta == 1) else 'none')
 
         # sparse approximation of the gradients before aggregating
         # self.sparse_rule = self.sparse_approx_config.get('rule', None)
@@ -63,6 +69,20 @@ class TrainPipeline:
         self.grad_attack_model = get_grad_attack(attack_config=self.grad_attack_config)
 
         self.gar = get_gar(aggregation_config=self.aggregation_config)
+
+    def loss_wrapper(self, outputs, labels):
+        loss = self.criterion(outputs, labels)
+
+        if self.loss_sampling is not None:
+            if self.loss_sampling == 'top':
+                # Implements : Ordered SGD: A New Stochastic Optimization Framework for Empirical Risk Minimization
+                # Kawaguchi, Kenji and Lu, Haihao; AISTATS 2020
+                k = min(int(self.loss_sampling_beta * self.train_batch_size), len(outputs))
+                loss = torch.mean(torch.topk(loss, k, sorted=False)[0])
+            else:
+                raise NotImplementedError
+
+        return loss
 
     def init_metric(self):
         metrics = {"config": self.config,

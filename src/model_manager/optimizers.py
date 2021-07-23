@@ -7,13 +7,13 @@ from typing import Dict
 import torch.nn as nn
 
 
-def get_loss(loss: str):
+def get_loss(loss: str, reduction: str = 'mean'):
     if loss == 'mse':
-        return nn.MSELoss()
+        return nn.MSELoss(reduction=reduction)
     elif loss == 'ce':
-        return nn.CrossEntropyLoss()
+        return nn.CrossEntropyLoss(reduction=reduction)
     elif loss == 'bce':
-        return nn.BCELoss()
+        return nn.BCELoss(reduction=reduction)
     else:
         raise NotImplementedError
 
