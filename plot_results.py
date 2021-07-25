@@ -16,7 +16,8 @@ def plot_(lbl: str, res_file: str, plt_type: str = 'epoch_loss',
         result = json.load(f)
 
     scores = []
-
+    if type(result) is not list:
+        result = [result]
     for run in result:
         res = run[plt_type]
         # res -= optima * np.ones(len(res))

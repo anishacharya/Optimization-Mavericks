@@ -1,4 +1,4 @@
-from .model_helper import *
+from .model_utils import *
 from .optimizers import *
 from .mlp import *
 from .cnn import *

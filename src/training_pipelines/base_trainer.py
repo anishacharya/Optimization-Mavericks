@@ -1,13 +1,14 @@
 from typing import Dict
 import numpy as np
 import torch
+import math
 from src.attack_manager import get_feature_attack, get_grad_attack
 from src.model_manager import (get_model,
                                get_optimizer,
                                get_scheduler,
                                get_loss)
 from src.aggregation_manager import get_gar
-from src.compression_manager import get_compression_operator
+from src.compression_manager import get_compression_operator, get_sampling_scheduler
 
 
 class TrainPipeline:
@@ -49,10 +50,17 @@ class TrainPipeline:
                                         lrs_config=self.client_lrs_config)
 
         self.loss_sampling = self.client_optimizer_config.get('loss_sampling', None)
-        self.loss_sampling_beta = self.client_optimizer_config.get('beta', 1)
+        self.loss_sampling_schedule = self.client_optimizer_config.get('loss_sampling_schedule', None)
+        self.initial_loss_sampling_fraction = self.client_optimizer_config.get('initial_loss_sampling_fraction', 1)
+        self.loss_sampling_decay = self.client_optimizer_config.get('loss_sampling_decay', 0.5)
+        self.loss_sampling_step_size = self.client_optimizer_config.get('loss_sampling_step_size', 1000)
+        self.loss_sampling_scheduler = get_sampling_scheduler(schedule=self.loss_sampling_schedule,
+                                                              step_size=self.loss_sampling_step_size,
+                                                              initial_sampling_fraction=
+                                                              self.initial_loss_sampling_fraction,
+                                                              decay=self.loss_sampling_decay)
         self.criterion = get_loss(loss=self.client_optimizer_config.get('loss', 'ce'),
-                                  reduction='mean' if not self.loss_sampling or self.loss_sampling_beta == 1
-                                  else 'none')
+                                  reduction='mean' if not self.loss_sampling else 'none')
 
         # sparse approximation of the gradients before aggregating
         # self.sparse_rule = self.sparse_approx_config.get('rule', None)
@@ -70,19 +78,22 @@ class TrainPipeline:
 
         self.gar = get_gar(aggregation_config=self.aggregation_config)
 
-    def loss_wrapper(self, outputs, labels):
+    def loss_wrapper(self, outputs, labels, evaluate=False):
+        """ Implementation of Different Loss Modifications """
         loss = self.criterion(outputs, labels)
 
-        if self.loss_sampling:
+        if self.loss_sampling and not evaluate:
             if self.loss_sampling == 'top':
                 # Implements : Ordered SGD: A New Stochastic Optimization Framework for Empirical Risk Minimization
                 # Kawaguchi, Kenji and Lu, Haihao; AISTATS 2020
-                k = min(int(self.loss_sampling_beta * self.train_batch_size), len(outputs))
+                beta = self.loss_sampling_scheduler.step() \
+                    if self.loss_sampling_scheduler else self.initial_loss_sampling_fraction
+                k = min(math.ceil(beta * self.train_batch_size), len(outputs))
                 loss = torch.mean(torch.topk(loss, k, sorted=False)[0])
             else:
                 raise NotImplementedError
 
-        return loss
+        return torch.mean(loss) if evaluate else loss
 
     def evaluate_classifier(self,
                             epoch: int,
@@ -120,7 +131,7 @@ class TrainPipeline:
                 outputs = model(images)
 
                 # if criterion is not None:
-                total_loss += self.loss_wrapper(outputs, labels).item()
+                total_loss += self.loss_wrapper(outputs, labels, evaluate=True).item()
 
                 batches += 1
                 _, predicted = torch.max(outputs.data, 1)
