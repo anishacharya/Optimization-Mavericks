@@ -35,7 +35,7 @@
   {
     "num_clients": 1,            # Number of batches in distributed setting 1 = mini batch SGD
     "client_fraction": 1,         # partial device participation - For FL
-    "global_epochs": 50,          # epochs
+    "global_epochs": 20,          # epochs
     "local_epochs": 1,            # local SGD # For FL
 
     "eval_freq": 1000,             # Specify number of steps between train/test/val evaluation
@@ -50,7 +50,7 @@
             "loss_sampling": 'top',              # importance sampling on loss value: None, 'top'
             "loss_sampling_schedule": 'step',
             "initial_loss_sampling_fraction": 1,
-            "loss_sampling_decay": 0.5,                        # fraction to sample k = beta * batch_size
+            "loss_sampling_decay": 0.75,                        # fraction to sample k = beta * batch_size
             "loss_sampling_step_size": 1875,
 
             "lr0": 0.01,
