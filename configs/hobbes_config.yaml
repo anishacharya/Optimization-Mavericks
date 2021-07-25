@@ -46,6 +46,7 @@
           {
             "optimizer": "SGD",
             "loss": "ce",
+
             "loss_sampling": null,              # importance sampling on loss value: None, 'top'
             "loss_sampling_schedule": 'step',
             "beta": 0.5,                        # fraction to sample k = beta * batch_size

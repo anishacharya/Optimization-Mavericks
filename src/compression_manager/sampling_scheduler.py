@@ -1,15 +1,18 @@
-def get_sampling_scheduler(schedule: str = 'step',
+def get_sampling_scheduler(schedule: str = None,
                            step_size: int = 100,
-                           beta: float = 1):
+                           decay: float = 1,
+                           initial_sampling_fraction: float = 1):
     if schedule == 'step':
-        return StepSamplingSchedule(step_size=step_size, beta=beta)
+        return StepSamplingSchedule(step_size=step_size,
+                                    decay=decay,
+                                    sampling_fraction=initial_sampling_fraction)
     else:
-        raise NotImplementedError
+        return None
 
 
 class SamplingScheduler:
-    def __init__(self, k0: int = 1):
-        self.k0 = k0
+    def __init__(self, sampling_fraction: float = 1):
+        self.sampling_fraction = sampling_fraction
         self._step_count = 0
 
     def step(self) -> float:
@@ -19,19 +22,18 @@ class SamplingScheduler:
 class StepSamplingSchedule(SamplingScheduler):
     def __init__(self,
                  step_size: int,
-                 beta: float = 0.1):
-        SamplingScheduler.__init__(self)
+                 decay: float = 0.1,
+                 sampling_fraction: float = 1):
+        SamplingScheduler.__init__(self, sampling_fraction=sampling_fraction)
         self.step_size = step_size
-        self.beta = beta
+        self.decay = decay
 
     def step(self) -> float:
         self._step_count += 1
         if self._step_count % self.step_size == 0:
-            self.k0 = self.k0 * self.beta
-            if self.k0 == 0:
-                self.k0 += 1
+            self.sampling_fraction *= self.decay
             print('updating sample fraction at step {} to {}'.format(self._step_count, self.k0))
-        return self.k0
+        return self.sampling_fraction
 
 
 class MultiStepSamplingSchedule(SamplingScheduler):
