@@ -1,3 +1,4 @@
 from .vector_compression import *
-from .jacobian_sparse import *
-from .compression_helper import *
+from .jacobian_compression import *
+from .compression_utils import *
+from .sampling_scheduler import *

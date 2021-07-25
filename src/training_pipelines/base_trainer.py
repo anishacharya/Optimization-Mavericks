@@ -7,7 +7,7 @@ from src.model_manager import (get_model,
                                get_scheduler,
                                get_loss)
 from src.aggregation_manager import get_gar
-from src.compression_manager import get_compression_operator
+from src.compression_manager import get_compression_operator, get_sampling_scheduler
 
 
 class TrainPipeline:
@@ -49,7 +49,17 @@ class TrainPipeline:
                                         lrs_config=self.client_lrs_config)
 
         self.loss_sampling = self.client_optimizer_config.get('loss_sampling', None)
+
+        self.sampling_schedule = self.client_optimizer_config.get('loss_sampling_schedule', None)
         self.loss_sampling_beta = self.client_optimizer_config.get('beta', 1)
+        self.sampling_step_size = self.client_optimizer_config.get('step_size', 100)
+
+        self.loss_sampling_scheduler = get_sampling_scheduler(schedule=self.sampling_schedule,
+                                                              step_size=self.sampling_step_size,
+                                                              beta=self.loss_sampling_beta)
+
+        self.sampling_step_size = self.client_optimizer_config.get('step_size', 100)
+
         self.criterion = get_loss(loss=self.client_optimizer_config.get('loss', 'ce'),
                                   reduction='mean' if not self.loss_sampling or self.loss_sampling_beta == 1
                                   else 'none')
@@ -71,13 +81,15 @@ class TrainPipeline:
         self.gar = get_gar(aggregation_config=self.aggregation_config)
 
     def loss_wrapper(self, outputs, labels):
+        """ Implementation of Different Loss Modifications """
         loss = self.criterion(outputs, labels)
 
         if self.loss_sampling:
             if self.loss_sampling == 'top':
                 # Implements : Ordered SGD: A New Stochastic Optimization Framework for Empirical Risk Minimization
                 # Kawaguchi, Kenji and Lu, Haihao; AISTATS 2020
-                k = min(int(self.loss_sampling_beta * self.train_batch_size), len(outputs))
+                beta = self.loss_sampling_scheduler.step() if self.loss_sampling_scheduler else self.loss_sampling_beta
+                k = min(int(beta * self.train_batch_size), len(outputs))
                 loss = torch.mean(torch.topk(loss, k, sorted=False)[0])
             else:
                 raise NotImplementedError

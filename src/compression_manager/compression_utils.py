@@ -1,4 +1,4 @@
-from .jacobian_sparse import SparseApproxMatrix
+from .jacobian_compression import SparseApproxMatrix
 from .vector_compression import (Full,
                                  Top,
                                  Rand,
