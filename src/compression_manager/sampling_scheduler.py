@@ -32,7 +32,7 @@ class StepSamplingSchedule(SamplingScheduler):
         self._step_count += 1
         if self._step_count % self.step_size == 0:
             self.sampling_fraction *= self.decay
-            print('updating sample fraction at step {} to {}'.format(self._step_count, self.k0))
+            print('updating sample fraction at step {} to {}'.format(self._step_count, self.sampling_fraction))
         return self.sampling_fraction
 
 
