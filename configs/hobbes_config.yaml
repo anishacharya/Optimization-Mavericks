@@ -51,7 +51,7 @@
             "loss_sampling_schedule": 'step',
             "initial_loss_sampling_fraction": 1,
             "loss_sampling_decay": 0.75,                        # fraction to sample k = beta * batch_size
-            "loss_sampling_step_size": 1875*10,
+            "loss_sampling_step_size": 18750,
 
             "lr0": 0.01,
             "momentum": 0.9,
