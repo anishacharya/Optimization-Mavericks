@@ -89,7 +89,8 @@ class TrainPipeline:
                 beta = self.loss_sampling_scheduler.step() \
                     if self.loss_sampling_scheduler else self.initial_loss_sampling_fraction
                 k = min(math.ceil(beta * self.train_batch_size), len(outputs))
-                loss = torch.mean(torch.topk(loss, k, sorted=False)[0])
+                top_k = torch.topk(loss, k, sorted=False)
+                loss = torch.mean(top_k[0])
             else:
                 raise NotImplementedError
 
