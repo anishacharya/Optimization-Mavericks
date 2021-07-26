@@ -148,8 +148,9 @@ if __name__ == '__main__':
         # plt.ylim(0)
         plt.yscale("log")
         ax.yaxis.set_major_formatter(ticker.ScalarFormatter())
-        ax.yaxis.set_major_locator(ticker.FixedLocator([1]))
-        ax.yaxis.set_minor_formatter(ticker.ScalarFormatter())
+        plt.ticklabel_format(style='sci', axis='both', scilimits=(0, 0))
+        # ax.yaxis.set_major_locator(ticker.FixedLocator([1]))
+        # ax.yaxis.set_minor_formatter(ticker.ScalarFormatter())
         # ax.yaxis.set_minor_locator(ticker.FixedLocator([0.5, 0.3]))
         plt.ylabel('Training Loss', fontsize=10)
     elif plot_type == 'train_error':
