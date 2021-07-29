@@ -141,6 +141,7 @@ if __name__ == '__main__':
         plt.ylim(ylim_b, ylim_t)
         plt.xlim(xlim_l, xlim_r)
         ax.yaxis.set_minor_formatter(ticker.ScalarFormatter())
+        plt.ticklabel_format(style='sci', axis='x', scilimits=(0, 0))
         plt.ylabel('Test Accuracy (%)', fontsize=10)
     elif plot_type == 'train_acc':
         plt.ylabel('Train Accuracy', fontsize=10)

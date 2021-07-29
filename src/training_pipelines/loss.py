@@ -16,13 +16,14 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 torch.backends.cudnn.deterministic = True
 
 
-class JacobianCompressPipeline(TrainPipeline):
+class LossPipeline(TrainPipeline):
     def __init__(self, config, seed):
         TrainPipeline.__init__(self, config=config, seed=seed)
         self.epoch = 0
 
     def run_train(self, config: Dict, seed):
-        pass
+        np.random.seed(seed)
+        torch.manual_seed(seed)
 
     def run_batch_train(self, config: Dict, seed):
         np.random.seed(seed)

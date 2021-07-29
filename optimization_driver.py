@@ -44,6 +44,8 @@ def get_trainer(pipeline: str, config, seed):
     # select pipeline #
     if pipeline == 'jacobian':
         trainer = JacobianCompressPipeline(config=config, seed=seed)
+    elif pipeline == 'loss':
+        trainer = LossPipeline(config=config, seed=seed)
     else:
         raise NotImplementedError
 
@@ -74,7 +76,7 @@ def run_main():
             trainer.run_fed_train(config=config, seed=seed)
             results.append(trainer.metrics)
         elif train_mode == 'distributed':
-            # Launch Regular / Distributed Training
+            # Launch Distributed Training
             trainer.run_batch_train(config=config, seed=seed)
             results.append(trainer.metrics)
         else:

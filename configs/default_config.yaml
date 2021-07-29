@@ -47,11 +47,9 @@
             "optimizer": "SGD",
             "loss": "ce",
 
-            "loss_sampling": 'top',              # importance sampling on loss value: None, 'top'
+            "loss_sampling": 'top',     # importance sampling (batch setting) : null/'top_loss'/'top_grad_norm'/'rand'
             "loss_sampling_schedule": 'step',
             "initial_loss_sampling_fraction": 0.1,
-            "loss_sampling_decay": 0.75,                        # fraction to sample k = beta * batch_size
-            "loss_sampling_step_size": 1875,
 
             "lr0": 0.01,
             "momentum": 0.9,
@@ -106,11 +104,11 @@
 
         "compression_config":
           {
-            "rule": null,                     # None, 'active_norm_sampling', 'random_sampling'
+            "rule": null,                   # None, 'active_norm_sampling', 'random_sampling'
             "axis": "n",                    # n = client/ sample/ batch selection ; dim = dimension selection
-            "sampling_fraction": 0.9,         # fraction to be sampled
-            "mG": False,                       # memory in Jacobian - invoked for jacobian compression rules
-            "mg": False,                      # memory in gradients - invoked for gradient compression rules
+            "sampling_fraction": 0.9,       # fraction to be sampled
+            "mG": False,                    # memory in Jacobian  - invoked for jacobian compression rules
+            "mg": False,                    # memory in gradients - invoked for gradient compression rules
           }
       }
   }

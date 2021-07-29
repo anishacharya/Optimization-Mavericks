@@ -50,17 +50,16 @@ class TrainPipeline:
                                         lrs_config=self.client_lrs_config)
 
         self.loss_sampling = self.client_optimizer_config.get('loss_sampling', None)
-        self.loss_sampling_schedule = self.client_optimizer_config.get('loss_sampling_schedule', None)
+        # self.loss_sampling_schedule = self.client_optimizer_config.get('loss_sampling_schedule', None)
         self.initial_loss_sampling_fraction = self.client_optimizer_config.get('initial_loss_sampling_fraction', 1)
-        self.loss_sampling_decay = self.client_optimizer_config.get('loss_sampling_decay', 0.5)
-        self.loss_sampling_step_size = self.client_optimizer_config.get('loss_sampling_step_size', 1000)
-        self.loss_sampling_scheduler = get_sampling_scheduler(schedule=self.loss_sampling_schedule,
-                                                              step_size=self.loss_sampling_step_size,
-                                                              initial_sampling_fraction=
-                                                              self.initial_loss_sampling_fraction,
-                                                              decay=self.loss_sampling_decay)
-        self.criterion = get_loss(loss=self.client_optimizer_config.get('loss', 'ce'),
-                                  reduction='mean' if not self.loss_sampling else 'none')
+        # self.loss_sampling_decay = self.client_optimizer_config.get('loss_sampling_decay', 0.5)
+        # self.loss_sampling_step_size = self.client_optimizer_config.get('loss_sampling_step_size', 1000)
+        # self.loss_sampling_scheduler = get_sampling_scheduler(schedule=self.loss_sampling_schedule,
+        #                                                       step_size=self.loss_sampling_step_size,
+        #                                                       initial_sampling_fraction=
+        #                                                       self.initial_loss_sampling_fraction,
+        #                                                       decay=self.loss_sampling_decay)
+        self.criterion = get_loss(loss=self.client_optimizer_config.get('loss', 'ce'))
 
         # sparse approximation of the gradients before aggregating
         # self.sparse_rule = self.sparse_approx_config.get('rule', None)
@@ -80,15 +79,15 @@ class TrainPipeline:
 
     def loss_wrapper(self, outputs, labels, evaluate=False):
         """ Implementation of Different Loss Modifications """
-        loss = self.criterion(outputs, labels)
+        loss = self.criterion(outputs, labels)  # per sample loss
 
         if self.loss_sampling and not evaluate:
             if self.loss_sampling == 'top':
                 # Implements : Ordered SGD: A New Stochastic Optimization Framework for Empirical Risk Minimization
                 # Kawaguchi, Kenji and Lu, Haihao; AISTATS 2020
-                beta = self.loss_sampling_scheduler.step() \
-                    if self.loss_sampling_scheduler else self.initial_loss_sampling_fraction
-                k = min(math.ceil(beta * self.train_batch_size), len(outputs))
+                # beta = self.loss_sampling_scheduler.step() \
+                #     if self.loss_sampling_scheduler else self.initial_loss_sampling_fraction
+                k = min(math.ceil(self.initial_loss_sampling_fraction * self.train_batch_size), len(outputs))
                 top_k = torch.topk(loss, k, sorted=False)
                 loss = torch.mean(top_k[0])
             else:
@@ -186,6 +185,9 @@ class TrainPipeline:
                    "num_steps": 0,
                    }
         return metrics
+
+    def run_train(self, config: Dict, seed):
+        raise NotImplementedError("This method needs to be implemented for each pipeline")
 
     def run_batch_train(self, config: Dict, seed):
         raise NotImplementedError("This method needs to be implemented for each pipeline")
