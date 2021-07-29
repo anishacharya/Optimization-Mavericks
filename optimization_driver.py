@@ -79,6 +79,10 @@ def run_main():
             # Launch Distributed Training
             trainer.run_batch_train(config=config, seed=seed)
             results.append(trainer.metrics)
+        elif train_mode == 'vanilla':
+            # Launch Vanilla mini-batch Training
+            trainer.run_train(config=config, seed=seed)
+            results.append(trainer.metrics)
         else:
             raise NotImplementedError
 
