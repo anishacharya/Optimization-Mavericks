@@ -185,7 +185,8 @@ class TrainPipeline:
                    "avg_gm_cost": 0,
 
                    "num_iter": 0,
-                   "num_steps": 0,
+                   "num_opt_steps": 0,
+                   "num_grad_steps": 0,
                    }
         return metrics
 
