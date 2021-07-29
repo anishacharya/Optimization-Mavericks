@@ -78,7 +78,10 @@ class TrainPipeline:
         self.gar = get_gar(aggregation_config=self.aggregation_config)
 
     def loss_wrapper(self, outputs, labels, evaluate=False):
-        """ Implementation of Different Loss Modifications """
+        """
+        Implementation of Different Loss Modifications ~
+        See Loss Pipeline for usage example
+        """
         loss = self.criterion(outputs, labels)  # per sample loss
 
         if self.loss_sampling and not evaluate:
