@@ -73,12 +73,16 @@ class TrainPipeline:
             return batch_loss
         else:
             # Do Loss Sampling only during Training
+            k = math.ceil(self.initial_loss_sampling_fraction * len(loss))
             if self.loss_sampling == 'top_loss':
                 # Implements : Ordered SGD: A New Stochastic Optimization Framework for Empirical Risk Minimization
                 # Kawaguchi, Kenji and Lu, Haihao; AISTATS 2020
-                k = math.ceil(self.initial_loss_sampling_fraction * len(loss))
                 top_k_loss, top_k_ix = torch.topk(loss, k, sorted=False)
                 return torch.mean(top_k_loss)
+            elif self.loss_sampling == 'prob_top_loss':
+                # Probabilistic Sampling
+                prob_loss = (loss / torch.sum(loss)).tolist()
+                print(prob_loss)
             else:
                 raise NotImplementedError
 

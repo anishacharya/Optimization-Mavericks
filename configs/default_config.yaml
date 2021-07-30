@@ -45,7 +45,7 @@
             "optimizer": "SGD",
             "loss": "ce",
             # importance sampling (batch setting) : null/'top_loss'/'top_grad_norm'/'rand'
-            "loss_sampling": null,
+            "loss_sampling": 'prob_top_loss',
             "initial_loss_sampling_fraction": 0.1,
 
             "lr0": 0.1,
