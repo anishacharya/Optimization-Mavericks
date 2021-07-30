@@ -83,7 +83,7 @@ class TrainPipeline:
                 # Probabilistic Sampling
                 prob_loss = (loss / torch.sum(loss)).tolist()
                 wts = [1/pi for pi in prob_loss]
-                weighted_loss =
+                # weighted_loss =
 
                 top_k_ix = np.random.choice(len(loss), k, p=prob_loss)
 
