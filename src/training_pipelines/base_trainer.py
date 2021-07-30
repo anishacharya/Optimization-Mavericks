@@ -50,32 +50,17 @@ class TrainPipeline:
                                         lrs_config=self.client_lrs_config)
 
         self.loss_sampling = self.client_optimizer_config.get('loss_sampling', None)
-        # self.loss_sampling_schedule = self.client_optimizer_config.get('loss_sampling_schedule', None)
         self.initial_loss_sampling_fraction = self.client_optimizer_config.get('initial_loss_sampling_fraction', 1)
-        # self.loss_sampling_decay = self.client_optimizer_config.get('loss_sampling_decay', 0.5)
-        # self.loss_sampling_step_size = self.client_optimizer_config.get('loss_sampling_step_size', 1000)
-        # self.loss_sampling_scheduler = get_sampling_scheduler(schedule=self.loss_sampling_schedule,
-        #                                                       step_size=self.loss_sampling_step_size,
-        #                                                       initial_sampling_fraction=
-        #                                                       self.initial_loss_sampling_fraction,
-        #                                                       decay=self.loss_sampling_decay)
         self.criterion = get_loss(loss=self.client_optimizer_config.get('loss', 'ce'))
 
-        # sparse approximation of the gradients before aggregating
-        # self.sparse_rule = self.sparse_approx_config.get('rule', None)
-        # if self.sparse_rule not in ['active_norm', 'random']:
-        #     self.sparse_selection = None
-        # else:
-        #     self.sparse_selection = SparseApproxMatrix(conf=self.sparse_approx_config)
-        self.G = None
         # Compression Operator
         self.C = get_compression_operator(compression_config=self.compression_config)
-
+        self.gar = get_gar(aggregation_config=self.aggregation_config)
+        # For Jacobian
+        self.G = None
         # for adversarial - get attack model
         self.feature_attack_model = get_feature_attack(attack_config=self.feature_attack_config)
         self.grad_attack_model = get_grad_attack(attack_config=self.grad_attack_config)
-
-        self.gar = get_gar(aggregation_config=self.aggregation_config)
 
     def loss_wrapper(self, outputs, labels, evaluate=False):
         """
