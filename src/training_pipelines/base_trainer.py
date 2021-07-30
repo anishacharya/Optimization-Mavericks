@@ -171,7 +171,7 @@ class TrainPipeline:
 
                    "num_iter": 0,
                    "num_opt_steps": 0,
-                   "num_grad_steps": 0,
+                   "num_grad_steps": -1,
                    }
         return metrics
 
