@@ -68,20 +68,19 @@ class TrainPipeline:
         See Loss Pipeline for usage example
         """
         loss = self.criterion(outputs, labels)  # per sample loss
-
-        if self.loss_sampling and not evaluate:
-            if self.loss_sampling == 'top':
+        batch_loss = torch.mean(loss)   # loss over all samples
+        if self.loss_sampling is None or evaluate:
+            return batch_loss
+        else:
+            # Do Loss Sampling only during Training
+            if self.loss_sampling == 'top_loss':
                 # Implements : Ordered SGD: A New Stochastic Optimization Framework for Empirical Risk Minimization
                 # Kawaguchi, Kenji and Lu, Haihao; AISTATS 2020
-                # beta = self.loss_sampling_scheduler.step() \
-                #     if self.loss_sampling_scheduler else self.initial_loss_sampling_fraction
-                k = min(math.ceil(self.initial_loss_sampling_fraction * self.train_batch_size), len(outputs))
-                top_k = torch.topk(loss, k, sorted=False)
-                loss = torch.mean(top_k[0])
+                k = math.ceil(self.initial_loss_sampling_fraction * len(loss))
+                top_k_loss, top_k_ix = torch.topk(loss, k, sorted=False)
+                return torch.mean(top_k_loss)
             else:
                 raise NotImplementedError
-
-        return torch.mean(loss) if evaluate else loss
 
     def evaluate_classifier(self,
                             epoch: int,
@@ -119,7 +118,8 @@ class TrainPipeline:
                 outputs = model(images)
 
                 # if criterion is not None:
-                total_loss += self.loss_wrapper(outputs, labels, evaluate=True).item()
+                loss = self.loss_wrapper(outputs, labels, evaluate=True)
+                total_loss += loss.item()
 
                 batches += 1
                 _, predicted = torch.max(outputs.data, 1)

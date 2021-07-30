@@ -43,7 +43,7 @@ class LossPipeline(TrainPipeline):
                 labels = labels.to(device)
                 outputs = self.model(images)
                 self.client_optimizer.zero_grad()
-                loss = self.loss_wrapper(outputs, labels)
+                loss, _ = self.loss_wrapper(outputs, labels)
                 loss.backward()
                 self.metrics["num_grad_steps"] += 1
                 iteration_time = time.time() - t_iter

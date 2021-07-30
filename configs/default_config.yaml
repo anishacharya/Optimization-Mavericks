@@ -2,11 +2,9 @@
 # Licensed under the MIT License
 {
   "seed": 1,
-  "train_mode": "distributed",
-
   "data_config":
   {
-    "data_set": "fashion_mnist",
+    "data_set": "mnist",
     "shape":
     [
         28,
@@ -19,7 +17,7 @@
 
     "data_sampling_strategy": "iid",  # iid / non_iid
     "num_shards": 80,                 # For non-iid distribution
-    "train_batch_size": 32,                 # Mini Batch Size
+    "train_batch_size": 128,          # Mini Batch Size
     "test_batch_size": 2048,
 
     "feature_attack_config":
@@ -38,7 +36,7 @@
     "global_epochs": 20,          # epochs
     "local_epochs": 1,            # local SGD # For FL
 
-    "eval_freq": 1000,             # Specify number of steps between train/test/val evaluation
+    "eval_freq": 10,             # Specify number of steps between train/test/val evaluation
 
     "optimizer_config":
       {
@@ -46,12 +44,11 @@
           {
             "optimizer": "SGD",
             "loss": "ce",
-
-            "loss_sampling": 'top',     # importance sampling (batch setting) : null/'top_loss'/'top_grad_norm'/'rand'
-            "loss_sampling_schedule": 'step',
+            # importance sampling (batch setting) : null/'top_loss'/'top_grad_norm'/'rand'
+            "loss_sampling": 'top_loss',
             "initial_loss_sampling_fraction": 0.1,
 
-            "lr0": 0.01,
+            "lr0": 0.1,
             "momentum": 0.9,
             "reg": 0.00001,
             "nesterov": true,
@@ -60,7 +57,7 @@
 
         "client_lrs_config":
           {
-            "lrs": 'step',
+            "lrs": null,
             "milestones": [1,5,10],
             "step_size": 1,
             "gamma": 0.9

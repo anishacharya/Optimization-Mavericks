@@ -12,12 +12,12 @@ def _parse_args():
     parser = argparse.ArgumentParser(description='federated/decentralized/distributed training experiment template')
     parser.add_argument('--train_mode',
                         type=str,
-                        default='distributed',
+                        default='vanilla',
                         help='distributed: launch distributed Training '
                              'fed: launch federated training')
     parser.add_argument('--pipeline',
                         type=str,
-                        default='jacobian',
+                        default='loss',
                         help='sampling: exp with sampling data during training'
                              'agg: exp with GAR')
     parser.add_argument('--conf',
@@ -56,16 +56,13 @@ def run_main():
     args = _parse_args()
     print(args)
     root = os.getcwd()
-
     pipeline = args.pipeline
-
     config_path = args.conf if args.conf else root + '/configs/default_config.yaml'
     config = yaml.load(open(config_path), Loader=yaml.FullLoader)
 
     # Training - Repeat over the random seeds #
     # ----------------------------------------
     results = []
-
     for seed in np.arange(args.n_repeat):
         # ----- Launch Training ------ #
         train_mode = args.train_mode
