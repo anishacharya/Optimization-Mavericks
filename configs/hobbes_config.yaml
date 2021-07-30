@@ -48,7 +48,7 @@
             "loss_sampling": null, #'top_loss',              # importance sampling on loss value: None, 'top'
             "initial_loss_sampling_fraction": 1,
 
-            "lr0": 0.1,
+            "lr0": 0.05,
             "momentum": 0.9,
             "reg": 0.00001,
             "nesterov": true,

@@ -82,7 +82,8 @@ class TrainPipeline:
             elif self.loss_sampling == 'prob_top_loss':
                 # Probabilistic Sampling
                 prob_loss = (loss / torch.sum(loss)).tolist()
-                wts = torch.tensor([1/pi for pi in prob_loss])
+                wts = [1/pi for pi in prob_loss]
+                weighted_loss =
 
                 top_k_ix = np.random.choice(len(loss), k, p=prob_loss)
 
