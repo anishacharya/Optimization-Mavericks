@@ -43,12 +43,12 @@ class LossPipeline(TrainPipeline):
                 outputs = self.model(images)
                 self.client_optimizer.zero_grad()
                 loss = self.loss_wrapper(outputs, labels)
+                self.client_optimizer.zero_grad()
                 loss.backward()
                 self.metrics["num_grad_steps"] += 1
                 iteration_time = time.time() - t_iter
                 epoch_grad_cost += iteration_time
                 p_bar.update()
-                self.client_optimizer.zero_grad()
                 # Now Do an optimizer step with x_t+1 = x_t - \eta \tilde(g)
                 self.client_optimizer.step()
                 self.metrics["num_opt_steps"] += 1
