@@ -1,0 +1,82 @@
+NCCL version 2.9.6+cudaCUDA_MAJOR.CUDA_MINOR
+Unable to import mlperf_logging,  No module named 'mlperf_logging'
+world size: 1, current rank: 0, local rank: 0
+Using 2 GPU(s)...
+Reading pre-processed data=./input/kaggleAdDisplayChallenge_processed.npz
+Sparse fea = 26, Dense fea = 13
+Defined train indices...
+Randomized indices across days ...
+Split data according to indices...
+Reading pre-processed data=./input/kaggleAdDisplayChallenge_processed.npz
+Sparse fea = 26, Dense fea = 13
+Defined test indices...
+Randomized indices across days ...
+Split data according to indices...
+DLRM_Net(
+  (bot_l): Sequential(
+    (0): Linear(in_features=13, out_features=512, bias=True)
+    (1): ReLU()
+    (2): Linear(in_features=512, out_features=256, bias=True)
+    (3): ReLU()
+    (4): Linear(in_features=256, out_features=64, bias=True)
+    (5): ReLU()
+    (6): Linear(in_features=64, out_features=16, bias=True)
+    (7): ReLU()
+  )
+  (top_l): Sequential(
+    (0): Linear(in_features=367, out_features=512, bias=True)
+    (1): ReLU()
+    (2): Linear(in_features=512, out_features=256, bias=True)
+    (3): ReLU()
+    (4): Linear(in_features=256, out_features=1, bias=True)
+    (5): Sigmoid()
+  )
+  (loss_fn): BCELoss()
+)
+Random uniform embeddings init: 0 size: 1461 dim: 16
+Random uniform embeddings init: 1 size: 584 dim: 16
+Random uniform embeddings init: 2 size: 10131227 dim: 16
+Random uniform embeddings init: 3 size: 2202608 dim: 16
+Random uniform embeddings init: 4 size: 306 dim: 16
+Random uniform embeddings init: 5 size: 24 dim: 16
+Random uniform embeddings init: 6 size: 12518 dim: 16
+Random uniform embeddings init: 7 size: 634 dim: 16
+Random uniform embeddings init: 8 size: 4 dim: 16
+Random uniform embeddings init: 9 size: 93146 dim: 16
+Random uniform embeddings init: 10 size: 5684 dim: 16
+Random uniform embeddings init: 11 size: 8351593 dim: 16
+Random uniform embeddings init: 12 size: 3195 dim: 16
+Random uniform embeddings init: 13 size: 28 dim: 16
+Random uniform embeddings init: 14 size: 14993 dim: 16
+Random uniform embeddings init: 15 size: 5461306 dim: 16
+Random uniform embeddings init: 16 size: 11 dim: 16
+Random uniform embeddings init: 17 size: 5653 dim: 16
+Random uniform embeddings init: 18 size: 2173 dim: 16
+Random uniform embeddings init: 19 size: 4 dim: 16
+Random uniform embeddings init: 20 size: 7046547 dim: 16
+Random uniform embeddings init: 21 size: 18 dim: 16
+Random uniform embeddings init: 22 size: 16 dim: 16
+Random uniform embeddings init: 23 size: 286181 dim: 16
+Random uniform embeddings init: 24 size: 105 dim: 16
+Random uniform embeddings init: 25 size: 142572 dim: 16
+time/loss/accuracy (if enabled):
+Finished training it 1024/9593 of epoch 0, 29.50 ms/it, NE 0.887913, loss 0.504551
+Testing at - 1024/9593 of epoch 0,  NE 0.884693, loss 0.508242, accuracy 76.254 %, best 76.254 %
+Finished training it 2048/9593 of epoch 0, 21.63 ms/it, NE 0.867440, loss 0.481646
+Testing at - 2048/9593 of epoch 0,  NE 0.835440, loss 0.479947, accuracy 77.543 %, best 77.543 %
+Finished training it 3072/9593 of epoch 0, 21.56 ms/it, NE 0.852885, loss 0.468111
+Testing at - 3072/9593 of epoch 0,  NE 0.815438, loss 0.468456, accuracy 78.032 %, best 78.032 %
+Finished training it 4096/9593 of epoch 0, 22.55 ms/it, NE 0.842822, loss 0.462251
+Testing at - 4096/9593 of epoch 0,  NE 0.814468, loss 0.467899, accuracy 78.072 %, best 78.072 %
+Finished training it 5120/9593 of epoch 0, 23.88 ms/it, NE 0.835468, loss 0.458020
+Testing at - 5120/9593 of epoch 0,  NE 0.803209, loss 0.461431, accuracy 78.381 %, best 78.381 %
+Finished training it 6144/9593 of epoch 0, 22.91 ms/it, NE 0.830079, loss 0.456394
+Testing at - 6144/9593 of epoch 0,  NE 0.800994, loss 0.460158, accuracy 78.462 %, best 78.462 %
+Finished training it 7168/9593 of epoch 0, 23.75 ms/it, NE 0.825688, loss 0.454411
+Testing at - 7168/9593 of epoch 0,  NE 0.798005, loss 0.458441, accuracy 78.523 %, best 78.523 %
+Finished training it 8192/9593 of epoch 0, 23.64 ms/it, NE 0.822200, loss 0.453593
+Testing at - 8192/9593 of epoch 0,  NE 0.798755, loss 0.458872, accuracy 78.486 %, best 78.523 %
+Finished training it 9216/9593 of epoch 0, 22.06 ms/it, NE 0.819309, loss 0.452570
+Testing at - 9216/9593 of epoch 0,  NE 0.795406, loss 0.456948, accuracy 78.620 %, best 78.620 %
+Finished training it 9593/9593 of epoch 0, 21.41 ms/it, NE 0.818366, loss 0.452363
+Testing at - 9593/9593 of epoch 0,  NE 0.795246, loss 0.456856, accuracy 78.611 %, best 78.620 %
