@@ -45,12 +45,12 @@
             "optimizer": "SGD",
             "loss": "ce",
 
-            "loss_sampling": null, #'top_loss',              # importance sampling on loss value: None, 'top'
-            "initial_loss_sampling_fraction": 1,
+            "loss_sampling": 'top_loss',              # importance sampling on loss value: None, 'top'
+            "initial_loss_sampling_fraction": 0.95,
 
             "lr0": 0.01,
             "momentum": 0.9,
-            "reg": 0.00001,
+            "reg": 0.0001,
             "nesterov": true,
             "amsgrad": false
           },
@@ -59,8 +59,8 @@
           {
             "lrs": 'step',
             "milestones": [1,5,10],
-            "step_size": 1,
-            "gamma": 0.9
+            "step_size": 10,
+            "gamma": 0.5
           },
 
         "server_optimizer_config":
