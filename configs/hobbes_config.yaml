@@ -57,10 +57,10 @@
 
         "client_lrs_config":
           {
-            "lrs": 'cosine',
+            "lrs": 'step',
             "milestones": [1,5,10],
-            "step_size": 1,
-            "gamma": 0.9
+            "step_size": 10,
+            "gamma": 0.5
           },
 
         "server_optimizer_config":
