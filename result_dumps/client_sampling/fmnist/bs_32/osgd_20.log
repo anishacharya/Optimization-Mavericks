@@ -1,0 +1,41 @@
+Namespace(conf='configs/hobbes_config.yaml', dir='result_dumps/client_sampling/fmnist/bs_32/', n_repeat=1, o='osgd_20', pipeline='loss', train_mode='vanilla')
+---- Fetching configs and Initializing stuff -----
+Loading Model: lenet
+----------------------------
+LeNet(
+  (max_pool): MaxPool2d(kernel_size=(2, 2), stride=(2, 2), padding=0, dilation=1, ceil_mode=False)
+  (conv1): Conv2d(1, 64, kernel_size=(5, 5), stride=(1, 1))
+  (conv2): Conv2d(64, 64, kernel_size=(5, 5), stride=(1, 1))
+  (fc1): Linear(in_features=1024, out_features=1024, bias=True)
+  (fc2): Linear(in_features=1024, out_features=10, bias=True)
+)
+No compression specified or compression operator Not implemented ~ running without jacobian compression
+--------------------------------
+Initializing mean GAR
+--------------------------------
+Num of Batches in Train Loader = 1875
+epoch 0/50 
+Epoch progress: 0/50, train loss = 2.3031558011372883, train acc = 11.461666666666666, test acc = 11.44, best acc =11.44
+Epoch progress: 0/50, train loss = 0.5938430721441905, train acc = 79.215, test acc = 78.31, best acc =78.31
+epoch 1/50 
+Epoch progress: 1/50, train loss = 0.5383678540865581, train acc = 82.065, test acc = 81.19, best acc =81.19
+Epoch progress: 1/50, train loss = 0.5464491797288259, train acc = 83.01833333333333, test acc = 81.57, best acc =81.57
+epoch 2/50 
+Epoch progress: 2/50, train loss = 0.4577247741540273, train acc = 83.03833333333333, test acc = 81.83, best acc =81.83
+Epoch progress: 2/50, train loss = 0.43683848456541696, train acc = 82.28333333333333, test acc = 80.63, best acc =81.83
+epoch 3/50 
+Epoch progress: 3/50, train loss = 0.4702099198500315, train acc = 83.34333333333333, test acc = 81.8, best acc =81.83
+Epoch progress: 3/50, train loss = 0.4171823434352875, train acc = 84.51, test acc = 83.43, best acc =83.43
+epoch 4/50 
+Epoch progress: 4/50, train loss = 0.3795694358587265, train acc = 85.935, test acc = 84.81, best acc =84.81
+Epoch progress: 4/50, train loss = 0.36026914755503336, train acc = 87.11666666666666, test acc = 85.89, best acc =85.89
+epoch 5/50 
+Epoch progress: 5/50, train loss = 0.3444647360086441, train acc = 87.44666666666667, test acc = 85.48, best acc =85.89
+epoch 6/50 
+Epoch progress: 6/50, train loss = 0.38792002397378283, train acc = 86.34333333333333, test acc = 84.68, best acc =85.89
+Epoch progress: 6/50, train loss = 0.3639024950583776, train acc = 86.63833333333334, test acc = 84.84, best acc =85.89
+epoch 7/50 
+Epoch progress: 7/50, train loss = 0.3974558979988098, train acc = 84.42166666666667, test acc = 82.48, best acc =85.89
+Epoch progress: 7/50, train loss = 0.34212435330152513, train acc = 87.14666666666666, test acc = 84.92, best acc =85.89
+epoch 8/50 
+Epoch progress: 8/50, train loss = 0.31112312426964445, train acc = 88.11833333333334, test acc = 85.65, best acc =85.89
