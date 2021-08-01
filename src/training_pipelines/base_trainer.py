@@ -102,8 +102,10 @@ class TrainPipeline:
         train_error, train_acc, train_loss = self._evaluate(model=model, data_loader=train_loader, device=device)
         test_error, test_acc, _ = self._evaluate(model=model, data_loader=test_loader, device=device)
 
-        print('Epoch progress: {}/{}, train loss = {}, train acc = {}, test acc = {}'.
-              format(epoch, num_epochs, train_loss, train_acc, test_acc))
+        if test_acc > metrics["best_test_acc"]:
+            metrics["best_test_acc"] = test_acc
+        print('Epoch progress: {}/{}, train loss = {}, train acc = {}, test acc = {}, best acc ={}'.
+              format(epoch, num_epochs, train_loss, train_acc, test_acc, metrics["best_test_acc"]))
 
         metrics["test_error"].append(test_error)
         metrics["test_acc"].append(test_acc)
@@ -152,6 +154,7 @@ class TrainPipeline:
                    "train_error": [],
                    "train_loss": [],
                    "train_acc": [],
+                   "best_test_acc": 0,
 
                    "gradient_residual": [],
                    "jacobian_residual": [],
