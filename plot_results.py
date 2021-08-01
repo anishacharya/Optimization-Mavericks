@@ -11,7 +11,8 @@ import matplotlib.ticker as ticker
 def plot_(lbl: str, res_file: str, plt_type: str = 'epoch_loss',
           x_axis='time', plot_freq=1, eval_freq=1,
           line_width=4, marker=None, line_style=None,
-          optima: float = 0.0, color=None, smoothen=False):
+          optima: float = 0.0, color=None, smoothen=False,
+          batch_size=1):
     with open(res_file, 'rb') as f:
         result = json.load(f)
 
@@ -58,9 +59,14 @@ def plot_(lbl: str, res_file: str, plt_type: str = 'epoch_loss',
         x_freq = int(tot_cost / len(mean))
         x = np.arange(len(mean)) * x_freq
 
-    elif x_axis == 'epoch':
+    elif x_axis == 'steps':
         x = np.arange(len(result[0][plt_type]))[::plot_freq]
         x *= eval_freq
+
+    elif x_axis == 'samples':
+        x = np.arange(len(result[0][plt_type]))[::plot_freq]
+        x *= eval_freq
+        x *= batch_size
 
     else:
         raise NotImplementedError
@@ -89,7 +95,7 @@ if __name__ == '__main__':
     # -------------------------------------------------------------------------------------------
     # ------------------------------- Modify Here -----------------------------------------------
 
-    d = plt_cfg["dir"]
+    d = plt_cfg["dir"] if plt_cfg["dir"] else ""
     pl_type = plt_cfg["plot_type"]
     x_ax = plt_cfg["x_ax"]
     plot_type = plt_cfg["plot_type"]
@@ -107,6 +113,7 @@ if __name__ == '__main__':
         ls = pl["line_style"]
         mk = pl["marker"]
         clr = pl["clr"]
+        bs = pl["batch_size"]
 
         plt_freq = pl["plot_freq"]
         eval_freq = pl["eval_freq"]
@@ -122,43 +129,54 @@ if __name__ == '__main__':
               color=clr,
               plot_freq=plt_freq,
               eval_freq=eval_freq,
-              smoothen=smoothen)
+              smoothen=smoothen,
+              batch_size=bs)
 
         # Fix the X Labels
         if x_ax == 'time':
             plt.xlabel(r'$\mathcal{O}$(Time)', fontsize=10)
-        elif x_ax == 'epoch':
+        elif x_ax == 'steps':
             plt.xlabel(r'Number of Gradient Steps', fontsize=10)
+        elif x_ax == 'samples':
+            plt.xlabel(r'Number of Samples Seen', fontsize=10)
         else:
             raise NotImplementedError
+
+    plt.ylim(ylim_b, ylim_t)
+    plt.xlim(xlim_l, xlim_r)
 
     if plot_type == 'test_error':
         plt.yscale("log")
         ax.yaxis.set_minor_formatter(ticker.ScalarFormatter())
         plt.ylabel('Test Error', fontsize=10)
+
     elif plot_type == 'test_acc':
-        # plt.yscale("log")
-        plt.ylim(ylim_b, ylim_t)
-        plt.xlim(xlim_l, xlim_r)
         ax.yaxis.set_minor_formatter(ticker.ScalarFormatter())
         plt.ticklabel_format(style='sci', axis='x', scilimits=(0, 0))
         plt.ylabel('Test Accuracy (%)', fontsize=10)
+
     elif plot_type == 'train_acc':
         plt.ylabel('Train Accuracy', fontsize=10)
+
     elif plot_type == 'train_loss':
-        # plt.ylim(0)
-        plt.yscale("log")
+        # ax.set_yscale('log')
         ax.yaxis.set_major_formatter(ticker.ScalarFormatter())
         plt.ticklabel_format(style='sci', axis='both', scilimits=(0, 0))
-        # ax.yaxis.set_major_locator(ticker.FixedLocator([1]))
-        # ax.yaxis.set_minor_formatter(ticker.ScalarFormatter())
-        # ax.yaxis.set_minor_locator(ticker.FixedLocator([0.5, 0.3]))
         plt.ylabel('Training Loss', fontsize=10)
+
     elif plot_type == 'train_error':
         plt.ylabel('Train Error', fontsize=10)
+
     elif plot_type == 'jacobian_residual':
         plt.ylabel(r'1 - $\xi$')
         plt.xlabel("Gradient Aggregation Steps", fontsize=10)
+
+    elif plot_type == 'test_loss':
+        # ax.set_yscale('log')
+        ax.yaxis.set_major_formatter(ticker.ScalarFormatter())
+        plt.ticklabel_format(style='sci', axis='both', scilimits=(0, 0))
+        plt.ylabel('Test Loss', fontsize=10)
+
     else:
         raise NotImplementedError
 
