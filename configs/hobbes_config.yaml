@@ -46,7 +46,7 @@
             "loss": "ce",
 
             "loss_sampling": 'top_loss',              # importance sampling on loss value: None, 'top_loss'
-            "initial_loss_sampling_fraction": 0.8,
+            "initial_loss_sampling_fraction": 0.75,
 
             "lr0": 0.057,
             "momentum": 0.9,
