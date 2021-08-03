@@ -1,0 +1,160 @@
+Namespace(conf='configs/hobbes_config.yaml', dir='result_dumps/client_sampling/fmnist/bs_2048/', n_repeat=1, o='osgd_75', pipeline='loss', train_mode='vanilla')
+---- Fetching configs and Initializing stuff -----
+Loading Model: lenet
+----------------------------
+LeNet(
+  (max_pool): MaxPool2d(kernel_size=(2, 2), stride=(2, 2), padding=0, dilation=1, ceil_mode=False)
+  (conv1): Conv2d(1, 64, kernel_size=(5, 5), stride=(1, 1))
+  (conv2): Conv2d(64, 64, kernel_size=(5, 5), stride=(1, 1))
+  (fc1): Linear(in_features=1024, out_features=1024, bias=True)
+  (fc2): Linear(in_features=1024, out_features=10, bias=True)
+)
+No compression specified or compression operator Not implemented ~ running without jacobian compression
+--------------------------------
+Initializing mean GAR
+--------------------------------
+Num of Batches in Train Loader = 30
+epoch 0/50 
+Epoch progress: 0/50, train loss = 2.258714962005615, train acc = 19.563333333333333, test acc = 19.42, best acc =19.42
+Epoch progress: 0/50, train loss = 1.7647321383158365, train acc = 39.465, test acc = 39.19, best acc =39.19
+epoch 1/50 
+Epoch progress: 1/50, train loss = 0.6669405380884806, train acc = 74.82666666666667, test acc = 74.25, best acc =74.25
+Epoch progress: 1/50, train loss = 0.5094593306382497, train acc = 80.38666666666667, test acc = 79.46, best acc =79.46
+epoch 2/50 
+Epoch progress: 2/50, train loss = 0.45302630464235943, train acc = 83.42833333333333, test acc = 82.97, best acc =82.97
+Epoch progress: 2/50, train loss = 0.39597873389720917, train acc = 85.2, test acc = 84.03, best acc =84.03
+epoch 3/50 
+Epoch progress: 3/50, train loss = 0.36575893461704256, train acc = 86.63833333333334, test acc = 85.59, best acc =85.59
+Epoch progress: 3/50, train loss = 0.35185869336128234, train acc = 87.09, test acc = 85.94, best acc =85.94
+epoch 4/50 
+Epoch progress: 4/50, train loss = 0.32023300031820934, train acc = 88.385, test acc = 87.21, best acc =87.21
+Epoch progress: 4/50, train loss = 0.308028702934583, train acc = 88.73166666666667, test acc = 87.46, best acc =87.46
+epoch 5/50 
+Epoch progress: 5/50, train loss = 0.305650716026624, train acc = 88.91166666666666, test acc = 87.6, best acc =87.6
+Epoch progress: 5/50, train loss = 0.28284141172965366, train acc = 89.73833333333333, test acc = 88.5, best acc =88.5
+epoch 6/50 
+Epoch progress: 6/50, train loss = 0.2916550268729528, train acc = 89.33666666666667, test acc = 88.14, best acc =88.5
+Epoch progress: 6/50, train loss = 0.27719651758670805, train acc = 89.68333333333334, test acc = 88.49, best acc =88.5
+epoch 7/50 
+Epoch progress: 7/50, train loss = 0.2626602962613106, train acc = 90.37, test acc = 89.1, best acc =89.1
+epoch 8/50 
+Epoch progress: 8/50, train loss = 0.2837349464495977, train acc = 89.48, test acc = 87.72, best acc =89.1
+Epoch progress: 8/50, train loss = 0.25133295555909474, train acc = 90.845, test acc = 89.19, best acc =89.19
+epoch 9/50 
+Epoch progress: 9/50, train loss = 0.24637848983208338, train acc = 90.97166666666666, test acc = 89.28, best acc =89.28
+Epoch progress: 9/50, train loss = 0.2423644592364629, train acc = 91.03833333333333, test acc = 89.3, best acc =89.3
+epoch 10/50 
+Epoch progress: 10/50, train loss = 0.2316166490316391, train acc = 91.57833333333333, test acc = 89.98, best acc =89.98
+Epoch progress: 10/50, train loss = 0.22647930383682252, train acc = 91.785, test acc = 89.98, best acc =89.98
+epoch 11/50 
+Epoch progress: 11/50, train loss = 0.22268415093421937, train acc = 91.85166666666667, test acc = 89.88, best acc =89.98
+Epoch progress: 11/50, train loss = 0.21738195617993672, train acc = 92.125, test acc = 90.16, best acc =90.16
+epoch 12/50 
+Epoch progress: 12/50, train loss = 0.21590859591960906, train acc = 92.20833333333333, test acc = 90.09, best acc =90.16
+Epoch progress: 12/50, train loss = 0.21024487167596817, train acc = 92.39333333333333, test acc = 90.56, best acc =90.56
+epoch 13/50 
+Epoch progress: 13/50, train loss = 0.21057792156934738, train acc = 92.33666666666667, test acc = 90.41, best acc =90.56
+Epoch progress: 13/50, train loss = 0.20718723386526108, train acc = 92.39666666666666, test acc = 90.3, best acc =90.56
+epoch 14/50 
+Epoch progress: 14/50, train loss = 0.20762830128272375, train acc = 92.42833333333333, test acc = 90.09, best acc =90.56
+Epoch progress: 14/50, train loss = 0.20361558496952056, train acc = 92.615, test acc = 90.49, best acc =90.56
+epoch 15/50 
+Epoch progress: 15/50, train loss = 0.19802332470814388, train acc = 92.80833333333334, test acc = 90.55, best acc =90.56
+epoch 16/50 
+Epoch progress: 16/50, train loss = 0.195390156408151, train acc = 92.94, test acc = 90.42, best acc =90.56
+Epoch progress: 16/50, train loss = 0.19468208750089008, train acc = 93.005, test acc = 90.37, best acc =90.56
+epoch 17/50 
+Epoch progress: 17/50, train loss = 0.19049568474292755, train acc = 93.07666666666667, test acc = 90.74, best acc =90.74
+Epoch progress: 17/50, train loss = 0.18960170994202297, train acc = 93.12666666666667, test acc = 90.72, best acc =90.74
+epoch 18/50 
+Epoch progress: 18/50, train loss = 0.18882471124331157, train acc = 93.15833333333333, test acc = 90.78, best acc =90.78
+Epoch progress: 18/50, train loss = 0.18659315407276153, train acc = 93.165, test acc = 90.75, best acc =90.78
+epoch 19/50 
+Epoch progress: 19/50, train loss = 0.18417808612187703, train acc = 93.37166666666667, test acc = 90.6, best acc =90.78
+Epoch progress: 19/50, train loss = 0.1810523897409439, train acc = 93.44833333333334, test acc = 90.93, best acc =90.93
+epoch 20/50 
+Epoch progress: 20/50, train loss = 0.1772442748149236, train acc = 93.645, test acc = 90.88, best acc =90.93
+Epoch progress: 20/50, train loss = 0.17285817911227544, train acc = 93.755, test acc = 91.0, best acc =91.0
+epoch 21/50 
+Epoch progress: 21/50, train loss = 0.17187586923440298, train acc = 93.86333333333333, test acc = 91.21, best acc =91.21
+Epoch progress: 21/50, train loss = 0.17076279570659, train acc = 93.76, test acc = 91.1, best acc =91.21
+epoch 22/50 
+Epoch progress: 22/50, train loss = 0.170988862713178, train acc = 93.91833333333334, test acc = 90.91, best acc =91.21
+Epoch progress: 22/50, train loss = 0.16808102279901505, train acc = 93.95333333333333, test acc = 90.82, best acc =91.21
+epoch 23/50 
+Epoch progress: 23/50, train loss = 0.16570847481489182, train acc = 93.99, test acc = 90.93, best acc =91.21
+epoch 24/50 
+Epoch progress: 24/50, train loss = 0.16682464132706323, train acc = 93.99333333333334, test acc = 90.98, best acc =91.21
+Epoch progress: 24/50, train loss = 0.165933491786321, train acc = 94.07166666666667, test acc = 91.24, best acc =91.24
+epoch 25/50 
+Epoch progress: 25/50, train loss = 0.16456339061260222, train acc = 94.10166666666667, test acc = 91.17, best acc =91.24
+Epoch progress: 25/50, train loss = 0.16201636989911397, train acc = 94.17833333333333, test acc = 91.35, best acc =91.35
+epoch 26/50 
+Epoch progress: 26/50, train loss = 0.1616901288429896, train acc = 94.18333333333334, test acc = 91.27, best acc =91.35
+Epoch progress: 26/50, train loss = 0.1599489688873291, train acc = 94.205, test acc = 91.35, best acc =91.35
+epoch 27/50 
+Epoch progress: 27/50, train loss = 0.16041216353575388, train acc = 94.195, test acc = 91.37, best acc =91.37
+Epoch progress: 27/50, train loss = 0.15953520933787027, train acc = 94.23833333333333, test acc = 91.21, best acc =91.37
+epoch 28/50 
+Epoch progress: 28/50, train loss = 0.15984024107456207, train acc = 94.22666666666667, test acc = 90.93, best acc =91.37
+Epoch progress: 28/50, train loss = 0.15642695327599843, train acc = 94.34666666666666, test acc = 91.24, best acc =91.37
+epoch 29/50 
+Epoch progress: 29/50, train loss = 0.1562514324982961, train acc = 94.33166666666666, test acc = 91.34, best acc =91.37
+Epoch progress: 29/50, train loss = 0.15368844245870908, train acc = 94.43666666666667, test acc = 91.27, best acc =91.37
+epoch 30/50 
+Epoch progress: 30/50, train loss = 0.15295237600803374, train acc = 94.57333333333334, test acc = 91.36, best acc =91.37
+Epoch progress: 30/50, train loss = 0.1518764500816663, train acc = 94.565, test acc = 91.13, best acc =91.37
+epoch 31/50 
+Epoch progress: 31/50, train loss = 0.15186070452133815, train acc = 94.56666666666666, test acc = 91.12, best acc =91.37
+epoch 32/50 
+Epoch progress: 32/50, train loss = 0.1504366710782051, train acc = 94.575, test acc = 91.15, best acc =91.37
+Epoch progress: 32/50, train loss = 0.14907342866063117, train acc = 94.61333333333333, test acc = 91.47, best acc =91.47
+epoch 33/50 
+Epoch progress: 33/50, train loss = 0.1490506331125895, train acc = 94.635, test acc = 91.32, best acc =91.47
+Epoch progress: 33/50, train loss = 0.14796045124530793, train acc = 94.65666666666667, test acc = 91.46, best acc =91.47
+epoch 34/50 
+Epoch progress: 34/50, train loss = 0.14938214917977652, train acc = 94.68833333333333, test acc = 91.27, best acc =91.47
+Epoch progress: 34/50, train loss = 0.14721233050028484, train acc = 94.82666666666667, test acc = 91.09, best acc =91.47
+epoch 35/50 
+Epoch progress: 35/50, train loss = 0.14813285221656164, train acc = 94.655, test acc = 91.36, best acc =91.47
+Epoch progress: 35/50, train loss = 0.14685093313455583, train acc = 94.76666666666667, test acc = 91.45, best acc =91.47
+epoch 36/50 
+Epoch progress: 36/50, train loss = 0.1449646125237147, train acc = 94.88833333333334, test acc = 91.32, best acc =91.47
+Epoch progress: 36/50, train loss = 0.14526671146353085, train acc = 94.77, test acc = 91.3, best acc =91.47
+epoch 37/50 
+Epoch progress: 37/50, train loss = 0.1452969635526339, train acc = 94.86833333333334, test acc = 91.41, best acc =91.47
+Epoch progress: 37/50, train loss = 0.1435303973654906, train acc = 94.80333333333333, test acc = 91.19, best acc =91.47
+epoch 38/50 
+Epoch progress: 38/50, train loss = 0.1436289298037688, train acc = 94.83833333333334, test acc = 91.58, best acc =91.58
+Epoch progress: 38/50, train loss = 0.14397386461496353, train acc = 94.90833333333333, test acc = 91.14, best acc =91.58
+epoch 39/50 
+Epoch progress: 39/50, train loss = 0.14351380815108616, train acc = 94.89166666666667, test acc = 91.53, best acc =91.58
+epoch 40/50 
+Epoch progress: 40/50, train loss = 0.1415692759056886, train acc = 94.91666666666667, test acc = 91.25, best acc =91.58
+Epoch progress: 40/50, train loss = 0.1413790782292684, train acc = 95.01333333333334, test acc = 91.41, best acc =91.58
+epoch 41/50 
+Epoch progress: 41/50, train loss = 0.14099499185880024, train acc = 95.03666666666666, test acc = 91.51, best acc =91.58
+Epoch progress: 41/50, train loss = 0.1403688666721185, train acc = 94.97, test acc = 91.35, best acc =91.58
+epoch 42/50 
+Epoch progress: 42/50, train loss = 0.14046071693301201, train acc = 94.99833333333333, test acc = 91.63, best acc =91.63
+Epoch progress: 42/50, train loss = 0.1403889112174511, train acc = 95.04833333333333, test acc = 91.15, best acc =91.63
+epoch 43/50 
+Epoch progress: 43/50, train loss = 0.1393457887073358, train acc = 94.975, test acc = 91.36, best acc =91.63
+Epoch progress: 43/50, train loss = 0.14030587474505107, train acc = 95.04166666666667, test acc = 91.29, best acc =91.63
+epoch 44/50 
+Epoch progress: 44/50, train loss = 0.1379414642850558, train acc = 95.10166666666667, test acc = 91.46, best acc =91.63
+Epoch progress: 44/50, train loss = 0.13773037989934286, train acc = 95.065, test acc = 91.38, best acc =91.63
+epoch 45/50 
+Epoch progress: 45/50, train loss = 0.1398324968914191, train acc = 95.065, test acc = 91.25, best acc =91.63
+Epoch progress: 45/50, train loss = 0.13853842839598657, train acc = 95.025, test acc = 91.39, best acc =91.63
+epoch 46/50 
+Epoch progress: 46/50, train loss = 0.13793525447448093, train acc = 95.135, test acc = 91.58, best acc =91.63
+Epoch progress: 46/50, train loss = 0.13658907835682232, train acc = 95.155, test acc = 91.43, best acc =91.63
+epoch 47/50 
+Epoch progress: 47/50, train loss = 0.13672137732307116, train acc = 95.13666666666667, test acc = 91.06, best acc =91.63
+epoch 48/50 
+Epoch progress: 48/50, train loss = 0.1375321994225184, train acc = 95.12666666666667, test acc = 91.52, best acc =91.63
+Epoch progress: 48/50, train loss = 0.137213613341252, train acc = 95.07, test acc = 91.42, best acc =91.63
+epoch 49/50 
+Epoch progress: 49/50, train loss = 0.13649455904960633, train acc = 95.12166666666667, test acc = 91.25, best acc =91.63
+Epoch progress: 49/50, train loss = 0.1353343444565932, train acc = 95.155, test acc = 91.26, best acc =91.63
