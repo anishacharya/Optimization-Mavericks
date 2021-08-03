@@ -17,7 +17,7 @@
 
     "data_sampling_strategy": "iid",  # iid / non_iid
     "num_shards": 80,                 # For non-iid distribution
-    "train_batch_size": 4096,                 # Mini Batch Size
+    "train_batch_size": 128,                 # Mini Batch Size
     "test_batch_size": 2048,
 
     "feature_attack_config":
@@ -45,10 +45,10 @@
             "optimizer": "SGD",
             "loss": "ce",
 
-            "loss_sampling": 'top_loss',              # importance sampling on loss value: None, 'top_loss'
+            "loss_sampling": null,              # importance sampling on loss value: None, 'top_loss'
             "initial_loss_sampling_fraction": 0.95,
 
-            "lr0": 0.11,
+            "lr0": 0.02,
             "momentum": 0.9,
             "reg": 0.0001,
             "nesterov": true,
