@@ -36,7 +36,7 @@
     "global_epochs": 50,          # epochs
     "local_epochs": 1,            # local SGD # For FL
 
-    "eval_freq": 512,             # Specify number of steps between train/test/val evaluation
+    "eval_freq": 256,             # Specify number of steps between train/test/val evaluation
 
     "optimizer_config":
       {
