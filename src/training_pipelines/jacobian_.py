@@ -39,8 +39,6 @@ class JacobianCompressPipeline(TrainPipeline):
 
         test_loader = DataLoader(dataset=test_dataset, batch_size=test_batch_size)
 
-        grad_steps = -1
-
         while self.epoch < self.num_epochs:
             self.model.to(device)
             self.model.train()
@@ -69,7 +67,7 @@ class JacobianCompressPipeline(TrainPipeline):
                 loss = self.loss_wrapper(outputs, labels)
                 # compute grad
                 loss.backward()
-                grad_steps += 1
+                self.metrics["num_grad_steps"] += 1
                 # Note: No Optimizer Step yet.
                 g_i = flatten_grads(learner=self.model)
 
@@ -119,9 +117,9 @@ class JacobianCompressPipeline(TrainPipeline):
                     # Now Do an optimizer step with x_t+1 = x_t - \eta \tilde(g)
                     self.client_optimizer.step()
 
-                    self.metrics["num_steps"] += 1
+                    self.metrics["num_opt_steps"] += 1
 
-                if grad_steps % self.eval_freq == 0:
+                if self.metrics["num_grad_steps"] % self.eval_freq == 0:
                     train_loss = self.evaluate_classifier(model=self.model,
                                                           train_loader=train_loader,
                                                           test_loader=test_loader,
