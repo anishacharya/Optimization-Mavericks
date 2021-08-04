@@ -31,7 +31,9 @@ class TrainPipeline:
         self.client_lrs_config = self.optimizer_config.get('client_lrs_config')
 
         self.aggregation_config = self.training_config["aggregation_config"]
-        self.compression_config = self.aggregation_config.get("compression_config", {})
+
+        self.grad_compression_config = self.aggregation_config.get("grad_compression_config", {})
+        self.jac_compression_config = self.aggregation_config.get("jacobian_compression_config", {})
 
         self.grad_attack_config = self.aggregation_config.get("grad_attack_config", {})
         self.feature_attack_config = self.data_config.get("feature_attack_config", {})
@@ -54,10 +56,12 @@ class TrainPipeline:
         self.criterion = get_loss(loss=self.client_optimizer_config.get('loss', 'ce'))
 
         # Compression Operator
-        self.C = get_compression_operator(compression_config=self.compression_config)
+        self.C_J = get_compression_operator(compression_config=self.jac_compression_config)
+        self.C_g = get_compression_operator(compression_config=self.grad_compression_config)
+
         self.gar = get_gar(aggregation_config=self.aggregation_config)
-        # For Jacobian
         self.G = None
+
         # for adversarial - get attack model
         self.feature_attack_model = get_feature_attack(attack_config=self.feature_attack_config)
         self.grad_attack_model = get_grad_attack(attack_config=self.grad_attack_config)
