@@ -55,7 +55,11 @@ class GradientCodingPipeline(TrainPipeline):
 
                 # Do things with the gradient
                 # Note: No Optimizer Step yet.
-                g_i = flatten_grads(learner=self.model)
+                g = flatten_grads(learner=self.model)
+
+                # compress gradient
+                if self.C_g:
+                    compressed_g = self.C_g.compress(g=g, lr=self.client_optimizer.param_groups[0]['lr'])
 
                 # Now Do an optimizer step with x_t+1 = x_t - \eta \tilde(g)
                 self.client_optimizer.step()

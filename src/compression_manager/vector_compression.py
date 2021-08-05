@@ -2,39 +2,34 @@
 # Licensed under the MIT License
 
 import numpy as np
+from .compression_base import GradientCompression
 
 
-class C:
+class Adaptive(GradientCompression):
     def __init__(self, conf):
-        self.residual_error = None
-        self.ef = conf.get('ef_client', False)
-
-    def compress(self, g: np.ndarray, lr=1) -> np.ndarray:
-        pass
-
-
-class Adaptive(C):
-    def __init__(self, conf):
-        C.__init__(self, conf=conf)
+        GradientCompression.__init__(self, conf=conf)
 
     def compress(self, g: np.ndarray, lr=1):
         pass
 
 
-class Full(C):
+class Full(GradientCompression):
     def __init__(self, conf):
-        C.__init__(self, conf=conf)
+        GradientCompression.__init__(self, conf=conf)
 
     def compress(self, g: np.ndarray, lr=1):
         return g
 
 
-class Top(C):
+class Top(GradientCompression):
     def __init__(self, conf):
-        C.__init__(self, conf=conf)
-        self.k = conf.get('frac_coordinates_to_keep', 0.1)
+        GradientCompression.__init__(self, conf=conf)
+        self.k = conf.get('frac_coordinates_to_keep', 1)
 
     def compress(self, g: np.ndarray, lr=1) -> np.ndarray:
+        if self.k == 1:
+            return g
+
         if self.residual_error is None:
             self.residual_error = np.zeros_like(g)
 
@@ -52,9 +47,9 @@ class Top(C):
         return compressed_g
 
 
-class Rand(C):
+class Rand(GradientCompression):
     def __init__(self, conf):
-        C.__init__(self, conf=conf)
+        GradientCompression.__init__(self, conf=conf)
         self.k = conf.get('frac_coordinates_to_keep', 0.1)
 
     def compress(self, g: np.ndarray, lr=1) -> np.ndarray:
@@ -76,9 +71,9 @@ class Rand(C):
         return compressed_g
 
 
-class Q(C):
+class Q(GradientCompression):
     def __init__(self, conf):
-        C.__init__(self, conf=conf)
+        GradientCompression.__init__(self, conf=conf)
         self.q = conf.get('bits', 2)
 
     def compress(self, g: np.ndarray, lr=1) -> np.ndarray:

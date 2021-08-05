@@ -34,3 +34,12 @@ class JacobianCompression:
 
     def compress(self, G: np.ndarray, lr=1) -> [np.ndarray, np.ndarray]:
         raise NotImplementedError("This method needs to be implemented for each Compression Algorithm")
+
+
+class GradientCompression:
+    def __init__(self, conf):
+        self.residual_error = None
+        self.ef = conf.get('ef_client', False)
+
+    def compress(self, g: np.ndarray, lr=1) -> np.ndarray:
+        pass

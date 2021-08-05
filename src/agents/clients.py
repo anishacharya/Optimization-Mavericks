@@ -6,14 +6,14 @@ from src.model_manager import (flatten_params,
                                dist_weights_to_model,
                                flatten_grads, )
 import copy
-from src.compression_manager import C
+from src.compression_manager import GradientCompression
 
 
 class FedClient(Agent):
     def __init__(self,
                  client_id: int,
                  learner,
-                 compression: C):
+                 compression: GradientCompression):
         """ Implements a Federated Client Node """
         Agent.__init__(self)
         self.client_id = client_id
