@@ -55,6 +55,7 @@ class GradientCodingPipeline(TrainPipeline):
 
                 if self.C_g:
                     # compress gradient
+                    self.metrics["num_of_communication"] += 1
                     g = flatten_grads(learner=self.model)
                     compressed_g = self.C_g.compress(g=g, lr=self.client_optimizer.param_groups[0]['lr'])
                     self.client_optimizer.zero_grad()
