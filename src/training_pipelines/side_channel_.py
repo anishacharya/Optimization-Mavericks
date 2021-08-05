@@ -53,17 +53,17 @@ class GradientCodingPipeline(TrainPipeline):
                 epoch_grad_cost += iteration_time
                 p_bar.update()
 
-                # Do things with the gradient
-                # Note: No Optimizer Step yet.
-                g = flatten_grads(learner=self.model)
-
-                # compress gradient
                 if self.C_g:
+                    # compress gradient
+                    g = flatten_grads(learner=self.model)
                     compressed_g = self.C_g.compress(g=g, lr=self.client_optimizer.param_groups[0]['lr'])
+                    self.client_optimizer.zero_grad()
+                    dist_grads_to_model(grads=compressed_g, learner=self.model)
 
                 # Now Do an optimizer step with x_t+1 = x_t - \eta \tilde(g)
                 self.client_optimizer.step()
                 self.metrics["num_opt_steps"] += 1
+
                 if self.metrics["num_grad_steps"] % self.eval_freq == 0:
                     train_loss = self.evaluate_classifier(model=self.model,
                                                           train_loader=train_loader,

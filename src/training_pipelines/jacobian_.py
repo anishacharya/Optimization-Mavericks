@@ -94,16 +94,16 @@ class JacobianCompressPipeline(TrainPipeline):
                     # noinspection PyPep8Naming
                     I_k = None
 
-                    if self.C is not None:
+                    if self.C_J is not None:
                         t0 = time.time()
-                        self.G, I_k = self.C.compress(G=self.G, lr=lr)
+                        self.G, I_k = self.C_J.compress(G=self.G, lr=lr)
                         epoch_compression_cost += time.time() - t0
                         # epoch_sparse_cost += time.time() - t0
-                        self.metrics["jacobian_residual"].append(self.C.normalized_residual)
+                        self.metrics["jacobian_residual"].append(self.C_J.normalized_residual)
 
                     # Gradient aggregation - get aggregated gradient vector
                     agg_g = self.gar.aggregate(G=self.G, ix=I_k,
-                                               axis=self.C.axis if self.C else 0)
+                                               axis=self.C_J.axis if self.C_J else 0)
                     epoch_gm_iter += self.gar.num_iter
                     epoch_agg_cost += self.gar.agg_time
                     # Reset GAR stats

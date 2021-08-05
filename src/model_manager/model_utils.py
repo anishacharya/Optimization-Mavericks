@@ -33,7 +33,7 @@ def flatten_grads(learner) -> np.ndarray:
 
 def dist_weights_to_model(weights, learner):
     """ Given Weights and a model architecture this method updates the model parameters with the supplied weights """
-    parameters = learner.to('cpu').parameters()
+    parameters = learner.parameters()
     offset = 0
     for param in parameters:
         new_size = functools.reduce(lambda x, y: x * y, param.shape)
@@ -45,7 +45,8 @@ def dist_weights_to_model(weights, learner):
 def dist_grads_to_model(grads, learner):
     """ Given Gradients and a model architecture this method updates the model gradients (Corresponding to each param)
     with the supplied grads """
-    parameters = learner.to('cpu').parameters()
+    parameters = learner.parameters()
+    grads.to(learner.device)
     offset = 0
     for param in parameters:
         new_size = functools.reduce(lambda x, y: x * y, param.shape)
