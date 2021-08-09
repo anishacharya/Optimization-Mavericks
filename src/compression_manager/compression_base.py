@@ -26,9 +26,7 @@ class JacobianCompression:
 
         # Memory
         self.mG = conf.get('mG', False)
-        print('Jacobian Error Feedback is: {}'.format(self.mG))
-        self.mg = conf.get('mg', False)
-        print('Gradient Error Feedback is: {}'.format(self.mg))
+        print('Jacobian Memory : {}'.format(self.mG))
         self.residual_error = 0
         self.normalized_residual = 0
 
@@ -38,8 +36,18 @@ class JacobianCompression:
 
 class GradientCompression:
     def __init__(self, conf):
+        self.mg = conf.get('mg', False)
+        print('Gradient memory: {}'.format(self.mg))
         self.residual_error = None
-        self.ef = conf.get('ef_client', False)
+        self.normalized_residual = None
+
+    def memory_feedback(self):
+        """ Chosen Form of memory is added to grads as feedback """
+        pass
+
+    def memory_update(self):
+        """ update the memory vector """
+        pass
 
     def compress(self, g: np.ndarray, lr=1) -> np.ndarray:
         pass

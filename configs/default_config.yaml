@@ -4,7 +4,7 @@
   "seed": 1,
   "data_config":
   {
-    "data_set": "mnist",
+    "data_set": "fashion_mnist",
     "shape":
     [
         28,
@@ -17,7 +17,7 @@
 
     "data_sampling_strategy": "iid",  # iid / non_iid
     "num_shards": 80,                 # For non-iid distribution
-    "train_batch_size": 128,          # Mini Batch Size
+    "train_batch_size": 512,                 # Mini Batch Size
     "test_batch_size": 2048,
 
     "feature_attack_config":
@@ -33,10 +33,10 @@
   {
     "num_clients": 1,            # Number of batches in distributed setting 1 = mini batch SGD
     "client_fraction": 1,         # partial device participation - For FL
-    "global_epochs": 20,          # epochs
+    "global_epochs": 50,          # epochs
     "local_epochs": 1,            # local SGD # For FL
 
-    "eval_freq": 10,             # Specify number of steps between train/test/val evaluation
+    "eval_freq": 64,             # Specify number of steps between train/test/val evaluation
 
     "optimizer_config":
       {
@@ -44,23 +44,23 @@
           {
             "optimizer": "SGD",
             "loss": "ce",
-            # importance sampling (batch setting) : null/'top_loss'/'top_grad_norm'/'rand'
-            "loss_sampling": 'prob_top_loss',
-            "initial_loss_sampling_fraction": 0.1,
 
-            "lr0": 0.1,
+            "loss_sampling": 'top_loss',              # importance sampling on loss value: None, 'top_loss'
+            "initial_loss_sampling_fraction": 0.95,
+
+            "lr0": 0.04,
             "momentum": 0.9,
-            "reg": 0.00001,
+            "reg": 0.0001,
             "nesterov": true,
             "amsgrad": false
           },
 
         "client_lrs_config":
           {
-            "lrs": null,
+            "lrs": 'step',
             "milestones": [1,5,10],
-            "step_size": 1,
-            "gamma": 0.9
+            "step_size": 10,
+            "gamma": 0.5
           },
 
         "server_optimizer_config":
@@ -72,7 +72,7 @@
 
     "learner_config":
       {
-        "net": "log_reg", # Options: log_reg
+        "net": "lenet", # Options: log_reg
         "mlp_config": { "h1": 30, "h2": 30 }
       },
 
@@ -99,13 +99,20 @@
             "attack_n_std": 1
           },
 
-        "compression_config":
+        "gradient_compression_config":
           {
-            "rule": null,                   # None, 'active_norm_sampling', 'random_sampling'
+            "rule": 'top',                     # None, 'full', 'top', 'random', 'Q'
+            "sampling_fraction": 0.1,         # fraction to be sampled
+            "mg": False,                      # memory in gradients - invoked for gradient compression rules
+            "memory_algo": 'ef',
+          },
+
+        "jacobian_compression_config":
+          {
+            "rule": null,                     # None, 'active_norm_sampling', 'random_sampling'
             "axis": "n",                    # n = client/ sample/ batch selection ; dim = dimension selection
-            "sampling_fraction": 0.9,       # fraction to be sampled
-            "mG": False,                    # memory in Jacobian  - invoked for jacobian compression rules
-            "mg": False,                    # memory in gradients - invoked for gradient compression rules
+            "sampling_fraction": 0.9,         # fraction to be sampled
+            "mG": False,                       # memory in Jacobian - invoked for jacobian compression rules
           }
       }
   }

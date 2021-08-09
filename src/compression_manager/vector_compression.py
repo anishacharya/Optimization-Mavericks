@@ -22,21 +22,27 @@ class Full(GradientCompression):
 
 
 class Top(GradientCompression):
+    """
+    Implements Top K sparse compression
+    Also supports the following memory mechanisms:
+    'ef' : error feedback
+    """
     def __init__(self, conf):
         GradientCompression.__init__(self, conf=conf)
-        self.k = conf.get('frac_coordinates_to_keep', 1)
+        self.beta = conf.get('frac_coordinates_to_keep', 1)
 
     def compress(self, g: np.ndarray, lr=1) -> np.ndarray:
-        if self.k == 1:
+        if self.beta == 1:
+            # Keep all coordinates
             return g
-
-        if self.residual_error is None:
+        if not self.residual_error:
+            # initialize residual error
             self.residual_error = np.zeros_like(g)
 
         g = (lr * g) + self.residual_error
 
         compressed_g = np.zeros_like(g)
-        num_coordinates_to_keep = round(self.k * len(g))
+        num_coordinates_to_keep = round(self.beta * len(g))  # because all batches might not be equal so compute online
         indices = np.argsort(np.abs(g))[::-1][:num_coordinates_to_keep]
         compressed_g[indices] = g[indices]
 
