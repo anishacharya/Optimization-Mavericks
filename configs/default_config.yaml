@@ -101,7 +101,7 @@
 
         "gradient_compression_config":
           {
-            "rule": 'top',                     # None, 'full', 'top', 'random', 'Q'
+            "rule": 'top',                     # None, 'full', 'top', 'rand', 'Q'
             "sampling_fraction": 0.1,         # fraction to be sampled
             "mg": False,                      # memory in gradients - invoked for gradient compression rules
             "memory_algo": 'ef',
@@ -110,7 +110,7 @@
         "jacobian_compression_config":
           {
             "rule": null,                     # None, 'active_norm_sampling', 'random_sampling'
-            "axis": "n",                    # n = client/ sample/ batch selection ; dim = dimension selection
+            "axis": "n",                      # n = client/ sample/ batch selection ; dim = dimension selection
             "sampling_fraction": 0.9,         # fraction to be sampled
             "mG": False,                       # memory in Jacobian - invoked for jacobian compression rules
           }

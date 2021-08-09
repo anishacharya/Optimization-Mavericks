@@ -32,7 +32,7 @@ class TrainPipeline:
 
         self.aggregation_config = self.training_config["aggregation_config"]
 
-        self.grad_compression_config = self.aggregation_config.get("grad_compression_config", {})
+        self.grad_compression_config = self.aggregation_config.get("gradient_compression_config", {})
         self.jac_compression_config = self.aggregation_config.get("jacobian_compression_config", {})
 
         self.grad_attack_config = self.aggregation_config.get("grad_attack_config", {})

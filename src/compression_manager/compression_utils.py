@@ -10,11 +10,11 @@ def get_compression_operator(compression_config: Dict):
     compression_function = compression_config.get("rule", 'full')
     if compression_function == 'full':
         return Full(conf=compression_config)
-    elif compression_function == 'top_k':
+    elif compression_function == 'top':
         return Top(conf=compression_config)
-    elif compression_function == 'rand_k':
+    elif compression_function == 'rand':
         return Rand(conf=compression_config)
-    elif compression_function == 'quantize':
+    elif compression_function == 'Q':
         return Q(conf=compression_config)
     elif compression_function in ['active_norm_sampling',
                                   'random_sampling']:
