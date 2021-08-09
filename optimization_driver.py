@@ -17,7 +17,7 @@ def _parse_args():
                              'fed: launch federated training')
     parser.add_argument('--pipeline',
                         type=str,
-                        default='loss',
+                        default='coding',
                         help='sampling: exp with sampling data during training'
                              'agg: exp with GAR')
     parser.add_argument('--conf',
