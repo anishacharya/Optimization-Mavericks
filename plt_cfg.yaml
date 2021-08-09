@@ -10,7 +10,7 @@
     "plots":
       [
         {
-          'file': 'result_dumps/client_sampling/fmnist/bs_32/sgd',
+          'file': 'result_dumps/client_sampling/fmnist/bs_32/baseline',
           'label': "SGD : B = 128",
           'line_width': 2,
           'marker': , #'o',
