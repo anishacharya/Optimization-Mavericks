@@ -34,19 +34,16 @@ class Top(GradientCompression):
     def compress(self, g: np.ndarray, lr=1) -> np.ndarray:
         if self.beta == 1:
             return g
-        g = self.memory_feedback(g, lr)  # Add memory feedback if enabled
-        compressed_g = np.zeros_like(g)
+        # Add memory feedback if enabled
+        g = self.memory_feedback(g=g, lr=lr)
+        # Compression
+        self.compressed_g = np.zeros_like(g)
         num_coordinates_to_keep = round(self.beta * len(g))  # because all batches might not be equal so compute online
         indices = np.argsort(np.abs(g))[::-1][:num_coordinates_to_keep]
-        compressed_g[indices] = g[indices]
-
-        self.memory_update()
-
-        if self.ef is True:
-            self.residual_error = g - compressed_g
-            compressed_g /= lr
-
-        return compressed_g
+        self.compressed_g[indices] = g[indices]
+        # update memory
+        self.memory_update(g=g, lr=lr)
+        return self.compressed_g
 
 
 class Rand(GradientCompression):
