@@ -63,10 +63,8 @@ class GradientCompression:
         elif self.memory_algo == 'ef':
             self.residual_error = g - self.compressed_g
             self.compressed_g /= lr
-        # if self.ef is True:
-        #     self.residual_error = g - compressed_g
-        #     compressed_g /= lr
-        pass
+        else:
+            raise NotImplementedError
 
     def compress(self, g: np.ndarray, lr=1) -> np.ndarray:
         pass
