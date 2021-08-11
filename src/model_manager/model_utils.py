@@ -59,7 +59,7 @@ def dist_grads_to_model(grads, learner):
     for param in parameters:
         new_size = functools.reduce(lambda x, y: x * y, param.shape)
         current_data = grads[offset:offset + new_size]
-        param.grad = torch.from_numpy(current_data.reshape(param.shape)).to(learner.device)
+        param.grad = torch.from_numpy(current_data.reshape(param.shape)).to(param.device)
         offset += new_size
 
 
