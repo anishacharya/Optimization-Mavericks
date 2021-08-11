@@ -24,19 +24,19 @@ def flatten_params(learner) -> np.ndarray:
     flat_param = []
     # for w in learner.parameters():
     flat_param.extend(torch.reshape(w.data, (-1,)).tolist() for w in learner.parameters())
-    return np.array(flat_param)
+    return np.asarray(flat_param)
     # flat_param = np.concatenate([w.data.cpu().numpy().flatten() for w in learner.parameters()])
     # return flat_param
 
 
 def flatten_grads(learner) -> np.ndarray:
     """ Given a model flatten all params and return as np array """
-    flat_grad = []
+    # flat_grad = []
     # for w in learner.parameters():
-    flat_grad.extend(torch.reshape(w.grad.data, (-1,)).tolist() for w in learner.parameters())
-    return np.array(flat_grad)
-    # flat_grad = np.concatenate([w.grad.data.cpu().numpy().flatten() for w in learner.parameters()])
-    # return flat_grad
+    # flat_grad.extend(torch.reshape(w.grad.data, (-1,)).numpy() for w in learner.parameters())
+    # return np.asarray(flat_grad)
+    flat_grad = np.concatenate([w.grad.data.cpu().numpy().flatten() for w in learner.parameters()])
+    return flat_grad
 
 
 def dist_weights_to_model(weights, learner):
@@ -54,7 +54,7 @@ def dist_grads_to_model(grads, learner):
     """ Given Gradients and a model architecture this method updates the model gradients (Corresponding to each param)
     with the supplied grads """
     parameters = learner.parameters()
-    grads.to(learner.device)
+    # grads.to(learner.device)
     offset = 0
     for param in parameters:
         new_size = functools.reduce(lambda x, y: x * y, param.shape)

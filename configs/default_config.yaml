@@ -4,7 +4,7 @@
   "seed": 1,
   "data_config":
   {
-    "data_set": "fashion_mnist",
+    "data_set": "mnist",
     "shape":
     [
         28,
@@ -33,7 +33,7 @@
   {
     "num_clients": 1,            # Number of batches in distributed setting 1 = mini batch SGD
     "client_fraction": 1,         # partial device participation - For FL
-    "global_epochs": 50,          # epochs
+    "global_epochs": 20,          # epochs
     "local_epochs": 1,            # local SGD # For FL
 
     "eval_freq": 64,             # Specify number of steps between train/test/val evaluation
@@ -45,7 +45,7 @@
             "optimizer": "SGD",
             "loss": "ce",
 
-            "loss_sampling": 'top_loss',              # importance sampling on loss value: None, 'top_loss'
+            "loss_sampling": null,              # importance sampling on loss value: None, 'top_loss'
             "initial_loss_sampling_fraction": 0.95,
 
             "lr0": 0.04,
@@ -72,7 +72,7 @@
 
     "learner_config":
       {
-        "net": "lenet", # Options: log_reg
+        "net": "small_cnn", # Options: log_reg
         "mlp_config": { "h1": 30, "h2": 30 }
       },
 
@@ -102,7 +102,7 @@
         "gradient_compression_config":
           {
             "rule": 'top',                     # None, 'full', 'top', 'rand', 'Q'
-            "sampling_fraction": 0.1,         # fraction to be sampled
+            "sampling_fraction": 0.52,         # fraction to be sampled
             "mg": False,                      # memory in gradients - invoked for gradient compression rules
             "memory_algo": 'ef',
           },

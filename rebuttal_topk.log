@@ -1,0 +1,26 @@
+Namespace(conf=None, dir='result_dumps/', n_repeat=1, o='rebuttal_topk', pipeline='coding', train_mode='vanilla')
+---- Fetching configs and Initializing stuff -----
+Loading Model: small_cnn
+----------------------------
+MnistClassifierCnn(
+  (net): Sequential(
+    (0): Conv2d(1, 3, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1))
+    (1): GELU()
+    (2): Conv2d(3, 3, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1))
+    (3): GELU()
+    (4): Conv2d(3, 3, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1))
+    (5): GELU()
+    (6): Conv2d(3, 3, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1))
+    (7): GELU()
+  )
+  (fc_out): Linear(in_features=12, out_features=10, bias=True)
+)
+No compression specified or compression operator Not implemented ~ running without jacobian compression
+Gradient memory: False
+--------------------------------
+Initializing mean GAR
+--------------------------------
+Num of Batches in Train Loader = 118
+epoch 0/50 
+Epoch progress: 0/50, train loss = 2.3172837031089655, train acc = 9.736666666666666, test acc = 9.82, best acc =9.82
+Epoch progress: 0/50, train loss = 2.30114642442283, train acc = 11.236666666666666, test acc = 11.35, best acc =11.35
