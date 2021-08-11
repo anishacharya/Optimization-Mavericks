@@ -84,15 +84,11 @@ class TrainPipeline:
                 top_k_loss, top_k_ix = torch.topk(loss, k, sorted=False)
                 return torch.mean(top_k_loss)
 
-            elif self.loss_sampling == 'prob_top_loss':
-                # Probabilistic Sampling
-                prob_loss = (loss / torch.sum(loss)).tolist()
-                wts = torch.tensor([1 / pi for pi in prob_loss], dtype=loss.dtype)
-                weighted_loss = loss * wts
-
-                top_k_ix = np.random.choice(len(loss), k, p=prob_loss)
-                top_k_loss = weighted_loss[top_k_ix]
-                return torch.mean(top_k_loss)
+            elif self.loss_sampling == 'rand_loss':
+                # Random Sampling
+                rand_k_ix = np.random.choice(len(loss), k)
+                rand_k_loss = loss[rand_k_ix]
+                return torch.mean(rand_k_loss)
 
             else:
                 raise NotImplementedError
