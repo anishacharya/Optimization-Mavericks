@@ -36,7 +36,7 @@ class FedClient(Agent):
         self.w_current = None
         self.w_old = None
 
-        self.grad_current = None  # Needed for all methods
+        self.grad_current = None  # Needed for hem methods
         self.glomo_grad = None
 
         self.v_current = None  # glomo momentum

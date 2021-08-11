@@ -53,7 +53,7 @@ def train_clients(server: FedServer,
     # metrics["epoch_loss"].append(epoch_loss)
     # print("Epoch Loss : {}".format(epoch_loss))
 
-    # At this point we have all the g_i computed
+    # At this point we have hem the g_i computed
     # Apply Attack (Here since we can also apply co-ordinated attack)
     # TODO: Incorporate attacks
 
@@ -99,7 +99,7 @@ def train_and_test_model(server: FedServer,
             train_clients(server=server, clients=clients, pipeline=pipeline,
                           num_local_steps=local_epochs)
 
-            # Now take a lrs step across all clients (** Not just sampled ones)
+            # Now take a lrs step across hem clients (** Not just sampled ones)
             _ = take_lrs_step(clients=clients)
 
         # Aggregate client grads and update server model

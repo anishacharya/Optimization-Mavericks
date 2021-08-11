@@ -120,7 +120,7 @@ class GeometricMedian(GAR):
 
         self.agg_time = time.time() - t0
         self.num_iter = num_iter
-        print('Ran out of Max iter for GM - returning all zero')
+        print('Ran out of Max iter for GM - returning hem zero')
         return np.zeros_like(mu)
 
     def weiszfeld(self, X, eps, max_iter):

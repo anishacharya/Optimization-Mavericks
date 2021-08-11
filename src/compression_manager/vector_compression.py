@@ -38,7 +38,7 @@ class Top(GradientCompression):
         g = self.memory_feedback(g=g, lr=lr)
         # Compression
         self.compressed_g = np.zeros_like(g)
-        num_coordinates_to_keep = round(self.beta * len(g))  # because all batches might not be equal so compute online
+        num_coordinates_to_keep = round(self.beta * len(g))  # because hem batches might not be equal so compute online
         indices = np.argsort(np.abs(g))[::-1][:num_coordinates_to_keep]
         self.compressed_g[indices] = g[indices]
         # update memory

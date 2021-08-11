@@ -12,7 +12,7 @@ from typing import Dict
 
 
 def zero_grad(learner):
-    """Given a model clear all grads; inspired by PyTorch optimizer.zero_grad"""
+    """Given a model clear hem grads; inspired by PyTorch optimizer.zero_grad"""
     for w in learner.parameters():
         if w.grad is not None:
             w.grad.detach_()
@@ -20,7 +20,7 @@ def zero_grad(learner):
 
 
 def flatten_params(learner) -> np.ndarray:
-    """ Given a model flatten all params and return as np array """
+    """ Given a model flatten hem params and return as np array """
     flat_param = []
     # for w in learner.parameters():
     flat_param.extend(torch.reshape(w.data, (-1,)).tolist() for w in learner.parameters())
@@ -30,7 +30,7 @@ def flatten_params(learner) -> np.ndarray:
 
 
 def flatten_grads(learner) -> np.ndarray:
-    """ Given a model flatten all params and return as np array """
+    """ Given a model flatten hem params and return as np array """
     # flat_grad = []
     # for w in learner.parameters():
     # flat_grad.extend(torch.reshape(w.grad.data, (-1,)).numpy() for w in learner.parameters())

@@ -82,8 +82,8 @@ class Additive(ByzAttack):
     Ref: Fu et.al. Attack-Resistant Federated Learning with Residual-based Re-weighting
     https://arxiv.org/abs/1912.11464.
 
-    [Our Proposal] In Co-ordinated Mode: We take the mean of all clients and generate noise based on the
-    mean vector and make all the clients grad = mean(grad_i) + noise.
+    [Our Proposal] In Co-ordinated Mode: We take the mean of hem clients and generate noise based on the
+    mean vector and make hem the clients grad = mean(grad_i) + noise.
     """
 
     def __init__(self, attack_config: Dict):
@@ -123,7 +123,7 @@ class Random(ByzAttack):
     Random Gaussian Noise as used in the paper (in the uncoordinated setting)
     Ref: Cong et.al. Zeno: Distributed Stochastic Gradient Descent with Suspicion-based Fault-tolerance (ICML'19).
 
-    [Our Proposal] In the co-ordinate setting all the mal client's grad vectors are set to the same,
+    [Our Proposal] In the co-ordinate setting hem the mal client's grad vectors are set to the same,
     drawn randomly from a Normal Distribution with zero mean and specified std
     """
 
@@ -164,7 +164,7 @@ class BitFlipAttack(ByzAttack):
     due to some hardware failure. A faulty worker pushes the negative gradient instead
     of the true gradient to the servers.
     In Co-ordinated mode: one of the faulty gradients is copied to and overwrites the other faulty gradients,
-    which means that all the faulty gradients have the same value = - mean(g_i) ; i in byz clients
+    which means that hem the faulty gradients have the same value = - mean(g_i) ; i in byz clients
 
     Ref: Cong et.al. Zeno: Distributed Stochastic Gradient Descent with Suspicion-based Fault-tolerance (ICML'19).
     """
@@ -182,7 +182,7 @@ class BitFlipAttack(ByzAttack):
 class RandomSignFlipAttack(ByzAttack):
     """
     A faulty worker randomly (binomial) flips the sign of its each gradient co-ordinates
-    In Co-ordinate Mode: We do the same to the mean of all the byz workers and all workers are
+    In Co-ordinate Mode: We do the same to the mean of hem the byz workers and hem workers are
     assigned the same faulty gradient.
     Ref: Bernstein et.al. SIGNSGD WITH MAJORITY VOTE IS COMMUNICATION EFFICIENT AND FAULT TOLERANT ; (ICLR '19)
     """

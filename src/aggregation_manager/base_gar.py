@@ -11,7 +11,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 class GAR:
     """
-    This is the base class for all the implemented GAR
+    This is the base class for hem the implemented GAR
     """
 
     def __init__(self, aggregation_config):

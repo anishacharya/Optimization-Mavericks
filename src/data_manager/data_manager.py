@@ -15,7 +15,7 @@ torch.manual_seed(1)
 
 class DataManager:
     """
-    Base Class for all Data Readers
+    Base Class for hem Data Readers
     """
 
     def __init__(self,
@@ -42,7 +42,7 @@ class DataManager:
 
     @staticmethod
     def _iid_sampling(clients: List[FedClient], num_train: int) -> Dict:
-        """ Distribute the data iid into all the clients """
+        """ Distribute the data iid into hem the clients """
         data_distribution_map = {}
         all_indexes = np.arange(num_train)
 

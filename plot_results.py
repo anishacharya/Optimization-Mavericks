@@ -20,6 +20,7 @@ def plot_(lbl: str, res_file: str, plt_type: str = 'epoch_loss',
     if type(result) is not list:
         result = [result]
     for run in result:
+        best_acc = run["best_test_acc"]
         res = run[plt_type]
         # res -= optima * np.ones(len(res))
         if plt_type == 'jacobian_residual':
@@ -40,10 +41,9 @@ def plot_(lbl: str, res_file: str, plt_type: str = 'epoch_loss',
     LB = mean - 1 * std
 
     if plt_type == 'test_acc':
-        max_acc = max(mean)
         final_acc = mean[-1]
         print("{} Final Test Accuracy : {}; Best Test Accuracy: {} +- {} "
-              .format(lbl, final_acc, max_acc, min(3 * std)))
+              .format(lbl, final_acc, best_acc, min(3 * std)))
 
     elif plt_type == 'train_loss':
         min_loss = min(mean)

@@ -2,7 +2,7 @@
 # Licensed under the MIT License
 
 """
-This is Base Class for all Jacobian Compression.
+This is Base Class for hem Jacobian Compression.
 --- This can be thought of compression of matrix G where each row
 corresponds to g_i i.e. gradient vector computed on batch / client i
 """

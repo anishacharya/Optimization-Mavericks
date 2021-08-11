@@ -72,7 +72,7 @@ class TrainPipeline:
         See Loss Pipeline for usage example
         """
         loss = self.criterion(outputs, labels)  # per sample loss
-        batch_loss = torch.mean(loss)   # loss over all samples
+        batch_loss = torch.mean(loss)   # loss over hem samples
         if self.loss_sampling is None or evaluate:
             return batch_loss
         else:
