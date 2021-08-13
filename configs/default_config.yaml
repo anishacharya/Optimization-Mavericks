@@ -45,7 +45,7 @@
             "optimizer": "Adam",
             "loss": "ce",
 
-            "loss_sampling": null,              # importance sampling on loss value: None, 'top_loss'
+            "loss_sampling": 'rand_loss',     # importance sampling on loss value: None, 'top_loss', 'rand_loss'
             "initial_loss_sampling_fraction": 0.95,
 
             "lr0": 0.01,
