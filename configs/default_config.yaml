@@ -103,8 +103,7 @@
           {
             "rule": 'top',                     # None, 'full', 'top', 'rand', 'Q'
             "sampling_fraction": 0.52,         # fraction to be sampled
-            "mg": False,                      # memory in gradients - invoked for gradient compression rules
-            "memory_algo": 'ef',
+            "memory_algo": 'ef',               # memory in gradients - invoked for gradient compression rules
           },
 
         "jacobian_compression_config":
