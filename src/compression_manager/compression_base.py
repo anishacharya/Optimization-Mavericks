@@ -52,6 +52,8 @@ class GradientCompression:
         if not self.memory_algo:
             return g
         elif self.memory_algo == 'ef':
+            if not self.residual_error:
+                self.residual_error = np.zeros_like(g)
             return (lr * g) + self.residual_error
         else:
             raise NotImplementedError

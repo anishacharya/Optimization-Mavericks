@@ -2,6 +2,7 @@
 # Licensed under the MIT License
 
 import numpy as np
+import math
 from .compression_base import GradientCompression
 
 
@@ -38,7 +39,7 @@ class Top(GradientCompression):
         g = self.memory_feedback(g=g, lr=lr)
         # Compression
         self.compressed_g = np.zeros_like(g)
-        num_coordinates_to_keep = np.floor(self.beta * len(g))
+        num_coordinates_to_keep = math.floor(self.beta * len(g))
         indices = np.argsort(np.abs(g))[::-1][:num_coordinates_to_keep]
         self.compressed_g[indices] = g[indices]
         # update memory
