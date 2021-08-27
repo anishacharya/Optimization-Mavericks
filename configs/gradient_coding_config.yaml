@@ -2,8 +2,6 @@
 # Licensed under the MIT License
 {
   "seed": 1,
-  "train_mode": "distributed",
-
   "data_config":
   {
     "data_set": "mnist",
@@ -19,11 +17,12 @@
 
     "data_sampling_strategy": "iid",  # iid / non_iid
     "num_shards": 80,                 # For non-iid distribution
-    "batch_size": 1,                 # Mini Batch Size
+    "train_batch_size": 32,                 # Mini Batch Size
+    "test_batch_size": 2048,
 
     "feature_attack_config":
       {
-        "noise_model": None, #
+        "noise_model": null, #
         "frac_adv": 0.2,     # Fraction of corrupt samples
         "sev": 5,            # severity of attack
         "target_label": 8,   # backdoor Attack
@@ -32,21 +31,26 @@
 
   "training_config":
   {
-    "num_clients": 64,            # Number of batches in distributed setting
+    "num_clients": 1,            # Number of parallel batches in distributed setting 1 = mini batch SGD
     "client_fraction": 1,         # partial device participation - For FL
     "global_epochs": 20,          # epochs
     "local_epochs": 1,            # local SGD # For FL
-    "eval_freq": 50,             # Specify number of steps between train/test/val evaluation
+
+    "eval_freq": 128,             # Specify number of steps between train/test/val evaluation
 
     "optimizer_config":
       {
         "client_optimizer_config":
           {
-            "optimizer": "SGD",
+            "optimizer": "Adam",
             "loss": "ce",
-            "lr0": 0.01,
+
+            "loss_sampling": null,     # importance sampling on loss value: None, 'top_loss', 'rand_loss'
+            "initial_loss_sampling_fraction": 0.95,
+
+            "lr0": 0.1,
             "momentum": 0.9,
-            "reg": 0.00001,
+            "reg": 0.0001,
             "nesterov": true,
             "amsgrad": false
           },
@@ -55,8 +59,8 @@
           {
             "lrs": 'step',
             "milestones": [1,5,10],
-            "step_size": 1,
-            "gamma": 0.9
+            "step_size": 1000,
+            "gamma": 0.5
           },
 
         "server_optimizer_config":
@@ -68,14 +72,13 @@
 
     "learner_config":
       {
-        "net": "lenet",
-        "mlp_config": { "h1": 300, "h2": 300 }
+        "net": "small_cnn", # Options: log_reg
+        "mlp_config": { "h1": 30, "h2": 30 }
       },
 
     "aggregation_config":
       {
         "gar": "mean",
-
         "geo_med_config": {"alg": 'vardi', 'eps': 0.00001, 'max_iter': 100},
         "trimmed_mean_config":{"proportion": 0.3},
         "krum_config": {"krum_frac": 0.3},
@@ -83,7 +86,7 @@
 
         "grad_attack_config":
           {
-            "attack_model": None,
+            "attack_model": null,
             "attack_mode": "un_coordinated",
             "frac_adv": 0.4,
             "rand_additive_attack_conf":
@@ -96,13 +99,19 @@
             "attack_n_std": 1
           },
 
-        "compression_config":
+        "gradient_compression_config":
           {
-            "rule": None,
-            "axis": "dim",                       # n = client/ sample/ batch selection ; dim = dimension selection
-            "sampling_fraction": 0.1,          # fraction to be sampled
+            "rule": 'top',                     # None, 'full', 'top', 'rand', 'Q'
+            "sampling_fraction": 0.5,         # fraction to be sampled
+            "memory_algo": 'ef',               # memory in gradients - invoked for gradient compression rules
+          },
+
+        "jacobian_compression_config":
+          {
+            "rule": null,                     # None, 'active_norm_sampling', 'random_sampling'
+            "axis": "n",                      # n = client/ sample/ batch selection ; dim = dimension selection
+            "sampling_fraction": 0.9,         # fraction to be sampled
             "mG": False,                       # memory in Jacobian - invoked for jacobian compression rules
-            "mg": False,                       # memory in gradients - invoked for gradient compression rules
           }
       }
   }

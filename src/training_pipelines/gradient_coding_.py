@@ -28,6 +28,7 @@ class GradientCodingPipeline(TrainPipeline):
                                   batch_size=self.data_config.get('train_batch_size', 1), shuffle=True)
         test_loader = DataLoader(dataset=test_dataset, batch_size=self.data_config.get('test_batch_size', 512))
         print('Num of Batches in Train Loader = {}'.format(len(train_loader)))
+
         while self.epoch < self.num_epochs:
             self.model.to(device)
             self.model.train()
@@ -36,6 +37,7 @@ class GradientCodingPipeline(TrainPipeline):
             print('epoch {}/{} '.format(self.epoch, self.num_epochs))
             p_bar = tqdm(total=len(train_loader))
             p_bar.set_description("Training Progress: ")
+
             for batch_ix, (images, labels) in enumerate(train_loader):
                 self.metrics["num_iter"] += 1
                 t_iter = time.time()
@@ -63,6 +65,8 @@ class GradientCodingPipeline(TrainPipeline):
 
                 # Now Do an optimizer step with x_t+1 = x_t - \eta \tilde(g)
                 self.client_optimizer.step()
+                self.client_lrs.step()
+
                 self.metrics["num_opt_steps"] += 1
 
                 if self.metrics["num_grad_steps"] % self.eval_freq == 0:
