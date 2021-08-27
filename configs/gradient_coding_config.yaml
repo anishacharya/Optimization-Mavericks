@@ -33,7 +33,7 @@
   {
     "num_clients": 1,            # Number of parallel batches in distributed setting 1 = mini batch SGD
     "client_fraction": 1,         # partial device participation - For FL
-    "global_epochs": 20,          # epochs
+    "global_epochs": 10,          # epochs
     "local_epochs": 1,            # local SGD # For FL
 
     "eval_freq": 128,             # Specify number of steps between train/test/val evaluation
@@ -48,7 +48,7 @@
             "loss_sampling": null,     # importance sampling on loss value: None, 'top_loss', 'rand_loss'
             "initial_loss_sampling_fraction": 0.95,
 
-            "lr0": 0.1,
+            "lr0": 0.01,
             "momentum": 0.9,
             "reg": 0.0001,
             "nesterov": true,
