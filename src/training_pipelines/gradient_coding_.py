@@ -65,8 +65,6 @@ class GradientCodingPipeline(TrainPipeline):
 
                 # Now Do an optimizer step with x_t+1 = x_t - \eta \tilde(g)
                 self.client_optimizer.step()
-                self.client_lrs.step()
-
                 self.metrics["num_opt_steps"] += 1
 
                 if self.metrics["num_grad_steps"] % self.eval_freq == 0:
