@@ -31,7 +31,7 @@
 
   "training_config":
   {
-    "num_clients": 1,            # Number of batches in distributed setting 1 = mini batch SGD
+    "num_clients": 1,            # Number of parallel batches in distributed setting 1 = mini batch SGD
     "client_fraction": 1,         # partial device participation - For FL
     "global_epochs": 20,          # epochs
     "local_epochs": 1,            # local SGD # For FL
@@ -45,7 +45,7 @@
             "optimizer": "Adam",
             "loss": "ce",
 
-            "loss_sampling": 'rand_loss',     # importance sampling on loss value: None, 'top_loss', 'rand_loss'
+            "loss_sampling": null,     # importance sampling on loss value: None, 'top_loss', 'rand_loss'
             "initial_loss_sampling_fraction": 0.95,
 
             "lr0": 0.01,
@@ -57,7 +57,7 @@
 
         "client_lrs_config":
           {
-            "lrs": 'step',
+            "lrs": null,
             "milestones": [1,5,10],
             "step_size": 10,
             "gamma": 0.5
@@ -102,7 +102,7 @@
         "gradient_compression_config":
           {
             "rule": 'top',                     # None, 'full', 'top', 'rand', 'Q'
-            "sampling_fraction": 0.52,         # fraction to be sampled
+            "sampling_fraction": 0.5,         # fraction to be sampled
             "memory_algo": 'ef',               # memory in gradients - invoked for gradient compression rules
           },
 

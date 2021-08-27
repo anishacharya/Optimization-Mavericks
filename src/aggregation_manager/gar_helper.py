@@ -16,15 +16,14 @@ def get_gar(aggregation_config: Dict):
     print('--------------------------------')
     if gar == 'mean':
         return Mean(aggregation_config=aggregation_config)
-    elif gar == 'geo_med':
+    if gar == 'geo_med':
         return GeometricMedian(aggregation_config=aggregation_config)
-    elif gar == 'co_med':
+    if gar == 'co_med':
         return CoordinateWiseMedian(aggregation_config=aggregation_config)
-    elif gar == 'norm_clip':
+    if gar == 'norm_clip':
         return NormClipping(aggregation_config=aggregation_config)
-    elif gar == 'krum':
+    if gar == 'krum':
         return Krum(aggregation_config=aggregation_config)
-    elif gar == 'trimmed_mean':
+    if gar == 'trimmed_mean':
         return TrimmedMean(aggregation_config=aggregation_config)
-    else:
-        raise NotImplementedError
+    raise NotImplementedError

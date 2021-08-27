@@ -8,7 +8,7 @@ from src.model_manager import (get_model,
                                get_scheduler,
                                get_loss)
 from src.aggregation_manager import get_gar
-from src.compression_manager import get_compression_operator, get_sampling_scheduler
+from src.compression_manager import get_compression_operator
 
 
 class TrainPipeline:
@@ -30,6 +30,10 @@ class TrainPipeline:
         self.client_optimizer_config = self.optimizer_config.get("client_optimizer_config", {})
         self.client_lrs_config = self.optimizer_config.get('client_lrs_config')
 
+        self.criterion = get_loss(loss=self.client_optimizer_config.get('loss', 'ce'))
+        self.loss_sampling = self.client_optimizer_config.get('loss_sampling', None)
+        self.initial_loss_sampling_fraction = self.client_optimizer_config.get('initial_loss_sampling_fraction', 1)
+
         self.aggregation_config = self.training_config["aggregation_config"]
 
         self.grad_compression_config = self.aggregation_config.get("gradient_compression_config", {})
@@ -50,10 +54,6 @@ class TrainPipeline:
                                               optimizer_config=self.client_optimizer_config)
         self.client_lrs = get_scheduler(optimizer=self.client_optimizer,
                                         lrs_config=self.client_lrs_config)
-
-        self.loss_sampling = self.client_optimizer_config.get('loss_sampling', None)
-        self.initial_loss_sampling_fraction = self.client_optimizer_config.get('initial_loss_sampling_fraction', 1)
-        self.criterion = get_loss(loss=self.client_optimizer_config.get('loss', 'ce'))
 
         # Compression Operator
         self.C_J = get_compression_operator(compression_config=self.jac_compression_config)
@@ -149,6 +149,7 @@ class TrainPipeline:
         metrics = {"config": self.config,
 
                    "num_param": 0,
+
                    # Train and Test Performance
                    "test_error": [],
                    "test_loss": [],
@@ -158,15 +159,9 @@ class TrainPipeline:
                    "train_acc": [],
                    "best_test_acc": 0,
 
+                   # Compression related residuals
                    "gradient_residual": [],
                    "jacobian_residual": [],
-                   # # Grad Matrix Stats
-                   # "frac_mass_retained": [],
-                   # "grad_norm_dist": [],
-                   # "norm_bins": None,
-                   # "mass_bins": None,
-                   # "max_norm": 0,
-                   # "min_norm": 1e6,
 
                    # compute Time stats per epoch
                    "epoch_compression_cost": [],
