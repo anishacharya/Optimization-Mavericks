@@ -54,11 +54,11 @@ class GradientCompression:
         """ Chosen Form of memory is added to grads as feedback """
         if not self.memory_algo:
             return g
-        elif self.memory_algo is 'ef':
+        elif self.memory_algo == 'ef':
             if self.residual_error is None:
                 self.residual_error = np.zeros_like(g)
             return (lr * g) + self.residual_error
-        elif self.memory_algo is 'stale_side_channel':
+        elif self.memory_algo == 'stale_side_channel':
             if self.stale_grad is None:
                 self.stale_grad = np.zeros_like(g)
             return (lr * g) + self.stale_grad
