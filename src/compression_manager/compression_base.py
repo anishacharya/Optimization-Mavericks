@@ -44,17 +44,24 @@ class GradientCompression:
         # self.mg = self.conf.get('mg', False)
         # print('Gradient memory: {}'.format(self.mg))
         self.memory_algo = self.conf.get('memory_algo', None)
+
         self.residual_error = None
         self.normalized_residual = None
+
+        self.stale_grad = None
 
     def memory_feedback(self, g: np.ndarray, lr=1) -> np.ndarray:
         """ Chosen Form of memory is added to grads as feedback """
         if not self.memory_algo:
             return g
-        elif self.memory_algo == 'ef':
+        elif self.memory_algo is 'ef':
             if self.residual_error is None:
                 self.residual_error = np.zeros_like(g)
             return (lr * g) + self.residual_error
+        elif self.memory_algo is 'stale_side_channel':
+            if self.stale_grad is None:
+                self.stale_grad = np.zeros_like(g)
+            return (lr * g) + self.stale_grad
         else:
             raise NotImplementedError
 
@@ -64,9 +71,11 @@ class GradientCompression:
             return
         elif self.memory_algo == 'ef':
             self.residual_error = g - self.compressed_g
-            self.compressed_g /= lr
+        elif self.memory_algo == 'stale_feedback':
+            self.stale_grad = g
         else:
             raise NotImplementedError
+        self.compressed_g /= lr
 
     def compress(self, g: np.ndarray, lr=1) -> np.ndarray:
         pass

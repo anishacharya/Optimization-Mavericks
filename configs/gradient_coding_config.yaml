@@ -102,7 +102,7 @@
         "gradient_compression_config":
           {
             "rule": 'top',                     # None, 'full', 'top', 'rand', 'Q'
-            "sampling_fraction": 0.5,         # fraction to be sampled
+            "sampling_fraction": 0.1,         # fraction to be sampled
             "memory_algo": 'ef',               # memory in gradients - invoked for gradient compression rules
           },
 
