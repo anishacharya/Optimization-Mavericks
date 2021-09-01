@@ -58,7 +58,7 @@ class GradientCompression:
             if self.residual_error is None:
                 self.residual_error = np.zeros_like(g)
             return (lr * g) + self.residual_error
-        elif self.memory_algo == 'stale_side_channel':
+        elif self.memory_algo == 'sf':
             if self.stale_grad is None:
                 self.stale_grad = np.zeros_like(g)
             return (lr * g) + self.stale_grad
@@ -71,7 +71,7 @@ class GradientCompression:
             return
         elif self.memory_algo == 'ef':
             self.residual_error = g - self.compressed_g
-        elif self.memory_algo == 'stale_feedback':
+        elif self.memory_algo == 'sf':
             self.stale_grad = g
         else:
             raise NotImplementedError
