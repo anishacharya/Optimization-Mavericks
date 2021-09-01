@@ -22,7 +22,67 @@ class RobustTrainingPipeline(TrainPipeline):
         pass
 
     def run_batch_train(self, config: Dict, seed):
-        raise NotImplementedError
+        np.random.seed(seed)
+        torch.manual_seed(seed)
+        # ------------------------- get data --------------------- #
+        data_manager = process_data(data_config=self.data_config)
+        train_dataset, val_dataset, test_dataset = data_manager.download_data()
+        train_loader = DataLoader(dataset=train_dataset,
+                                  batch_size=self.data_config.get('train_batch_size', 1),
+                                  shuffle=True)
+        test_loader = DataLoader(dataset=test_dataset,
+                                 batch_size=self.data_config.get('test_batch_size', 512))
+        while self.epoch < self.num_epochs:
+            self.model.to(device)
+            self.model.train()
+            epoch_grad_cost = 0
+            # ------- Training Phase --------- #
+            print('epoch {}/{} '.format(self.epoch, self.num_epochs))
+            p_bar = tqdm(total=len(train_loader))
+            p_bar.set_description("Training Progress: ")
+
+            for batch_ix, (images, labels) in enumerate(train_loader):
+                # Apply Feature Attack
+                if self.feature_attack_model is not None:
+                    images, labels = self.feature_attack_model.attack(X=images, Y=labels)
+                    self.feature_attack_model.curr_corr -= 1
+                self.metrics["num_iter"] += 1
+                t_iter = time.time()
+
+                # Forward Pass
+                images = images.to(device)
+                labels = labels.to(device)
+                outputs = self.model(images)
+                loss = self.loss_wrapper(outputs, labels)
+                self.client_optimizer.zero_grad()
+                loss.backward()
+                self.metrics["num_grad_steps"] += 1
+                iteration_time = time.time() - t_iter
+                epoch_grad_cost += iteration_time
+                p_bar.update()
+
+                # Note: No Optimizer Step yet.
+                self.metrics["num_of_communication"] += 1
+                g_i = flatten_grads(learner=self.model)
+
+                # Populate Server Jacobian
+                if self.G is None:
+                    d = len(g_i)
+                    print("Num of Parameters {}".format(d))
+                    self.metrics["num_param"] = d
+                    self.G = np.zeros((self.num_batches, d), dtype=g_i.dtype)
+                ix = batch_ix % self.num_batches
+                agg_ix = (batch_ix + 1) % self.num_batches
+                self.G[ix, :] = g_i
+
+                # Aggregation step
+                if agg_ix == 0 and batch_ix is not 0:
+                    # Adversarial Attack
+                    if self.grad_attack_model is not None:
+                        self.G = self.grad_attack_model.launch_attack(G=self.G)
+                    if self.feature_attack_model is not None:
+                        # Reset For next set of batches
+                        self.feature_attack_model.curr_corr = self.feature_attack_model.num_corrupt
 
     def run_fed_train(self, config: Dict, seed):
         raise NotImplementedError
