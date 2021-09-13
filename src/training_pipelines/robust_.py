@@ -77,12 +77,15 @@ class RobustTrainingPipeline(TrainPipeline):
 
                 # Aggregation step
                 if agg_ix == 0 and batch_ix is not 0:
-                    # Adversarial Attack
+                    # Apply Gradient Attack
                     if self.grad_attack_model is not None:
                         self.G = self.grad_attack_model.launch_attack(G=self.G)
                     if self.feature_attack_model is not None:
                         # Reset For next set of batches
                         self.feature_attack_model.curr_corr = self.feature_attack_model.num_corrupt
+
+
+
 
     def run_fed_train(self, config: Dict, seed):
         raise NotImplementedError
