@@ -23,7 +23,7 @@ class JacobianCompression:
         else:
             raise ValueError
 
-        self.n= None
+        self.n = None
         self.d = None
         self.G_sparse = None
 
