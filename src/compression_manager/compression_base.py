@@ -23,6 +23,8 @@ class JacobianCompression:
         else:
             raise ValueError
 
+        self.n= None
+        self.d = None
         self.G_sparse = None
 
         self.residual_error = None
@@ -37,8 +39,7 @@ class JacobianCompression:
             return G
         elif self.memory_algo == 'ef':
             if self.residual_error is None:
-                n, d = G.shape
-                self.residual_error = np.zeros((n, d), dtype=G[0, :].dtype)
+                self.residual_error = np.zeros((self.n, self.d), dtype=G[0, :].dtype)
             return (lr * G) + self.residual_error
         else:
             raise NotImplementedError

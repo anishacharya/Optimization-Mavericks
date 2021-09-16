@@ -23,6 +23,7 @@ class SparseApproxMatrix(JacobianCompression):
         self.k = None  # Number of ix ~ to be auto populated
 
     def compress(self, G: np.ndarray, lr=1) -> np.ndarray:
+
         self.G_sparse = np.zeros_like(G)
         if self.compression_rule not in ['active_norm_sampling', 'random_sampling']:
             raise NotImplementedError
@@ -31,20 +32,21 @@ class SparseApproxMatrix(JacobianCompression):
 
         # for the first run compute k and residual error
         if self.k is None:
+            self.n, self.d = G.shape
             if self.frac < 0:
                 raise ValueError
             elif self.axis == 0:
-                self.k = int(self.frac * d) if self.frac > 0 else 1
-                print('Sampling {} coordinates out of {}'.format(self.k, d))
+                self.k = int(self.frac * self.d) if self.frac > 0 else 1
+                print('Sampling {} coordinates out of {}'.format(self.k, self.d))
             elif self.axis == 1:
-                self.k = int(self.frac * n) if self.frac > 0 else 1
-                print('Sampling {} samples out of {}'.format(self.k, n))
+                self.k = int(self.frac * self.n) if self.frac > 0 else 1
+                print('Sampling {} samples out of {}'.format(self.k, self.n))
 
         # Invoke Sampling algorithm
         if self.compression_rule == 'active_norm_sampling':
             I_k = self._active_norm_sampling(G=G)
         elif self.compression_rule == 'random_sampling':
-            I_k = self._random_sampling(d=d if self.axis == 0 else n)
+            I_k = self._random_sampling(d=self.d if self.axis == 0 else self.n)
         else:
             raise NotImplementedError
 
