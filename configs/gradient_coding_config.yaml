@@ -109,9 +109,9 @@
         "jacobian_compression_config":
           {
             "rule": null,                     # None, 'active_norm_sampling', 'random_sampling'
-            "axis": "n",                      # n = client/ sample/ batch selection ; dim = dimension selection
+            "axis": "n",                      # n = client/sample/batch selection ; dim = dimension selection
             "sampling_fraction": 0.9,         # fraction to be sampled
-            "mG": False,                       # memory in Jacobian - invoked for jacobian compression rules
+            "memory_algo": 'ef',              # memory in Jacobian - invoked for jacobian compression rules
           }
       }
   }

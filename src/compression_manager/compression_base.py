@@ -14,8 +14,7 @@ class JacobianCompression:
     def __init__(self, conf):
         self.conf = conf
         self.compression_rule = self.conf.get('rule', None)
-
-        # Get Row / Column
+        self.memory_algo = self.conf.get('memory_algo', None)
         axis = self.conf.get('axis', 'dim')  # 0: column / dimension , 1: row / samples(clients)
         if axis == 'dim':
             self.axis = 0
@@ -24,14 +23,37 @@ class JacobianCompression:
         else:
             raise ValueError
 
-        # Memory
-        self.mG = conf.get('mG', False)
-        print('Jacobian Memory : {}'.format(self.mG))
-        self.residual_error = 0
+        self.G_sparse = None
+
+        self.residual_error = None
         self.normalized_residual = 0
 
     def compress(self, G: np.ndarray, lr=1) -> [np.ndarray, np.ndarray]:
         raise NotImplementedError("This method needs to be implemented for each Compression Algorithm")
+
+    def memory_feedback(self, G: np.ndarray, lr=1) -> np.ndarray:
+        """ Chosen Form of memory is added to Jacobian as feedback """
+        if not self.memory_algo:
+            return G
+        elif self.memory_algo == 'ef':
+            if self.residual_error is None:
+                n, d = G.shape
+                self.residual_error = np.zeros((n, d), dtype=G[0, :].dtype)
+            return (lr * G) + self.residual_error
+        else:
+            raise NotImplementedError
+
+    def memory_update(self, G: np.ndarray, lr=1):
+        """ update the memory vector """
+        if not self.memory_algo:
+            return
+        elif self.memory_algo == 'ef':
+            delta = G - self.G_sparse
+            memory = np.mean(delta, axis=0)
+            self.residual_error = np.tile(memory, (G.shape[0], 1))
+        else:
+            raise NotImplementedError
+        self.G_sparse /= lr
 
 
 class GradientCompression:

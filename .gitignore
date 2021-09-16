@@ -1,6 +1,7 @@
 # Byte-compiled / optimized / DLL files
 # results/*
 .ipynb_checkpoints/*
+venv/*
 x_train*
 y_train*
 x_test*

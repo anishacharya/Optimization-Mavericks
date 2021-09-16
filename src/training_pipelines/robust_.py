@@ -53,7 +53,9 @@ class RobustTrainingPipeline(TrainPipeline):
                 images = images.to(device)
                 labels = labels.to(device)
                 outputs = self.model(images)
+
                 loss = self.loss_wrapper(outputs, labels)
+
                 self.client_optimizer.zero_grad()
                 loss.backward()
                 self.metrics["num_grad_steps"] += 1
@@ -75,7 +77,7 @@ class RobustTrainingPipeline(TrainPipeline):
                 agg_ix = (batch_ix + 1) % self.num_batches
                 self.G[ix, :] = g_i
 
-                # Aggregation step
+                # -----------  Aggregation step / Central Server  ------------ #
                 if agg_ix == 0 and batch_ix is not 0:
                     # Apply Gradient Attack
                     if self.grad_attack_model is not None:
@@ -84,8 +86,16 @@ class RobustTrainingPipeline(TrainPipeline):
                         # Reset For next set of batches
                         self.feature_attack_model.curr_corr = self.feature_attack_model.num_corrupt
 
+                    # ------- G Compression ------- #
+                    if self.C_J is not None:
+                        if self.jac_compression_config["rule"] in ['active_norm_sampling',
+                                                                   'random_sampling']:
+                            lr = self.client_optimizer.param_groups[0]['lr']  # Need this for Error Feedback
 
-
+                            t0 = time.time()
+                            I_k = self.C_J.compress(G=self.G, lr=lr)  # We need I_k to do aggregation faster
+                        else:
+                            raise NotImplementedError
 
     def run_fed_train(self, config: Dict, seed):
         raise NotImplementedError

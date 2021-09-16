@@ -22,13 +22,12 @@ class SparseApproxMatrix(JacobianCompression):
         self.frac = conf.get('sampling_fraction', 1)  # fraction of ix to sample
         self.k = None  # Number of ix ~ to be auto populated
 
-    def compress(self, G: np.ndarray, lr=1) -> [np.ndarray, np.ndarray]:
-        if self.compression_rule not in ['active_norm_sampling',
-                                         'random_sampling']:
+    def compress(self, G: np.ndarray, lr=1) -> np.ndarray:
+        self.G_sparse = np.zeros_like(G)
+        if self.compression_rule not in ['active_norm_sampling', 'random_sampling']:
             raise NotImplementedError
 
-        n, d = G.shape
-        G_sparse = np.zeros_like(G)
+        G = self.memory_feedback(G=G, lr=lr)
 
         # for the first run compute k and residual error
         if self.k is None:
@@ -41,11 +40,6 @@ class SparseApproxMatrix(JacobianCompression):
                 self.k = int(self.frac * n) if self.frac > 0 else 1
                 print('Sampling {} samples out of {}'.format(self.k, n))
 
-            self.residual_error = np.zeros((n, d), dtype=G[0, :].dtype)
-
-        # Error Compensation (if ef is False, residual error = 0 as its not updated
-        G = (lr * G) + self.residual_error
-
         # Invoke Sampling algorithm
         if self.compression_rule == 'active_norm_sampling':
             I_k = self._active_norm_sampling(G=G)
@@ -55,20 +49,15 @@ class SparseApproxMatrix(JacobianCompression):
             raise NotImplementedError
 
         if self.axis == 0:
-            G_sparse[:, I_k] = G[:, I_k]
+            self.G_sparse[:, I_k] = G[:, I_k]
         elif self.axis == 1:
-            G_sparse[I_k, :] = G[I_k, :]
+            self.G_sparse[I_k, :] = G[I_k, :]
         else:
             raise ValueError
 
-        if self.mG is True:
-            # update residual error
-            delta = G - G_sparse
-            memory = np.mean(delta, axis=0)
-            self.residual_error = np.tile(memory, (G.shape[0], 1))
-            # self.residual_error = G - G_sparse
+        self.memory_update(G=G, lr=lr)
 
-        return G_sparse / lr, I_k
+        return I_k
 
     # Implementation of different "Matrix Sparse Approximation" strategies
     def _random_sampling(self, d) -> np.ndarray:

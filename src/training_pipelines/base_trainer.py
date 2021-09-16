@@ -8,7 +8,7 @@ from src.model_manager import (get_model,
                                get_scheduler,
                                get_loss)
 from src.aggregation_manager import get_gar
-from src.compression_manager import get_compression_operator
+from src.compression_manager import get_compression_operator, get_jac_compression_operator
 
 
 class TrainPipeline:
@@ -56,7 +56,9 @@ class TrainPipeline:
                                         lrs_config=self.client_lrs_config)
 
         # Compression Operator
-        self.C_J = get_compression_operator(compression_config=self.jac_compression_config)
+        self.C_J = get_jac_compression_operator(jac_compression_config=self.jac_compression_config)
+        self.I_k = None  # indices when sparse approx Jac to run aggregation faster
+
         self.C_g = get_compression_operator(compression_config=self.grad_compression_config)
 
         self.gar = get_gar(aggregation_config=self.aggregation_config)
