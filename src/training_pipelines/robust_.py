@@ -94,6 +94,7 @@ class RobustTrainingPipeline(TrainPipeline):
 
                             t0 = time.time()
                             I_k = self.C_J.compress(G=self.G, lr=lr)  # We need I_k to do aggregation faster
+                            self.metrics["sparse_approx_residual"].append(self.C_J.normalized_residual)
                         else:
                             raise NotImplementedError
 
