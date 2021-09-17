@@ -87,6 +87,7 @@ class RobustTrainingPipeline(TrainPipeline):
                         self.feature_attack_model.curr_corr = self.feature_attack_model.num_corrupt
 
                     # ------- G Compression ------- #
+                    I_k = None
                     if self.C_J is not None:
                         if self.jac_compression_config["rule"] in ['active_norm_sampling',
                                                                    'random_sampling']:
@@ -94,9 +95,40 @@ class RobustTrainingPipeline(TrainPipeline):
 
                             t0 = time.time()
                             I_k = self.C_J.compress(G=self.G, lr=lr)  # We need I_k to do aggregation faster
+                            self.G = self.C_J.G_sparse
                             self.metrics["sparse_approx_residual"].append(self.C_J.normalized_residual)
                         else:
                             raise NotImplementedError
+
+                    # --- Gradient Aggregation ------ #
+                    agg_g = self.gar.aggregate(G=self.G, ix=I_k, axis=self.C_J.axis)
+
+                    # Update Model Grads with aggregated g : i.e. compute \tilde(g)
+                    self.client_optimizer.zero_grad()
+                    dist_grads_to_model(grads=agg_g, learner=self.model)
+                    self.model.to(device)
+                    # Now Do an optimizer step with x_t+1 = x_t - \eta \tilde(g)
+                    self.client_optimizer.step()
+                    self.metrics["num_opt_steps"] += 1
+
+                    if self.metrics["num_grad_steps"] % self.eval_freq == 0:
+                        train_loss = self.evaluate_classifier(model=self.model,
+                                                              train_loader=train_loader,
+                                                              test_loader=test_loader,
+                                                              metrics=self.metrics,
+                                                              device=device,
+                                                              epoch=self.epoch,
+                                                              num_epochs=self.num_epochs)
+                        # Stop if diverging
+                        if (train_loss > 1e3) | np.isnan(train_loss) | np.isinf(train_loss):
+                            self.epoch = self.num_epochs
+                            print(" *** Training is Diverging - Stopping !!! *** ")
+
+                    self.epoch += 1
+                    if self.client_lrs is not None:
+                        self.client_lrs.step()
+                    # update Epoch Complexity metrics
+                    self.metrics["epoch_grad_cost"].append(epoch_grad_cost)
 
     def run_fed_train(self, config: Dict, seed):
         raise NotImplementedError

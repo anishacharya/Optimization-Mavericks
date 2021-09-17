@@ -24,10 +24,12 @@ class Mean(GAR):
                 G = G[:, ix]
                 low_rank_mean = self.weighted_average(stacked_grad=G)
                 g_agg[ix] = low_rank_mean
+
             elif axis == 1:
                 G = G[ix, :]
                 low_rank_mean = self.weighted_average(stacked_grad=G)
                 g_agg = low_rank_mean
+
             else:
                 raise ValueError("Wrong Axis")
 
