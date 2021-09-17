@@ -48,6 +48,8 @@ def get_trainer(pipeline: str, config, seed):
         trainer = LossPipeline(config=config, seed=seed)
     elif pipeline == 'coding':
         trainer = GradientCodingPipeline(config=config, seed=seed)
+    elif pipeline == 'robust':
+        trainer = RobustTrainingPipeline(config=config, seed=seed)
     else:
         raise NotImplementedError
 
