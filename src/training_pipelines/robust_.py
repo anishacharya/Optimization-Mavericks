@@ -46,28 +46,31 @@ class RobustTrainingPipeline(TrainPipeline):
                 if self.feature_attack_model is not None:
                     images, labels = self.feature_attack_model.attack(X=images, Y=labels)
                     self.feature_attack_model.curr_corr -= 1
+
+                # --- Forward Pass ----
                 self.metrics["num_iter"] += 1
                 t_iter = time.time()
 
-                # Forward Pass
                 images = images.to(device)
                 labels = labels.to(device)
                 outputs = self.model(images)
 
+                # --- calculate Loss ---
                 loss = self.loss_wrapper(outputs, labels)
 
+                # --- Backward Pass ----
                 self.client_optimizer.zero_grad()
                 loss.backward()
+
                 self.metrics["num_grad_steps"] += 1
                 iteration_time = time.time() - t_iter
                 epoch_grad_cost += iteration_time
                 p_bar.update()
-
                 # Note: No Optimizer Step yet.
                 self.metrics["num_of_communication"] += 1
                 g_i = flatten_grads(learner=self.model)
 
-                # Populate Server Jacobian
+                # ----- Populate Server Jacobian -----
                 if self.G is None:
                     d = len(g_i)
                     print("Num of Parameters {}".format(d))

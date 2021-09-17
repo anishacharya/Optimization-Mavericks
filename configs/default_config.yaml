@@ -17,7 +17,7 @@
 
     "data_sampling_strategy": "iid",  # iid / non_iid
     "num_shards": 80,                 # For non-iid distribution
-    "train_batch_size": 300,                 # Mini Batch Size
+    "train_batch_size": 32,                 # Mini Batch Size
     "test_batch_size": 2048,
 
     "feature_attack_config":
@@ -33,10 +33,10 @@
   {
     "num_clients": 1,            # Number of parallel batches in distributed setting 1 = mini batch SGD
     "client_fraction": 1,         # partial device participation - For FL
-    "global_epochs": 20,          # epochs
+    "global_epochs": 10,          # epochs
     "local_epochs": 1,            # local SGD # For FL
 
-    "eval_freq": 64,             # Specify number of steps between train/test/val evaluation
+    "eval_freq": 128,             # Specify number of steps between train/test/val evaluation
 
     "optimizer_config":
       {
@@ -57,10 +57,10 @@
 
         "client_lrs_config":
           {
-            "lrs": null,
+            "lrs": 'step',
             "milestones": [1,5,10],
-            "step_size": 10,
-            "gamma": 0.5
+            "step_size": 1,
+            "gamma": 0.9
           },
 
         "server_optimizer_config":
@@ -86,7 +86,7 @@
 
         "grad_attack_config":
           {
-            "attack_model": null,
+            "attack_model": 'additive',  # 'additive' , 'impulse', 'backdoor'
             "attack_mode": "un_coordinated",
             "frac_adv": 0.4,
             "rand_additive_attack_conf":
@@ -102,16 +102,16 @@
         "gradient_compression_config":
           {
             "rule": 'top',                     # None, 'full', 'top', 'rand', 'Q'
-            "sampling_fraction": 0.5,         # fraction to be sampled
+            "sampling_fraction": 0.1,         # fraction to be sampled
             "memory_algo": 'ef',               # memory in gradients - invoked for gradient compression rules
           },
 
         "jacobian_compression_config":
           {
-            "rule": null,                     # None, 'active_norm_sampling', 'random_sampling'
-            "axis": "n",                      # n = client/ sample/ batch selection ; dim = dimension selection
+            "rule": 'active_norm_sampling',                     # None, 'active_norm_sampling', 'random_sampling'
+            "axis": "dim",                      # n = client/sample/batch selection ; dim = dimension selection
             "sampling_fraction": 0.9,         # fraction to be sampled
-            "mG": False,                       # memory in Jacobian - invoked for jacobian compression rules
+            "memory_algo": 'ef',              # memory in Jacobian - invoked for jacobian compression rules
           }
       }
   }

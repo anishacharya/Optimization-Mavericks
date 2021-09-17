@@ -52,10 +52,9 @@ class JacobianCompression:
             delta = G - self.G_sparse
             memory = np.mean(delta, axis=0)
             self.residual_error = np.tile(memory, (G.shape[0], 1))
+            self.G_sparse /= lr
         else:
             raise NotImplementedError
-        self.G_sparse /= lr
-
 
 class GradientCompression:
     def __init__(self, conf):
