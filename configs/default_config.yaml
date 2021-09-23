@@ -17,7 +17,7 @@
 
     "data_sampling_strategy": "iid",  # iid / non_iid
     "num_shards": 80,                 # For non-iid distribution
-    "train_batch_size": 32,                 # Mini Batch Size
+    "train_batch_size": 32,           # Mini Batch Size
     "test_batch_size": 2048,
 
     "feature_attack_config":

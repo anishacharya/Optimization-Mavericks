@@ -19,7 +19,7 @@ def get_loss(loss: str):
         raise NotImplementedError
 
 
-def get_optimizer(params, optimizer_config: Dict = None):
+def get_optimizer(params, optimizer_config=None):
     if optimizer_config is None:
         optimizer_config = {}
     opt_alg = optimizer_config.get('optimizer', 'SGD')
@@ -61,7 +61,7 @@ def get_scheduler(optimizer, lrs_config: Dict = None):
         return opt.lr_scheduler.CosineAnnealingLR(optimizer=optimizer, T_max=100)
     elif lrs == 'cyclic':
         max_lr = lrs_config.get('lr0', 0.001)
-        base_lr = 0.1*max_lr
+        base_lr = 0.1 * max_lr
         return opt.lr_scheduler.CyclicLR(optimizer=optimizer,
                                          base_lr=base_lr,
                                          max_lr=max_lr,

@@ -81,7 +81,7 @@ class RobustTrainingPipeline(TrainPipeline):
                 self.G[ix, :] = g_i
 
                 # -----------  Aggregation step / Central Server  ------------ #
-                if agg_ix == 0 and batch_ix is not 0:
+                if (self.num_batches == 1) or (agg_ix == 0 and batch_ix is not 0):
                     # Apply Gradient Attack
                     if self.grad_attack_model is not None:
                         self.G = self.grad_attack_model.launch_attack(G=self.G)
