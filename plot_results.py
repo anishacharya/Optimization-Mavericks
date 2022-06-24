@@ -20,7 +20,7 @@ def plot_(lbl: str, res_file: str, plt_type: str = 'epoch_loss',
     if type(result) is not list:
         result = [result]
     for run in result:
-        best_acc = run["best_test_acc"]
+        # best_acc = run["best_test_acc"]
         res = run[plt_type]
         # res -= optima * np.ones(len(res))
         if plt_type == 'jacobian_residual':
@@ -42,6 +42,7 @@ def plot_(lbl: str, res_file: str, plt_type: str = 'epoch_loss',
 
     if plt_type == 'test_acc':
         final_acc = mean[-1]
+        best_acc = max(mean)
         print("{} Final Test Accuracy : {}; Best Test Accuracy: {} +- {} "
               .format(lbl, final_acc, best_acc, min(3 * std)))
 
@@ -72,7 +73,7 @@ def plot_(lbl: str, res_file: str, plt_type: str = 'epoch_loss',
         raise NotImplementedError
     # mean = mean[::plot_freq]
     plt.plot(x, mean, label=lbl, linewidth=line_width, marker=marker, linestyle=line_style, color=color)
-    plt.fill_between(x, LB, UB, alpha=0.3, linewidth=0.5, color=color)
+    # plt.fill_between(x, LB, UB, alpha=0.3, linewidth=0.5, color=color)
 
 
 def smooth(y, box_pts):
@@ -152,7 +153,7 @@ if __name__ == '__main__':
 
     elif plot_type == 'test_acc':
         ax.yaxis.set_minor_formatter(ticker.ScalarFormatter())
-        plt.ticklabel_format(style='sci', axis='x', scilimits=(0, 0))
+        # plt.ticklabel_format(style='sci', axis='x', scilimits=(0, 0))
         plt.ylabel('Test Accuracy (%)', fontsize=10)
 
     elif plot_type == 'train_acc':

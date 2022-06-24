@@ -72,7 +72,7 @@
 
     "learner_config":
       {
-        "net": "small_cnn", # Options: log_reg
+        "net": "mlp", # Options: log_reg
         "mlp_config": { "h1": 30, "h2": 30 }
       },
 

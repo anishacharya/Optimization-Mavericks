@@ -47,6 +47,7 @@ class TrainPipeline:
         self.seed = seed
         np.random.seed(seed)
         torch.manual_seed(seed)
+
         self.model = get_model(learner_config=self.learner_config,
                                data_config=self.data_config,
                                seed=seed)

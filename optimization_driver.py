@@ -12,12 +12,12 @@ def _parse_args():
     parser = argparse.ArgumentParser(description='federated/decentralized/distributed training experiment template')
     parser.add_argument('--train_mode',
                         type=str,
-                        default='distributed',
+                        default='vanilla',
                         help='distributed: launch distributed Training '
                              'fed: launch federated training')
     parser.add_argument('--pipeline',
                         type=str,
-                        default='robust',
+                        default='loss',
                         help='sampling: exp with sampling data during training'
                              'agg: exp with GAR')
     parser.add_argument('--conf',

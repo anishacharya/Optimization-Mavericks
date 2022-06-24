@@ -56,6 +56,7 @@ class JacobianCompression:
         else:
             raise NotImplementedError
 
+
 class GradientCompression:
     def __init__(self, conf):
         self.conf = conf
